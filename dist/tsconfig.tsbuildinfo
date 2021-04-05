@@ -262,7 +262,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/owner/superuser.ts": {
-        "version": "c5b9f1fcaaf6534aac7e434b5b3d17217527378c676731394d27584a02174174",
+        "version": "cad090e33129b1c260b64788b5e5140a426cf7b9168f52d216839d7c6a861792",
         "signature": "e7bf80443bb020b4d6d59cf7b11b1dbfb575e2a8d1c8696a61392790f2a60104",
         "affectsGlobalScope": false
       },
@@ -339,6 +339,11 @@
       "../src/commands/testing/counting.ts": {
         "version": "5bfbf3d14544c8a7daef3bb619a952860c5057f0817f7328b7569a47fe57066d",
         "signature": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "affectsGlobalScope": false
+      },
+      "../src/commands/testing/newcommand.ts": {
+        "version": "27e43b77a8e0dc743774452a1213b1677a3a3974854ed1c1aef225115c43f23c",
+        "signature": "c218208668ca679b16b6d49833cb19d6bd4bb16b1f2e516715c87be538f4dd07",
         "affectsGlobalScope": false
       },
       "../src/extensions/BotCommand.ts": {
@@ -895,7 +900,8 @@
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
       "../src/commands/owner/superuser.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
       ],
       "../src/commands/skyclient/discord.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
@@ -942,6 +948,9 @@
         "../node_modules/discord.js/typings/index.d.ts"
       ],
       "../src/commands/testing/command.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
+      "../src/commands/testing/newcommand.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
       "../src/extensions/BotClient.ts": [
@@ -1273,6 +1282,9 @@
       "../src/commands/testing/command.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
+      "../src/commands/testing/newcommand.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
       "../src/extensions/BotClient.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
@@ -1409,6 +1421,7 @@
       "../src/commands/staff/moderation/bean.ts",
       "../src/commands/testing/command.ts",
       "../src/commands/testing/counting.ts",
+      "../src/commands/testing/newcommand.ts",
       "../src/extensions/BotClient.ts",
       "../src/extensions/BotCommand.ts",
       "../src/extensions/BotInhibitor.ts",
