@@ -1,0 +1,7 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+require('dotenv').config();
+const BotClient_1 = require("./extensions/BotClient");
+const client = new BotClient_1.BotClient();
+client.start();
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiaW5kZXguanMiLCJzb3VyY2VSb290IjoiIiwic291cmNlcyI6WyIuLi9zcmMvaW5kZXgudHMiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6Ijs7QUFBQSxPQUFPLENBQUMsUUFBUSxDQUFDLENBQUMsTUFBTSxFQUFFLENBQUE7QUFDMUIsc0RBQW1EO0FBRW5ELE1BQU0sTUFBTSxHQUFHLElBQUkscUJBQVMsRUFBRSxDQUFDO0FBQy9CLE1BQU0sQ0FBQyxLQUFLLEVBQUUsQ0FBQyIsInNvdXJjZXNDb250ZW50IjpbInJlcXVpcmUoJ2RvdGVudicpLmNvbmZpZygpXHJcbmltcG9ydCB7IEJvdENsaWVudCB9IGZyb20gXCIuL2V4dGVuc2lvbnMvQm90Q2xpZW50XCI7XHJcblxyXG5jb25zdCBjbGllbnQgPSBuZXcgQm90Q2xpZW50KCk7XHJcbmNsaWVudC5zdGFydCgpOyJdfQ==
