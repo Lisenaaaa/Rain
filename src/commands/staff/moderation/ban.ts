@@ -37,7 +37,6 @@ export default class BanCommand extends Command {
         if (args.member == message.author.id) {
             ErrorEmbed.setDescription('Sorry, you can\'t ban yourself!')
             return message.channel.send(ErrorEmbed)
-
         }
 
         if (args.member == message.guild.ownerID) {
