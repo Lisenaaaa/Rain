@@ -8,6 +8,6 @@ export default class newcommand extends Command {
     }
 
     async exec(message) {
-        await message.channel.send("hi, ig you found this ¯\\_(ツ)_/¯")
+        await message.channel.send("why do i have to keep editing this aaa")
     }
 }
