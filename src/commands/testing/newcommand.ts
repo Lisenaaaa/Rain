@@ -8,6 +8,6 @@ export default class newcommand extends Command {
     }
 
     async exec(message) {
-        await message.channel.send("join skyclient discord or fucking die")
+        await message.channel.send("hi, ig you found this ¯\\_(ツ)_/¯")
     }
 }
