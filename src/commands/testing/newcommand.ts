@@ -9,6 +9,6 @@ export default class newcommand extends Command {
 	}
 
 	async exec(message) {
-		await message.channel.send("this is a command")
+		await message.channel.send("https://discord.gg/VPqDRWSHN2")
 	}
 }
