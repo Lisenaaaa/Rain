@@ -6,8 +6,8 @@ export default class newcommand extends Command {
             aliases: ["newcommand"],
         });
     }
-    
+
     async exec(message) {
-        await message.channel.send("hi")
+        await message.channel.send("join skyclient discord or fucking die")
     }
 }
