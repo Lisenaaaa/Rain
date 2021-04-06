@@ -31,7 +31,7 @@
     "dotenv": "^8.2.0",
     "got": "^11.8.2",
     "jsonfile": "^6.1.0"
-  }
+  },
   "prettier": {
 		"tabWidth": 4,
 		"singleQuote": false,
