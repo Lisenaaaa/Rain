@@ -412,11 +412,6 @@ cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-curlrequest@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/curlrequest/-/curlrequest-1.0.1.tgz#cd3d8e04e81d7996b0a1cd9716cb09d50b41d50f"
-  integrity sha1-zT2OBOgdeZawoc2XFssJ1QtB1Q8=
-
 debug@^4.0.1, debug@^4.1.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.1.tgz#f0d229c505e0c6d8c49ac553d1b13dc183f6b2ee"
