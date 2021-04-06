@@ -9,10 +9,11 @@ export default class invite extends Command {
 
     async exec(message) {
         if (message.author.id == 492488074442309642) {
-            message.channel.send(process.env["invite"])
+            message.author.send(process.env["invite"])
+            message.channel.send(`Invite has (probably) been sent to you.`)
         }
         else {
-            message.channel.send(`yeah no`)
+            message.channel.send(`and why exactly would i let you invite me to your server?`)
         }
     }
 }
