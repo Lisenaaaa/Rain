@@ -347,7 +347,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/testing/newcommand.ts": {
-        "version": "30a7d753f39752201816fc4ff7667f928e4539c14b5b51d34e95c5ea439425f6",
+        "version": "af661c11e8fc5a3f07d9f804a725d70385ec252daba40c2b7d725a10c2bc3473",
         "signature": "c218208668ca679b16b6d49833cb19d6bd4bb16b1f2e516715c87be538f4dd07",
         "affectsGlobalScope": false
       },
