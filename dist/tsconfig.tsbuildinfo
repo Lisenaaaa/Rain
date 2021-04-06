@@ -251,13 +251,18 @@
         "signature": "5b076c1a366de2714185539496f6689a55319210d8df659c7790a91f8ff38069",
         "affectsGlobalScope": false
       },
+      "../src/commands/misc/userinfo.ts": {
+        "version": "74b259ef656df9b887b01cbb13c2d21cc83dbf2437115e0f020087823a7b3756",
+        "signature": "e4f2466b7149658fe058a666cb410534f736dacde3d970e46ec29c2228554bf1",
+        "affectsGlobalScope": false
+      },
       "../src/commands/owner/dm.ts": {
         "version": "d8b2fd95c53ee6aac4a213b6d7b7627a850e48e7cd057cea9f40a676b5954eec",
         "signature": "a9f5822b0c9961df32e798d33ac84563500bda8ab881ced8e85256f0028ce173",
         "affectsGlobalScope": false
       },
       "../src/commands/owner/invite.ts": {
-        "version": "fbca6a09fcac94a73c1fc51ee262c9eb26f80e01954a7bafe5b807cdeecc8e5f",
+        "version": "cb9cdd9c90e273aeb15df5b9cc5ba1da11a1d329362619f954dafe563f675bc8",
         "signature": "718976719863a5a49a63b2d622606f7343dd393b19002df581fd154dbd6c5f07",
         "affectsGlobalScope": false
       },
@@ -269,61 +274,6 @@
       "../src/commands/owner/superuser.ts": {
         "version": "6d3e0150340cc5a72159155f137d41abf055b1e0db31fb4448883a7fbf8ba3b4",
         "signature": "e7bf80443bb020b4d6d59cf7b11b1dbfb575e2a8d1c8696a61392790f2a60104",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/discord.ts": {
-        "version": "3df3710070e0999f7af1dd84fd6b52c973e5c20b319cb803272350284d3123e8",
-        "signature": "5f8c5a7337c7e6aa0cd84dcedeeccd1b7a47dc3d5c43d985881d776a97bbbff1",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/download.ts": {
-        "version": "8ead5997aa8d62adbc483e7ef746563b492a9b03b7af712eb9ecc4f2b0e17568",
-        "signature": "e4f436b4e81e97028a0fa8b0f000f20d34a8923ff915b33aca84f00525a2415e",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/faq.ts": {
-        "version": "fd775b33e28ecf87733d964688b5fc1c5a903f53995bbe99c9c36047cc6cb8a6",
-        "signature": "d239fa48ada2360130bb75630330e75acbcfb2653eb370c86b3f8bc56e544ebc",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/github.ts": {
-        "version": "15b9f1e9a89e3c208a995f564b4fb929312794094903d63b003aceff4e3db7ea",
-        "signature": "101ddae88cc4839f7932ee2537da8173db10179229355a0a606c072b236b681f",
-        "affectsGlobalScope": false
-      },
-      "../node_modules/axios/index.d.ts": {
-        "version": "0d892f035dbee4534f0ba096407136877595ca592f67ec9bb8a5c912b9c967e8",
-        "signature": "0d892f035dbee4534f0ba096407136877595ca592f67ec9bb8a5c912b9c967e8",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/modinfo.ts": {
-        "version": "599e87266b6afd084171d4674f28c9dbd0df7a8748af4fa6e596100baa968af6",
-        "signature": "161dbaeebba24cd8859f5485405463c83dc348541d8d522a1bca65f39dabaf67",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/modlist.ts": {
-        "version": "473f062bf24eb6075471c68a708ca0e7d0b1bbfcfde5aaee775ae62d17a11617",
-        "signature": "f8f2493841da8ec90f863a264fedeea10f1c1227865ed89f4726a7e4c338a42f",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/packfix.ts": {
-        "version": "ee7aacb353c4fb4b7c1bad1c375a3eb73b01b8dd8853fa0ef909ece70d322ac0",
-        "signature": "dddffa427fc06070b75256347423646b2b84327eee9bdfd80ae95ad8c3324d95",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/packinfo.ts": {
-        "version": "abab992d41754264e8e1c230d9d12a611ad2abcec8b08112729ec3eb5af54c12",
-        "signature": "8a1880f6d38a01e7c2edf3a1f877b1b040ebcb581eda43ced1a5d38fb3e30adb",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/packlist.ts": {
-        "version": "dc787d3f63de592ff0db2d9da305014a7aa3b07b3100f3627707ecf64794fbc3",
-        "signature": "c5f5daf272f5238aacf40096be6f86995ca80d745f51b515b2a8ca7fc3f2f88c",
-        "affectsGlobalScope": false
-      },
-      "../src/commands/skyclient/repo.ts": {
-        "version": "e524d219dadfc8efabb758ebb17559c77e0178691d9b5eafd19a987251f7d228",
-        "signature": "101ddae88cc4839f7932ee2537da8173db10179229355a0a606c072b236b681f",
         "affectsGlobalScope": false
       },
       "../src/commands/staff/moderation/ban.ts": {
@@ -347,7 +297,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/testing/newcommand.ts": {
-        "version": "af661c11e8fc5a3f07d9f804a725d70385ec252daba40c2b7d725a10c2bc3473",
+        "version": "478365b4f75afb1e579c74112eb2f314f5a24a2a8f781f6fba85681f2d0dad36",
         "signature": "c218208668ca679b16b6d49833cb19d6bd4bb16b1f2e516715c87be538f4dd07",
         "affectsGlobalScope": false
       },
@@ -898,6 +848,10 @@
       "../src/commands/misc/info.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
+      "../src/commands/misc/userinfo.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts",
+        "../node_modules/discord.js/typings/index.d.ts"
+      ],
       "../src/commands/owner/dm.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
@@ -910,42 +864,6 @@
       "../src/commands/owner/superuser.ts": [
         "../node_modules/discord-akairo/src/index.d.ts",
         "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/discord.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/download.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/faq.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts",
-        "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/github.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/modinfo.ts": [
-        "../node_modules/axios/index.d.ts",
-        "../node_modules/discord-akairo/src/index.d.ts",
-        "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/modlist.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts",
-        "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/packfix.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/packinfo.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts",
-        "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/packlist.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts",
-        "../node_modules/discord.js/typings/index.d.ts"
-      ],
-      "../src/commands/skyclient/repo.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
       ],
       "../src/commands/staff/moderation/ban.ts": [
         "../node_modules/discord-akairo/src/index.d.ts",
@@ -1242,6 +1160,9 @@
       "../src/commands/misc/info.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
+      "../src/commands/misc/userinfo.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
       "../src/commands/owner/dm.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
@@ -1252,36 +1173,6 @@
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
       "../src/commands/owner/superuser.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/discord.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/download.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/faq.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/github.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/modinfo.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/modlist.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/packfix.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/packinfo.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/packlist.ts": [
-        "../node_modules/discord-akairo/src/index.d.ts"
-      ],
-      "../src/commands/skyclient/repo.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
       "../src/commands/staff/moderation/ban.ts": [
@@ -1367,7 +1258,6 @@
       "../node_modules/@types/node/worker_threads.d.ts",
       "../node_modules/@types/node/zlib.d.ts",
       "../node_modules/@types/prettier/index.d.ts",
-      "../node_modules/axios/index.d.ts",
       "../node_modules/discord-akairo/src/index.d.ts",
       "../node_modules/discord.js/typings/index.d.ts",
       "../node_modules/typescript/lib/lib.dom.d.ts",
@@ -1415,20 +1305,11 @@
       "../node_modules/typescript/lib/lib.esnext.weakref.d.ts",
       "../src/commands/hypixel/skycrypt.ts",
       "../src/commands/misc/info.ts",
+      "../src/commands/misc/userinfo.ts",
       "../src/commands/owner/dm.ts",
       "../src/commands/owner/invite.ts",
       "../src/commands/owner/say.ts",
       "../src/commands/owner/superuser.ts",
-      "../src/commands/skyclient/discord.ts",
-      "../src/commands/skyclient/download.ts",
-      "../src/commands/skyclient/faq.ts",
-      "../src/commands/skyclient/github.ts",
-      "../src/commands/skyclient/modinfo.ts",
-      "../src/commands/skyclient/modlist.ts",
-      "../src/commands/skyclient/packfix.ts",
-      "../src/commands/skyclient/packinfo.ts",
-      "../src/commands/skyclient/packlist.ts",
-      "../src/commands/skyclient/repo.ts",
       "../src/commands/staff/moderation/ban.ts",
       "../src/commands/staff/moderation/bean.ts",
       "../src/commands/testing/command.ts",
