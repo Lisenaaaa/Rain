@@ -242,7 +242,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/hypixel/skycrypt.ts": {
-        "version": "8f93d494c0957945b2b602a982e092ed98e30097390d58ba3b323c35648aca95",
+        "version": "2297a474b5b8d1169c400dec4a5fd083fad300a15b8aaec1cdfde812d4a33a2b",
         "signature": "e56cf13d7772a61835ea390bf47438862f256950f29c6f933972a1f9e5aef356",
         "affectsGlobalScope": false
       },
@@ -254,6 +254,11 @@
       "../src/commands/owner/dm.ts": {
         "version": "d8b2fd95c53ee6aac4a213b6d7b7627a850e48e7cd057cea9f40a676b5954eec",
         "signature": "a9f5822b0c9961df32e798d33ac84563500bda8ab881ced8e85256f0028ce173",
+        "affectsGlobalScope": false
+      },
+      "../src/commands/owner/invite.ts": {
+        "version": "6249f21ae2a0a5fa23c347da45c4541730688fbebb0ea63026bea48b68edcbb2",
+        "signature": "718976719863a5a49a63b2d622606f7343dd393b19002df581fd154dbd6c5f07",
         "affectsGlobalScope": false
       },
       "../src/commands/owner/say.ts": {
@@ -332,7 +337,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/testing/command.ts": {
-        "version": "45b4d9044112e9ae6f923e6f48b362f1b0da7464f405f924644e9faba1a79315",
+        "version": "4b096ec2d7b1f8dedb7def28e5c8433758594769add2c276a21021e6f55ddde2",
         "signature": "7c705e4ebb6573e492f866ccc1166299a4f4ef033adcbf5bc2233a227da6df53",
         "affectsGlobalScope": false
       },
@@ -896,6 +901,9 @@
       "../src/commands/owner/dm.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
+      "../src/commands/owner/invite.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
       "../src/commands/owner/say.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
@@ -1237,6 +1245,9 @@
       "../src/commands/owner/dm.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
+      "../src/commands/owner/invite.ts": [
+        "../node_modules/discord-akairo/src/index.d.ts"
+      ],
       "../src/commands/owner/say.ts": [
         "../node_modules/discord-akairo/src/index.d.ts"
       ],
@@ -1405,6 +1416,7 @@
       "../src/commands/hypixel/skycrypt.ts",
       "../src/commands/misc/info.ts",
       "../src/commands/owner/dm.ts",
+      "../src/commands/owner/invite.ts",
       "../src/commands/owner/say.ts",
       "../src/commands/owner/superuser.ts",
       "../src/commands/skyclient/discord.ts",
