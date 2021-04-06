@@ -16,7 +16,7 @@ export default class skycrypt extends Command {
 
     async exec(message, args) {
 
-message.channel.send(`https://sky.shiiyu.moe/stats/${args.ign}`);
+        message.channel.send(`https://sky.shiiyu.moe/stats/${args.ign}`);
 
     }
 }

@@ -247,8 +247,8 @@
         "affectsGlobalScope": false
       },
       "../src/commands/misc/info.ts": {
-        "version": "2a1c0f57d4a8f36e1e41f9c78992e1b26af744698537c147d4c8f7f3778d40c3",
-        "signature": "85dbc3a4e4bf97a219b210bb3fec2b8f40edbbf764d24b42c3d155872eacd6eb",
+        "version": "e992b0409c2f3bfb26131f7934f89afbad183b538e9c3998a218025575722288",
+        "signature": "5b076c1a366de2714185539496f6689a55319210d8df659c7790a91f8ff38069",
         "affectsGlobalScope": false
       },
       "../src/commands/owner/dm.ts": {
@@ -322,7 +322,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/staff/moderation/ban.ts": {
-        "version": "daac0d54bf52f26aa4e98712a0d6b54ae49b864a463c07249dc1d16a749c9365",
+        "version": "eec8d6eee67781180eaf6df05d6c02937271ba8bad0af7ff748414f637847926",
         "signature": "6764ec0ab7623a1dd045a826faf6e351fbd18965bf3cc11495db813a0558018d",
         "affectsGlobalScope": false
       },
@@ -332,7 +332,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/testing/command.ts": {
-        "version": "4b096ec2d7b1f8dedb7def28e5c8433758594769add2c276a21021e6f55ddde2",
+        "version": "45b4d9044112e9ae6f923e6f48b362f1b0da7464f405f924644e9faba1a79315",
         "signature": "7c705e4ebb6573e492f866ccc1166299a4f4ef033adcbf5bc2233a227da6df53",
         "affectsGlobalScope": false
       },
@@ -342,7 +342,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/testing/newcommand.ts": {
-        "version": "27e43b77a8e0dc743774452a1213b1677a3a3974854ed1c1aef225115c43f23c",
+        "version": "30a7d753f39752201816fc4ff7667f928e4539c14b5b51d34e95c5ea439425f6",
         "signature": "c218208668ca679b16b6d49833cb19d6bd4bb16b1f2e516715c87be538f4dd07",
         "affectsGlobalScope": false
       },
