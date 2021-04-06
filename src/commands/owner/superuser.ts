@@ -2,7 +2,7 @@ import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 
 const jsonfile = require('jsonfile')
-const file = 'src/config/global/superusers.json'
+const file = 'config/global/superusers.json'
 
 export default class superuser extends Command {
     constructor() {

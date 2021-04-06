@@ -257,7 +257,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/owner/invite.ts": {
-        "version": "6249f21ae2a0a5fa23c347da45c4541730688fbebb0ea63026bea48b68edcbb2",
+        "version": "fbca6a09fcac94a73c1fc51ee262c9eb26f80e01954a7bafe5b807cdeecc8e5f",
         "signature": "718976719863a5a49a63b2d622606f7343dd393b19002df581fd154dbd6c5f07",
         "affectsGlobalScope": false
       },
@@ -267,7 +267,7 @@
         "affectsGlobalScope": false
       },
       "../src/commands/owner/superuser.ts": {
-        "version": "cad090e33129b1c260b64788b5e5140a426cf7b9168f52d216839d7c6a861792",
+        "version": "6d3e0150340cc5a72159155f137d41abf055b1e0db31fb4448883a7fbf8ba3b4",
         "signature": "e7bf80443bb020b4d6d59cf7b11b1dbfb575e2a8d1c8696a61392790f2a60104",
         "affectsGlobalScope": false
       },
