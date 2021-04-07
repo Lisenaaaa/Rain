@@ -8,6 +8,6 @@ export default class newcommand extends Command {
     }
 
     async exec(message) {
-        await message.channel.send("pain")
+        await message.channel.send(`pain`)
     }
 }
