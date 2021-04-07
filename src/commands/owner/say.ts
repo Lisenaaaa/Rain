@@ -9,7 +9,6 @@ export default class say extends Command {
                     id: 'say',
                     type: 'string',
                     match: 'text',
-
                 },
                 {
                     id: 'channel',
