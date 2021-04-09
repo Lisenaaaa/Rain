@@ -14,18 +14,19 @@ export default class say extends Command {
                     id: 'channel',
                     match: 'option',
                     flag: '--channel',
-                    unordered: true,
+                    //unordered: true,
                     type: 'channel'
                 },
                 {
-                    id: "nodelete",
-                    match: 'option',
-                    flag: '--nodelete',
-                    unordered: true,
-                    type: 'bool'
+                    id: "delete",
+                    match: 'flag',
+                    flag: '--delete',
+                    //unordered: true,
+                    //type: 'bool'
                 }
             ],
-            channel: 'guild'
+            channel: 'guild',
+            ownerOnly: true
         });
     }
 
@@ -39,8 +40,9 @@ export default class say extends Command {
 
         else {
             message.channel.send(args.say)
-            if (message.deletable && args.nodelete != true) {
+            if (message.deletable && args.delete) {
                 await message.delete()
+                console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
             }
             console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
         }
