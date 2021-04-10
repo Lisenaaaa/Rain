@@ -16,7 +16,7 @@ export default class rules extends Command {
     }
 
     exec(message, args) {
-        if (message.guild.id == 824680357936103497) {
+        if (message.guild.id === `824680357936103497`) {
             const rule1 = new MessageEmbed()
                 .setTitle(`Rule 1: All people are people`)
                 .setDescription(`Transphobic, homophobic, racist, xenophobic, hate speech, or anything similar will not be tolerated.`)
