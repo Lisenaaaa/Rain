@@ -75,13 +75,13 @@ export default class BanCommand extends Command {
 
         let ErrorEmbedPingAAA = args.member.tag
 
-        args.member.send("You have been banned from " + message.guild.name + " for " + args.reason)
-            .then(() => args.member.ban({ reason: message.author.tag + " | " + args.reason }))
+        args.member.send(`You have been banned from ${message.guild.name} for ${args.reason}.`)
+            .then(() => args.member.ban({ reason: `${message.author.tag} | ${args.reason}` }))
             .catch(() => {
                 ErrorEmbed.setDescription(`I couldn\'t DM ${ErrorEmbedPingAAA}.`)
                 message.channel.send(ErrorEmbed)
 
-                args.member.ban({ reason: message.author.tag + " | " + args.reason })
+                args.member.ban({ reason: `${message.author.tag} | ${args.reason} ` })
             })
         message.channel.send(BanEmbed);
     }
