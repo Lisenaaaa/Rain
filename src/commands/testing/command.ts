@@ -4,7 +4,7 @@ export default class command extends Command {
 	constructor() {
 		super("command", {
 			aliases: ["command"],
-
+			ownerOnly: true
 		});
 	}
 
