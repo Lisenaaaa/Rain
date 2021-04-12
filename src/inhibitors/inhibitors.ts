@@ -9,7 +9,7 @@ class BlacklistInhibitor extends Inhibitor {
 
 	exec(message) {
 		// He's a meanie!
-		const blacklist = ["81440962496172032"];
+		const blacklist = ["600875620808785941"];
 		return blacklist.includes(message.author.id);
 	}
 }
