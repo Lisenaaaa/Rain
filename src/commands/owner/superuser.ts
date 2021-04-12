@@ -14,6 +14,7 @@ export default class superuser extends Command {
                     type: 'member'
                 }
             ],
+            ownerOnly: true,
             channel: 'guild'
         });
     }

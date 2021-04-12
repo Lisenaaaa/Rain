@@ -15,6 +15,7 @@ export default class dm extends Command {
                     match: 'restContent'
                 },
             ],
+            ownerOnly: true,
             channel: 'guild'
         });
     }

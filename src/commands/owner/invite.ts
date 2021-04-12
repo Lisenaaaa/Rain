@@ -4,6 +4,7 @@ export default class invite extends Command {
     constructor() {
         super("invite", {
             aliases: ["invite"],
+            ownerOnly: true
         });
     }
 
