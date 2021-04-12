@@ -11,6 +11,6 @@ export default class newcommand extends Command {
     }
 
     async exec(message) {
-        message.channel.send(`hi this is a command`)
+        message.channel.send("hi")
     }
 }
