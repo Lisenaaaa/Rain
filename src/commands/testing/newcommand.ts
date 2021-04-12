@@ -11,7 +11,6 @@ export default class newcommand extends Command {
     }
 
     async exec(message) {
-        
-        message.channel.send(message.guild.id)
+        message.channel.send(`hi this is a command`)
     }
 }
