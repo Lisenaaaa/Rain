@@ -3,6 +3,7 @@ import { Command } from 'discord-akairo';
 import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
+import { inspect } from 'util';
 
 const sh = promisify(exec);
 
@@ -38,7 +39,7 @@ export default class evaluate extends Command {
         }
 
         let output = await eval(args.codetoeval)
-        console.log(output)
+        //console.log(output)
 
         const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
         const tokencheck = output.content
@@ -57,13 +58,8 @@ export default class evaluate extends Command {
         if (!args.silent) { }
         const evaloutputembed = new MessageEmbed()
             .setTitle('Evaluated Code')
-            .setDescription(`
-        :inbox_tray: **Input**
-        \`\`\`${args.codetoeval}\`\`\`
-        
-        :outbox_tray: **Output**
-        \`\`\`${newoutput}\`\`\`
-        `)
+        .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
+        .addField(`:outbox_tray: **Output**`, `\`\`\`${output}\`\`\``)
 
         message.channel.send(evaloutputembed)
 
