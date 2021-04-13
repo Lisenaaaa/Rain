@@ -1,24 +1,40 @@
 import { Command } from "discord-akairo";
+import { User } from "discord.js";
 import { MessageEmbed } from "discord.js";
 
 export default class userinfo extends Command {
 	constructor() {
 		super("userinfo", {
-			aliases: ["userinfo", "uinfo", "ui"]
+			aliases: ["userinfo", "uinfo", "ui"],
+			args: [
+				{
+					id: 'targetUser',
+					type: 'user',
+				}
+			]
 		});
 	}
 
-	exec(message) {
+	exec(message, args) {
+		let user
+		if (args.targetUser) {
+			user = args.targetUser
+		}
+		else {
+			user = message.author
+		}
 		const infoembed = new MessageEmbed()
-			.setTitle(message.author.tag)
-			.setThumbnail(`https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.png?size=2048`)
+			.setTitle(user.tag)
+			.setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`)
 			.setDescription(`
-			**Mention:** ${message.author}
-			**ID:** \`${message.author.id}\`
-			**Created at:** ${message.author.createdTimestamp}
+			**Mention:** ${user}
+			**ID:** \`${user.id}\`
+			**Created at:** ${user.createdTimestamp}
 			`)
 
 
 		message.channel.send(infoembed)
+
+		user = ``
 	}
 }
