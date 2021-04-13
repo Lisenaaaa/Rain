@@ -35,7 +35,7 @@ export default class gitpush extends Command {
         githubembed.addField(`\`git commit "${args.commitReason}"\``, `\`\`\`js\n${inspect(gitcommit)}\`\`\``)
 
         let githubpush = await eval(`sh('git push')`)
-        githubembed.addField(`\`git push\``, `\`\`\`js${inspect(githubpush)}\`\`\``)
+        githubembed.addField(`\`git push\``, `\`\`\`js\n${inspect(githubpush)}\`\`\``)
 
         message.channel.send(githubembed)
 
