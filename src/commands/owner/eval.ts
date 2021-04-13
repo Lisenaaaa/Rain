@@ -86,10 +86,8 @@ export default class evaluate extends Command {
         const evaloutputembed = new MessageEmbed()
             .setTitle('Evaluated Code')
             .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
+            
         if (inspect(output).length > 1000) {
-
-
-
             await evaloutputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
         }
         else {
