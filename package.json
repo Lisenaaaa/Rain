@@ -32,13 +32,13 @@
     "jsonfile": "^6.1.0"
   },
   "prettier": {
-		"tabWidth": 4,
-		"singleQuote": false,
-		"semi": true,
-		"bracketSpacing": true,
-		"arrowParens": "always",
-		"printWidth": 200,
-		"useTabs": true,
-		"endOfLine": "lf"
-	}
+    "tabWidth": 4,
+    "singleQuote": false,
+    "semi": true,
+    "bracketSpacing": true,
+    "arrowParens": "always",
+    "printWidth": 200,
+    "useTabs": true,
+    "endOfLine": "lf"
+  }
 }
