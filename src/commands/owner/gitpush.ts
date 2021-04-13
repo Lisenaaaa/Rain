@@ -25,17 +25,17 @@ export default class gitpush extends Command {
 
     async exec(message, args) {
         const githubembed = new MessageEmbed()
-        .setTitle(`git add`)
+        .setTitle(`Command Output`)
 
 
         let gitadd = await eval(`sh('git add .')`)
-        githubembed.addField(`\`git add .\``, inspect(gitadd))
+        githubembed.addField(`\`git add .\``, `\`\`\`${inspect(gitadd)}\`\`\``)
 
         let gitcommit = await eval(`sh('git commit -m "${args.commitReason}"')`)
-        githubembed.addField(`\`git commit "${args.commitReason}\``, inspect(gitcommit))
+        githubembed.addField(`\`git commit "${args.commitReason}\``, `\`\`\`${inspect(gitcommit)}\`\`\``)
 
         let githubpush = await eval(`sh('git push')`)
-        githubembed.addField(`\`git push\``, inspect(githubpush))
+        githubembed.addField(`\`git push\``, `\`\`\`${inspect(githubpush)}\`\`\``)
 
         message.channel.send(githubembed)
 
