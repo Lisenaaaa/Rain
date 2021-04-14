@@ -3,7 +3,7 @@ import { join } from "path";
 
 export class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
-		prefix: ["-", "."], 
+		prefix: ["-"], 
 		commandUtil: true,
 		handleEdits: true,
 		directory: join(__dirname, "..", "commands"),

@@ -66,6 +66,7 @@ export default class evaluate extends Command {
         }
 
         let output = await eval(args.codetoeval)
+        
         //console.log(output)
 
         const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
@@ -86,7 +87,7 @@ export default class evaluate extends Command {
         const evaloutputembed = new MessageEmbed()
             .setTitle('Evaluated Code')
             .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
-            
+
         if (inspect(output).length > 1000) {
             await evaloutputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
         }
