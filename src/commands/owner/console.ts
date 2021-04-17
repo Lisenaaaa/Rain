@@ -26,23 +26,17 @@ export default class console extends Command {
     async exec(message, args) {
 
         let output = await eval(`sh('${args.command}')`)
-        let outputout
-        let outputerr
-        output = inspect(output)
 
         let outputembed = new MessageEmbed()
             .setTitle(`Console Command Ran`)
             .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
             if (output.stdout && output.stderr) {
-                outputout = output.stdout
-                outputerr = output.stderr
-                outputembed.addField(`:outbox_tray: Output`, `\`\`\`STDOUT: ${outputout}\nSTDERR: ${output.stderr}\`\`\``)
+                output = `stdout: ${inspect(output.stdout)}\nstderr: ${inspect(output.stderr)}`
             }
             else {
                 output = output
-                outputembed.addField(`:outbox_tray: Output`, `\`\`\`js\n${inspect(output)}\`\`\``)
             }
-            
+            outputembed.addField(`:outbox_tray: Output`, `\`\`\`js\n${inspect(output)}\`\`\``)
 
         message.channel.send(outputembed)
 

@@ -7,7 +7,7 @@ import { inspect } from 'util';
 import got from 'got';
 
 interface hastebinRes {
-	key: string;
+    key: string;
 }
 
 const sh = promisify(exec);
@@ -32,7 +32,6 @@ async function haste(content: string): Promise<string> {
     }
     return 'Unable to post';
 }
-
 
 export default class evaluate extends Command {
     constructor() {
@@ -66,10 +65,11 @@ export default class evaluate extends Command {
         }
 
         let output = await eval(args.codetoeval)
-        
-        //console.log(output)
 
-        const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
+        //console.log(output)
+        if (output.stdout && output.stderr) {
+            const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
+        }
         const tokencheck = output.content
 
         if (tokencheck?.includes(process.env["token"])) {
@@ -83,18 +83,19 @@ export default class evaluate extends Command {
         }
 
         //console.log(`---------`)
-        if (!args.silent) { }
-        const evaloutputembed = new MessageEmbed()
-            .setTitle('Evaluated Code')
-            .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
+        if (!args.silent) {
+            const evaloutputembed = new MessageEmbed()
+                .setTitle('Evaluated Code')
+                .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
 
-        if (inspect(output).length > 1000) {
-            await evaloutputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
-        }
-        else {
-            evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
-        }
+            if (inspect(output).length > 1000) {
+                await evaloutputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
+            }
+            else {
+                evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
+            }
 
-        await message.channel.send(evaloutputembed)
+            await message.channel.send(evaloutputembed)
+        }
     }
 }
