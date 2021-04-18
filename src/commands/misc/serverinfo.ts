@@ -4,7 +4,7 @@ import { MessageEmbed } from "discord.js";
 export default class serverinfo extends Command {
 	constructor() {
 		super("serverinfo", {
-			aliases: ["serverinfo", "sinfo", "si", "server"] 
+			aliases: ["serverinfo", "sinfo", "si", "server", "guild"] 
 		});
 	}
 
