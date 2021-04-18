@@ -5,7 +5,7 @@ export default class BeanCommand extends Command {
 
     constructor() {
         super('bean', {
-            aliases: ['bean'],
+            aliases: ['bean','fakeban','eatbeannow'],
             args: [
                 {
                     id: 'member',
