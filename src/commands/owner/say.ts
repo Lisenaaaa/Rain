@@ -3,7 +3,7 @@ import { Command } from 'discord-akairo';
 export default class say extends Command {
     constructor() {
         super('say', {
-            aliases: ['say'],
+            aliases: ["say", "talk"],
             args: [
                 {
                     id: 'say',
