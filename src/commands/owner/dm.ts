@@ -1,4 +1,5 @@
 import { Command } from 'discord-akairo';
+import { MessageEmbed } from 'discord.js';
 
 export default class dm extends Command {
     constructor() {
@@ -22,8 +23,15 @@ export default class dm extends Command {
 
     async exec(message, args) {
 
-        args.member.send(`${args.message}`);
-        message.channel.send(`Message \n${args.message}\n was sent to ${args.member}!`)
+        args.member.send(`${args.message}`)
+        .then(message.channel.send(`Message sent!`))
+        .catch(`Something went wrong!`)
+        
+        const dmembed = new MessageEmbed()
+        .setTitle(`Message was sent to **${args.member.user.tag}**`)
+        .addField(`Contents`, `${args.message}`)
+        .setTimestamp
+        
 
     }
 }

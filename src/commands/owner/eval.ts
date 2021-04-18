@@ -70,7 +70,7 @@ export default class evaluate extends Command {
         // if (output.stdout && output.stderr) {
         //     const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
         // }
-        const tokencheck = output.content
+        const tokencheck = inspect(output.content)
 
         if (tokencheck?.includes(process.env["token"])) {
             message.channel.send(`<@492488074442309642> somebody, possibly you, has leaked my token!`)
