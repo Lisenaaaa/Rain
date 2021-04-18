@@ -9,6 +9,6 @@ export default class command extends Command {
 	}
 
 	async exec(message) {
-		await message.channel.send("this is a command")
+		await message.channel.send("this is a command, its also usless, eventually I will tell you to do -help but that will not be a thing for a while")
 	}
 }
