@@ -5,7 +5,7 @@ export default class BanCommand extends Command {
 
     constructor() {
         super('ban', {
-            aliases: ['ban', 'leaveservernow', 'banish', 'byebye', 'murder'],
+            aliases: ['ban', 'leaveservernow', 'banish', 'byebye', 'murder', 'assassinate'],
             args: [
                 {
                     id: 'member',
