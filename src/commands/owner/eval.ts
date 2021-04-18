@@ -67,9 +67,9 @@ export default class evaluate extends Command {
         let output = await eval(args.codetoeval)
 
         //console.log(output)
-        if (output.stdout && output.stderr) {
-            const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
-        }
+        // if (output.stdout && output.stderr) {
+        //     const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
+        // }
         const tokencheck = output.content
 
         if (tokencheck?.includes(process.env["token"])) {
