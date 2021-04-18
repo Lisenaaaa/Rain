@@ -48,7 +48,7 @@ export class BotClient extends AkairoClient {
 				loaders[loader].loadAll();
 				console.log("Successfully loaded " + loader + ".");
 			} catch (e) {
-				console.error("Unable to load " + loader + " with error " + e);
+				console.error("Unable to load " + loader + "Load fail with error " + e);
 			}
 		}
 	}
