@@ -55,12 +55,12 @@ export default class console extends Command {
         let outputembed = new MessageEmbed()
             .setTitle(`Console Command Ran`)
             .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
-            if (output.stdout && output.stderr) {
-                output = `stdout: ${inspect(output.stdout)}\nstderr: ${inspect(output.stderr)}`
-            }
-            else {
-                output = output
-            }
+            // if (output.stdout && output.stderr) {
+            //     output = `stdout: ${inspect(output.stdout)}\nstderr: ${inspect(output.stderr)}`
+            // }
+            // else {
+            //     output = output
+            // }
             if (inspect(output).length > 1000) {
                 await outputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
             }
