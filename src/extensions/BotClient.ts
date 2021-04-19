@@ -20,7 +20,7 @@ export class BotClient extends AkairoClient {
 	public constructor() {
 		super({
 			ownerID: [
-				"492488074442309642"
+				"586717844998324243"
 			]
 		},
 		{
