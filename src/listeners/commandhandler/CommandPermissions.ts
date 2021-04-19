@@ -1,6 +1,7 @@
 import { Listener } from "discord-akairo";
 import { MessageEmbed } from "discord.js";
 import { BotClient } from "../../extensions/BotClient";
+
 export default class missingPermissions extends Listener {
     client: BotClient;
     public constructor(client: BotClient) {
@@ -30,5 +31,4 @@ export default class missingPermissions extends Listener {
         message.channel.send(PermsErrorEmbed)
 
     }
-
 }

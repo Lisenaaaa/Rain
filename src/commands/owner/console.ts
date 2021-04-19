@@ -49,18 +49,13 @@ export default class console extends Command {
     }
 
     async exec(message, args) {
+        try {
+            let output = await eval(`sh('${args.command}')`)
 
-        let output = await eval(`sh('${args.command}')`)
+            let outputembed = new MessageEmbed()
+                .setTitle(`Console Command Ran`)
+                .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
 
-        let outputembed = new MessageEmbed()
-            .setTitle(`Console Command Ran`)
-            .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
-            // if (output.stdout && output.stderr) {
-            //     output = `stdout: ${inspect(output.stdout)}\nstderr: ${inspect(output.stderr)}`
-            // }
-            // else {
-            //     output = output
-            // }
             if (inspect(output).length > 1000) {
                 await outputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
             }
@@ -68,7 +63,11 @@ export default class console extends Command {
                 outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
             }
 
-        message.channel.send(outputembed)
+            message.channel.send(outputembed)
+        }
 
+        catch (err) {
+            message.channel.send(err.message)
+        }
     }
 }

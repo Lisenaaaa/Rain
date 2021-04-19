@@ -1,5 +1,6 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js'
+import functions from '../../../functions/moderation'
 
 export default class BanCommand extends Command {
 
@@ -63,26 +64,7 @@ export default class BanCommand extends Command {
             return message.channel.send(ErrorEmbed)
         }
 
-        const BanEmbed = new MessageEmbed()
-            .setColor('#ff0000')
-            .setTitle('A user has been permanently banned.')
-            .setAuthor(message.author.tag)
-            .setTimestamp()
-            .addFields(
-                { name: 'Banned User', value: args.member },
-                { name: 'Ban Reason', value: args.reason }
-            )
+        functions.ban(args.member, args.reason, message.author, message)
 
-        let ErrorEmbedPingAAA = args.member.tag
-
-        args.member.send(`You have been banned from ${message.guild.name} for ${args.reason}.`)
-            .then(() => args.member.ban({ reason: `${message.author.tag} | ${args.reason}` }))
-            .catch(() => {
-                ErrorEmbed.setDescription(`I couldn\'t DM ${ErrorEmbedPingAAA}.`)
-                message.channel.send(ErrorEmbed)
-
-                args.member.ban({ reason: `${message.author.tag} | ${args.reason} ` })
-            })
-        message.channel.send(BanEmbed);
     }
 }
