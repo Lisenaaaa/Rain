@@ -4,36 +4,9 @@ import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
-import got from 'got';
-import functions from '../../functions/moderation'
-
-
-interface hastebinRes {
-    key: string;
-}
+import functions from '../../functions/utils'
 
 const sh = promisify(exec);
-
-async function haste(content: string): Promise<string> {
-    const urls = [
-        'https://hst.sh',
-        'https://hasteb.in',
-        'https://hastebin.com',
-        'https://mystb.in',
-        'https://haste.clicksminuteper.net',
-        'https://paste.pythondiscord.com',
-        'https://haste.unbelievaboat.com'
-    ];
-    for (const url of urls) {
-        try {
-            const res: hastebinRes = await got.post(`${url}/documents`, { body: content }).json();
-            return `${url}/${res.key}`;
-        } catch (e) {
-            continue;
-        }
-    }
-    return 'Unable to post';
-}
 
 export default class evaluate extends Command {
     constructor() {
@@ -69,10 +42,6 @@ export default class evaluate extends Command {
 
             let output = await eval(args.codetoeval)
 
-            //console.log(output)
-            // if (output.stdout && output.stderr) {
-            //     const newoutput = `**stdout**: ${output.stdout}\n**stderr**: ${output.stderr}`
-            // }
             const tokencheck = inspect(output.content)
 
             if (tokencheck?.includes(process.env["token"])) {
@@ -85,14 +54,13 @@ export default class evaluate extends Command {
                 errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
             }
 
-            //console.log(`---------`)
             if (!args.silent) {
                 const evaloutputembed = new MessageEmbed()
                     .setTitle('Evaluated Code')
                     .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
 
                 if (inspect(output).length > 1000) {
-                    await evaloutputembed.addField(`:outbox_tray: **Output**`, await haste(inspect(output)))
+                    await evaloutputembed.addField(`:outbox_tray: **Output**`, await functions.haste(inspect(output)))
                 }
                 else {
                     evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
