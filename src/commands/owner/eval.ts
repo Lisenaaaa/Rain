@@ -59,11 +59,11 @@ export default class evaluate extends Command {
                     .setTitle('Evaluated Code')
                     .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
 
-                if (inspect(output).length > 1000) {
+                if (inspect(output, {depth: 0}).length > 1000) {
                     await evaloutputembed.addField(`:outbox_tray: **Output**`, await functions.haste(inspect(output)))
                 }
                 else {
-                    evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
+                    evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output, {depth: 0})}\`\`\``)
                 }
 
                 await message.channel.send(evaloutputembed)

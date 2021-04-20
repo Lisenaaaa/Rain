@@ -15,7 +15,8 @@ export default class BanCommand extends Command {
                 {
                     id: 'reason',
                     type: 'string',
-                    match: 'restContent'
+                    match: 'restContent',
+                    default: 'No reason given.'
                 }
             ],
             clientPermissions: ['BAN_MEMBERS', 'EMBED_LINKS'],
