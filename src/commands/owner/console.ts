@@ -42,7 +42,7 @@ export default class console extends Command {
         }
 
         catch (err) {
-            message.channel.send(err.message)
+            functions.errorhandling(err, message)
         }
     }
 }

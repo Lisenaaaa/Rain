@@ -1,3 +1,5 @@
+import { TextChannel } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import got from "got/dist/source";
 
 interface hastebinRes {
@@ -5,7 +7,7 @@ interface hastebinRes {
 }
 
 
-async function haste (content: string): Promise<string> {
+async function haste(content: string): Promise<string> {
     const urls = [
         'https://hst.sh',
         'https://hasteb.in',
@@ -26,6 +28,25 @@ async function haste (content: string): Promise<string> {
     return 'Unable to post';
 }
 
+async function errorhandling(err: string, message: Message) {
+    const errorembed = new MessageEmbed()
+        .setTitle(`Something went wrong!`)
+        .setDescription(`\`\`\`js\n${err}\`\`\``)
+
+    message.channel.send(errorembed)
+}
+
+async function errorchannelsend(err: string) {
+    const errorchannel = this.client.channels.cache.get('824680761470746646') as TextChannel
+    const errorembed = new MessageEmbed()
+        .setTitle(`Something went really wrong!`)
+        .setDescription(`\`\`\`js\n${err}\`\`\``)
+
+    errorchannel.send(errorembed)
+}
+
 export = {
-    haste
+    haste,
+    errorhandling,
+    errorchannelsend
 }

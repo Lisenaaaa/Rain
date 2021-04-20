@@ -23,6 +23,11 @@ export default class evaluate extends Command {
                     match: 'flag',
                     flag: '--silent',
                     // unordered: true
+                },
+                {
+                    id: 'sudo',
+                    match: 'flag',
+                    flag: '--sudo'
                 }
             ],
             ownerOnly: true,
@@ -40,6 +45,10 @@ export default class evaluate extends Command {
                 return message.channel.send(`I see that you have tried to run code that (probably) gets my token! I don't like people gaining full control over me, so I won't be evaluating that code.`)
             }
 
+            if (args.codetoeval.includes(`message.channel.delete`) && !args.sudo) {
+                return message.channel.send(`Are you IRONM00N?`)
+            }
+
             let output = await eval(args.codetoeval)
 
             const tokencheck = inspect(output.content)
@@ -54,7 +63,7 @@ export default class evaluate extends Command {
                 errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
             }
 
-            if (!args.silent) {
+            if (!args.silent && !args.codetoeval.includes("message.channel.delete()")) {
                 const evaloutputembed = new MessageEmbed()
                     .setTitle('Evaluated Code')
                     .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
@@ -70,7 +79,11 @@ export default class evaluate extends Command {
             }
         }
         catch (err) {
-            message.channel.send(err.message)
+            try {functions.errorhandling(err, message)}
+            catch (err) {
+                functions.errorchannelsend(err)
+            }
+            
         }
     }
 }

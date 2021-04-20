@@ -7,8 +7,7 @@ export default class info extends Command {
 		});
 	}
 
-	exec(message) {
-		//console.log("[Command ran] info")
+	async exec(message) {
 		message.channel.send(`Hello! uh what do i put here other than its coded in typescript`)
 	}
 }
