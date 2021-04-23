@@ -22,7 +22,6 @@ export default class addrole extends Command {
 
     async exec(message, args) {
         try{
-
         args.member.roles.add(args.role)
         message.channel.send(`Added role ${args.role.name} to ${args.member.user.tag}`)
         }

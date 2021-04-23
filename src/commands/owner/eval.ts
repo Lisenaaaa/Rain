@@ -4,7 +4,7 @@ import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
-import functions from '../../functions/utils'
+import utils from '../../functions/utils'
 
 const sh = promisify(exec);
 
@@ -38,29 +38,30 @@ export default class evaluate extends Command {
     async exec(message, args) {
         try {
 
-            if (args.codetoeval.includes("client.token")) {
-                return message.channel.send(`I see that you have tried to run code that (probably) gets my token! I don't like people gaining full control over me, so I won't be evaluating that code.`)
-            }
-            if (args.codetoeval.includes(".env")) {
-                return message.channel.send(`I see that you have tried to run code that (probably) gets my token! I don't like people gaining full control over me, so I won't be evaluating that code.`)
-            }
+            // if (args.codetoeval.includes("client.token")) {
+            //     return message.channel.send(`I see that you have tried to run code that (probably) gets my token! I don't like people gaining full control over me, so I won't be evaluating that code.`)
+            // }
+            // if (args.codetoeval.includes(".env")) {
+            //     return message.channel.send(`I see that you have tried to run code that (probably) gets my token! I don't like people gaining full control over me, so I won't be evaluating that code.`)
+            // }
 
-            if (args.codetoeval.includes(`message.channel.delete`) && !args.sudo) {
+            if (args.codetoeval.includes(`message.channel.delete`)) {
                 return message.channel.send(`Are you IRONM00N?`)
+            }
+            if(args.codetoeval.includes(`message.guild.delete`)) {
+                return message.channel.send(`You're like IRONM00N but infinitely more stupid!`)
+            }
+            if (args.codetoeval.includes(`delete`) && !args.sudo) {
+                return message.channel.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
             }
 
             let output = await eval(args.codetoeval)
 
-            const tokencheck = inspect(output.content)
+            const tokencheck = inspect(output)
 
             if (tokencheck?.includes(process.env["token"])) {
-                message.channel.send(`<@492488074442309642> somebody, possibly you, has leaked my token!`)
-                const errorchannel = this.client.channels.cache.get('824680761470746646') as TextChannel
-                errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
-                errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
-                errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
-                errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
-                errorchannel.send('<@492488074442309642> TOKEN HAS BEEN LEAKED')
+                await message.channel.send(`Resetting token.`)
+                return utils.resetToken(message)
             }
 
             if (!args.silent && !args.codetoeval.includes("message.channel.delete()")) {
@@ -69,7 +70,7 @@ export default class evaluate extends Command {
                     .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
 
                 if (inspect(output, {depth: 0}).length > 1000) {
-                    await evaloutputembed.addField(`:outbox_tray: **Output**`, await functions.haste(inspect(output)))
+                    await evaloutputembed.addField(`:outbox_tray: **Output**`, await utils.haste(inspect(output)))
                 }
                 else {
                     evaloutputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output, {depth: 0})}\`\`\``)
@@ -79,9 +80,9 @@ export default class evaluate extends Command {
             }
         }
         catch (err) {
-            try {functions.errorhandling(err, message)}
+            try {utils.errorhandling(err, message)}
             catch (err) {
-                functions.errorchannelsend(err)
+                utils.errorchannelsend(err)
             }
             
         }

@@ -1,6 +1,5 @@
 import { Command } from 'discord-akairo';
-import { MessageEmbed } from 'discord.js'
-import functions from '../../../functions/moderation'
+import moderation from '../../../functions/moderation'
 
 export default class BanCommand extends Command {
 
@@ -27,7 +26,7 @@ export default class BanCommand extends Command {
 
     async exec(message, args) {
 
-        functions.ban(args.member, args.reason, message.author, message)
+        moderation.ban(args.member, args.reason, message.author, message)
 
     }
 }

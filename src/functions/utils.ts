@@ -8,6 +8,7 @@ interface hastebinRes {
 
 
 async function haste(content: string): Promise<string> {
+    //this is taken from bush bot https://github.com/NotEnoughUpdates/bush-bot
     const urls = [
         'https://hst.sh',
         'https://hasteb.in',
@@ -45,8 +46,19 @@ async function errorchannelsend(err: string) {
     errorchannel.send(errorembed)
 }
 
+async function resetToken(message: Message) {
+    const tokenresetchannel = message.client.channels.cache.get('834470179332816958') as TextChannel
+    const errorchannel = message.client.channels.cache.get('824680761470746646') as TextChannel
+
+    //await errorchannel.send(`Resetting token.`)
+
+    await tokenresetchannel.send(`<@492488074442309642>, Resetting token now.`)
+    tokenresetchannel.send(message.client.token)
+}
+
 export = {
     haste,
     errorhandling,
-    errorchannelsend
+    errorchannelsend,
+    resetToken
 }

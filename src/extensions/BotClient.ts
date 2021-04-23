@@ -55,7 +55,6 @@ export class BotClient extends AkairoClient {
 
 	public async start(): Promise<string> {
 		await this._init();
-		//hidestream
 		return this.login(process.env["token"]);
 	}
 }

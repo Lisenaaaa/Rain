@@ -39,14 +39,14 @@ export default class say extends Command {
         if (args.channel) {
             args.channel.send(args.say)
             message.channel.send(`Message sent!`)
-            console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
+            //console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
         }
 
         else {
             message.channel.send(args.say)
             if (message.deletable && args.delete) {
                 await message.delete()
-                console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
+                //console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
             }
             //console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
         }

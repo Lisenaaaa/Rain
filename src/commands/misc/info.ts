@@ -1,4 +1,5 @@
 import { Command } from "discord-akairo";
+import { MessageEmbed } from "discord.js";
 
 export default class info extends Command {
 	constructor() {
@@ -8,6 +9,11 @@ export default class info extends Command {
 	}
 
 	async exec(message) {
-		message.channel.send(`Hello! uh what do i put here other than its coded in typescript`)
+		const infoembed = new MessageEmbed()
+		.setTitle(`${this.client.user.username} Info`)
+		.addField(`Source Code`, `https://github.com/Zordlan/SkyClientBot`)
+		.setFooter(`More things coming here when I think of things to put here!`)
+	
+		message.channel.send(infoembed)
 	}
 }
