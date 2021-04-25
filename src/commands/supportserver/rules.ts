@@ -19,7 +19,7 @@ export default class rules extends Command {
         if (message.guild.id === `824680357936103497`) {
             const rule1 = new MessageEmbed()
                 .setTitle(`Rule 1: All people are people`)
-                .setDescription(`Transphobic, homophobic, racist, xenophobic, hate speech, or anything similar will not be tolerated.`)
+                .setDescription(`Transphobic, homophobic, racist, xenophobic, hate speech, or anything similar will not be tolerated.\nUsing "gay" as an insult is considered homophobic, and will absolutely not be tolerated.`)
                 .addField(`Punishment`, `Instant ban`)
                 .setColor(`RED`)
 

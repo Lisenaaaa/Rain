@@ -15,5 +15,6 @@ export default class info extends Command {
 		.setFooter(`More things coming here when I think of things to put here!`)
 	
 		message.channel.send(infoembed)
+		//message.channel.send('h')
 	}
 }

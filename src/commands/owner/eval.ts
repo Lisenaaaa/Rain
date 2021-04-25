@@ -59,7 +59,7 @@ export default class evaluate extends Command {
 
             const tokencheck = inspect(output)
 
-            if (tokencheck?.includes(process.env["token"])) {
+            if (tokencheck?.includes(this.client.token)) {
                 await message.channel.send(`Resetting token.`)
                 return utils.resetToken(message)
             }
