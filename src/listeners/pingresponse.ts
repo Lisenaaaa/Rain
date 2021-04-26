@@ -9,8 +9,11 @@ class ReadyListener extends Listener {
     }
 
     exec(message) {
-        if (message.content.toLowerCase().includes(`fuck`) && message.author.id != `661018000736124948` && message.guild.id == `794610828317032458`) {
+        if (message.content.toLowerCase().includes(`fuck`) && message.author.bot == false && message.guild.id == `794610828317032458`) {
             message.channel.send(`fuck you`)
+        }
+        if (message.content == `<@!661018000736124948>` && message.author.bot == false) {
+            message.channel.send(`hello yes my prefix is \`-\``)
         }
     }
 }
