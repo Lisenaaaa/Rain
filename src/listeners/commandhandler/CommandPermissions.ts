@@ -14,11 +14,9 @@ export default class missingPermissions extends Listener {
     }
 
     exec(message, command, type) {
-        // console.log(type)
-
         const PermsErrorEmbed = new MessageEmbed()
-        .setColor('#ff0000')
-        .setTitle('Something went wrong!')
+            .setColor('#ff0000')
+            .setTitle('Something went wrong!')
 
         if (type == "user") {
             let perm = command.userPermissions[0]
@@ -27,7 +25,6 @@ export default class missingPermissions extends Listener {
             let perm = command.clientPermissions[0]
             PermsErrorEmbed.setDescription(`I don't have \`${perm}\`, which I need to have to run this command.`)
         }
-        // console.log(type)
         message.channel.send(PermsErrorEmbed)
 
     }

@@ -34,7 +34,7 @@ async function errorhandling(err: string, message: Message) {
         .setTitle(`Something went wrong!`)
         .setDescription(`\`\`\`js\n${err}\`\`\``)
 
-    message.channel.send(errorembed)
+    await message.channel.send(errorembed)
 }
 
 async function errorchannelsend(err: string) {
