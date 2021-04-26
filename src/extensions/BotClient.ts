@@ -14,10 +14,6 @@ export class BotClient extends AkairoClient {
 		directory: join(__dirname, "..", "listeners"),
 		automateCategories: true
 	})
-	public botPingListener: ListenerHandler = new ListenerHandler(this, {
-		directory: join(__dirname, "..", "pingresponse"),
-		automateCategories: true
-	})
 	public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
 		directory: join(__dirname, "..", "inhibitors")
 	})
@@ -35,7 +31,6 @@ export class BotClient extends AkairoClient {
 	}
 	private async _init(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler);
-		this.commandHandler.useListenerHandler(this.botPingListener)
 		this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
 		this.listenerHandler.setEmitters({
 			commandHandler: this.commandHandler,
