@@ -10,10 +10,22 @@ class automodListener extends Listener {
     }
 
     exec(message) {
-        if (message.content.toLowerCase().includes(`eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee`)) {
-            message.delete()
-            moderation.ban(message.member, `Automod | Banned Words`, message.author, message)
-        }
+        let bannedwords = [
+            'i unironically use badlion client'
+        ]
+        let hasTriggered = false
+
+        bannedwords.forEach(function (word) {
+            if (message.content.toLowerCase().includes(word) && message.author.bot == false) {
+                if (hasTriggered == false) {
+                    
+                    message.delete()
+                    moderation.ban(message.member, `Automod | Banned Words`, message.author, message)
+
+                    hasTriggered = true
+                }
+            }
+        })
     }
 }
 

@@ -1,5 +1,6 @@
 import { Command } from 'discord-akairo';
 import moderation from '../../../functions/moderation'
+import utils from '../../../functions/utils';
 
 export default class BanCommand extends Command {
 
@@ -25,8 +26,16 @@ export default class BanCommand extends Command {
     }
 
     async exec(message, args) {
+        let reason
+        
+        if (args.reason.length > 900) {
+            reason = utils.haste(args.reason)
+        }
+        else {
+            reason = args.reason
+        }
 
-        moderation.ban(args.member, args.reason, message.author, message)
+        moderation.ban(args.member, reason, message.author, message)
 
     }
 }

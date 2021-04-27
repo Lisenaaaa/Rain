@@ -14,7 +14,7 @@ async function ban(member: GuildMember, reason: String, author: User, message: M
         return message.channel.send(ErrorEmbed)
     }
 
-    if (member.user.id == message.author.id) {
+    if (member.user.id == message.author.id && reason != `Automod | Banned Words`) {
         ErrorEmbed.setDescription(`You can't ban yourself!`)
         return message.channel.send(ErrorEmbed)
     }
@@ -45,7 +45,7 @@ async function ban(member: GuildMember, reason: String, author: User, message: M
     const BanEmbed = new MessageEmbed()
         .setColor('#ff0000')
         .setTitle('A user has been permanently banned.')
-        .setAuthor(author.tag)
+
         .setTimestamp()
         .addField(`Banned User`, member)
 
@@ -60,21 +60,36 @@ async function ban(member: GuildMember, reason: String, author: User, message: M
     //const ErrorEmbed = new MessageEmbed()
 
     if (reason == `No reason given.`) {
+        BanEmbed.setAuthor(author.tag)
         member.send(`You have been banned from ${message.guild.name} without a reason.`)
-        .then(() => member.ban({ reason: `${message.author.tag} | ${reason}` }))
-        .catch(() => {
-            ErrorEmbed.setDescription(`I couldn't DM ${member.user}.`)
-            message.channel.send(ErrorEmbed)
-        })
+            .then(() => member.ban({ reason: `${message.author.tag} | ${reason}` }))
+            .catch(() => {
+                ErrorEmbed.setDescription(`I couldn't DM ${member.user}.`)
+                message.channel.send(ErrorEmbed)
+            })
+        message.channel.send(BanEmbed);
     }
 
-    member.send(`You have been banned from ${message.guild.name} for ${reason}.`)
-        .then(() => member.ban({ reason: `${message.author.tag} | ${reason}` }))
-        .catch(() => {
-            ErrorEmbed.setDescription(`I couldn't DM ${member.user}.`)
-            message.channel.send(ErrorEmbed)
-        })
-    message.channel.send(BanEmbed);
+    else if (reason == `Automod | Banned Words`) {
+        BanEmbed.setAuthor(`Automod`)
+        member.send(`You have been banned from ${message.guild.name} for ${reason}.`)
+            .then(() => member.ban({ reason: `${reason}` }))
+            .catch(() => {
+                ErrorEmbed.setDescription(`I couldn't DM ${member.user}.`)
+                message.channel.send(ErrorEmbed)
+            })
+        message.channel.send(BanEmbed);
+    }
+    else {
+        BanEmbed.setAuthor(author.tag)
+        member.send(`You have been banned from ${message.guild.name} for ${reason}.`)
+            .then(() => member.ban({ reason: `${message.author.tag} | ${reason}` }))
+            .catch(() => {
+                ErrorEmbed.setDescription(`I couldn't DM ${member.user}.`)
+                message.channel.send(ErrorEmbed)
+            })
+        message.channel.send(BanEmbed);
+    }
 }
 
 export = {
