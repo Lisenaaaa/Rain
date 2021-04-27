@@ -1,5 +1,6 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js'
+import utils from '../../../functions/utils';
 
 export default class BeanCommand extends Command {
 
@@ -22,6 +23,13 @@ export default class BeanCommand extends Command {
     }
 
     async exec(message, args) {
+        let reason
+        if (args.reason.length > 900) {
+            reason = utils.haste(args.reason)
+        }
+        else {
+            reason = args.reason
+        }
 
         const ErrorEmbed = new MessageEmbed()
             .setColor('#ff0000')
@@ -36,16 +44,6 @@ export default class BeanCommand extends Command {
             return message.channel.send('Hey, why did you try to bean me? I don\'t like that.')
         }
 
-        //cant ban zordlan
-        /*if (args.member == 492488074442309642) {
-            return message.channel.send('no.')
-        }*/
-
-        //cant ban nacrt
-        /*if (args.member == 435443705055543306) {
-            return message.channel.send('no.')
-        }*/
-
         const BanEmbed = new MessageEmbed()
             .setColor('#ff0000')
             .setTitle('A user has been permanently beaned.')
@@ -53,19 +51,9 @@ export default class BeanCommand extends Command {
             .setTimestamp()
             .addFields(
                 { name: 'Beaned User', value: args.member },
-                { name: 'Bean Reason', value: args.reason }
+                { name: 'Bean Reason', value: reason }
             )
 
-        let ErrorEmbedPingAAA = args.member.tag
-
-        /*args.member.send("You have been banned from " + message.guild.name + " for " + args.reason)
-            .then(() => args.member.ban({ reason: message.author.tag + " | " + args.reason }))
-            .catch(() => {
-                ErrorEmbed.setDescription(`I couldn\'t DM ${ErrorEmbedPingAAA}.`)
-                message.channel.send(ErrorEmbed)
-
-                args.member.ban({ reason: message.author.tag + " | " + args.reason })
-            })*/
         message.channel.send(BanEmbed);
     }
 }
