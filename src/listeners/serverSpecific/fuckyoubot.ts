@@ -8,7 +8,7 @@ class fuckyoubot extends Listener {
         });
     }
 
-    exec(message) {
+    async exec(message) {
         //fuck you bot
         if (message.content.toLowerCase().includes(`fuck`) && message.author.bot == false && message.guild.id == `794610828317032458`) {
             message.channel.send(`fuck you`)
@@ -26,9 +26,22 @@ class fuckyoubot extends Listener {
         }
 
         //bubble cannot speak
-        if (message.author.id == '400778129217421335' && message.guild.id == `794610828317032458`) {
-            message.delete()
+        // if (message.author.id == '400778129217421335' && message.guild.id == `794610828317032458`) {
+        //     //await bubbleuser.send(message.content)
+        //     try {
+        //         message.author.send(message.content)
+        //     }
+        //     catch (err) {
+        //         return
+        //     }
+        //     message.delete()
+        // }
+
+        //bazinga
+        if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
+            message.channel.send(`bazinga`)
         }
+
     }
 }
 
