@@ -10,7 +10,7 @@ class pingresponse extends Listener {
 
     exec(message) {
         if (message.content == `<@!661018000736124948>` && message.author.bot == false) {
-            message.channel.send(`hello yes my prefix is \`-\``)
+            message.channel.send(`hello yes my prefix is \`-\` or you can ping me instead of that`)
         }
     }
 }
