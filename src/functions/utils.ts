@@ -7,7 +7,7 @@ interface hastebinRes {
 }
 
 
-async function haste(content: string): Promise<string> {
+async function haste(content: string) {
     //this is taken from bush bot https://github.com/NotEnoughUpdates/bush-bot
     const urls = [
         'https://hst.sh',
