@@ -11,7 +11,7 @@ class fuckyoubot extends Listener {
     async exec(message) {
         //fuck you bot
         if (message.content.toLowerCase().includes(`fuck`) && message.author.bot == false && message.guild.id == `794610828317032458`) {
-            message.channel.send(`fuck you`)
+            message.reply(`fuck you`)
         }
 
         //you can probably tell what this does
@@ -40,6 +40,11 @@ class fuckyoubot extends Listener {
         //bazinga
         if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
             message.channel.send(`bazinga`)
+            message.delete()
+        }
+
+        if (message.author.id == '476472103315570700' && message.guild.id == `794610828317032458`) {
+            message.channel.send(`You're message will be deleted in three minutes.`)
         }
 
     }
