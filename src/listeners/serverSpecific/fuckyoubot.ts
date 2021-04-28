@@ -40,7 +40,6 @@ class fuckyoubot extends Listener {
         //bazinga
         if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
             message.channel.send(`bazinga`)
-            message.delete()
         }
 
         if (message.author.id == '476472103315570700' && message.guild.id == `794610828317032458`) {
