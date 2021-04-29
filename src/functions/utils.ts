@@ -7,7 +7,7 @@ interface hastebinRes {
 }
 
 
-//this next function is taken from bush bot (https://github.com/NotEnoughUpdates/bush-bot), the repo is private so if you get a 404 then deal with it, removed a thing from the line under this because it didnt seem to be doing anything
+//this next function is taken from bush bot (https://github.com/NotEnoughUpdates/bush-bot), the repo is private so if you get a 404 then deal with it, removed a thing from the line under these comments because it didnt seem to be doing anything
 //and it works fine without it as far as i can tell
 async function haste(content: string) {
     const urls = [

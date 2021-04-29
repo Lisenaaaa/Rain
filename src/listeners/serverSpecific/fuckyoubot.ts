@@ -40,7 +40,6 @@ class fuckyoubot extends Listener {
         if (message.author.id == `746844211134857317` && message.guild.id == `794610828317032458`) {
             message.channel.send(`ok ${process.env["bahama"]}`)
         }
-
     }
 }
 
