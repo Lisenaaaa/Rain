@@ -28,24 +28,19 @@ export default class addrole extends Command {
                 await message.channel.send(`Your highest role is lower than or equal to ${args.role.name}, so you cannot give it to anyone!`)
 
             }
-            else if (message.member.user.id == message.guild.ownerID) {
-                await args.member.roles.add(args.role)
-
-                const roleembed = new MessageEmbed()
-                    .setDescription(`Added <@&${args.role.id}> to **${args.member.user}**`)
-
-                await message.channel.send(roleembed)
-            }
             else {
                 await args.member.roles.add(args.role)
 
                 const roleembed = new MessageEmbed()
-                    .setDescription(`Added <@&${args.role.id}> to **${args.member.user}**`)
+                    .setDescription(`Added <@&${args.role.id}> to ${args.member.user}`)
 
                 await message.channel.send(roleembed)
             }
         }
         catch (err) {
+            if (err == `TypeError: Cannot read property 'roles' of undefined`) {
+                return message.channel.send(`That user isn't cached! Please ping instead of using name!`)
+            }
             await utils.errorhandling(err, message)
         }
     }

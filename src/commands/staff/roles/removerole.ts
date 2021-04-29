@@ -24,27 +24,22 @@ export default class removerole extends Command {
 
     async exec(message, args) {
         try {
-            if (message.member.roles.highest.position >> args.role.position) {
+            if (message.member.roles.highest.rawPosition < args.role.rawPosition) {
+                await message.channel.send(`Your highest role is lower than or equal to ${args.role.name}, so you cannot remove it from anyone!`)
+            }
+            else {
                 await args.member.roles.remove(args.role)
 
                 const roleembed = new MessageEmbed()
-                    .setDescription(`Removed <@&${args.role.id}> from **${args.member.user}**`)
+                    .setDescription(`Removed <@&${args.role.id}> from ${args.member.user}`)
 
                 await message.channel.send(roleembed)
             }
-            // else if (message.author.id == message.guild.ownerID) {
-            //     await args.member.roles.remove(args.role)
-
-            //     const roleembed = new MessageEmbed()
-            //         .setDescription(`Removed <@&${args.role.id}> from **${args.member.user}**`)
-
-            //     await message.channel.send(roleembed)
-            // }
-            else {
-                await message.channel.send(`Your highest role is under the role you're trying to give, so you cannot give it.`)
-            }
         }
         catch (err) {
+            if (err == `TypeError: Cannot read property 'roles' of undefined`) {
+                return message.channel.send(`That user isn't cached! Please ping instead of using name!`)
+            }
             await utils.errorhandling(err, message)
         }
     }
