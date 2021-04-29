@@ -41,7 +41,13 @@ export default class rules extends Command {
                 .addField(`Punishment`, `Verbal warning, then if continued, 2 hour mute`)
                 .setColor(`PURPLE`)
 
-            const rule5 = new MessageEmbed()
+            const rule5  = new MessageEmbed()
+                .setTitle(`Rule 5: No NSFW`)
+                .setDescription(`Do I honestly need to explain why this is bad?`)
+                .addField(`Punishment`, `Varies based on severity`)
+                .setColor(`PURPLE`)
+
+            const rule6 = new MessageEmbed()
                 .setTitle(`Staff may moderate at their discretion.`)
                 .setDescription(`If a staff member thinks you should be punished, they have the rights to punish you, and what you did isn't against any of the other rules, the staff can still punish you, if they think it's necessary.`)
                 .addField(`Punishment`, `Whatever the staff want, depending on what you did.`)
@@ -63,6 +69,10 @@ export default class rules extends Command {
             else if (args.rulenumber === `5`) {
                 message.channel.send(rule5)
             }
+            else if (args.rulenumber === `6`) {
+                message.channel.send(rule6)
+            }
+            
             else {
                 message.channel.send(`Our rules are in <#830528947824492544>, or you can use \`-rule <number from 1 to 5>\` to see individual rules.`)
             }
