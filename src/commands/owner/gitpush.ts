@@ -24,9 +24,11 @@ export default class gitpush extends Command {
     }
 
     async exec(message, args) {
+        const hiyesthisisanembed = new MessageEmbed()
+        .setDescription(`Pushing changes to [GitHub](https://github.com/Zordlan/SkyClientBot)`)
+
         const githubembed = new MessageEmbed()
         .setTitle(`Command Output`)
-
 
         let gitadd = await eval(`sh('git add .')`)
         githubembed.addField(`\`git add .\``, `\`\`\`js\n${inspect(gitadd)}\`\`\``)
