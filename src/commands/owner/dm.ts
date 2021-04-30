@@ -8,7 +8,7 @@ export default class dm extends Command {
             aliases: ['dm'],
             args: [
                 {
-                    id: 'member',
+                    id: 'user',
                     type: 'user'
                 },
                 {

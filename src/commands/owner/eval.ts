@@ -37,7 +37,13 @@ export default class evaluate extends Command {
 
     async exec(message, args) {
         try {
-
+            if (args.codetoeval.includes(`token`)) {
+                return (message.channel.send(`no token`))
+            }
+            if (args.codetoeval.includes(`env`)) {
+                return message.channel.send(`no env`)
+            }
+            
             if (args.codetoeval.includes(`message.channel.delete`)) {
                 return message.channel.send(`Are you IRONM00N?`)
             }
