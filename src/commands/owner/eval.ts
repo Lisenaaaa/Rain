@@ -1,6 +1,5 @@
 import { exec } from 'child_process';
 import { Command } from 'discord-akairo';
-import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
@@ -22,7 +21,6 @@ export default class evaluate extends Command {
                     id: "silent",
                     match: 'flag',
                     flag: '--silent',
-                    // unordered: true
                 },
                 {
                     id: 'sudo',

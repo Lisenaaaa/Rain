@@ -20,7 +20,7 @@ export default class quote extends Command {
     async exec(message, args) {
         try {
             const quoteEmbed = new MessageEmbed()
-                .setTitle(args.messageID.author.tag)
+                .setAuthor(args.messageID.author.tag)
                 .addField(`Content`, args.messageID.content)
 
             message.channel.send(quoteEmbed)
