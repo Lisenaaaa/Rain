@@ -25,9 +25,9 @@ class fuckyoubot extends Listener {
         }
 
         //bazinga
-        if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
-            message.channel.send(`bazinga`)
-        }
+        // if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
+        //     message.channel.send(`bazinga`)
+        // }
 
         //yuo're
         // if (message.author.id == '476472103315570700' && message.guild.id == `794610828317032458`) {
@@ -35,9 +35,9 @@ class fuckyoubot extends Listener {
         // }
 
         //i mean i would put his real name in the code but i dont want to because i dont want to doxx him
-        if (message.author.id == `746844211134857317` && message.guild.id == `794610828317032458`) {
-            message.channel.send(`ok ${process.env["bahama"]}`)
-        }
+        // if (message.author.id == `746844211134857317` && message.guild.id == `794610828317032458`) {
+        //     message.channel.send(`ok ${process.env["bahama"]}`)
+        // }
     }
 }
 
