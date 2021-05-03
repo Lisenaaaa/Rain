@@ -29,7 +29,8 @@
     "discord.js": "^12.5.1",
     "dotenv": "^8.2.0",
     "got": "^11.8.2",
-    "jsonfile": "^6.1.0"
+    "jsonfile": "^6.1.0",
+    "mongodb": "^3.6.6"
   },
   "prettier": {
     "tabWidth": 4,

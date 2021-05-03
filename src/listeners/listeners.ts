@@ -9,7 +9,9 @@ class ReadyListener extends Listener {
     }
 
     exec() {
-        console.log(`I'm ready!`);
+        console.log(`Bot online!`)
+        console.log(`\n`)
+        console.log(`---Bot Output---`)
     }
 }
 

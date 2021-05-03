@@ -74,6 +74,12 @@ export default class evaluate extends Command {
 
                 await message.channel.send(evaloutputembed)
             }
+            if (args.silent) {
+                if (args.codetoeval.includes('message.delete')) {
+                    return
+                }
+                message.react(`<:success:838816341007269908>`)
+            }
         }
         catch (err) {
             try { utils.errorhandling(err, message) }

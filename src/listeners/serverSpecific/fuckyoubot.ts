@@ -23,6 +23,11 @@ class fuckyoubot extends Listener {
             message.delete()
             message.channel.send(`${message.author}, I don't think so!`)
         }
+        
+        //OH MY GOD WHAT IS IT WITH THE DOUGLAS SPAM
+        if (message.content.toLowerCase().includes(`douglas`) && message.guild.id == `794610828317032458`) {
+            message.delete()
+        }
 
         //bazinga
         // if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {

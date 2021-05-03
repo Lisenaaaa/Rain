@@ -18,7 +18,7 @@ export default class gitpull extends Command {
         const githubembed = new MessageEmbed()
         
         let pull = await eval(`sh('git pull')`)
-        githubembed.setDescription(`\`\`\`js\n${gitpull}\`\`\``)
+        githubembed.setDescription(`\`\`\`js\n${pull}\`\`\``)
 
         message.channel.send(githubembed)
 
