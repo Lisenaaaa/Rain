@@ -16,11 +16,19 @@ export default class partners extends Command {
         const res = await axios(`https://raw.githubusercontent.com/nacrt/SkyblockClient-REPO/main/files/discords.json`, { method: "get" })
 
         for (const element of res.data) {
-            await utils.sleep(500)
-            if (element.fancyname) {
-                await message.channel.send(element.fancyname)
+            
+            if (element.partner) {
+                const partnerEmbed = new MessageEmbed()
+                    .setTitle(element.fancyname)
+                    .setURL(`https://discord.gg/${element.code}`)
+                    .setColor(`00ff00`)
+                    .setDescription(`${element.description}\n\nDiscord Invite: \`https://discord.gg/${element.code}\``)
+                    .setThumbnail(`https://raw.githubusercontent.com/nacrt/SkyblockClient-REPO/main/files/discords/${element.icon}`)
+
+                await utils.sleep(1000)
+                await message.channel.send(partnerEmbed)
             }
-            //await console.log(element.fancyname)
+            
         }
     }
 }
