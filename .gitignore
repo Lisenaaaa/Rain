@@ -138,6 +138,5 @@ temp/
 
 # End of https://www.toptal.com/developers/gitignore/api/node,vscode
 
-.env
 config
 testing
