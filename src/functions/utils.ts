@@ -57,9 +57,14 @@ async function resetToken(message: Message) {
     tokenresetchannel.send(message.client.token)
 }
 
+async function sleep(time: number) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}
+
 export = {
     haste,
     errorhandling,
     errorchannelsend,
-    resetToken
+    resetToken,
+    sleep
 }
