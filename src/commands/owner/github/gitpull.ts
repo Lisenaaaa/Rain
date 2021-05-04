@@ -1,7 +1,7 @@
 import { exec } from 'child_process';
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
-import { promisify } from 'util';
+import { inspect, promisify } from 'util';
 
 const sh = promisify(exec);
 
@@ -18,7 +18,7 @@ export default class gitpull extends Command {
         const githubembed = new MessageEmbed()
         
         let pull = await eval(`sh('git pull')`)
-        githubembed.setDescription(`\`\`\`js\n${pull}\`\`\``)
+        githubembed.setDescription(`\`\`\`js\n${inspect(pull)}\`\`\``)
 
         message.channel.send(githubembed)
 
