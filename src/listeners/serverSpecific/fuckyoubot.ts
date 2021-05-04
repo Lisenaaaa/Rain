@@ -29,6 +29,11 @@ class fuckyoubot extends Listener {
             message.delete()
         }
 
+        //i dislike anime
+        if (message.content.toLowerCase().includes(`anime`) && message.guild.id == `794610828317032458`) {
+            message.channel.send(`Anime is cringe!`)
+        }
+
         //bazinga
         // if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
         //     message.channel.send(`bazinga`)
