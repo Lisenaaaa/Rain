@@ -49,7 +49,9 @@ export default class rules extends Command {
 
             const rule6 = new MessageEmbed()
                 .setTitle(`Staff may moderate at their discretion.`)
-                .setDescription(`If a staff member thinks you should be punished, they have the rights to punish you, and what you did isn't against any of the other rules, the staff can still punish you, if they think it's necessary.`)
+                .setDescription(`If a staff member thinks you should be punished, they have the rights to punish you, and what you did isn't against any of the other rules, the staff can still punish you, if they think it's necessary.
+                
+                Among Us was ruined by the community, and really isn't that funny.`)
                 .addField(`Punishment`, `Whatever the staff want, depending on what you did.`)
                 .setColor(`BLUE`)
 

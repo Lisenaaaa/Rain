@@ -11,7 +11,7 @@ class fuckyoubot extends Listener {
     async exec(message) {
         //fuck you bot
         if (message.content.toLowerCase().includes(`fuck`) && message.author.bot == false && message.guild.id == `794610828317032458`) {
-            message.reply(`fuck you`)
+            message.channel.send(`fuck you, ${message.author.name}`)
         }
 
         //you can probably tell what this does
