@@ -24,6 +24,10 @@ export default class gitpush extends Command {
     }
 
     async exec(message, args) {
+        if (args.commitReason.length > 50) {
+            return message.channel.send(`Your commit message is too long!`)
+        }
+
         const hiyesthisisanembed = new MessageEmbed()
             .setDescription(`Pushing changes to [GitHub](https://github.com/Zordlan/SkyClientBot)`)
         message.channel.send(hiyesthisisanembed)
