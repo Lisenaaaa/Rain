@@ -1,5 +1,4 @@
 import { Command } from "discord-akairo";
-import { MessageEmbed } from "discord.js";
 import utils from "../../functions/utils";
 
 export default class discordConsole extends Command {
