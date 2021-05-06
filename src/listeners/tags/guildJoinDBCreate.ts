@@ -1,6 +1,7 @@
 import { Listener } from 'discord-akairo';
+import { BotListener } from '../../extensions/BotListener';
 
-class guildJoinDBCreate extends Listener {
+class guildJoinDBCreate extends BotListener {
     constructor() {
         super('guildJoinDBCreate', {
             emitter: 'client',

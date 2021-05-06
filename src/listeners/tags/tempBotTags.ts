@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { Listener } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
+import { BotListener } from '../../extensions/BotListener';
 
-class temporaryTags extends Listener {
+class temporaryTags extends BotListener {
     constructor() {
         super('temporaryTags', {
             emitter: 'client',

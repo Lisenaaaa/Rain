@@ -19,11 +19,12 @@ export default class reload extends BotCommand {
     async exec(message) {
         try {
             const reloadEmbed = new MessageEmbed()
-                .setDescription(`Reloading commands!`)
+                .setDescription(`Reloading commands and listeners!`)
             message.channel.send(reloadEmbed).then(async sent => {
                 await sh("yarn build");
                 await this.client.commandHandler.reloadAll()
-                reloadEmbed.setDescription(`Commands reloaded!`)
+                await this.client.listenerHandler.reloadAll()
+                reloadEmbed.setDescription(`Commands and listeners reloaded!`)
                 sent.edit(reloadEmbed)
             })
         }

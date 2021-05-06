@@ -1,6 +1,7 @@
 import { Listener } from 'discord-akairo';
+import { BotListener } from '../../extensions/BotListener';
 
-class tags extends Listener {
+class tags extends BotListener {
     constructor() {
         super('tags', {
             emitter: 'client',

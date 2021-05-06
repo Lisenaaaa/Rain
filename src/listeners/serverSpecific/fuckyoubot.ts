@@ -1,6 +1,7 @@
 import { Listener } from 'discord-akairo';
+import { BotListener } from '../../extensions/BotListener';
 
-class fuckyoubot extends Listener {
+class fuckyoubot extends BotListener {
     constructor() {
         super('fuckyoubot', {
             emitter: 'client',

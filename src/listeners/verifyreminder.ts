@@ -1,7 +1,8 @@
 import { Listener } from 'discord-akairo';
 import { TextChannel } from 'discord.js';
+import { BotListener } from '../extensions/BotListener';
 
-class verifyReminder extends Listener {
+class verifyReminder extends BotListener {
     constructor() {
         super('verifyReminder', {
             emitter: 'client',
