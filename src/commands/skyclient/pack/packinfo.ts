@@ -17,9 +17,11 @@ export default class packinfo extends Command {
     }
 
     async exec(message, args) {
-        if (message.guild.id != `824680357936103497` || `780181693100982273`) { return }
-        else {
-
+        const SkyClientGuilds = [
+            `780181693100982273`, //main server
+            `824680357936103497` //testing server
+        ]
+        if (SkyClientGuilds.includes(message.guild.id)) {
             const packjson = await axios(`https://raw.githubusercontent.com/nacrt/SkyblockClient-REPO/main/files/packs.json`, { method: "get" })
             //const creatorsjson = await axios(/*url goes here*/``, { method: "get" })
 
@@ -54,5 +56,8 @@ export default class packinfo extends Command {
                 }
             }
         }
+        else {return}
+
+
     }
 }

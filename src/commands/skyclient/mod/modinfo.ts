@@ -17,9 +17,11 @@ export default class modinfo extends Command {
     }
 
     async exec(message, args) {
-        if (message.guild.id != `824680357936103497` || `780181693100982273`) { return }
-        else {
-
+        const SkyClientGuilds = [
+            `780181693100982273`, //main server
+            `824680357936103497` //testing server
+        ]
+        if (SkyClientGuilds.includes(message.guild.id)) {
             const modjson = await axios(`https://raw.githubusercontent.com/nacrt/SkyblockClient-REPO/main/files/mods.json`, { method: "get" })
             //const creatorsjson = await axios(/*url goes here*/``, { method: "get" })
 
@@ -50,7 +52,9 @@ export default class modinfo extends Command {
 
                     message.channel.send(modEmbed)
                 }
+
             }
         }
+        else { return }
     }
 }

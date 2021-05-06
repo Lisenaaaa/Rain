@@ -16,8 +16,12 @@ export default class skyclientfrequentissues extends Command {
     }
 
     async exec(message, args) {
-        if (message.guild.id != `824680357936103497` || `780181693100982273`) { return }
-        else {
+        const SkyClientGuilds = [
+            `780181693100982273`, //main server
+            `824680357936103497` //testing server
+        ]
+
+        if (SkyClientGuilds.includes(message.guild.id)) {
             const windowsbad = new MessageEmbed()
                 .setTitle(`I get a "Windows protected your PC" error when trying to install SkyClient!`)
                 .setImage(`https://cdn.discordapp.com/attachments/780181693553704973/796869759190827108/unknown.png`)
@@ -38,5 +42,6 @@ export default class skyclientfrequentissues extends Command {
                 message.channel.send(`That isn't an issue in <#785809068610682900>! Valid issues: \`windowsbad\`, \`browserbad\``)
             }
         }
+        else { return }
     }
 }
