@@ -13,7 +13,7 @@ export default class templateSkyclientCommand extends Command {
             `780181693100982273`, //main server
             `824680357936103497` //testing server
         ]
-        if (message.guild.id == SkyClientGuilds) { message.channel.send(`This is a SkyClient server!`) }
+        if (SkyClientGuilds.includes(message.guild.id)) { message.channel.send(`This is a SkyClient server!`) }
         else {
             message.channel.send(`e`)
         }

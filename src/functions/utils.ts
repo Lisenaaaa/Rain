@@ -68,6 +68,7 @@ async function console(thingToLog: string, message: Message) {
     const consoleChannel = message.client.channels.cache.get(`839215645715595316`) as TextChannel
     const consoleEmbed = new MessageEmbed()
         .setDescription(output)
+        
     consoleChannel.send(consoleEmbed)
 }
 
