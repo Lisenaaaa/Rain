@@ -3,11 +3,12 @@ import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
+import { BotCommand } from '../../extensions/BotCommand';
 import functions from '../../functions/utils'
 
 const sh = promisify(exec);
 
-export default class console extends Command {
+export default class console extends BotCommand {
     constructor() {
         super('console', {
             aliases: ['console'],

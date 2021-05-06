@@ -1,6 +1,7 @@
 import { Command } from "discord-akairo";
+import { BotCommand } from "../../../extensions/BotCommand";
 
-export default class invite extends Command {
+export default class invite extends BotCommand {
     constructor() {
         super("invite", {
             aliases: ["invite"],

@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
 import { MessageEmbed } from "discord.js";
+import { BotCommand } from "../../extensions/BotCommand";
 
-export default class rules extends Command {
+export default class rules extends BotCommand {
     constructor() {
         super("rules", {
             aliases: ["rules", `rule`],

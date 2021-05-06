@@ -3,11 +3,12 @@ import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
+import { BotCommand } from '../../extensions/BotCommand';
 import utils from '../../functions/utils'
 
 const sh = promisify(exec);
 
-export default class evaluate extends Command {
+export default class evaluate extends BotCommand {
     constructor() {
         super('eval', {
             aliases: ['eval', 'ev', 'exec'],

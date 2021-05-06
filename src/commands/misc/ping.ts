@@ -1,6 +1,7 @@
 import { Command } from "discord-akairo";
+import { BotCommand } from "../../extensions/BotCommand";
 
-export default class ping extends Command {
+export default class ping extends BotCommand {
     constructor() {
         super("ping", {
             aliases: ["ping"]

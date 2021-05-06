@@ -1,6 +1,7 @@
 import { Command } from 'discord-akairo';
+import { BotCommand } from '../../extensions/BotCommand';
 
-export default class skycrypt extends Command {
+export default class skycrypt extends BotCommand {
     constructor() {
         super('skycrypt', {
             aliases: ['skycrypt'],

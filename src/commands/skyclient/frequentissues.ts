@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
 import { MessageEmbed } from "discord.js";
+import { BotCommand } from "../../extensions/BotCommand";
 
-export default class skyclientfrequentissues extends Command {
+export default class skyclientfrequentissues extends BotCommand {
     constructor() {
         super("skyclientfrequentissues", {
             aliases: ["skyclientfrequentissues"],

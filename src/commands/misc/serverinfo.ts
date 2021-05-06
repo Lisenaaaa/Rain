@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
 import { MessageEmbed } from "discord.js";
+import { BotCommand } from "../../extensions/BotCommand";
 
-export default class serverinfo extends Command {
+export default class serverinfo extends BotCommand {
 	constructor() {
 		super("serverinfo", {
 			aliases: ["serverinfo", "sinfo", "si", "server", "servin"] 

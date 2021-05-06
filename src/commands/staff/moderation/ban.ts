@@ -1,8 +1,9 @@
 import { Command } from 'discord-akairo';
+import { BotCommand } from '../../../extensions/BotCommand';
 import moderation from '../../../functions/moderation'
 import utils from '../../../functions/utils';
 
-export default class BanCommand extends Command {
+export default class BanCommand extends BotCommand {
 
     constructor() {
         super('ban', {

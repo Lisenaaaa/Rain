@@ -1,6 +1,7 @@
 import { Command } from 'discord-akairo';
+import { BotCommand } from '../../extensions/BotCommand';
 
-export default class templateSkyclientCommand extends Command {
+export default class templateSkyclientCommand extends BotCommand {
     constructor() {
         super('templateSkyclientCommand', {
             aliases: ['templateSkyclientCommand'],

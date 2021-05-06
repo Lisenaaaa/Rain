@@ -1,7 +1,8 @@
 import { Command } from "discord-akairo";
+import { BotCommand } from "../../extensions/BotCommand";
 import utils from "../../functions/utils";
 
-export default class discordConsole extends Command {
+export default class discordConsole extends BotCommand {
 	constructor() {
 		super("discordConsole", {
 			aliases: ["discordconsole", "dconsole"],

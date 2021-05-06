@@ -2,8 +2,9 @@ import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import axios from "axios"
 import utils from '../../../functions/utils';
+import { BotCommand } from '../../../extensions/BotCommand';
 
-export default class packinfo extends Command {
+export default class packinfo extends BotCommand {
     constructor() {
         super('packinfo', {
             aliases: ['packinfo', 'pack'],

@@ -1,8 +1,9 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
+import { BotCommand } from '../../../extensions/BotCommand';
 import utils from '../../../functions/utils';
 
-export default class removerole extends Command {
+export default class removerole extends BotCommand {
     constructor() {
         super('removerole', {
             aliases: ['removerole', 'rrole', 'rr'],

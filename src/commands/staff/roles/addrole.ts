@@ -1,8 +1,9 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
+import { BotCommand } from '../../../extensions/BotCommand';
 import utils from '../../../functions/utils';
 
-export default class addrole extends Command {
+export default class addrole extends BotCommand {
     constructor() {
         super('addrole', {
             aliases: ['addrole', 'role', 'arole', 'ar'],

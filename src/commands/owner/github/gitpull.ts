@@ -2,10 +2,11 @@ import { exec } from 'child_process';
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { inspect, promisify } from 'util';
+import { BotCommand } from '../../../extensions/BotCommand';
 
 const sh = promisify(exec);
 
-export default class gitpull extends Command {
+export default class gitpull extends BotCommand {
     constructor() {
         super('gitpull', {
             aliases: ['gitpull', 'pull'],

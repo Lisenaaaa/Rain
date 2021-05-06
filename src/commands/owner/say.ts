@@ -1,6 +1,7 @@
 import { Command } from 'discord-akairo';
+import { BotCommand } from '../../extensions/BotCommand';
 
-export default class say extends Command {
+export default class say extends BotCommand {
     constructor() {
         super('say', {
             aliases: ["say", "talk"],

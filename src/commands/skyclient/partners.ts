@@ -2,8 +2,9 @@ import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import axios from "axios"
 import utils from '../../functions/utils';
+import { BotCommand } from '../../extensions/BotCommand';
 
-export default class partners extends Command {
+export default class partners extends BotCommand {
     constructor() {
         super('partners', {
             aliases: ['partners'],

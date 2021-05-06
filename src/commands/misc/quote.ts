@@ -1,9 +1,10 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { Message } from 'discord.js';
+import { BotCommand } from '../../extensions/BotCommand';
 import utils from '../../functions/utils';
 
-export default class quote extends Command {
+export default class quote extends BotCommand {
     constructor() {
         super('quote', {
             aliases: ['quote'],

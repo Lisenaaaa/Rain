@@ -1,10 +1,11 @@
 import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
+import { BotCommand } from '../../extensions/BotCommand';
 
 const jsonfile = require('jsonfile')
 const file = 'config/global/superusers.json'
 
-export default class superuser extends Command {
+export default class superuser extends BotCommand {
     constructor() {
         super('superuser', {
             aliases: ['superuser'],

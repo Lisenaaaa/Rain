@@ -4,10 +4,11 @@ import { TextChannel } from 'discord.js';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
+import { BotCommand } from '../../../extensions/BotCommand';
 
 const sh = promisify(exec);
 
-export default class gitpush extends Command {
+export default class gitpush extends BotCommand {
     constructor() {
         super('gitpush', {
             aliases: ['gitpush', 'push'],
