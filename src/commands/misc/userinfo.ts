@@ -23,13 +23,13 @@ export default class userinfo extends Command {
 		else {
 			user = message.author
 		}
+		const userPFP = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`
 		const infoembed = new MessageEmbed()
-			.setTitle(user.tag)
-			.setThumbnail(`https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`)
+			.setAuthor(user.tag, userPFP)
 			.setDescription(`
 			**Mention:** ${user}
 			**ID:** \`${user.id}\`
-			**Created at:** ${user.createdTimestamp}
+			**Created at:** ${user.createdAt}
 			`)
 
 

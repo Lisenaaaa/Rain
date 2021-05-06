@@ -13,8 +13,8 @@ export default class partners extends Command {
 
     async exec(message) {
         if (message.guild.id != `824680357936103497` || `780181693100982273`) { return }
+        
         else {
-
             const res = await axios(`https://raw.githubusercontent.com/nacrt/SkyblockClient-REPO/main/files/discords.json`, { method: "get" })
 
             for (const element of res.data) {
@@ -30,7 +30,6 @@ export default class partners extends Command {
                     await utils.sleep(1000)
                     await message.channel.send(partnerEmbed)
                 }
-
             }
         }
     }
