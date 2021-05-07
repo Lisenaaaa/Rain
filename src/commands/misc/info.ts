@@ -16,6 +16,6 @@ export default class info extends BotCommand {
 		.setFooter(`More things coming here when I think of things to put here!`)
 	
 		message.channel.send(infoembed)
-		message.channel.send('h')
+		//message.channel.send('h')
 	}
 }
