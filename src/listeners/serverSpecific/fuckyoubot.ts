@@ -35,6 +35,11 @@ class fuckyoubot extends BotListener {
             message.channel.send(`Anime is cringe!`)
         }
 
+        //TAKO IM SORRY, LOGI WANTED THIS
+        // if (message.author == `685141684534771796` && message.guild.id == `794610828317032458`) {
+        //     message.channel.send(``)
+        // }
+
         //bazinga
         // if (message.author.id == '560922946797830154' && message.guild.id == `794610828317032458`) {
         //     message.channel.send(`bazinga`)
