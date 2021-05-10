@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';

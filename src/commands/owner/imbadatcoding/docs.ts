@@ -1,6 +1,4 @@
-import { Command } from "discord-akairo";
-import { MessageEmbed } from "discord.js";
-import { BotCommand } from "../../extensions/BotCommand";
+import { BotCommand } from "../../../extensions/BotCommand";
 
 export default class docs extends BotCommand {
 	constructor() {

@@ -14,13 +14,15 @@ export class BotClient extends AkairoClient {
 		directory: join(__dirname, "..", "listeners"),
 		automateCategories: true
 	})
+	
 	public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
 		directory: join(__dirname, "..", "inhibitors")
 	})
 	public constructor() {
 		super({
 			ownerID: [
-				"492488074442309642"
+				"492488074442309642",
+				"545277690303741962"
 			]
 		},
 		{

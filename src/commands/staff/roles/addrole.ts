@@ -1,4 +1,3 @@
-import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { BotCommand } from '../../../extensions/BotCommand';
 import utils from '../../../functions/utils';

@@ -1,5 +1,4 @@
 import { exec } from 'child_process';
-import { Command } from 'discord-akairo';
 import { MessageEmbed } from 'discord.js';
 import { inspect, promisify } from 'util';
 import { BotCommand } from '../../../extensions/BotCommand';

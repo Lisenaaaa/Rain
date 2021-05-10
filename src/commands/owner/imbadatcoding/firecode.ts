@@ -1,4 +1,3 @@
-import { Command } from "discord-akairo";
 import { BotCommand } from "../../../extensions/BotCommand";
 
 export default class firecode extends BotCommand {
