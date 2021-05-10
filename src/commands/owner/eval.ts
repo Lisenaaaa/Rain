@@ -86,7 +86,6 @@ export default class evaluate extends BotCommand {
             catch (err) {
                 utils.errorchannelsend(err)
             }
-
         }
     }
 }
