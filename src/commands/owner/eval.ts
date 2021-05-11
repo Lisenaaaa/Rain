@@ -60,6 +60,14 @@ export default class evaluate extends BotCommand {
                 return message.channel.send(`Message containing token wasn't sent.`)
             }
 
+            //im going to make something that disables eval embed in specific channels in the database later
+            if (message.guild.id == `794610828317032458` && message.channel.id != `834878498941829181`) {
+                if (args.codetoeval.includes('message.delete')) {
+                    return
+                }
+                return message.react(`<:success:838816341007269908>`)
+            }
+
             if (!args.silent && !args.codetoeval.includes("message.channel.delete()")) {
                 const evaloutputembed = new MessageEmbed()
                     .setTitle('Evaluated Code')
@@ -80,6 +88,7 @@ export default class evaluate extends BotCommand {
                 }
                 message.react(`<:success:838816341007269908>`)
             }
+
         }
         catch (err) {
             try { utils.errorhandling(err, message) }
