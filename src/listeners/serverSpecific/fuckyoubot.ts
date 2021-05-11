@@ -34,6 +34,12 @@ class fuckyoubot extends BotListener {
         if (message.content.toLowerCase().includes(`anime`) && message.guild.id == `794610828317032458`) {
             message.channel.send(`Anime is cringe!`)
         }
+        
+        //fuck among us
+        if (message.content.toLowerCase().includes(`sus`) && message.guild.id == `794610828317032458`) {
+            message.delete()
+            message.channel.send(`Among Us was ruined by the community, and is extremely unfunny.`)
+        }
 
         //TAKO IM SORRY, LOGI WANTED THIS
         // if (message.author == `685141684534771796` && message.guild.id == `794610828317032458`) {

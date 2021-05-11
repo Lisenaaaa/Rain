@@ -24,19 +24,31 @@ async function run() {
 run().catch(console.dir);
 
 async function read(messageGuildID: string) {
-    const guilds = await db.collection(`guilds`)
+    return await db.collection(`guilds`)
         .find({ guildID: messageGuildID })
-        .toArray((err, doc) => {
-            // console.log(`hi this is inside a whatever its called`)
-            // console.log(`doc:`)
-            // console.log(doc)
-            mongoclient.close()
-            return doc
-        })
+        .toArray()
+}
 
-    return guilds
+async function add(messageGuildID: string) {
+    const defaultDBSchema = {
+        guildID: messageGuildID,
+        guildSettings: {
+            prefix: `-`,
+            welcomeChannel: `thereisntone`
+        },
+        tags: [
+            {
+                name: "theresnotagshereyet",
+                value: `You don't have any tags in this server yet!`
+            }
+        ]
+    }
+
+    return await db.collection(`guilds`)
+        .insertOne(defaultDBSchema)
 }
 
 export = {
-    read
+    read,
+    add
 }

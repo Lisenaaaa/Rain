@@ -13,6 +13,6 @@ export default class discordConsole extends BotCommand {
 
 	async exec(message, args) {
         let thingToLog = `Server: **${message.guild.name}**\nContents: ${args.thingToLog}`
-		utils.console(thingToLog, message)
+		utils.console(thingToLog, this.client)
 	}
 }

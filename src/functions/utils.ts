@@ -1,4 +1,5 @@
 import { TextChannel } from "discord.js";
+import { Client } from "discord.js";
 import { Message, MessageEmbed } from "discord.js";
 import got from "got/dist/source";
 
@@ -61,11 +62,11 @@ async function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function console(thingToLog: string, message: Message) {
+async function console(thingToLog: string, functionClient: Client) {
     let output = thingToLog
     if (thingToLog.length > 1000) { let output = haste(thingToLog) }
 
-    const consoleChannel = message.client.channels.cache.get(`839215645715595316`) as TextChannel
+    const consoleChannel = functionClient.channels.cache.get(`839215645715595316`) as TextChannel
     const consoleEmbed = new MessageEmbed()
         .setDescription(output)
         
