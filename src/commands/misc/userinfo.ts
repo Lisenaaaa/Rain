@@ -8,7 +8,7 @@ export default class userinfo extends BotCommand {
 			args: [
 				{
 					id: 'targetUser',
-					type: 'user',
+					type: 'member',
 				}
 			]
 		});
@@ -16,19 +16,24 @@ export default class userinfo extends BotCommand {
 
 	exec(message, args) {
 		let user
+		let member
+
 		if (args.targetUser) {
-			user = args.targetUser
+			user = args.targetUser.user
+			member = args.targetUser
 		}
 		else {
 			user = message.author
+			member = message.member
 		}
+		
 		const userPFP = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png?size=2048`
 		const infoembed = new MessageEmbed()
 			.setAuthor(user.tag, userPFP)
 			.setDescription(`
 			**Mention:** ${user}
 			**ID:** \`${user.id}\`
-			**Created at:** ${user.createdAt}
+			**Created at:** ${user.createdAt.toLocaleString()}
 			`)
 
 

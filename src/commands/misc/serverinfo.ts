@@ -14,7 +14,7 @@ export default class serverinfo extends BotCommand {
 
         infoembed.setTitle(message.guild.name)
         .setDescription(`
-		Created by: <@${message.guild.owner.id}>
+		Created by: <@${message.guild.ownerID}>
 		Members: \`${message.guild.memberCount}\`
 		Online: \`i have no idea how to do this\`
 		Example: \`${example}\`

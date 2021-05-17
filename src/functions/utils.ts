@@ -64,7 +64,7 @@ async function sleep(time: number) {
 
 async function console(thingToLog: string, functionClient: Client) {
     let output = thingToLog
-    if (thingToLog.length > 1000) { let output = haste(thingToLog) }
+    if (thingToLog.length > 1000) { let output = await haste(thingToLog) }
 
     const consoleChannel = functionClient.channels.cache.get(`839215645715595316`) as TextChannel
     const consoleEmbed = new MessageEmbed()

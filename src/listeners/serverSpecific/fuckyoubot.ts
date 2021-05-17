@@ -31,7 +31,7 @@ class fuckyoubot extends BotListener {
         }
 
         //i dislike anime
-        if (message.content.toLowerCase().includes(`anime`) && message.guild.id == `794610828317032458`) {
+        if (message.content.toLowerCase().includes(`anime`) && message.author.bot == false && message.guild.id == `794610828317032458`) {
             message.channel.send(`Anime is cringe!`)
         }
         
@@ -39,6 +39,11 @@ class fuckyoubot extends BotListener {
         if (message.content.toLowerCase().includes(`sus`) && message.guild.id == `794610828317032458`) {
             message.delete()
             message.channel.send(`Among Us was ruined by the community, and is extremely unfunny.`)
+        }
+
+        //this has to be part of the fuckyoubot
+        if (message.content.toLowerCase() == `fuck you` && message.guild.id == `794610828317032458`) {
+            message.channel.send(`<@${message.author.id}> sure, when?`)
         }
 
         //TAKO IM SORRY, LOGI WANTED THIS

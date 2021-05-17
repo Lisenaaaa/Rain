@@ -12,11 +12,18 @@ class guildJoinDBCreate extends BotListener {
     }
 
     async exec(guild) {
-        utils.console(`Joined **${guild.name}**`, this.client)
+        let dbconsole
         database.add(guild.id).then(e => {
-            if (e.result.ok == 1) {
-                utils.console(`Database entry succesfully added!`, this.client)
+            if (e) {
+                if (e.result.ok == 1) {
+                    dbconsole = `Database entry succesfully added!`
+                }
             }
+            else {
+                dbconsole = `Guild already in DB, so entry was not created.`
+            }
+
+            utils.console(`Joined **${guild.name}**\n${dbconsole}`, this.client)
         })
     }
 }

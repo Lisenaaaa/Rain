@@ -41,7 +41,7 @@ export default class evaluate extends BotCommand {
             if (args.codetoeval.includes(`env`)) {
                 return message.channel.send(`no env`)
             }
-            
+
             if (args.codetoeval.includes(`message.channel.delete`)) {
                 return message.channel.send(`Are you IRONM00N?`)
             }
@@ -52,7 +52,12 @@ export default class evaluate extends BotCommand {
                 return message.channel.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
             }
 
-            let output = await eval(args.codetoeval)
+            let guild = message.guild
+            let client = this.client
+            let channel = message.channel
+            let embed = new MessageEmbed()
+
+            let output = await eval(`${args.codetoeval}`)
 
             const tokencheck = inspect(output)
 
