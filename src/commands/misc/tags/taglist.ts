@@ -1,5 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { BotCommand } from "../../../extensions/BotCommand";
+import * as language from "../../../constants/language";
 import db from "../../../functions/database";
 
 export default class taglist extends BotCommand {
@@ -23,7 +24,7 @@ export default class taglist extends BotCommand {
                 tagsEmbed.setTitle(`${message.guild.name}'s tags`)
                 
                 if (taglist.length === 0) {
-                    taglist = `You don't have any tags! Use \`-tag create <tagName> <tagResponse>\` to make a new one!`
+                    taglist = language.noTags
                 }
                 tagsEmbed.setDescription(taglist)
 

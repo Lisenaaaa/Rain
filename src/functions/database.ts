@@ -38,7 +38,8 @@ async function add(messageGuildID: string) {
         guildID: messageGuildID,
         guildSettings: {
             prefix: `-`,
-            welcomeChannel: `thereisntone`
+            welcomeChannel: `thereisntone`,
+            fancyModerationEmbeds: false
         },
         tags: [
             {
@@ -84,10 +85,17 @@ async function deleteTag(messageGuildID: string, tagName: string) {
         .updateOne(query, update)
 }
 
+async function fancyModerationEmbeds(messageGuildID: string) {
+    await read(messageGuildID).then(data => {
+        console.log(data[0].guildSettings.fancyModerationEmbeds)
+    })
+}
+
 export = {
     read,
     add,
     addTag,
     editTag,
-    deleteTag
+    deleteTag,
+    fancyModerationEmbeds
 }

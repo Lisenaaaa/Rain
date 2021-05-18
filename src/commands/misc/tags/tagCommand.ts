@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-//import { badTagName, noTagResponse } from "../../../constants/language";
+import * as language from "../../../constants/language";
 import { BotCommand } from "../../../extensions/BotCommand";
 import db from "../../../functions/database";
 
@@ -31,21 +31,22 @@ export default class tagCommand extends BotCommand {
             "remove",
             "delete"
         ]
-        let badTagName = `You can't create a tag with that name!`
 
         addTriggers.forEach(thing => {
             if (args.action == thing) {
                 //check if tag name is one of the above triggers
-                for (let trigger of addTriggers) { if (args.tagName == trigger) { return message.channel.send(badTagName) } }
-                for (let trigger of editTriggers) { if (args.tagName == trigger) { return message.channel.send(badTagName) } }
-                for (let trigger of removeTriggers) { if (args.tagName == trigger) { return message.channel.send(badTagName) } }
+                for (let trigger of addTriggers) { if (args.tagName == trigger) { return message.channel.send(language.badTagName) } }
+                for (let trigger of editTriggers) { if (args.tagName == trigger) { return message.channel.send(language.badTagName) } }
+                for (let trigger of removeTriggers) { if (args.tagName == trigger) { return message.channel.send(language.badTagName) } }
 
-                if (!args.tagContent) { return message.channel.send(`You can't create a tag with no response!`) }
+                if (!args.tagContent) { return message.channel.send(language.tagNoResponse) }
 
                 db.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
                     if (e.result.ok == 1) {
                         const successEmbed = new MessageEmbed()
                             .setDescription(`Tag \`${args.tagName}\` succesfully created!`)
+
+                        message.channel.send(successEmbed)
                     }
                 })
             }
