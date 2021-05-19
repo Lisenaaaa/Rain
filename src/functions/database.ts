@@ -38,15 +38,15 @@ async function add(messageGuildID: string) {
         guildID: messageGuildID,
         guildSettings: {
             prefix: `-`,
-            welcomeChannel: `thereisntone`,
-            fancyModerationEmbeds: false
-        },
-        tags: [
-            {
-                name: "theresnotagshereyet",
-                value: `You don't have any tags in this server yet!`
+            welcomeChannel: `null`,
+            fancyModerationEmbeds: false,
+            loggingChannels: {
+                messageLogs: `null`,
+                memberLogs: `null`,
+                moderationLogs: `null`
             }
-        ]
+        },
+        tags: []
     }
 
     let allDB = await isInDB()
@@ -85,10 +85,9 @@ async function deleteTag(messageGuildID: string, tagName: string) {
         .updateOne(query, update)
 }
 
-async function fancyModerationEmbeds(messageGuildID: string) {
-    await read(messageGuildID).then(data => {
-        console.log(data[0].guildSettings.fancyModerationEmbeds)
-    })
+async function guildSettings(messageGuildID: string) {
+    const data = await read(messageGuildID)
+    return data[0].guildSettings
 }
 
 export = {
@@ -97,5 +96,5 @@ export = {
     addTag,
     editTag,
     deleteTag,
-    fancyModerationEmbeds
+    guildSettings
 }

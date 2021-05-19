@@ -1,6 +1,6 @@
 import { Listener } from 'discord-akairo';
-import { BotListener } from '../extensions/BotListener';
-import utils from '../functions/utils';
+import { BotListener } from '../../extensions/BotListener';
+import utils from '../../functions/utils';
 
 class tokenCheckListener extends BotListener {
     constructor() {

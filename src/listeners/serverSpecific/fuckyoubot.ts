@@ -1,4 +1,5 @@
 import { Listener } from 'discord-akairo';
+import { MessageEmbed } from 'discord.js';
 import { BotListener } from '../../extensions/BotListener';
 
 class fuckyoubot extends BotListener {
@@ -44,6 +45,16 @@ class fuckyoubot extends BotListener {
         //this has to be part of the fuckyoubot
         if (message.content.toLowerCase() == `fuck you` && message.guild.id == `794610828317032458`) {
             message.channel.send(`<@${message.author.id}> sure, when?`)
+        }
+
+        //fuck you, eval command
+        if (message.content.toLowerCase() == `-serverdown` && message.author.id == `545277690303741962` && message.guild.id == `794610828317032458`) {
+            let downEmbed = new MessageEmbed()
+            downEmbed.setTitle(`Server connection errors, and what they mean`)
+            downEmbed.addField(`Failed to log in: The authentication servers are currently down for maintenance`, `If you can connect to other servers, the auth servers are fine. This just means that for whatever reason, the server can't connect to them. In Zordlan's case, her internet is probably off.`)
+            downEmbed.addField(`io.netty.channel.AbstractChannel$AnnotatedConnectException: syscall:getsockpot(...) failed: Connection refused:`, `The server is just down.`)
+
+            message.channel.send(downEmbed)
         }
 
         //TAKO IM SORRY, LOGI WANTED THIS

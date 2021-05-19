@@ -1,4 +1,3 @@
-import { MessageEmbed } from 'discord.js';
 import { BotListener } from '../../extensions/BotListener';
 import db from '../../functions/database';
 

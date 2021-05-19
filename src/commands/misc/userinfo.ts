@@ -35,6 +35,7 @@ export default class userinfo extends BotCommand {
 			**ID:** \`${user.id}\`
 			**Created at:** ${user.createdAt.toLocaleString()}
 			`)
+			let roles = message.member.roles.cache
 
 
 		message.channel.send(infoembed)

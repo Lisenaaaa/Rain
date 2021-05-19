@@ -1,5 +1,5 @@
 import { Listener } from 'discord-akairo';
-import { BotListener } from '../extensions/BotListener';
+import { BotListener } from '../../extensions/BotListener';
 
 class misclisteners extends BotListener {
     constructor() {
