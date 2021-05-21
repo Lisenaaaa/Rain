@@ -52,12 +52,20 @@ export default class evaluate extends BotCommand {
                 return message.channel.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
             }
 
+            async function send(thingToSend:string) {
+                message.channel.send(thingToSend)
+            }
+
             let guild = message.guild
             let client = this.client
             let channel = message.channel
             let embed = new MessageEmbed()
+            let user = message.author
+            let member = message.member
+            let botUser = this.client.user
+            let botMember = message.guild.members.cache.get(botUser.id)
 
-            let output = await eval(`${args.codetoeval}`)
+            let output = await eval(args.codetoeval)
 
             const tokencheck = inspect(output)
 

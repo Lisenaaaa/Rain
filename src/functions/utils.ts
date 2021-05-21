@@ -69,8 +69,33 @@ async function console(thingToLog: string, functionClient: Client) {
     const consoleChannel = functionClient.channels.cache.get(`839215645715595316`) as TextChannel
     const consoleEmbed = new MessageEmbed()
         .setDescription(output)
-        
+
     consoleChannel.send(consoleEmbed)
+}
+
+async function getObjectDifferences(object1: object, object2: object, thingToCheck: string = `all`) {
+    if (thingToCheck == `all`) {
+        //difference between the objects
+        let firstObjectKeys = Object.keys(object1)
+        let secondObjectKeys = Object.keys(object2)
+
+        let object = {}
+
+        firstObjectKeys.forEach(key => {
+            if (secondObjectKeys.includes(key)) {
+                if (object1[key] != object2[key]) {
+                    object[key] = {
+                        object1 : object1[key],
+                        object2 : object2[key]
+                    }
+                }
+            }
+        })
+        return object
+    }
+    else {
+        //difference between one specific thing in the objects
+    }
 }
 
 export = {
@@ -79,5 +104,6 @@ export = {
     errorchannelsend,
     resetToken,
     sleep,
-    console
+    console,
+    getObjectDifferences
 }

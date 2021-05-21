@@ -21,7 +21,7 @@ class supportServerEditMessageLogging extends BotListener {
             editEmbed.addField(`Old Message Content`, oldMessage.content)
             editEmbed.addField(`New Message Content`, newMessage.content)
 
-            console.log(newMessage)
+            //console.log(newMessage)
 
             messageLoggingChannel.send(editEmbed)
         }
