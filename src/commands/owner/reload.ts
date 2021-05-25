@@ -4,6 +4,7 @@ import utils from '../../functions/utils'
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { MessageEmbed } from "discord.js";
+import chalk from "chalk";
 
 const sh = promisify(exec)
 
@@ -21,7 +22,7 @@ export default class reload extends BotCommand {
             const reloadEmbed = new MessageEmbed()
                 .setDescription(`Reloading!`)
             message.channel.send(reloadEmbed).then(async sent => {
-                console.log(`Reloading!`)
+                console.log(chalk.greenBright(`Reloading!`))
                 
                 await sh("yarn build");
 
@@ -29,7 +30,7 @@ export default class reload extends BotCommand {
                 await this.client.listenerHandler.reloadAll()
                 await this.client.inhibitorHandler.reloadAll()
 
-                console.log(`Reloaded!\n`)
+                console.log(chalk.green(`Reloaded!\n`))
                 
                 reloadEmbed.setDescription(`Reloaded! Everything that changed in my files should now be loaded in the bot.`)
                 sent.channel.send(reloadEmbed)
