@@ -1,4 +1,3 @@
-import { MessageEmbed } from "discord.js";
 import language from "../../../../constants/language";
 import { BotCommand } from "../../../../extensions/BotCommand";
 import utils from "../../../../functions/utils";
@@ -22,7 +21,7 @@ export default class ban extends BotCommand {
         if (args.member.user.id == this.client.user.id) { return utils.errorhandling(`Why would you want to ban me?`, message) }
 
         //check for perms
-        //im lazy so im using other code, ik grammar doesnt really make sense here but shut
+        //im lazy so im using other code, ik grammar doesn't really make sense here but shut
         if (args.member.roles.highest.rawPosition > message.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.channel.send(await language.rolePriorityHigher(args.member.user)) }
         if (message.member.roles.highest.rawPosition == args.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.channel.send(await language.rolePrioritySame(args.member.user)) }
 

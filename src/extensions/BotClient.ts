@@ -49,7 +49,7 @@ export class BotClient extends AkairoClient {
 		for (const loader of Object.keys(loaders)) {
 			try {
 				loaders[loader].loadAll();
-				console.log(chalk.blueBright(`Succesfully loaded ${loader}.`));
+				console.log(chalk.blueBright(`Successfully loaded ${loader}.`));
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`);
 			}

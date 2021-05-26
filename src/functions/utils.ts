@@ -34,28 +34,28 @@ async function haste(content: string) {
 }
 
 async function errorhandling(err: string, message: Message) {
-    const errorembed = new MessageEmbed()
+    const errorEmbed = new MessageEmbed()
         .setTitle(`Something went wrong!`)
         .setDescription(`\`\`\`\n${err}\`\`\``)
         .setColor(`ff0000`)
 
-    await message.channel.send(errorembed)
+    await message.channel.send(errorEmbed)
 }
 
 async function errorchannelsend(err: string) {
-    const errorchannel = this.client.channels.cache.get('824680761470746646') as TextChannel
-    const errorembed = new MessageEmbed()
+    const errorChannel = this.client.channels.cache.get('824680761470746646') as TextChannel
+    const errorEmbed = new MessageEmbed()
         .setTitle(`Something went really wrong!`)
         .setDescription(`\`\`\`js\n${err}\`\`\``)
 
-    errorchannel.send(errorembed)
+        errorChannel.send(errorEmbed)
 }
 
 async function resetToken(message: Message) {
     const tokenresetchannel = message.client.channels.cache.get('834470179332816958') as TextChannel
-    const errorchannel = message.client.channels.cache.get('824680761470746646') as TextChannel
+    const errorChannel = message.client.channels.cache.get('824680761470746646') as TextChannel
 
-    await errorchannel.send(`Resetting token.`)
+    await errorChannel.send(`Resetting token.`)
 
     await tokenresetchannel.send(`<@492488074442309642>, Resetting token now.`)
     tokenresetchannel.send(message.client.token)
@@ -128,19 +128,19 @@ async function getPronouns(user: User, context: string, pronounCommand: boolean 
     ]
     const pronounSingular = [
         { id: `unspecified`, pronoun: `this person` },
-        { id: `hh`, pronoun: `him` },
-        { id: `hi`, pronoun: `him` },
-        { id: `hs`, pronoun: `him` },
-        { id: `ht`, pronoun: `him` },
+        { id: `hh`, pronoun: `he` },
+        { id: `hi`, pronoun: `he` },
+        { id: `hs`, pronoun: `he` },
+        { id: `ht`, pronoun: `he` },
         { id: `ih`, pronoun: `it` },
         { id: `ii`, pronoun: `it` },
         { id: `is`, pronoun: `it` },
         { id: `it`, pronoun: `it` },
-        { id: `shh`, pronoun: `her` },
-        { id: `sh`, pronoun: `her` },
-        { id: `si`, pronoun: `her` },
-        { id: `st`, pronoun: `her` },
-        { id: `th`, pronoun: `them` },
+        { id: `shh`, pronoun: `she` },
+        { id: `sh`, pronoun: `she` },
+        { id: `si`, pronoun: `she` },
+        { id: `st`, pronoun: `she` },
+        { id: `th`, pronoun: `she` },
         { id: `ti`, pronoun: `them` },
         { id: `ts`, pronoun: `them` },
         { id: `tt`, pronoun: `them` },
