@@ -12,7 +12,7 @@ const mongoclient = new MongoClient(uri, {
 let db
 async function run() {
     try {
-        let mongoDBClient = await mongoclient.connect().then(() => {
+        await mongoclient.connect().then(() => {
             db = mongoclient.db(`bot`)
         })
 

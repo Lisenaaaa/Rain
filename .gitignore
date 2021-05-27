@@ -135,9 +135,16 @@ temp/
 !.vscode/launch.json
 !.vscode/extensions.json
 *.code-workspace
-.vscode
 
 # End of https://www.toptal.com/developers/gitignore/api/node,vscode
 
 config
 testing
+
+# yarn shit # 
+.yarn/cache/*
+.yarn/sdks/eslint/*
+.yarn/sdks/prettier/*
+.yarn/install-state.gz
+.yarn/build-state.url
+.yarn/releases.gz
