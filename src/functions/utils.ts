@@ -101,7 +101,7 @@ async function getObjectDifferences(object1: object, object2: object, thingToChe
     }
 }
 
-async function getPronouns(user: User, context: string, pronounCommand: boolean = false) {
+async function getPronouns(user: User, context: string) {
     //all pronouns here are listed in the order they're in on https://pronoundb.org/docs
     const pronounDetails = [
         { id: `unspecified`, pronoun: `Unspecified` },
@@ -191,7 +191,7 @@ async function getPronouns(user: User, context: string, pronounCommand: boolean 
         }
     }
 }
-
+    
 export = {
     haste,
     errorhandling,

@@ -22,6 +22,43 @@ async function run() {
 }
 run().catch(console.dir)
 
+function defaultDBSchema(messageGuildID) {
+    const defaultDBSchema = {
+        guildID: messageGuildID,
+        guildSettings: {
+            prefix: `-`,
+            welcomeChannel: `null`,
+            welcomeMessage: `null`,
+            loggingChannels: {
+                messageLogs: `null`,
+                memberLogs: `null`,
+                moderationLogs: `null`
+            },
+            staffRoles: {
+                owner: `null`,
+                admin: `null`,
+                srMod: `null`,
+                moderator: `null`,
+                helper: `null`,
+                trialHelper: `null`
+            },
+            modOnlyChannels: [],
+            adminOnlyChannels: []
+        },
+        commandSettings: {
+            ban: {
+                enabledRoles: [
+                    `admin`,
+                    `srMod`,
+                    `moderator`
+                ]
+            }
+        },
+        tags: []
+    }
+    return defaultDBSchema
+}
+
 async function read(messageGuildID: string) {
     return await db.collection(`guildsv2`)
         .find({ guildID: messageGuildID })
@@ -33,28 +70,6 @@ async function isInDB() {
 }
 
 async function add(messageGuildID: string) {
-    const defaultDBSchema = {
-        guildID: messageGuildID,
-        guildSettings: {
-            prefix: `-`,
-            welcomeChannel: `null`,
-            welcomeMessage: `null`,
-            loggingChannels: {
-                messageLogs: `null`,
-                memberLogs: `null`,
-                moderationLogs: `null`
-            },
-            staffRoles: {
-                admin: `null`,
-                srMod: `null`,
-                moderator: `null`,
-                helper: `null`,
-                trialHelper: `null`
-            }
-        },
-        tags: []
-    }
-
     let allDB = await isInDB()
 
     for (let e of allDB) {
@@ -64,35 +79,13 @@ async function add(messageGuildID: string) {
     }
 
     return await db.collection(`guildsv2`)
-        .insertOne(defaultDBSchema)
+        .insertOne(defaultDBSchema(messageGuildID))
 }
 
 //THIS WILL PROBABLY BREAK EVERYTHING IF USED, SO DON'T FUCKING USE IT
 async function addOverrideOther(messageGuildID: string) {
-    const defaultDBSchema = {
-        guildID: messageGuildID,
-        guildSettings: {
-            prefix: `-`,
-            welcomeChannel: `null`,
-            welcomeMessage: `null`,
-            loggingChannels: {
-                messageLogs: `null`,
-                memberLogs: `null`,
-                moderationLogs: `null`
-            },
-            staffRoles: {
-                admin: `null`,
-                srMod: `null`,
-                moderator: `null`,
-                helper: `null`,
-                trialHelper: `null`
-            }
-        },
-        tags: []
-    }
-
     return await db.collection(`guildsv2`)
-        .insertOne(defaultDBSchema)
+        .insertOne(defaultDBSchema(messageGuildID))
 }
 
 async function addTag(messageGuildID: string, tagName: string, tagResponse: string) {
@@ -133,6 +126,14 @@ async function editGuildSettingsPerms(messageGuildID: string, roleToEdit: string
         .updateOne(query, update)
 }
 
+
+/* USER THINGS */
+async function userRead(userID: string) {
+    return await db.collection(`user`)
+        .find({ ID: userID })
+        .toArray()
+}
+
 export = {
     read,
     add,
@@ -141,5 +142,8 @@ export = {
     deleteTag,
     guildSettings,
     addOverrideOther,
-    editGuildSettingsPerms
+    editGuildSettingsPerms,
+
+    //USER THINGS//
+    userRead
 }

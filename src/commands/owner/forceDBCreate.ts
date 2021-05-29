@@ -28,7 +28,7 @@ export default class forceDBCreate extends BotCommand {
 
                 if (dbconsole = `Database entry successfully added!`) {
                     utils.dConsole(`Created database in **${message.guild.name}**, because of a forced creation through a command.`, this.client)
-                    console.log(chalk`Created DB in {purple ${message.guild.name}}, because of forced creation through a command.`)
+                    console.log(chalk`Created DB in {magenta ${message.guild.name}}, because of forced creation through a command.`)
                 }
             })
         }

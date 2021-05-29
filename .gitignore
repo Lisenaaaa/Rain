@@ -140,6 +140,7 @@ temp/
 
 config
 testing
+fuckyoubot
 
 # yarn shit # 
 .yarn/cache/*
