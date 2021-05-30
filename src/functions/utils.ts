@@ -1,4 +1,5 @@
 import axios from "axios";
+import chalk from "chalk";
 import { TextChannel } from "discord.js";
 import { User } from "discord.js";
 import { Client } from "discord.js";
@@ -140,10 +141,10 @@ async function getPronouns(user: User, context: string) {
         { id: `sh`, pronoun: `she` },
         { id: `si`, pronoun: `she` },
         { id: `st`, pronoun: `she` },
-        { id: `th`, pronoun: `she` },
-        { id: `ti`, pronoun: `them` },
-        { id: `ts`, pronoun: `them` },
-        { id: `tt`, pronoun: `them` },
+        { id: `th`, pronoun: `they` },
+        { id: `ti`, pronoun: `they` },
+        { id: `ts`, pronoun: `they` },
+        { id: `tt`, pronoun: `they` },
         { id: `any`, pronoun: `this person` },
         { id: `other`, pronoun: `this person` },
         { id: `ask`, pronoun: `this person` },
@@ -191,6 +192,10 @@ async function getPronouns(user: User, context: string) {
         }
     }
 }
+
+function debug(thingToLog: string) {
+    console.log(chalk`{bgRed DEBUG:} ${thingToLog}`)
+}
     
 export = {
     haste,
@@ -200,5 +205,6 @@ export = {
     sleep,
     dConsole,
     getObjectDifferences,
-    getPronouns
+    getPronouns,
+    debug
 }
