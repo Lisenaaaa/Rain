@@ -1,29 +1,24 @@
 import chalk from "chalk";
-
-require('dotenv').config()
+import 'dotenv/config';
 const { MongoClient } = require("mongodb");
-const uri = process.env["mongodb"]
+const uri = process.env.mongodb;
 
 const mongoclient = new MongoClient(uri, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
-
-let db
 async function run() {
-    try {
+        let database;
         await mongoclient.connect().then(() => {
-            db = mongoclient.db(`bot`)
-        })
-
+            database = mongoclient.db(`bot`)
+        }).catch(console.dir);
+    
         console.log(chalk.blue(`Connected to MongoDB!`))
-
-    } finally { }
+    return database;
 }
-run().catch(console.dir)
-
+let db = run();
 function defaultDBSchema(messageGuildID) {
-    const defaultDBSchema = {
+    return {
         guildID: messageGuildID,
         guildSettings: {
             prefix: `-`,
@@ -56,7 +51,6 @@ function defaultDBSchema(messageGuildID) {
         },
         tags: []
     }
-    return defaultDBSchema
 }
 
 async function read(messageGuildID: string) {
