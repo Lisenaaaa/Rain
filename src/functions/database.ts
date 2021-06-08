@@ -26,7 +26,7 @@ function defaultDBSchema(messageGuildID) {
     const defaultDBSchema = {
         guildID: messageGuildID,
         guildSettings: {
-            prefix: `-`,
+            prefix: [`-`],
             welcomeChannel: `null`,
             welcomeMessage: `null`,
             loggingChannels: {

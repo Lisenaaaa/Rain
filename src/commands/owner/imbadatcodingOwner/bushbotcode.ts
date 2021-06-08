@@ -9,6 +9,6 @@ export default class bushbotcode extends BotCommand {
     }
 
     exec(message) {
-        message.channel.send("https://github.com/NotEnoughUpdates/bush-bot")
+        message.util.send("https://github.com/NotEnoughUpdates/bush-bot")
     }
 }

@@ -19,7 +19,7 @@ export default class forceDBCreate extends BotCommand {
                 if (e) {
                     if (e.result.ok == 1) {
                         dbconsole = `Database entry successfully added!`
-                        message.channel.send(`Database entry successfully added!`)
+                        message.util.send(`Database entry successfully added!`)
                     }
                 }
                 else {

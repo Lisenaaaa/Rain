@@ -24,12 +24,12 @@ export default class gitpush extends BotCommand {
 
     async exec(message, args) {
         if (args.commitReason.length > 50) {
-            return message.channel.send(`Your commit message is too long!`)
+            return message.util.send(`Your commit message is too long!`)
         }
 
         const hiyesthisisanembed = new MessageEmbed()
             .setDescription(`Pushing changes to [GitHub](https://github.com/Zordlan/SkyClientBot)`)
-        message.channel.send(hiyesthisisanembed)
+        message.util.send(hiyesthisisanembed)
 
         const githubembed = new MessageEmbed()
             .setTitle(`Command Output`)
@@ -43,7 +43,7 @@ export default class gitpush extends BotCommand {
         let githubpush = await eval(`sh('git push')`)
         githubembed.addField(`\`git push\``, `\`\`\`js\n${inspect(githubpush)}\`\`\``)
 
-        message.channel.send(githubembed)
+        message.util.send(githubembed)
 
     }
 }

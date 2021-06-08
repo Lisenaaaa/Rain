@@ -22,13 +22,13 @@ export default class ban extends BotCommand {
 
         //check for perms
         //im lazy so im using other code, ik grammar doesn't really make sense here but shut
-        if (args.member.roles.highest.rawPosition > message.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.channel.send(await language.rolePriorityHigher(args.member.user)) }
-        if (message.member.roles.highest.rawPosition == args.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.channel.send(await language.rolePrioritySame(args.member.user)) }
+        if (args.member.roles.highest.rawPosition > message.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.util.send(await language.rolePriorityHigher(args.member.user)) }
+        if (message.member.roles.highest.rawPosition == args.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.util.send(await language.rolePrioritySame(args.member.user)) }
 
         message.delete()
         await args.member.user.send(`You have been banned from **${message.guild.name}** for \`${args.reason}\`.`).then(e => {
             args.member.ban({ reason: `${message.author.tag} | ${args.reason}` })
         })
-        message.channel.send(`${args.member.user.username} has been banned.`)
+        message.util.send(`${args.member.user.username} has been banned.`)
     }
 }

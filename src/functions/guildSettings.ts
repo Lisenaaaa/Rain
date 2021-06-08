@@ -41,6 +41,8 @@ async function getUserPerms(message: Message) {
                 return perms = `trialHelper`
             }
         })
+
+        if (message.author.id == message.guild.ownerID) { perms = `owner` }
         return perms
     })
 }

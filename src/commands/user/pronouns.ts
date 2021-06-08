@@ -11,6 +11,6 @@ export default class pronouns extends BotCommand {
     }
     async exec(message, args) {
         const pronouns = await utils.getPronouns(args.person, `details`)
-        message.channel.send(await language.pronounsSet(args.person, message.author, pronouns))
+        message.util.send(await language.pronounsSet(args.person, message.author, pronouns))
     }
 }

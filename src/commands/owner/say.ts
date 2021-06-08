@@ -33,17 +33,17 @@ export default class say extends BotCommand {
     async exec(message, args) {
 
         if (!args.say) {
-            return message.channel.send(`I can't say nothing!`)
+            return message.util.send(`I can't say nothing!`)
         }
 
         if (args.channel) {
             args.channel.send(args.say)
-            message.channel.send(`Message sent!`)
+            message.util.send(`Message sent!`)
             //console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)
         }
 
         else {
-            message.channel.send(args.say)
+            message.util.send(args.say)
             if (message.deletable && args.delete) {
                 await message.delete()
                 //console.log(`Message ${args.say} was sent in #${message.channel.name} on ${message.guild.name} by ${message.author.tag}`)

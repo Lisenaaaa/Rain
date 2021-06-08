@@ -33,8 +33,8 @@ export class BotClient extends AkairoClient {
 		});
 	}
 	private async _init(): Promise<void> {
-		this.commandHandler.useListenerHandler(this.listenerHandler);
-		this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
+		this.commandHandler.useListenerHandler(this.listenerHandler)
+		this.commandHandler.useInhibitorHandler(this.inhibitorHandler)
 		this.listenerHandler.setEmitters({
 			commandHandler: this.commandHandler,
 			listenerHandler: this.listenerHandler,
@@ -48,16 +48,16 @@ export class BotClient extends AkairoClient {
 		};
 		for (const loader of Object.keys(loaders)) {
 			try {
-				loaders[loader].loadAll();
-				console.log(chalk.blueBright(`Successfully loaded ${loader}.`));
+				loaders[loader].loadAll()
+				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
 			} catch (e) {
-				console.error(`Unable to load ${loader} with error ${e}.`);
+				console.error(`Unable to load ${loader} with error ${e}.`)
 			}
 		}
 	}
 
 	public async start(): Promise<string> {
-		await this._init();
-		return this.login(process.env["token"]);
+		await this._init()
+		return this.login(process.env["pctoken"])
 	}
 }

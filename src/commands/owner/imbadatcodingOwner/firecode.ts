@@ -9,6 +9,6 @@ export default class firecode extends BotCommand {
     }
 
     exec(message) {
-        message.channel.send("https://github.com/FireDiscordBot/bot")
+        message.util.send("https://github.com/FireDiscordBot/bot")
     }
 }

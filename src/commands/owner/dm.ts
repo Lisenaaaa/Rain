@@ -30,7 +30,7 @@ export default class dm extends BotCommand {
                 .setTimestamp()
 
             args.user.send(`${args.message}`)
-            message.channel.send(dmembed)
+            message.util.send(dmembed)
         }
         catch (err) {
             utils.errorhandling

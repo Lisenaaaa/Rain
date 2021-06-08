@@ -25,24 +25,24 @@ export default class evaluate extends BotCommand {
     async exec(message, args) {
         try {
             if (args.codetoeval.includes(`token`)) {
-                return (message.channel.send(`no token`))
+                return (message.util.send(`no token`))
             }
             if (args.codetoeval.includes(`env`)) {
-                return message.channel.send(`no env`)
+                return message.util.send(`no env`)
             }
 
             if (args.codetoeval.includes(`message.channel.delete`)) {
-                return message.channel.send(`Are you IRONM00N?`)
+                return message.util.send(`Are you IRONM00N?`)
             }
             if (args.codetoeval.includes(`message.guild.delete`)) {
-                return message.channel.send(`You're like IRONM00N but infinitely more stupid!`)
+                return message.util.send(`You're like IRONM00N but infinitely more stupid!`)
             }
             if (args.codetoeval.includes(`delete`) && !args.sudo) {
-                return message.channel.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
+                return message.util.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
             }
 
             async function send(thingToSend: string) {
-                message.channel.send(thingToSend)
+                message.util.send(thingToSend)
             }
 
             let guild = message.guild
@@ -57,7 +57,7 @@ export default class evaluate extends BotCommand {
             let output = await eval(args.codetoeval)
 
             if (inspect(output).includes(process.env["token"])) {
-                return message.channel.send(`Message containing token wasn't sent.`)
+                return message.util.send(`Message containing token wasn't sent.`)
             }
 
             //im going to make something that disables eval embed in specific channels in the database later
@@ -80,7 +80,7 @@ export default class evaluate extends BotCommand {
                     evalOutputEmbed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``)
                 }
 
-                await message.channel.send(evalOutputEmbed)
+                await message.util.send(evalOutputEmbed)
             }
             if (args.silent) {
                 if (args.codetoeval.includes('message.delete')) {

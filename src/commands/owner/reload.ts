@@ -21,7 +21,7 @@ export default class reload extends BotCommand {
         try {
             const reloadEmbed = new MessageEmbed()
                 .setDescription(`Reloading!`)
-            message.channel.send(reloadEmbed).then(async sent => {
+            message.util.send(reloadEmbed).then(async sent => {
                 console.log(chalk.greenBright(`Reloading!`))
                 
                 await sh("yarn build");

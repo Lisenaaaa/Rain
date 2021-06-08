@@ -26,7 +26,7 @@ export default class missingPermissions extends BotListener {
             let perm = command.clientPermissions[0]
             PermsErrorEmbed.setDescription(`I don't have \`${perm}\`, which I need to have to run this command.`)
         }
-        message.channel.send(PermsErrorEmbed)
+        message.util.send(PermsErrorEmbed)
 
     }
 }

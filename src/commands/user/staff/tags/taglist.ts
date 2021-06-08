@@ -28,7 +28,7 @@ export default class taglist extends BotCommand {
                 }
                 tagsEmbed.setDescription(taglist)
 
-                message.channel.send(tagsEmbed)
+                message.util.send(tagsEmbed)
         })
     }
 }

@@ -41,7 +41,7 @@ async function errorhandling(err: string, message: Message) {
         .setDescription(`\`\`\`\n${err}\`\`\``)
         .setColor(`ff0000`)
 
-    await message.channel.send(errorEmbed)
+    await message.util.send(errorEmbed)
 }
 
 async function errorchannelsend(err: string) {

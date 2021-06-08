@@ -38,7 +38,7 @@ export default class console extends BotCommand {
                 outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
             }
 
-            message.channel.send(outputembed)
+            message.util.send(outputembed)
         }
 
         catch (err) {

@@ -9,6 +9,6 @@ export default class docs extends BotCommand {
 	}
 
 	async exec(message) {
-		message.channel.send('https://discordjs.guide/popular-topics/faq.html')
+		message.util.send('https://discordjs.guide/popular-topics/faq.html')
 	}
 }
