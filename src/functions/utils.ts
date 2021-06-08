@@ -1,5 +1,6 @@
 import axios from "axios";
 import chalk from "chalk";
+import { AkairoClient, Command, CommandHandler } from "discord-akairo";
 import { TextChannel } from "discord.js";
 import { User } from "discord.js";
 import { Client } from "discord.js";
@@ -196,6 +197,12 @@ async function getPronouns(user: User, context: string) {
 function debug(thingToLog: string) {
     console.log(chalk`{bgRed DEBUG:} ${thingToLog}`)
 }
+
+function testCommandCheck(cmdHandler:CommandHandler){
+    cmdHandler.modules.forEach(e => {
+        console.log(`${e.id} ${e.category}`)
+    })
+}
     
 export = {
     haste,
@@ -206,5 +213,7 @@ export = {
     dConsole,
     getObjectDifferences,
     getPronouns,
-    debug
+    debug,
+
+    testCommandCheck
 }

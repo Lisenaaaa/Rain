@@ -2,7 +2,7 @@ import chalk from "chalk";
 
 require('dotenv').config()
 const { MongoClient } = require("mongodb");
-const uri = process.env["mongodb"]
+const uri = process.env.mongodb
 
 const mongoclient = new MongoClient(uri, {
     useNewUrlParser: true,
@@ -42,21 +42,34 @@ function defaultDBSchema(messageGuildID) {
                 helper: `null`,
                 trialHelper: `null`
             },
+            helperOnlyChannels: [],
             modOnlyChannels: [],
             adminOnlyChannels: []
         },
-        commandSettings: {
-            ban: {
-                enabledRoles: [
-                    `admin`,
-                    `srMod`,
-                    `moderator`
-                ]
-            }
-        },
+        commandSettings: {},
         tags: []
     }
     return defaultDBSchema
+}
+
+function commandDBSFormat(commandID: string) {
+    const commandDBSchema = {
+        id: commandID,
+        enabled: true
+    }
+    return commandDBSchema
+}
+function commandInGuildSettingsFormat(commandID: string) {
+    const commandDBSchema = {
+        id: commandID,
+        enabled: true,
+        allowedRoles: [
+            `admin`,
+            `srMod`,
+            `moderator`
+        ]
+    }
+    return commandDBSchema
 }
 
 async function read(messageGuildID: string) {
@@ -126,6 +139,29 @@ async function editGuildSettingsPerms(messageGuildID: string, roleToEdit: string
         .updateOne(query, update)
 }
 
+/* GLOBAL THINGS */
+async function addCommandToGlobalDB(commandID: string) {
+    return await db.collection(`commands`)
+        .insertOne((commandDBSFormat(commandID)))
+}
+
+async function readCommandGlobal() {
+    return await db.collection(`commands`)
+        .find({})
+        .toArray()
+}
+
+async function readCommand(commandID) {
+    return await db.collection(`commands`)
+        .find({ id: commandID })
+        .toArray()
+}
+
+async function deleteCommandFromGlobalDB(commandID: string) {
+    return await db.collection(`commands`)
+        .deleteOne((commandDBSFormat(commandID)))
+}
+
 
 /* USER THINGS */
 async function userRead(userID: string) {
@@ -143,6 +179,12 @@ export = {
     guildSettings,
     addOverrideOther,
     editGuildSettingsPerms,
+
+    //GLOBAL THINGS//
+    addCommandToGlobalDB,
+    deleteCommandFromGlobalDB,
+    readCommandGlobal,
+    readCommand,
 
     //USER THINGS//
     userRead

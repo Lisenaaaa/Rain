@@ -42,5 +42,4 @@ export = {
     rolePriorityHigher,
     rolePrioritySame,
     rolePriorityLower,
-    
 }
