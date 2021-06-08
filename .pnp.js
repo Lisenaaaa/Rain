@@ -45,7 +45,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:4.1.1"],
             ["discord-akairo", "npm:8.1.0"],
             ["discord.js", "npm:12.5.3"],
-            ["dotenv", "npm:8.6.0"],
+            ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
             ["jsonfile", "npm:6.1.0"],
@@ -892,10 +892,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["dotenv", [
-        ["npm:8.6.0", {
-          "packageLocation": "./.yarn/cache/dotenv-npm-8.6.0-2ce3e9f7bb-f4649999a1.zip/node_modules/dotenv/",
+        ["npm:10.0.0", {
+          "packageLocation": "./.yarn/cache/dotenv-npm-10.0.0-36b272df25-9c45712e21.zip/node_modules/dotenv/",
           "packageDependencies": [
-            ["dotenv", "npm:8.6.0"]
+            ["dotenv", "npm:10.0.0"]
           ],
           "linkType": "HARD",
         }]
@@ -2087,7 +2087,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["chalk", "npm:4.1.1"],
             ["discord-akairo", "npm:8.1.0"],
             ["discord.js", "npm:12.5.3"],
-            ["dotenv", "npm:8.6.0"],
+            ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
             ["jsonfile", "npm:6.1.0"],
