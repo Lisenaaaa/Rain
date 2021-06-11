@@ -13,7 +13,7 @@ class ReadyListener extends BotListener {
     exec() {
         console.log(chalk.magenta(`Bot Online!`))
         console.log(`\n`)
-        console.log(chalk.magentaBright(`---Bot Output---`))
+        console.log(chalk.magentaBright(`---Bot Output---\n`))
 
         this.client.user.setActivity('Zordlan create me', { type: 'WATCHING' })
     }

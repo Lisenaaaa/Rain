@@ -162,6 +162,15 @@ async function deleteCommandFromGlobalDB(commandID: string) {
         .deleteOne((commandDBSFormat(commandID)))
 }
 
+async function checkCommandEnabled(commandID: string) {
+    let enabled = false
+
+    readCommand(commandID).then(command => {
+        if (command.enabled == true) { enabled = true }
+    })
+
+    return enabled
+}
 
 /* USER THINGS */
 async function userRead(userID: string) {
@@ -185,6 +194,7 @@ export = {
     deleteCommandFromGlobalDB,
     readCommandGlobal,
     readCommand,
+    checkCommandEnabled,
 
     //USER THINGS//
     userRead
