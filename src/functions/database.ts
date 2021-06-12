@@ -163,13 +163,8 @@ async function deleteCommandFromGlobalDB(commandID: string) {
 }
 
 async function checkCommandEnabled(commandID: string) {
-    let enabled = false
-
-    readCommand(commandID).then(command => {
-        if (command.enabled == true) { enabled = true }
-    })
-
-    return enabled
+    const fuckYouTypescript = (await readCommand(commandID))[0].enabled;
+    return fuckYouTypescript
 }
 
 /* USER THINGS */

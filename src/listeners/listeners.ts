@@ -16,6 +16,9 @@ class ReadyListener extends BotListener {
         console.log(chalk.magentaBright(`---Bot Output---\n`))
 
         this.client.user.setActivity('Zordlan create me', { type: 'WATCHING' })
+
+        //check if all commands are in the DB
+        //console.log(this.client.commandHandler.categories)
     }
 }
 

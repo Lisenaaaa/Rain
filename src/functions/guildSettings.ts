@@ -57,7 +57,7 @@ async function getUserPerms(message: Message) {
     })
 }
 
-function getAllUserPerms(userPerms:string) {
+function getAllUserPerms(userPerms: string) {
     let perms
 
     if (userPerms == 'everyone') { perms = ['everyone'] }
@@ -75,7 +75,7 @@ async function checkUserHasPermsForCommand(commandPerms: string, userPerms: stri
     return getAllUserPerms(userPerms).includes(commandPerms)
 }
 
-async function checkUserCanUseCommandInChannel(guildID: string, channelID: string, userPerms: string, commandID: string) {
+async function checkUserCanUseCommandInChannel(guildID: string, channelID: string, userPerms: string) {
     let channelPerms = false
     let lockedChannelFound = false
     database.read(guildID).then(database => {
@@ -89,12 +89,14 @@ async function checkUserCanUseCommandInChannel(guildID: string, channelID: strin
             }
         })
 
-        if (lockedChannelFound == false) {channelPerms = true}
-        utils.debug(`channelPerms: ${channelPerms}`)
-        utils.debug(`lockedChannel: ${lockedChannelFound}`)
-        console.log(`\n`)
-        return channelPerms
+
     })
+    if (lockedChannelFound == false) { channelPerms = true }
+
+    // utils.debug(`channelPerms: ${channelPerms}`)
+    // utils.debug(`Is this channel locked to a role?: ${lockedChannelFound}`)
+    // console.log(`\n`)
+    return channelPerms
 }
 
 
