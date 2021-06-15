@@ -11,6 +11,10 @@ export default class ban extends BotCommand {
                 { id: `reason`, type: `string`, match: `restContent` },
             ],
             userPermissions: ['BAN_MEMBERS'],
+            description: {
+                'description': 'This is an example command!',
+                'usage': '-templateCommand'
+            }
         });
     }
 

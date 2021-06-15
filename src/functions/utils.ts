@@ -2,6 +2,7 @@ import axios from "axios";
 import chalk from "chalk";
 import { AkairoClient, Command, CommandHandler } from "discord-akairo";
 import { TextChannel } from "discord.js";
+import { GuildMember } from "discord.js";
 import { User } from "discord.js";
 import { Client } from "discord.js";
 import { Message, MessageEmbed } from "discord.js";
@@ -50,7 +51,7 @@ async function errorchannelsend(err: string) {
         .setTitle(`Something went really wrong!`)
         .setDescription(`\`\`\`js\n${err}\`\`\``)
 
-        errorChannel.send(errorEmbed)
+    errorChannel.send(errorEmbed)
 }
 
 async function resetToken(message: Message) {
@@ -69,7 +70,7 @@ async function sleep(time: number) {
 
 async function dConsole(thingToLog: string, functionClient: Client) {
     let output = thingToLog
-    if (thingToLog.length > 1000) { let output = await haste(thingToLog) }
+    if (thingToLog.length > 1000) { output = await haste(thingToLog) }
 
     const consoleChannel = functionClient.channels.cache.get(`839215645715595316`) as TextChannel
     const consoleEmbed = new MessageEmbed()
@@ -187,9 +188,9 @@ async function getPronouns(user: User, context: string) {
     catch (err) {
         //if they don't have pronouns set, or if pronoundb is down
         if (err == `Error: Request failed with status code 404`) {
-            if (context == `details`) {return await language.noPronounsSet(user)}
-            if (context == `ownedBy`) {return `this person's`}
-            if (context == `singular`) {return `this person`}
+            if (context == `details`) { return await language.noPronounsSet(user) }
+            if (context == `ownedBy`) { return `this person's` }
+            if (context == `singular`) { return `this person` }
         }
     }
 }
@@ -198,12 +199,23 @@ function debug(thingToLog: string) {
     console.log(chalk`{bgRed DEBUG:} ${thingToLog}`)
 }
 
-function testCommandCheck(cmdHandler:CommandHandler){
-    cmdHandler.modules.forEach(e => {
-        console.log(`${e.id} ${e.category}`)
-    })
+async function getRolePriority(user: GuildMember, otherperson: GuildMember) {
+    let rolePriority = false
+
+    if (user.roles.highest.rawPosition > otherperson.roles.highest.rawPosition) {
+        rolePriority = true
+    }
+    else if (user.roles.highest.rawPosition == otherperson.roles.highest.rawPosition) {
+        rolePriority = false
+    }
+    else {
+        rolePriority = false
+    }
+
+    return rolePriority
 }
-    
+
+
 export = {
     haste,
     errorhandling,
@@ -214,6 +226,5 @@ export = {
     getObjectDifferences,
     getPronouns,
     debug,
-
-    testCommandCheck
+    getRolePriority
 }

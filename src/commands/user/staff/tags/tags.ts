@@ -5,9 +5,9 @@ import database from "../../../../functions/database";
 import db from "../../../../functions/database";
 import utils from "../../../../functions/utils";
 
-export default class tagCommand extends BotCommand {
+export default class tags extends BotCommand {
     constructor() {
-        super("tagCommand", {
+        super("tags", {
             aliases: ["tag"],
             args: [
                 { id: `action`, type: `string` },
@@ -15,6 +15,10 @@ export default class tagCommand extends BotCommand {
                 { id: `tagContent`, type: `string`, match: `restContent` }
             ],
             userPermissions: ['MANAGE_MESSAGES'],
+            description: {
+                'description': 'Tags! If you don\'t know what they are, they basically are custom text responses.',
+                'usage': 'To create tags: `-tag create <tagName> <tagResponse>`\nTo edit tags: `-tag edit <tagName> <newTagResponse>`\nTo delete tags: `-tag delete <tagName>`'
+            }
         });
     }
 
@@ -38,9 +42,9 @@ export default class tagCommand extends BotCommand {
             addTriggers.forEach(thing => {
                 if (args.action == thing) {
                     //check if tag name is one of the above triggers
-                    for (let trigger of addTriggers) { if (args.tagName == trigger) { return message.util.send(language.badTagName) } }
-                    for (let trigger of editTriggers) { if (args.tagName == trigger) { return message.util.send(language.badTagName) } }
-                    for (let trigger of removeTriggers) { if (args.tagName == trigger) { return message.util.send(language.badTagName) } }
+                    if (addTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
+                    if (editTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
+                    if (removeTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
 
                     if (!args.tagContent) { return message.util.send(language.tagNoResponse) }
 

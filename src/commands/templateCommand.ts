@@ -4,6 +4,10 @@ export default class templateCommand extends BotCommand {
     constructor() {
         super('templateCommand', {
             aliases: ['templateCommand'],
+            description: {
+                'description': 'This is an example command!',
+                'usage': '-templateCommand'
+            }
         })
     }
     async exec(message, args) {

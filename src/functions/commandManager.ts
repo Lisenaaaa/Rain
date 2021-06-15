@@ -1,5 +1,8 @@
 import chalk from "chalk"
+import { AkairoClient } from "discord-akairo"
+import { Client } from "discord.js"
 import { Message } from "discord.js"
+import { BotClient } from "../extensions/BotClient"
 import database from "./database"
 import guildSettings from "./guildSettings"
 import utils from "./utils"
@@ -18,7 +21,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const checkCommandEnabled = await database.checkCommandEnabled(commandID)
 
-    
+
 
     //console.log(await database.checkCommandEnabled(commandID))
 
@@ -33,6 +36,23 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     console.log('\n')
 }
 
+async function getAllCommandIDs(client: BotClient) {
+    let IDs = []
+
+    client.commandHandler.modules.forEach(command => {
+        if (command.category.id.toLowerCase().includes('owner')) { return }
+        if (command.category.id.toLowerCase().includes('testing')) { return }
+
+        if (command.ownerOnly) { return }
+        if (command.id == 'templateCommand') { return }
+
+        else { IDs.push(command.id) }
+    })
+
+    return IDs
+}
+
 export = {
     checkIfCommandCanBeUsed,
+    getAllCommandIDs,
 }

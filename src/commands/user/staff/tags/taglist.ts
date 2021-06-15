@@ -6,7 +6,11 @@ import db from "../../../../functions/database";
 export default class taglist extends BotCommand {
     constructor() {
         super("taglist", {
-            aliases: ["taglist", "tags"]
+            aliases: ["taglist", "tags"],
+            description: {
+                'description': 'This is an example command!',
+                'usage': '-templateCommand'
+            }
         });
     }
 
