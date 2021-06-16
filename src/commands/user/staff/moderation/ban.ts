@@ -13,7 +13,7 @@ export default class ban extends BotCommand {
             userPermissions: ['BAN_MEMBERS'],
             description: {
                 'description': 'This is an example command!',
-                'usage': '-templateCommand'
+                'usage': '`-ban <member> <reason>`'
             }
         });
     }
@@ -25,14 +25,14 @@ export default class ban extends BotCommand {
         if (args.member.user.id == this.client.user.id) { return utils.errorhandling(`Why would you want to ban me?`, message) }
 
         //check for perms
-        //im lazy so im using other code, ik grammar doesn't really make sense here but shut
-        if (args.member.roles.highest.rawPosition > message.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.util.send(await language.rolePriorityHigher(args.member.user)) }
-        if (message.member.roles.highest.rawPosition == args.member.roles.highest.rawPosition && message.author.id != message.guild.owner.id) { return message.util.send(await language.rolePrioritySame(args.member.user)) }
+        if (await utils.getRolePriority(message.member,args.member) == false) {
+            return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'describe')}.`)
+        }
 
         message.delete()
-        await args.member.user.send(`You have been banned from **${message.guild.name}** for \`${args.reason}\`.`).then(e => {
+        args.member.user.send(`You have been banned from **${message.guild.name}** for \`${args.reason}\`.`).then(() => {
             args.member.ban({ reason: `${message.author.tag} | ${args.reason}` })
         })
-        message.util.send(`${args.member.user.username} has been banned.`)
+        message.util.send(`**${args.member.user.username}** has been banned.`)
     }
 }

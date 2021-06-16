@@ -152,6 +152,29 @@ async function getPronouns(user: User, context: string) {
         { id: `ask`, pronoun: `this person` },
         { id: `avoid`, pronoun: `${user.username}` }
     ]
+    const pronounDescribe = [
+        { id: `unspecified`, pronoun: `this person` },
+        { id: `hh`, pronoun: `him` },
+        { id: `hi`, pronoun: `him` },
+        { id: `hs`, pronoun: `him` },
+        { id: `ht`, pronoun: `him` },
+        { id: `ih`, pronoun: `it` },
+        { id: `ii`, pronoun: `it` },
+        { id: `is`, pronoun: `it` },
+        { id: `it`, pronoun: `it` },
+        { id: `shh`, pronoun: `her` },
+        { id: `sh`, pronoun: `her` },
+        { id: `si`, pronoun: `her` },
+        { id: `st`, pronoun: `her` },
+        { id: `th`, pronoun: `them` },
+        { id: `ti`, pronoun: `them` },
+        { id: `ts`, pronoun: `them` },
+        { id: `tt`, pronoun: `them` },
+        { id: `any`, pronoun: `this person` },
+        { id: `other`, pronoun: `this person` },
+        { id: `ask`, pronoun: `this person` },
+        { id: `avoid`, pronoun: `${user.username}` }
+    ]
     const pronounOwnedByPerson = [
         { id: `unspecified`, pronoun: `this person's` },
         { id: `hh`, pronoun: `his` },
@@ -184,6 +207,7 @@ async function getPronouns(user: User, context: string) {
         if (context == `details`) { return pronounDetails.find(e => e.id === pronouns).pronoun }
         if (context == `ownedBy`) { return pronounOwnedByPerson.find(e => e.id === pronouns).pronoun }
         if (context == `singular`) { return pronounSingular.find(e => e.id === pronouns).pronoun }
+        if (context == `describe`) { return pronounDescribe.find(e => e.id === pronouns).pronoun }
     }
     catch (err) {
         //if they don't have pronouns set, or if pronoundb is down

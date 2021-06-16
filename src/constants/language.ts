@@ -12,11 +12,11 @@ async function noPronounsSet(user: User) { return `${user.tag} doesn't have thei
 async function pronounsSet(user: User, author: User, pronouns: string) {
     const pronounsEmbed = new MessageEmbed()
 
-    if (user.id == author.id) { pronounsEmbed.setTitle(`Your pronouns`) }
+    if (user.id == author.id) { pronounsEmbed.setTitle('Your pronouns') }
     else { pronounsEmbed.setTitle(`${user.username}'s pronouns`) }
 
     pronounsEmbed.setDescription(pronouns)
-    pronounsEmbed.setFooter(`Data gotten from https://pronoundb.org`)
+    pronounsEmbed.setFooter('Data gotten from https://pronoundb.org')
 
     return pronounsEmbed
 }

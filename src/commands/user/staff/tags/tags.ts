@@ -16,8 +16,8 @@ export default class tags extends BotCommand {
             ],
             userPermissions: ['MANAGE_MESSAGES'],
             description: {
-                'description': 'Tags! If you don\'t know what they are, they basically are custom text responses.',
-                'usage': 'To create tags: `-tag create <tagName> <tagResponse>`\nTo edit tags: `-tag edit <tagName> <newTagResponse>`\nTo delete tags: `-tag delete <tagName>`'
+                description: 'Tags! If you don\'t know what they are, they\'re basically custom text responses.',
+                usage: 'To create tags: `-tag create <tagName> <tagResponse>`\nTo edit tags: `-tag edit <tagName> <newTagResponse>`\nTo delete tags: `-tag delete <tagName>`\nTo view tags: `-tag <tagName>`'
             }
         });
     }
