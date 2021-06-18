@@ -17,9 +17,9 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const userPerms = await guildSettings.getUserPerms(msg)
 
-    const commandCanBeUsedInChannel = await guildSettings.checkUserCanUseCommandInChannel(guildID, channelID, userPerms)
+    const commandCanBeUsedInChannel = await guildSettings.checkUserCanUseCommandsInChannel(guildID, channelID, userPerms)
 
-    const checkCommandEnabled = await database.checkCommandEnabled(commandID)
+    const checkCommandEnabled = await database.checkCommandEnabledGlobal(commandID)
 
 
 
@@ -31,7 +31,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     }
     utils.debug(`Command ID: ${commandID}`)
     console.log(chalk`{bgBlue ${msg.author.username}'s permissions} ${userPerms}`)
-    console.log(chalk`{bgBlue Can the user run the command in this channel} ${commandCanBeUsedInChannel}`)
+    console.log(chalk`{bgBlue Can the user run commands in this channel} ${commandCanBeUsedInChannel}`)
     console.log(chalk`{bgRed Is the command enabled everywhere?} ${checkCommandEnabled}`)
     console.log('\n')
 }
@@ -52,7 +52,28 @@ async function getAllCommandIDs(client: BotClient) {
     return IDs
 }
 
+async function getAllCommandsAndCategories(client: BotClient) {
+    return client.commandHandler.modules.forEach(command => {
+        if (command.category.id.toLowerCase().includes('owner')) { return }
+        if (command.category.id.toLowerCase().includes('testing')) { return }
+
+        console.log(chalk`{blue ${command.id}}, {magenta ${command.category.id}}`)
+    })
+}
+
+async function getCommandDetails(commandID: string, client: BotClient) {
+    let fuckYouTypescript
+    client.commandHandler.modules.forEach(command => {
+        if (command.id == commandID) {
+            fuckYouTypescript =  command
+        }
+    })
+    return fuckYouTypescript
+}
+
 export = {
     checkIfCommandCanBeUsed,
     getAllCommandIDs,
+    getAllCommandsAndCategories,
+    getCommandDetails,
 }

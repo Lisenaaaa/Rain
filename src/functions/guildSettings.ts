@@ -1,4 +1,7 @@
+import { GuildMember } from "discord.js";
 import { Message, User } from "discord.js";
+import { BotClient } from "../extensions/BotClient";
+import commandManager from '../functions/commandManager';
 import database from "./database";
 import utils from "./utils";
 
@@ -75,7 +78,7 @@ async function checkUserHasPermsForCommand(commandPerms: string, userPerms: stri
     return getAllUserPerms(userPerms).includes(commandPerms)
 }
 
-async function checkUserCanUseCommandInChannel(guildID: string, channelID: string, userPerms: string) {
+async function checkUserCanUseCommandsInChannel(guildID: string, channelID: string, userPerms: string) {
     let channelPerms = false
     let lockedChannelFound = false
     database.read(guildID).then(database => {
@@ -88,8 +91,6 @@ async function checkUserCanUseCommandInChannel(guildID: string, channelID: strin
                 lockedChannelFound = true
             }
         })
-
-
     })
     if (lockedChannelFound == false) { channelPerms = true }
 
@@ -99,9 +100,29 @@ async function checkUserCanUseCommandInChannel(guildID: string, channelID: strin
     return channelPerms
 }
 
+async function checkUserCanUseSpecificCommand(commandID: string, member: GuildMember, client: BotClient) {
+    utils.debug('function ran')
+    /*
+    check command default DISCORD perms, in command description so that akairo doesnt break it all
+    check if command exists in DB, if it doesnt check if user has the DISCORD perms to use command
+    if it does, check user's BOT perms and what BOT perms command needs, set in GUILD db
+    */
+    console.log(await commandManager)
+    // const commandDetails = await commandManager.getCommandDetails(commandID, client)
+    // console.log(commandDetails)
+    // const discordPerms = member.permissions.has(commandDetails.description.defaultPerms)
+    // console.log(discordPerms)
+}
+
+function logCommandManager() {
+    console.log(commandManager)
+}
+
 
 export = {
     getUserPerms,
     checkUserHasPermsForCommand,
-    checkUserCanUseCommandInChannel
+    checkUserCanUseCommandsInChannel,
+    checkUserCanUseSpecificCommand,
+    logCommandManager,
 }

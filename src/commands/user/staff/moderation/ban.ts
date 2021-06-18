@@ -12,8 +12,9 @@ export default class ban extends BotCommand {
             ],
             userPermissions: ['BAN_MEMBERS'],
             description: {
-                'description': 'This is an example command!',
-                'usage': '`-ban <member> <reason>`'
+                description: 'This is an example command!',
+                usage: '`-ban <member> <reason>`',
+                defaultPerms: 'BAN_MEMBERS'
             }
         });
     }
@@ -25,7 +26,7 @@ export default class ban extends BotCommand {
         if (args.member.user.id == this.client.user.id) { return utils.errorhandling(`Why would you want to ban me?`, message) }
 
         //check for perms
-        if (await utils.getRolePriority(message.member,args.member) == false) {
+        if (await utils.getRolePriority(message.member, args.member) == false) {
             return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'describe')}.`)
         }
 

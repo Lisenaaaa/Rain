@@ -9,7 +9,7 @@ export default class help extends BotCommand {
             args: [{ id: 'command', type: 'string' }],
             description: {
                 'description': 'You already know what this does, otherwise you wouldnt be using it, right?',
-                'usage': '-help\n-help <command>'
+                'usage': '-help\n-help <command ID>'
             }
         })
     }
@@ -17,7 +17,8 @@ export default class help extends BotCommand {
         if (!args.command) {
             let commandIDs = await commandManager.getAllCommandIDs(this.client)
             commandIDs = commandIDs.filter(ID => ID != 'help')
-            message.channel.send(commandIDs)
+
+            
         }
         if (args.command) {
             const command = this.client.commandHandler.modules.get(args.command)

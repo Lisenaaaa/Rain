@@ -151,7 +151,7 @@ async function readCommandGlobal() {
         .toArray()
 }
 
-async function readCommand(commandID) {
+async function readSpecificCommandGlobal(commandID) {
     return await db.collection(`commands`)
         .find({ id: commandID })
         .toArray()
@@ -162,8 +162,8 @@ async function deleteCommandFromGlobalDB(commandID: string) {
         .deleteOne((commandDBSFormat(commandID)))
 }
 
-async function checkCommandEnabled(commandID: string) {
-    const fuckYouTypescript = (await readCommand(commandID))[0].enabled;
+async function checkCommandEnabledGlobal(commandID: string) {
+    const fuckYouTypescript = (await readSpecificCommandGlobal(commandID))[0].enabled
     return fuckYouTypescript
 }
 
@@ -188,8 +188,8 @@ export = {
     addCommandToGlobalDB,
     deleteCommandFromGlobalDB,
     readCommandGlobal,
-    readCommand,
-    checkCommandEnabled,
+    readSpecificCommandGlobal,
+    checkCommandEnabledGlobal,
 
     //USER THINGS//
     userRead
