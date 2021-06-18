@@ -9,7 +9,7 @@ export default class taglist extends BotCommand {
             aliases: ["taglist", "tags"],
             description: {
                 'description': 'This is an example command!',
-                'usage': '-templateCommand'
+                'usage': '`-templateCommand`'
             }
         });
     }

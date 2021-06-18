@@ -24,9 +24,8 @@ export default class help extends BotCommand {
 
             const helpEmbed = new MessageEmbed()
                 .setTitle(command.id)
-                .setDescription(command.description)
-                .addField('Usage', command.aliases)
-            console.log(command, { depth: 0 })
+                .setDescription(command.description.description)
+                .addField('Usage', command.description.usage)
 
             message.channel.send(helpEmbed)
         }
