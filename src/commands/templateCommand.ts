@@ -5,8 +5,9 @@ export default class templateCommand extends BotCommand {
         super('templateCommand', {
             aliases: ['templateCommand'],
             description: {
-                'description': 'This is an example command!',
-                'usage': '-templateCommand'
+                description: 'This is an example command!',
+                usage: '-templateCommand',
+                defaultPerms: 'none'
             }
         })
     }

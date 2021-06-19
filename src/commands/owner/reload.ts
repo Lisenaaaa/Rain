@@ -32,7 +32,7 @@ export default class reload extends BotCommand {
 
                 console.log(chalk.green(`Reloaded!\n`))
                 
-                reloadEmbed.setDescription(`Reloaded! Everything that changed in my files should now be loaded in the bot.`)
+                reloadEmbed.setDescription(`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.`)
                 sent.channel.send(reloadEmbed)
                 sent.delete()
             })
