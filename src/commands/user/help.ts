@@ -18,7 +18,7 @@ export default class help extends BotCommand {
             let commandIDs = await commandManager.getAllCommandIDs(this.client)
             commandIDs = commandIDs.filter(ID => ID != 'help')
 
-            
+            message.channel.send(commandIDs)
         }
         if (args.command) {
             const command = this.client.commandHandler.modules.get(args.command)
