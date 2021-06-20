@@ -1,10 +1,16 @@
-import chalk from "chalk";
-import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } from "discord-akairo";
-import { join } from "path";
+import chalk from "chalk"
+import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } from "discord-akairo"
+import { join } from "path"
+import database from "../functions/database"
 
 export class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
-		prefix: ["-"], 
+		prefix: async (message) => {
+			if (message.guild) {
+				return (await database.read(message.guild.id))[0].guildSettings.prefix
+			}
+			else { return '-' }
+		},
 		commandUtil: true,
 		handleEdits: true,
 		directory: join(__dirname, "..", "commands"),
@@ -15,7 +21,7 @@ export class BotClient extends AkairoClient {
 		directory: join(__dirname, "..", "listeners"),
 		automateCategories: true
 	})
-	
+
 	public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
 		directory: join(__dirname, "..", "inhibitors")
 	})
@@ -26,11 +32,11 @@ export class BotClient extends AkairoClient {
 				"545277690303741962"
 			]
 		},
-		{
-			allowedMentions: {
-				parse: ["users"] // Disables all mentions except for users
-			}
-		});
+			{
+				allowedMentions: {
+					parse: ["users"] // Disables all mentions except for users
+				}
+			})
 	}
 	private async _init(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler)
@@ -39,13 +45,13 @@ export class BotClient extends AkairoClient {
 			commandHandler: this.commandHandler,
 			listenerHandler: this.listenerHandler,
 			process
-		});
+		})
 		// loads all the stuff
 		const loaders = {
 			commands: this.commandHandler,
 			listeners: this.listenerHandler,
 			inhibitors: this.inhibitorHandler,
-		};
+		}
 		for (const loader of Object.keys(loaders)) {
 			try {
 				loaders[loader].loadAll()

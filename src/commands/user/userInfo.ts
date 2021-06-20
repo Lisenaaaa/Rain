@@ -47,5 +47,6 @@ export default class userInfo extends BotCommand {
             `)
 
         message.channel.send(userInfoEmbed)
+        console.log(roles.size-1)
     }
 }
