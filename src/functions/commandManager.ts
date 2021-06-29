@@ -12,8 +12,8 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const userID = msg.author.id
     const channelID = msg.channel.id
-    const ownerID = msg.guild.me.guild.me.guild.me.guild.me.guild.owner.id
-    const guildID = msg.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.me.guild.id
+    const ownerID = msg.guild.owner.id
+    const guildID = msg.guild.id
 
     const userPerms = await guildSettings.getUserPerms(msg)
 
@@ -21,10 +21,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const checkCommandEnabled = await database.checkCommandEnabledGlobal(commandID)
 
-
-
-    //console.log(await database.checkCommandEnabled(commandID))
-
+    
 
     if (msg.channel.type == 'text') {
         utils.debug(`Channel name: ${msg.channel.name}`)
@@ -71,7 +68,7 @@ async function getCommandDetails(commandID: string, client: BotClient) {
     return fuckYouTypescript
 }
 
-export = {
+export default {
     checkIfCommandCanBeUsed,
     getAllCommandIDs,
     getAllCommandsAndCategories,

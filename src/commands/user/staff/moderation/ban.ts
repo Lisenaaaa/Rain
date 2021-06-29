@@ -14,7 +14,7 @@ export default class ban extends BotCommand {
             description: {
                 description: 'This is an example command!',
                 usage: '`-ban <member> <reason>`',
-                defaultPerms: 'BAN_MEMBERS'
+                defaultPerms: ['BAN_MEMBERS', 'KICK_MEMBERS']
             }
         });
     }

@@ -1,7 +1,9 @@
 import { GuildMember } from "discord.js";
 import { Message, User } from "discord.js";
 import { BotClient } from "../extensions/BotClient";
-import commandManager from '../functions/commandManager';
+
+import commandManager from './commandManager'
+
 import database from "./database";
 import utils from "./utils";
 
@@ -17,7 +19,7 @@ const permNames = {
 async function getUserPerms(message: Message) {
     return database.read(message.guild.id).then(settings => {
         let found = false
-        let perms
+        let perms = 'everyone'
 
         const roleSettings = settings[0].guildSettings.staffRoles
 
@@ -61,20 +63,19 @@ async function getUserPerms(message: Message) {
 }
 
 function getAllUserPerms(userPerms: string) {
-    let perms
-
-    if (userPerms == 'everyone') { perms = ['everyone'] }
-    if (userPerms == 'trialHelper') { perms = ['everyone', 'trialHelper'] }
-    if (userPerms == 'helper') { perms = ['everyone', 'trialHelper', 'helper'] }
-    if (userPerms == 'moderator') { perms = ['everyone', 'trialHelper', 'helper', 'moderator'] }
-    if (userPerms == 'srMod') { perms = ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod'] }
-    if (userPerms == 'admin') { perms = ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin'] }
-    if (userPerms == 'owner') { perms = ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner'] }
-
-    return perms
+    if (userPerms == 'everyone') { return ['everyone'] }
+    if (userPerms == 'trialHelper') { return ['everyone', 'trialHelper'] }
+    if (userPerms == 'helper') { return ['everyone', 'trialHelper', 'helper'] }
+    if (userPerms == 'moderator') { return ['everyone', 'trialHelper', 'helper', 'moderator'] }
+    if (userPerms == 'srMod') { return ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod'] }
+    if (userPerms == 'admin') { return ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin'] }
+    if (userPerms == 'owner') { return ['everyone', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner'] }
 }
 
-async function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
+function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
+    // console.log(getAllUserPerms(userPerms))
+    // console.log(commandPerms)
+    // console.log(getAllUserPerms(userPerms).includes(commandPerms))
     return getAllUserPerms(userPerms).includes(commandPerms)
 }
 
@@ -100,22 +101,45 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
     return channelPerms
 }
 
-async function checkUserCanUseSpecificCommand(commandID: string, member: GuildMember, client: BotClient) {
-    utils.debug('function ran')
-    /*
-    check command default DISCORD perms, in command description so that akairo doesnt break it all
-    check if command exists in DB, if it doesnt check if user has the DISCORD perms to use command
-    if it does, check user's BOT perms and what BOT perms command needs, set in GUILD db
-    */
-    console.log(await commandManager)
-    // const commandDetails = await commandManager.getCommandDetails(commandID, client)
-    // console.log(commandDetails)
-    // const discordPerms = member.permissions.has(commandDetails.description.defaultPerms)
-    // console.log(discordPerms)
-}
+async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
+    const commandDetails = await commandManager.getCommandDetails(commandID, message.client as BotClient)
+    const discordPerms = message.member.permissions.has(commandDetails.description.defaultPerms)
+    const guildDB = (await database.read(message.member.guild.id))[0]
 
-function logCommandManager() {
-    console.log(commandManager)
+    let existsInDB = false
+    let userHasBotPerms = false
+
+    let fuckYouTypescriptIWantMyCodeRunningInOrder = []
+
+    await guildDB.commandSettings.forEach(async cmd => {
+        if (cmd.id == commandID && existsInDB == false) {
+            existsInDB = true
+
+            if (cmd.allowedRoles == 'null') {
+                existsInDB = false
+                userHasBotPerms = false
+                return
+            }
+            const userPerms = getUserPerms(message)
+
+            fuckYouTypescriptIWantMyCodeRunningInOrder.push(userPerms)
+
+            if (await checkUserHasPermsForCommand(cmd.allowedRoles, await userPerms)) {
+                userHasBotPerms = true
+                return
+            }
+        }
+    })
+
+    return Promise.all(fuckYouTypescriptIWantMyCodeRunningInOrder).then(() => {
+        if (existsInDB == false) {
+            return discordPerms
+        }
+
+        if (existsInDB == true) {
+            return userHasBotPerms
+        }
+    })
 }
 
 
@@ -124,5 +148,4 @@ export = {
     checkUserHasPermsForCommand,
     checkUserCanUseCommandsInChannel,
     checkUserCanUseSpecificCommand,
-    logCommandManager,
 }

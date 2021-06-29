@@ -46,7 +46,7 @@ function defaultDBSchema(messageGuildID) {
             modOnlyChannels: [],
             adminOnlyChannels: []
         },
-        commandSettings: {},
+        commandSettings: [],
         tags: []
     }
     return defaultDBSchema
@@ -63,11 +63,7 @@ function commandInGuildSettingsFormat(commandID: string) {
     const commandDBSchema = {
         id: commandID,
         enabled: true,
-        allowedRoles: [
-            `admin`,
-            `srMod`,
-            `moderator`
-        ]
+        allowedRoles: 'null'
     }
     return commandDBSchema
 }
@@ -139,6 +135,14 @@ async function editGuildSettingsPerms(messageGuildID: string, roleToEdit: string
         .updateOne(query, update)
 }
 
+async function addCommandToGuildDB(guildID: string, commandID: string) {
+    let query = { guildID: guildID }
+    let update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
+
+    return await db.collection(`guildsv2`)
+        .updateOne(query, update)
+}
+
 /* GLOBAL THINGS */
 async function addCommandToGlobalDB(commandID: string) {
     return await db.collection(`commands`)
@@ -182,6 +186,7 @@ export = {
     deleteTag,
     guildSettings,
     addOverrideOther,
+    addCommandToGuildDB,
     editGuildSettingsPerms,
 
     //GLOBAL THINGS//

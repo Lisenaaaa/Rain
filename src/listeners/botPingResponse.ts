@@ -1,8 +1,5 @@
-import chalk from 'chalk';
-import { Listener } from 'discord-akairo';
 import { BotListener } from '../extensions/BotListener';
 import database from '../functions/database';
-import utils from '../functions/utils';
 
 class pingResponse extends BotListener {
     constructor() {
