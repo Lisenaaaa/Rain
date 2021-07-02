@@ -32,6 +32,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@discordjs/builders@npm:^0.1.1":
+  version: 0.1.1
+  resolution: "@discordjs/builders@npm:0.1.1"
+  dependencies:
+    discord-api-types: ^0.18.1
+    tslib: ^2.3.0
+  checksum: 2902d53542467c9fe3353b412c12b273a9ecba10ad3f86029613ef3822eba68a83b491fac644bdc37e254520b6a1fcaa91ae58c3ad859d0a768e47fbd2fe3e06
+  languageName: node
+  linkType: hard
+
 "@discordjs/collection@npm:^0.1.6":
   version: 0.1.6
   resolution: "@discordjs/collection@npm:0.1.6"
@@ -95,6 +105,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/async-queue@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@sapphire/async-queue@npm:1.1.4"
+  checksum: 325e416a44dd919a6a3eee03852efea207fcfd02db9bb0534dc495c7a695e7298895193cb8674712a7ad619d0e7a742c28589671a9ab2571e320c142f9d7f9e0
+  languageName: node
+  linkType: hard
+
 "@sindresorhus/is@npm:^4.0.0":
   version: 4.0.0
   resolution: "@sindresorhus/is@npm:4.0.0"
@@ -146,6 +163,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/module-alias@npm:^2":
+  version: 2.0.0
+  resolution: "@types/module-alias@npm:2.0.0"
+  checksum: d25152dbe86a70c32844bfa3ef882b4c6e2456c016486596c0ffa8e541b095791c95042e3e06b44a91e6306c5d75232c317d12a71771e4767d69f2e5f8c1df80
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*":
   version: 14.14.37
   resolution: "@types/node@npm:14.14.37"
@@ -173,6 +197,15 @@ __metadata:
   dependencies:
     "@types/node": "*"
   checksum: e6e6613c800aeda63e2331e753e8d21df1a2c9aa7a4bc71ed792a848e4811fc96e609759089355314a2318c76eff1f161499cd242044838ab1e6f56e463ebb9c
+  languageName: node
+  linkType: hard
+
+"@types/ws@npm:^7.4.5":
+  version: 7.4.5
+  resolution: "@types/ws@npm:7.4.5"
+  dependencies:
+    "@types/node": "*"
+  checksum: b467f596cc9992dde38ea9bb824135f20d0eae92515304e3de25e4b98a3b41e71897801900563c1e72f36fa7a6277c873896b842bd6d1b9d4b9457834533903b
   languageName: node
   linkType: hard
 
@@ -641,26 +674,41 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord-akairo@npm:^8.1.0":
-  version: 8.1.0
-  resolution: "discord-akairo@npm:8.1.0"
-  checksum: c0ad720dbcf1acdb4ffd7f3b5445495e37e23b73352ac669df4975f9c712b17dedd8150ea0747f058db8d357fa4b50a5df0dd0103cf9ac8050c95ceaa9b7b668
+"discord-akairo@git+https://github.com/SkyBlockDev/discord-akairo.git":
+  version: 8.2.2
+  resolution: "discord-akairo@https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"
+  checksum: 190358ad6da3ba8a5a7d52b12f55a5a96729359fa2019a9786999a498725edce1f182f460c47c30c3fb45def62d1e1b2f6fbf8c3f312655886ea333c60175d6a
   languageName: node
   linkType: hard
 
-"discord.js@npm:^12.5.3":
-  version: 12.5.3
-  resolution: "discord.js@npm:12.5.3"
+"discord-api-types@npm:^0.18.1":
+  version: 0.18.1
+  resolution: "discord-api-types@npm:0.18.1"
+  checksum: b9ae87cb2d80aaf11ef71d33beeb12d2729d3b3d5ed8bb60413e9c0b0d1a130ee7d1a8f6bc2dd24224794e95ae421306c83cc484c54ae5897a7a5edd37e64a51
+  languageName: node
+  linkType: hard
+
+"discord-api-types@npm:^0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e":
+  version: 0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e
+  resolution: "discord-api-types@npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e"
+  checksum: ca53bf2bd5f85edc9e08e3bec58cb341eb1b4ebf32f2cf1c67a8d43a78146f2f78d0bb61d3124ded6642b30b84ab3e172b2f8c635df192de62c864d6e5ab15f9
+  languageName: node
+  linkType: hard
+
+"discord.js@npm:dev":
+  version: 13.0.0-dev.64f093f.1625054868
+  resolution: "discord.js@npm:13.0.0-dev.64f093f.1625054868"
   dependencies:
+    "@discordjs/builders": ^0.1.1
     "@discordjs/collection": ^0.1.6
     "@discordjs/form-data": ^3.0.1
+    "@sapphire/async-queue": ^1.1.4
+    "@types/ws": ^7.4.5
     abort-controller: ^3.0.0
+    discord-api-types: ^0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e
     node-fetch: ^2.6.1
-    prism-media: ^1.2.9
-    setimmediate: ^1.0.5
-    tweetnacl: ^1.0.3
-    ws: ^7.4.4
-  checksum: 365e21b12496c47be80a4e2cd6d81665653908fcd22a5f46a5507ad8771cb20c40fab893ebb192af23e2bdb0db5c1eca8c5228c9f689951d0fd1139c3bcd567f
+    ws: ^7.5.1
+  checksum: 860de9cab340f6434f5c3755b3d7627c51a74d2ee8ff7b42d78fc1cc9011451ea9d503bdcfd928f5d0771d4d4f4507053d861c364e7514b52b6f5caec444e9b6
   languageName: node
   linkType: hard
 
@@ -1292,19 +1340,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mime-db@npm:1.46.0":
-  version: 1.46.0
-  resolution: "mime-db@npm:1.46.0"
-  checksum: 4e137ac502ca5ba6c583e552c5fa6abd0c2157592f647824ba7246b771eb42c65c2a1816fc52b27afdbb88a026127f1d5fba354f9dcde591b3b464be07c3d27e
+"mime-db@npm:1.48.0":
+  version: 1.48.0
+  resolution: "mime-db@npm:1.48.0"
+  checksum: 346d5df2ff2f501bdeff07e88a28d205f9cd27bccd3b8604847d3aee6ce73d4ecf88e943bbbce46c167d404487f46cdf09d57354c51b6f08a4d5833bcaafa59f
   languageName: node
   linkType: hard
 
 "mime-types@npm:^2.1.12":
-  version: 2.1.29
-  resolution: "mime-types@npm:2.1.29"
+  version: 2.1.31
+  resolution: "mime-types@npm:2.1.31"
   dependencies:
-    mime-db: 1.46.0
-  checksum: 744d72b2a24c64d2aacc1ead86bfc827c2c4f1bb6f3b4bf6d8684b82f5ddd0b75a5c0eff128a888c09080f9ad7979400b64a697889690fca3c42de80c8f5e187
+    mime-db: 1.48.0
+  checksum: 0373e58e3826802e462cf0c180ca5556fd0990acaf123d421d5f8643f0ca61d2126ea57eb6f4ba96f9ef07d3e627c06261825418a6549b0671261cc1bb4219b4
   languageName: node
   linkType: hard
 
@@ -1328,6 +1376,13 @@ __metadata:
   dependencies:
     brace-expansion: ^1.1.7
   checksum: 47eab9263962cacd5733e274ecad2d8e54b0f8e124ba35ae69189e296058f634a4967b87a98954f86fa5c830ff177caf827ce0136d28717ed3232951fb4fae62
+  languageName: node
+  linkType: hard
+
+"module-alias@npm:^2.2.2":
+  version: 2.2.2
+  resolution: "module-alias@npm:2.2.2"
+  checksum: 1b37943df4fbe56799688eb3496f5113f7f1e18ff7a53bd3543e93fd4ee6c4b04e1548fc0cb49ae73e086b18ee712ab3321f6d7f5444cf413c638914decb8918
   languageName: node
   linkType: hard
 
@@ -1476,27 +1531,6 @@ __metadata:
   bin:
     prettier: bin-prettier.js
   checksum: 92c6c9f4b87eba1f28466edee57dd18c80d00b858edda77d46d1950d20e6e302b68ee255fc91133ba931e63c4577b5ae30da194d9626a8f3c0177778b91bf056
-  languageName: node
-  linkType: hard
-
-"prism-media@npm:^1.2.9":
-  version: 1.2.9
-  resolution: "prism-media@npm:1.2.9"
-  peerDependencies:
-    "@discordjs/opus": ^0.5.0
-    ffmpeg-static: ^4.2.7 || ^3.0.0 || ^2.4.0
-    node-opus: ^0.3.3
-    opusscript: ^0.0.8
-  peerDependenciesMeta:
-    "@discordjs/opus":
-      optional: true
-    ffmpeg-static:
-      optional: true
-    node-opus:
-      optional: true
-    opusscript:
-      optional: true
-  checksum: e266159eadac34f9b57b68113d7bc61deb66516d64a0696eb696349552f19321fd5952a8224997bf26f707aa0dbdeaa13e40417b4031239b323e9b13d852566c
   languageName: node
   linkType: hard
 
@@ -1658,13 +1692,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"setimmediate@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "setimmediate@npm:1.0.5"
-  checksum: 87884d8add4779fe47ccf763396a5bf875640ae34d80a10802da4de5c25d87647c12f6e7748fd5b8c143b57201caf2a5a781631456c228825f166ca305c12f20
-  languageName: node
-  linkType: hard
-
 "shebang-command@npm:^2.0.0":
   version: 2.0.0
   resolution: "shebang-command@npm:2.0.0"
@@ -1685,18 +1712,20 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "skyclientbot@workspace:."
   dependencies:
+    "@types/module-alias": ^2
     "@types/node": ^14.14.31
     "@types/prettier": ^2.2.3
     "@typescript-eslint/eslint-plugin": ^4.15.2
     "@typescript-eslint/parser": ^4.15.2
     axios: ^0.21.1
     chalk: ^4.1.1
-    discord-akairo: ^8.1.0
-    discord.js: ^12.5.3
+    discord-akairo: "git+https://github.com/SkyBlockDev/discord-akairo.git"
+    discord.js: dev
     dotenv: ^10.0.0
     eslint: ^7.20.0
     got: ^11.8.2
     jsonfile: ^6.1.0
+    module-alias: ^2.2.2
     mongodb: ^3.6.9
     prettier: ^2.2.1
     rimraf: ^3.0.2
@@ -1845,6 +1874,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"tslib@npm:^2.3.0":
+  version: 2.3.0
+  resolution: "tslib@npm:2.3.0"
+  checksum: 7b4fc9feff0f704743c3760f5d8d708f6417fac6458159e63df3a6b1100f0736e3b99edb9fe370f274ad15160a1f49ff05cb49402534c818ff552c48e38c3e6e
+  languageName: node
+  linkType: hard
+
 "tsutils@npm:^3.17.1":
   version: 3.20.0
   resolution: "tsutils@npm:3.20.0"
@@ -1853,13 +1889,6 @@ __metadata:
   peerDependencies:
     typescript: ">=2.8.0 || >= 3.2.0-dev || >= 3.3.0-dev || >= 3.4.0-dev || >= 3.5.0-dev || >= 3.6.0-dev || >= 3.6.0-beta || >= 3.7.0-dev || >= 3.7.0-beta"
   checksum: 9245072f9c0d511e3a30c52ec0bfd5ad91495f85d819426ad5283931d09bbdffe515c5c708ba99a4c2424e4576d37200d3e62df66f0027ca29fcfa76794e9610
-  languageName: node
-  linkType: hard
-
-"tweetnacl@npm:^1.0.3":
-  version: 1.0.3
-  resolution: "tweetnacl@npm:1.0.3"
-  checksum: 1188f3ef85db04d6dba632d211e481ae0a5805974491633ff60bd56ae3362312dfea1515e0d200685867b69ff212e8778e26923f8203e3c335064b07f620a6c7
   languageName: node
   linkType: hard
 
@@ -1954,9 +1983,9 @@ typescript@^4.2.2:
   languageName: node
   linkType: hard
 
-"ws@npm:^7.4.4":
-  version: 7.4.6
-  resolution: "ws@npm:7.4.6"
+"ws@npm:^7.5.1":
+  version: 7.5.1
+  resolution: "ws@npm:7.5.1"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ^5.0.2
@@ -1965,7 +1994,7 @@ typescript@^4.2.2:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: ffeb626d92f14aa3a67aa3784824c1d290131e25d225f4ca6b1b6b6d7ea754fca67694d89a5b99b144382365e1bccf1f7ec2f92df56f0d25f44939b070452f06
+  checksum: e56541a73cac1d5b4b5e81ddd7e9925e84e45abaab6f3ee5e088e0089b5518f862d8429897243e12482b118971ad8a9a75b1d4900769bce3877878a0a7470043
   languageName: node
   linkType: hard
 

@@ -4,7 +4,12 @@ import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
 import { BotCommand } from '../../extensions/BotCommand';
-import utils from '../../functions/utils'
+
+import importUtils from '@functions/utils'
+const utils = importUtils
+
+import importDatabase from '@functions/database'
+const database = importDatabase
 
 const sh = promisify(exec);
 
@@ -13,36 +18,31 @@ export default class evaluate extends BotCommand {
         super('eval', {
             aliases: ['eval', 'ev', 'exec'],
             args: [
-                { id: 'codetoeval', type: 'string', match: 'rest' },
-                { id: "silent", match: 'flag', flag: '--silent', },
+                { id: 'codeToEval', type: 'string', match: 'rest' },
+                { id: 'silent', match: 'flag', flag: '--silent', },
                 { id: 'sudo', match: 'flag', flag: '--sudo' }
             ],
             ownerOnly: true,
-            channel: 'guild'
-        });
+        })
     }
 
     async exec(message, args) {
         try {
-            if (args.codetoeval.includes(`token`)) {
-                return (message.util.send(`no token`))
+            if (args.codeToEval.includes('token')) {
+                return (message.util.send('no token'))
             }
-            if (args.codetoeval.includes(`env`)) {
-                return message.util.send(`no env`)
-            }
-
-            if (args.codetoeval.includes(`message.channel.delete`)) {
-                return message.util.send(`Are you IRONM00N?`)
-            }
-            if (args.codetoeval.includes(`message.guild.delete`)) {
-                return message.util.send(`You're like IRONM00N but infinitely more stupid!`)
-            }
-            if (args.codetoeval.includes(`delete`) && !args.sudo) {
-                return message.util.send(`This would be blocked by smooth brain protection, but BushBot has a license`)
+            if (args.codeToEval.includes('env')) {
+                return message.util.send('no env')
             }
 
-            async function send(thingToSend: string) {
-                message.util.send(thingToSend)
+            if (args.codeToEval.includes('channel.delete')) {
+                return message.util.send('Are you IRONM00N?')
+            }
+            if (args.codeToEval.includes('message.guild.delete')) {
+                return message.util.send('You\'re like IRONM00N but infinitely more stupid!')
+            }
+            if (args.codeToEval.includes('delete') && !args.sudo) {
+                return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license')
             }
 
             let guild = message.guild
@@ -54,47 +54,52 @@ export default class evaluate extends BotCommand {
             let botUser = this.client.user
             let botMember = message.guild.me
 
-            let output = await eval(args.codetoeval)
+            let output = await eval(args.codeToEval)
 
-            if (inspect(output).includes(process.env["token"])) {
-                return message.util.send(`Message containing token wasn't sent.`)
+            if (inspect(output).includes(process.env['token'])) {
+                return message.util.send('Message containing token wasn\'t sent.')
             }
 
-            //im going to make something that disables eval embed in specific channels in the database later
-            if (message.guild.id == `794610828317032458` && message.channel.id != `834878498941829181`) {
-                if (args.codetoeval.includes('message.delete')) {
-                    return
-                }
-                return message.react(`<:success:838816341007269908>`)
 
+            const evalEmbedDisabledGuilds = [
+                '794610828317032458'
+            ]
+            const evalDisabledGuildChannelBypass = [
+                '834878498941829181'
+            ]
+
+            if (evalEmbedDisabledGuilds.includes(message.guild.id) && !evalDisabledGuildChannelBypass.includes(message.channel.id)) {
+                if (args.codeToEval.includes('message.delete')) { return }
+                else { return message.react('<:success:838816341007269908>') }
             }
 
-            if (!args.silent && !args.codetoeval.includes("message.channel.delete()")) {
+
+            if (!args.silent && !args.codeToEval.includes('message.channel.delete()')) {
                 const evalOutputEmbed = new MessageEmbed()
                     .setTitle('Evaluated Code')
-                    .addField(`:inbox_tray: **Input**`, `\`\`\`js\n${args.codetoeval}\`\`\``)
+                    .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
 
                 if (inspect(output, { depth: 0 }).length > 1000) {
-                    await evalOutputEmbed.addField(`:outbox_tray: **Output**`, await utils.haste(inspect(output)))
+                    await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output)))
                 }
                 else {
-                    evalOutputEmbed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``)
+                    evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``)
                 }
 
-                await message.util.send(evalOutputEmbed)
+                await message.util.send({ embeds: [evalOutputEmbed] })
             }
             if (args.silent) {
                 if (args.codetoeval.includes('message.delete')) {
                     return
                 }
-                message.react(`<:success:838816341007269908>`)
+                message.react('<:success:838816341007269908>')
             }
 
         }
         catch (err) {
-            try { utils.errorhandling(err, message) }
+            try { await utils.errorhandling(err, message) }
             catch (err) {
-                utils.errorchannelsend(err)
+                await utils.errorchannelsend(err)
             }
         }
     }

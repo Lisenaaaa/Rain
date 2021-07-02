@@ -22,6 +22,7 @@ class ReadyListener extends BotListener {
         //check if all commands are in the DB, and add missing ones
 
         const commandIDs = await commandManager.getAllCommandIDs(this.client)
+        //const commandIDs = []
 
         let dbIDs = []
         await database.readCommandGlobal().then(db => {
@@ -42,7 +43,7 @@ class ReadyListener extends BotListener {
 
         missingFromBot.forEach(id => {
             database.deleteCommandFromGlobalDB(id)
-            console.log(chalk`{blue Removed {magenta ${id}} from the database!}`)
+            console.log(chalk`{red Removed {magenta ${id}} from the database!}`)
         })
     }
 }

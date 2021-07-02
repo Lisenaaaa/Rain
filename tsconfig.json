@@ -10,13 +10,13 @@
 		"incremental": true,
 		"esModuleInterop": true,
 		"experimentalDecorators": true,
-		"emitDecoratorMetadata": true
+		"emitDecoratorMetadata": true,
+		"baseUrl": ".",
+		"paths": {
+			"@functions/*": ["src/functions/*"],
+			"@extentions/*": ["src/extentions/*"]
+		}
 	},
-	"include": [
-		"src/**/*",
-		"src/*"
-	],
-	"exclude": [
-		"node_modules"
-	]
+	"include": ["src/**/*", "src/*"],
+	"exclude": ["node_modules"]
 }

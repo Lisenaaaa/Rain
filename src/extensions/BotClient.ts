@@ -1,5 +1,6 @@
 import chalk from "chalk"
 import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } from "discord-akairo"
+import { Intents } from "discord.js"
 import { join } from "path"
 import database from "../functions/database"
 
@@ -30,13 +31,16 @@ export class BotClient extends AkairoClient {
 			ownerID: [
 				"492488074442309642",
 				"545277690303741962"
-			]
+			],
+			intents: Intents.NON_PRIVILEGED
+
 		},
-			{
-				allowedMentions: {
-					parse: ["users"] // Disables all mentions except for users
-				}
-			})
+		{
+			allowedMentions: {
+				parse: ["users"]
+			},
+			intents: Intents.NON_PRIVILEGED
+		})
 	}
 	private async _init(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler)
@@ -64,6 +68,6 @@ export class BotClient extends AkairoClient {
 
 	public async start(): Promise<string> {
 		await this._init()
-		return this.login(process.env["token"])
+		return this.login(process.env["devtoken"])
 	}
 }

@@ -1,7 +1,7 @@
 import chalk from "chalk";
 
 require('dotenv').config()
-const { MongoClient } = require("mongodb");
+const { MongoClient } = require('mongodb');
 const uri = process.env.mongodb
 
 const mongoclient = new MongoClient(uri, {
@@ -13,10 +13,10 @@ let db
 async function run() {
     try {
         await mongoclient.connect().then(() => {
-            db = mongoclient.db(`bot`)
+            db = mongoclient.db('bot')
         })
 
-        console.log(chalk.blue(`Connected to MongoDB!`))
+        console.log(chalk.blue('Connected to MongoDB.'))
 
     } finally { }
 }
@@ -26,21 +26,21 @@ function defaultDBSchema(messageGuildID) {
     const defaultDBSchema = {
         guildID: messageGuildID,
         guildSettings: {
-            prefix: [`-`],
-            welcomeChannel: `null`,
-            welcomeMessage: `null`,
+            prefix: ['-'],
+            welcomeChannel: 'null',
+            welcomeMessage: 'null',
             loggingChannels: {
-                messageLogs: `null`,
-                memberLogs: `null`,
-                moderationLogs: `null`
+                messageLogs: 'null',
+                memberLogs: 'null',
+                moderationLogs: 'null'
             },
             staffRoles: {
-                owner: `null`,
-                admin: `null`,
-                srMod: `null`,
-                moderator: `null`,
-                helper: `null`,
-                trialHelper: `null`
+                owner: 'null',
+                admin: 'null',
+                srMod: 'null',
+                moderator: 'null',
+                helper: 'null',
+                trialHelper: 'null'
             },
             helperOnlyChannels: [],
             modOnlyChannels: [],
@@ -59,6 +59,14 @@ function commandDBSFormat(commandID: string) {
     }
     return commandDBSchema
 }
+function commandDBsFormatDisabled(commandID: string) {
+    const commandDBSchema = {
+        id: commandID,
+        enabled: false
+    }
+    return commandDBSchema
+}
+
 function commandInGuildSettingsFormat(commandID: string) {
     const commandDBSchema = {
         id: commandID,
@@ -68,18 +76,26 @@ function commandInGuildSettingsFormat(commandID: string) {
     return commandDBSchema
 }
 
+function userDBSchema(userID: string) {
+    return {
+        id: userID,
+        blocked: false,
+        premiumTokens: 0
+    }
+}
+
 async function read(messageGuildID: string) {
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .find({ guildID: messageGuildID })
         .toArray()
 }
 
-async function isInDB() {
-    return await db.collection(`guildsv2`).find().toArray()
+async function getEntireGuildsDB() {
+    return await db.collection('guildsv2').find().toArray()
 }
 
 async function add(messageGuildID: string) {
-    let allDB = await isInDB()
+    let allDB = await getEntireGuildsDB()
 
     for (let e of allDB) {
         if (e.guildID == messageGuildID) {
@@ -87,13 +103,13 @@ async function add(messageGuildID: string) {
         }
     }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .insertOne(defaultDBSchema(messageGuildID))
 }
 
 //THIS WILL PROBABLY BREAK EVERYTHING IF USED, SO DON'T FUCKING USE IT
 async function addOverrideOther(messageGuildID: string) {
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .insertOne(defaultDBSchema(messageGuildID))
 }
 
@@ -101,15 +117,15 @@ async function addTag(messageGuildID: string, tagName: string, tagResponse: stri
     let query = { guildID: messageGuildID }
     let update = { $push: { tags: { name: tagName, value: tagResponse } } }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
 async function editTag(messageGuildID: string, tagName: string, newTagResponse: string) {
     let query = { guildID: messageGuildID, tags: { $elemMatch: { name: tagName } } }
-    let update = { $set: { "tags.$.value": newTagResponse } }
+    let update = { $set: { 'tags.$.value': newTagResponse } }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
@@ -117,7 +133,7 @@ async function deleteTag(messageGuildID: string, tagName: string) {
     let query = { guildID: messageGuildID }
     let update = { $pull: { tags: { name: tagName } } }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
@@ -128,10 +144,10 @@ async function guildSettings(messageGuildID: string) {
 
 async function editGuildSettingsPerms(messageGuildID: string, roleToEdit: string, newRole: string) {
     let query = { guildID: messageGuildID }
-    let object = { ["guildSettings.staffRoles." + roleToEdit]: newRole }
+    let object = { ['guildSettings.staffRoles.' + roleToEdit]: newRole }
     let update = { $set: object }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
@@ -139,30 +155,32 @@ async function addCommandToGuildDB(guildID: string, commandID: string) {
     let query = { guildID: guildID }
     let update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
 
-    return await db.collection(`guildsv2`)
+    return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
 /* GLOBAL THINGS */
 async function addCommandToGlobalDB(commandID: string) {
-    return await db.collection(`commands`)
+    return await db.collection('commands')
         .insertOne((commandDBSFormat(commandID)))
 }
 
 async function readCommandGlobal() {
-    return await db.collection(`commands`)
+    return await db.collection('commands')
         .find({})
         .toArray()
 }
 
 async function readSpecificCommandGlobal(commandID) {
-    return await db.collection(`commands`)
+    return await db.collection('commands')
         .find({ id: commandID })
         .toArray()
 }
 
 async function deleteCommandFromGlobalDB(commandID: string) {
-    return await db.collection(`commands`)
+    await db.collection('commands')
+        .deleteOne((commandDBsFormatDisabled(commandID)))
+    await db.collection('commands')
         .deleteOne((commandDBSFormat(commandID)))
 }
 
@@ -173,9 +191,27 @@ async function checkCommandEnabledGlobal(commandID: string) {
 
 /* USER THINGS */
 async function userRead(userID: string) {
-    return await db.collection(`user`)
+    return await db.collection('user')
         .find({ ID: userID })
         .toArray()
+}
+
+async function getEntireUserDB() {
+    return await db.collection('guildsv2').find().toArray()
+}
+
+async function userAdd(userID: string) {
+
+    let allDB = await getEntireUserDB()
+
+    for (let e of allDB) {
+        if (e.userID == userID) {
+            return
+        }
+    }
+
+    return await db.collection('user')
+        .insertOne(userDBSchema(userID))
 }
 
 export = {
@@ -197,5 +233,6 @@ export = {
     checkCommandEnabledGlobal,
 
     //USER THINGS//
-    userRead
+    userRead,
+    userAdd,
 }

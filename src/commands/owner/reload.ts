@@ -21,9 +21,10 @@ export default class reload extends BotCommand {
         try {
             const reloadEmbed = new MessageEmbed()
                 .setDescription(`Reloading!`)
-            message.util.send(reloadEmbed).then(async sent => {
+                .setColor(message.member.displayColor)
+            message.util.send({ embeds: [reloadEmbed] }).then(async sent => {
                 console.log(chalk.greenBright(`Reloading!`))
-                
+
                 await sh("yarn build");
 
                 await this.client.commandHandler.reloadAll()
@@ -31,9 +32,9 @@ export default class reload extends BotCommand {
                 await this.client.inhibitorHandler.reloadAll()
 
                 console.log(chalk.green(`Reloaded!\n`))
-                
+
                 reloadEmbed.setDescription(`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.`)
-                sent.channel.send(reloadEmbed)
+                sent.channel.send({ embeds: [reloadEmbed] })
                 sent.delete()
             })
         }

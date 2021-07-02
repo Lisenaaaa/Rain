@@ -12,7 +12,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const userID = msg.author.id
     const channelID = msg.channel.id
-    const ownerID = msg.guild.owner.id
+    const ownerID = msg.guild.ownerID
     const guildID = msg.guild.id
 
     const userPerms = await guildSettings.getUserPerms(msg)
@@ -21,16 +21,36 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const checkCommandEnabled = await database.checkCommandEnabledGlobal(commandID)
 
-    
+    const userCanRunCommandInGuild = await guildSettings.checkUserCanUseSpecificCommand(commandID, msg)
+
+    function cmdInfo(info: string) {
+        console.log(chalk`{bgMagenta Info} ${info}`)
+    }
 
     if (msg.channel.type == 'text') {
-        utils.debug(`Channel name: ${msg.channel.name}`)
+        cmdInfo(`Channel name: ${msg.channel.name}`)
     }
-    utils.debug(`Command ID: ${commandID}`)
-    console.log(chalk`{bgBlue ${msg.author.username}'s permissions} ${userPerms}`)
+    cmdInfo(`Command ID: ${commandID}`)
+    cmdInfo(`User: ${msg.author.tag}`)
+
+    console.log(chalk`{bgCyan User's permissions} ${userPerms}`)
+    console.log(chalk`{bgGreen Can the user run the command at all in this guild?} ${userCanRunCommandInGuild}`)
     console.log(chalk`{bgBlue Can the user run commands in this channel} ${commandCanBeUsedInChannel}`)
     console.log(chalk`{bgRed Is the command enabled everywhere?} ${checkCommandEnabled}`)
     console.log('\n')
+
+    if (checkCommandEnabled == false) {
+        return false
+    }
+
+    if (commandCanBeUsedInChannel == true) {
+        commandCanBeRan = true
+    }
+    if (userCanRunCommandInGuild == false) {
+        commandCanBeRan = false
+    }
+
+    return commandCanBeRan
 }
 
 async function getAllCommandIDs(client: BotClient) {
@@ -61,9 +81,7 @@ async function getAllCommandsAndCategories(client: BotClient) {
 async function getCommandDetails(commandID: string, client: BotClient) {
     let fuckYouTypescript
     client.commandHandler.modules.forEach(command => {
-        if (command.id == commandID) {
-            fuckYouTypescript =  command
-        }
+        if (command.id == commandID) { fuckYouTypescript = command }
     })
     return fuckYouTypescript
 }

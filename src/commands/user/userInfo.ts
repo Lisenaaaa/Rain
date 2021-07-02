@@ -23,7 +23,7 @@ export default class userInfo extends BotCommand {
             serverOwner: '<:owner:855483985194647642>'
         }
 
-        let description = new String
+        let description = ''
         function descriptionAdd(thingToAdd: string) {
             description = description + `${thingToAdd} `
         }

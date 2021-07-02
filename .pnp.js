@@ -37,18 +37,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {
           "packageLocation": "./",
           "packageDependencies": [
+            ["@types/module-alias", "npm:2.0.0"],
             ["@types/node", "npm:14.14.31"],
             ["@types/prettier", "npm:2.2.3"],
             ["@typescript-eslint/eslint-plugin", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["@typescript-eslint/parser", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
-            ["discord-akairo", "npm:8.1.0"],
-            ["discord.js", "npm:12.5.3"],
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"],
+            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
             ["jsonfile", "npm:6.1.0"],
+            ["module-alias", "npm:2.2.2"],
             ["mongodb", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:3.6.9"],
             ["prettier", "npm:2.2.1"],
             ["rimraf", "npm:3.0.2"],
@@ -89,6 +91,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@discordjs/builders", [
+        ["npm:0.1.1", {
+          "packageLocation": "./.yarn/cache/@discordjs-builders-npm-0.1.1-86a3db61e4-2902d53542.zip/node_modules/@discordjs/builders/",
+          "packageDependencies": [
+            ["@discordjs/builders", "npm:0.1.1"],
+            ["discord-api-types", "npm:0.18.1"],
+            ["tslib", "npm:2.3.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@discordjs/collection", [
         ["npm:0.1.6", {
           "packageLocation": "./.yarn/cache/@discordjs-collection-npm-0.1.6-bad654db9e-da87faf997.zip/node_modules/@discordjs/collection/",
@@ -105,7 +118,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@discordjs/form-data", "npm:3.0.1"],
             ["asynckit", "npm:0.4.0"],
             ["combined-stream", "npm:1.0.8"],
-            ["mime-types", "npm:2.1.29"]
+            ["mime-types", "npm:2.1.31"]
           ],
           "linkType": "HARD",
         }]
@@ -156,6 +169,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@nodelib/fs.walk", "npm:1.2.6"],
             ["@nodelib/fs.scandir", "npm:2.1.4"],
             ["fastq", "npm:1.11.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@sapphire/async-queue", [
+        ["npm:1.1.4", {
+          "packageLocation": "./.yarn/cache/@sapphire-async-queue-npm-1.1.4-6872a0fc9f-325e416a44.zip/node_modules/@sapphire/async-queue/",
+          "packageDependencies": [
+            ["@sapphire/async-queue", "npm:1.1.4"]
           ],
           "linkType": "HARD",
         }]
@@ -220,6 +242,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
+      ["@types/module-alias", [
+        ["npm:2.0.0", {
+          "packageLocation": "./.yarn/cache/@types-module-alias-npm-2.0.0-f0915be707-d25152dbe8.zip/node_modules/@types/module-alias/",
+          "packageDependencies": [
+            ["@types/module-alias", "npm:2.0.0"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
       ["@types/node", [
         ["npm:14.14.31", {
           "packageLocation": "./.yarn/cache/@types-node-npm-14.14.31-4f1a9dff64-635dc8a089.zip/node_modules/@types/node/",
@@ -250,6 +281,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/@types-responselike-npm-1.0.0-85dd08af42-e6e6613c80.zip/node_modules/@types/responselike/",
           "packageDependencies": [
             ["@types/responselike", "npm:1.0.0"],
+            ["@types/node", "npm:14.14.37"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["@types/ws", [
+        ["npm:7.4.5", {
+          "packageLocation": "./.yarn/cache/@types-ws-npm-7.4.5-3f11000a5b-b467f596cc.zip/node_modules/@types/ws/",
+          "packageDependencies": [
+            ["@types/ws", "npm:7.4.5"],
             ["@types/node", "npm:14.14.37"]
           ],
           "linkType": "HARD",
@@ -856,27 +897,44 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["discord-akairo", [
-        ["npm:8.1.0", {
-          "packageLocation": "./.yarn/cache/discord-akairo-npm-8.1.0-0b02b8ca81-c0ad720dbc.zip/node_modules/discord-akairo/",
+        ["https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343", {
+          "packageLocation": "./.yarn/cache/discord-akairo-https-0a589e263f-190358ad6d.zip/node_modules/discord-akairo/",
           "packageDependencies": [
-            ["discord-akairo", "npm:8.1.0"]
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["discord-api-types", [
+        ["npm:0.18.1", {
+          "packageLocation": "./.yarn/cache/discord-api-types-npm-0.18.1-2d70d751ed-b9ae87cb2d.zip/node_modules/discord-api-types/",
+          "packageDependencies": [
+            ["discord-api-types", "npm:0.18.1"]
+          ],
+          "linkType": "HARD",
+        }],
+        ["npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e", {
+          "packageLocation": "./.yarn/cache/discord-api-types-npm-0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e-fde7b8b106-ca53bf2bd5.zip/node_modules/discord-api-types/",
+          "packageDependencies": [
+            ["discord-api-types", "npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["discord.js", [
-        ["npm:12.5.3", {
-          "packageLocation": "./.yarn/cache/discord.js-npm-12.5.3-cf56da7683-365e21b124.zip/node_modules/discord.js/",
+        ["npm:13.0.0-dev.64f093f.1625054868", {
+          "packageLocation": "./.yarn/cache/discord.js-npm-13.0.0-dev.64f093f.1625054868-9756db4a57-860de9cab3.zip/node_modules/discord.js/",
           "packageDependencies": [
-            ["discord.js", "npm:12.5.3"],
+            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
+            ["@discordjs/builders", "npm:0.1.1"],
             ["@discordjs/collection", "npm:0.1.6"],
             ["@discordjs/form-data", "npm:3.0.1"],
+            ["@sapphire/async-queue", "npm:1.1.4"],
+            ["@types/ws", "npm:7.4.5"],
             ["abort-controller", "npm:3.0.0"],
+            ["discord-api-types", "npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e"],
             ["node-fetch", "npm:2.6.1"],
-            ["prism-media", "virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:1.2.9"],
-            ["setimmediate", "npm:1.0.5"],
-            ["tweetnacl", "npm:1.0.3"],
-            ["ws", "virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:7.4.6"]
+            ["ws", "virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1"]
           ],
           "linkType": "HARD",
         }]
@@ -1606,20 +1664,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["mime-db", [
-        ["npm:1.46.0", {
-          "packageLocation": "./.yarn/cache/mime-db-npm-1.46.0-46f8800b47-4e137ac502.zip/node_modules/mime-db/",
+        ["npm:1.48.0", {
+          "packageLocation": "./.yarn/cache/mime-db-npm-1.48.0-d896dd3151-346d5df2ff.zip/node_modules/mime-db/",
           "packageDependencies": [
-            ["mime-db", "npm:1.46.0"]
+            ["mime-db", "npm:1.48.0"]
           ],
           "linkType": "HARD",
         }]
       ]],
       ["mime-types", [
-        ["npm:2.1.29", {
-          "packageLocation": "./.yarn/cache/mime-types-npm-2.1.29-18d18d60ed-744d72b2a2.zip/node_modules/mime-types/",
+        ["npm:2.1.31", {
+          "packageLocation": "./.yarn/cache/mime-types-npm-2.1.31-fbe9a57bbf-0373e58e38.zip/node_modules/mime-types/",
           "packageDependencies": [
-            ["mime-types", "npm:2.1.29"],
-            ["mime-db", "npm:1.46.0"]
+            ["mime-types", "npm:2.1.31"],
+            ["mime-db", "npm:1.48.0"]
           ],
           "linkType": "HARD",
         }]
@@ -1646,6 +1704,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [
             ["minimatch", "npm:3.0.4"],
             ["brace-expansion", "npm:1.1.11"]
+          ],
+          "linkType": "HARD",
+        }]
+      ]],
+      ["module-alias", [
+        ["npm:2.2.2", {
+          "packageLocation": "./.yarn/cache/module-alias-npm-2.2.2-576bd37c03-1b37943df4.zip/node_modules/module-alias/",
+          "packageDependencies": [
+            ["module-alias", "npm:2.2.2"]
           ],
           "linkType": "HARD",
         }]
@@ -1825,40 +1892,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/prettier-npm-2.2.1-e0670992f8-92c6c9f4b8.zip/node_modules/prettier/",
           "packageDependencies": [
             ["prettier", "npm:2.2.1"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["prism-media", [
-        ["npm:1.2.9", {
-          "packageLocation": "./.yarn/cache/prism-media-npm-1.2.9-e620e4cb2d-e266159ead.zip/node_modules/prism-media/",
-          "packageDependencies": [
-            ["prism-media", "npm:1.2.9"]
-          ],
-          "linkType": "SOFT",
-        }],
-        ["virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:1.2.9", {
-          "packageLocation": "./.yarn/$$virtual/prism-media-virtual-7b26d801f8/0/cache/prism-media-npm-1.2.9-e620e4cb2d-e266159ead.zip/node_modules/prism-media/",
-          "packageDependencies": [
-            ["prism-media", "virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:1.2.9"],
-            ["@discordjs/opus", null],
-            ["@types/discordjs__opus", null],
-            ["@types/ffmpeg-static", null],
-            ["@types/node-opus", null],
-            ["@types/opusscript", null],
-            ["ffmpeg-static", null],
-            ["node-opus", null],
-            ["opusscript", null]
-          ],
-          "packagePeers": [
-            "@discordjs/opus",
-            "@types/discordjs__opus",
-            "@types/ffmpeg-static",
-            "@types/node-opus",
-            "@types/opusscript",
-            "ffmpeg-static",
-            "node-opus",
-            "opusscript"
           ],
           "linkType": "HARD",
         }]
@@ -2046,15 +2079,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD",
         }]
       ]],
-      ["setimmediate", [
-        ["npm:1.0.5", {
-          "packageLocation": "./.yarn/cache/setimmediate-npm-1.0.5-54587459b6-87884d8add.zip/node_modules/setimmediate/",
-          "packageDependencies": [
-            ["setimmediate", "npm:1.0.5"]
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
       ["shebang-command", [
         ["npm:2.0.0", {
           "packageLocation": "./.yarn/cache/shebang-command-npm-2.0.0-eb2b01921d-85aa394d8c.zip/node_modules/shebang-command/",
@@ -2079,18 +2103,20 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",
           "packageDependencies": [
             ["skyclientbot", "workspace:."],
+            ["@types/module-alias", "npm:2.0.0"],
             ["@types/node", "npm:14.14.31"],
             ["@types/prettier", "npm:2.2.3"],
             ["@typescript-eslint/eslint-plugin", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["@typescript-eslint/parser", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
-            ["discord-akairo", "npm:8.1.0"],
-            ["discord.js", "npm:12.5.3"],
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"],
+            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
             ["jsonfile", "npm:6.1.0"],
+            ["module-alias", "npm:2.2.2"],
             ["mongodb", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:3.6.9"],
             ["prettier", "npm:2.2.1"],
             ["rimraf", "npm:3.0.2"],
@@ -2258,6 +2284,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["tslib", "npm:1.14.1"]
           ],
           "linkType": "HARD",
+        }],
+        ["npm:2.3.0", {
+          "packageLocation": "./.yarn/cache/tslib-npm-2.3.0-277e75e108-7b4fc9feff.zip/node_modules/tslib/",
+          "packageDependencies": [
+            ["tslib", "npm:2.3.0"]
+          ],
+          "linkType": "HARD",
         }]
       ]],
       ["tsutils", [
@@ -2293,15 +2326,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packagePeers": [
             "@types/typescript",
             "typescript"
-          ],
-          "linkType": "HARD",
-        }]
-      ]],
-      ["tweetnacl", [
-        ["npm:1.0.3", {
-          "packageLocation": "./.yarn/cache/tweetnacl-npm-1.0.3-b7eef04660-1188f3ef85.zip/node_modules/tweetnacl/",
-          "packageDependencies": [
-            ["tweetnacl", "npm:1.0.3"]
           ],
           "linkType": "HARD",
         }]
@@ -2400,17 +2424,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["ws", [
-        ["npm:7.4.6", {
-          "packageLocation": "./.yarn/cache/ws-npm-7.4.6-9c9a725604-ffeb626d92.zip/node_modules/ws/",
+        ["npm:7.5.1", {
+          "packageLocation": "./.yarn/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
           "packageDependencies": [
-            ["ws", "npm:7.4.6"]
+            ["ws", "npm:7.5.1"]
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:7.4.6", {
-          "packageLocation": "./.yarn/$$virtual/ws-virtual-63909f9593/0/cache/ws-npm-7.4.6-9c9a725604-ffeb626d92.zip/node_modules/ws/",
+        ["virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1", {
+          "packageLocation": "./.yarn/$$virtual/ws-virtual-61515c0d93/0/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
           "packageDependencies": [
-            ["ws", "virtual:cf56da7683803aa9264f916bdb4d485008dca0988e9e122f3753d126f3aa20bc7f9e07a02e7a15b6e115d384905f8a0966a806be17cc75f4d753d1d69bf33907#npm:7.4.6"],
+            ["ws", "virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1"],
             ["@types/bufferutil", null],
             ["@types/utf-8-validate", null],
             ["bufferutil", null],
