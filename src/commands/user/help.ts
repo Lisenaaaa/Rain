@@ -1,6 +1,6 @@
 import { MessageEmbed } from 'discord.js';
-import { BotCommand } from '../../extensions/BotCommand';
-import commandManager from '../../functions/commandManager';
+import { BotCommand } from '../@extensions/BotCommand';
+import commandManager from '@functions/commandManager';
 
 export default class help extends BotCommand {
     constructor() {

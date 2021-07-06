@@ -1,5 +1,5 @@
-import { BotCommand } from '../../extensions/BotCommand';
-import utils from '../../functions/utils';
+import { BotCommand } from '../@extensions/BotCommand';
+import utils from '@functions/utils';
 
 export default class helpme extends BotCommand {
     constructor() {

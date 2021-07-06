@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 import { Listener } from 'discord-akairo';
-import { BotListener } from '../extensions/BotListener';
-import commandManager from '../functions/commandManager';
-import database from '../functions/database';
+import { BotListener } from '@extensions/BotListener';
+import commandManager from '@functions/commandManager';
+import database from '@functions/database';
 
 class ReadyListener extends BotListener {
     constructor() {
@@ -21,8 +21,8 @@ class ReadyListener extends BotListener {
 
         //check if all commands are in the DB, and add missing ones
 
-        const commandIDs = await commandManager.getAllCommandIDs(this.client)
-        //const commandIDs = []
+        let commandIDs = await commandManager.getAllCommandIDs(this.client)
+        //commandIDs = []
 
         let dbIDs = []
         await database.readCommandGlobal().then(db => {

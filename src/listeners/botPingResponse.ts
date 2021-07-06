@@ -1,5 +1,5 @@
-import { BotListener } from '../extensions/BotListener';
-import database from '../functions/database';
+import { BotListener } from '@extensions/BotListener';
+import database from '@functions/database';
 
 class pingResponse extends BotListener {
     constructor() {

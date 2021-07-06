@@ -14,7 +14,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@functions/*": ["src/functions/*"],
-			"@extentions/*": ["src/extentions/*"]
+			"@extensions/*": ["src/extensions/*"],
 		}
 	},
 	"include": ["src/**/*", "src/*"],

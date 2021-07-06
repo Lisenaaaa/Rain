@@ -1,7 +1,7 @@
 import chalk from 'chalk';
-import { BotCommand } from '../../extensions/BotCommand';
-import database from '../../functions/database';
-import commandManager from '../../functions/commandManager';
+import { BotCommand } from '../@extensions/BotCommand';
+import database from '@functions/database';
+import commandManager from '@functions/commandManager';
 
 export default class registerAllNewCommands extends BotCommand {
     constructor() {

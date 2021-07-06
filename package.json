@@ -46,9 +46,7 @@
 		"endOfLine": "lf"
 	},
 	"_moduleAliases": {
-		"@bot": ".",
 		"@functions": "dist/functions",
-		"@utils": "dist/functions/utils.ts",
-		"@extentions": "dist/extentions"
+		"@extensions": "dist/extensions"
 	}
 }

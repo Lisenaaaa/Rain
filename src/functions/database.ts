@@ -179,9 +179,9 @@ async function readSpecificCommandGlobal(commandID) {
 
 async function deleteCommandFromGlobalDB(commandID: string) {
     await db.collection('commands')
-        .deleteOne((commandDBsFormatDisabled(commandID)))
+        .deleteOne(commandDBsFormatDisabled(commandID))
     await db.collection('commands')
-        .deleteOne((commandDBSFormat(commandID)))
+        .deleteOne(commandDBSFormat(commandID))
 }
 
 async function checkCommandEnabledGlobal(commandID: string) {

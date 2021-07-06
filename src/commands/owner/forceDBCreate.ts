@@ -1,7 +1,7 @@
-import { BotCommand } from "../../extensions/BotCommand"
-import utils from '../../functions/utils'
+import { BotCommand } from "../@extensions/BotCommand"
+import utils from '@functions/utils'
 import chalk from "chalk";
-import database from "../../functions/database";
+import database from "@functions/database";
 
 export default class forceDBCreate extends BotCommand {
     constructor() {

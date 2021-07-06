@@ -1,7 +1,8 @@
 import { MessageEmbed } from "discord.js";
 import language from "../../constants/language";
-import { BotCommand } from '../../extensions/BotCommand';
-import utils from "../../functions/utils";
+import { BotCommand } from '@extensions/BotCommand';
+import utils from "@functions/utils";
+import commandManager from "@functions/commandManager";
 
 export default class pronouns extends BotCommand {
     constructor() {
@@ -15,15 +16,17 @@ export default class pronouns extends BotCommand {
         })
     }
     async exec(message, args) {
+        commandManager.checkIfCommandCanBeUsed(message, 'ban')
+
         const pronouns = await utils.getPronouns(args.person, 'details')
         const pronounsEmbed = new MessageEmbed()
 
         if (args.person.id == message.author.id) { pronounsEmbed.setTitle('Your pronouns') }
         else { pronounsEmbed.setTitle(`${args.person.username}'s pronouns`) }
-    
+
         pronounsEmbed.setDescription(pronouns)
-        pronounsEmbed.setFooter('Data gotten from https://pronoundb.org')
-    
-        message.util.send(pronounsEmbed)
+        pronounsEmbed.setFooter('Data from https://pronoundb.org')
+
+        message.reply({ embeds: [pronounsEmbed] })
     }
 }

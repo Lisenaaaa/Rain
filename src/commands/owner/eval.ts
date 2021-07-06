@@ -3,9 +3,10 @@ import { exec } from 'child_process';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
-import { BotCommand } from '../../extensions/BotCommand';
+import { BotCommand } from '../@extensions/BotCommand';
 
 import importUtils from '@functions/utils'
+//utils
 const utils = importUtils
 
 import importDatabase from '@functions/database'
@@ -78,6 +79,7 @@ export default class evaluate extends BotCommand {
                 const evalOutputEmbed = new MessageEmbed()
                     .setTitle('Evaluated Code')
                     .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
+                    .setColor(message.member.displayColor)
 
                 if (inspect(output, { depth: 0 }).length > 1000) {
                     await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output)))

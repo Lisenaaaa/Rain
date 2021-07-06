@@ -2,13 +2,19 @@ import chalk from "chalk"
 import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } from "discord-akairo"
 import { Intents } from "discord.js"
 import { join } from "path"
-import database from "../functions/database"
+import database from "@functions/database"
 
 export class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message) => {
 			if (message.guild) {
-				return (await database.read(message.guild.id))[0].guildSettings.prefix
+				if (!await database.read(message.guild.id)) {
+					await database.add(message.guild.id)
+					console.log(false)
+				}
+
+				try { return (await database.read(message.guild.id))[0].guildSettings.prefix }
+				catch (err) { return '-' }
 			}
 			else { return '-' }
 		},
@@ -16,7 +22,9 @@ export class BotClient extends AkairoClient {
 		handleEdits: true,
 		directory: join(__dirname, "..", "commands"),
 		allowMention: true,
-		automateCategories: true
+		automateCategories: true,
+		autoRegisterSlashCommands: true,
+		autoDefer: false
 	})
 	public listenerHandler: ListenerHandler = new ListenerHandler(this, {
 		directory: join(__dirname, "..", "listeners"),
@@ -35,12 +43,12 @@ export class BotClient extends AkairoClient {
 			intents: Intents.NON_PRIVILEGED
 
 		},
-		{
-			allowedMentions: {
-				parse: ["users"]
-			},
-			intents: Intents.NON_PRIVILEGED
-		})
+			{
+				allowedMentions: {
+					parse: ["users"]
+				},
+				intents: Intents.NON_PRIVILEGED
+			})
 	}
 	private async _init(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler)

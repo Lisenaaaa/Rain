@@ -1,6 +1,6 @@
 import { GuildMember } from "discord.js";
 import { Message, User } from "discord.js";
-import { BotClient } from "../extensions/BotClient";
+import { BotClient } from "@extensions/BotClient";
 
 import commandManager from './commandManager'
 

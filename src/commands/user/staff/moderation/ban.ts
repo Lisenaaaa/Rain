@@ -1,6 +1,6 @@
 import language from "../../../../constants/language";
-import { BotCommand } from "../../../../extensions/BotCommand";
-import utils from "../../../../functions/utils";
+import { BotCommand } from "../../../@extensions/BotCommand";
+import utils from "@functions/utils";
 
 export default class ban extends BotCommand {
     constructor() {

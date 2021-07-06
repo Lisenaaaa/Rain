@@ -1,6 +1,6 @@
-import { BotListener } from '../extensions/BotListener';
-import database from '../functions/database';
-import utils from '../functions/utils';
+import { BotListener } from '@extensions/BotListener';
+import database from '@functions/database';
+import utils from '@functions/utils';
 
 class guildJoinDBCreate extends BotListener {
     constructor() {

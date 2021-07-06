@@ -1,6 +1,6 @@
 import { Command } from "discord-akairo";
-import { BotCommand } from "../../extensions/BotCommand"
-import utils from '../../functions/utils'
+import { BotCommand } from "../@extensions/BotCommand"
+import utils from '@functions/utils'
 import { exec } from 'child_process';
 import { promisify } from 'util';
 import { MessageEmbed } from "discord.js";
