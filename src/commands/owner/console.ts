@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
-import { BotCommand } from '../@extensions/BotCommand';
+import { BotCommand } from '@extensions/BotCommand';
 import functions from '@functions/utils'
 
 const sh = promisify(exec);

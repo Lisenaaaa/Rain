@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { BotCommand } from '../@extensions/BotCommand';
+import { BotCommand } from '@extensions/BotCommand';
 import database from '@functions/database';
 import commandManager from '@functions/commandManager';
 

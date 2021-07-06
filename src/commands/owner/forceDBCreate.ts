@@ -1,4 +1,4 @@
-import { BotCommand } from "../@extensions/BotCommand"
+import { BotCommand } from "@extensions/BotCommand"
 import utils from '@functions/utils'
 import chalk from "chalk";
 import database from "@functions/database";

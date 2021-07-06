@@ -1,5 +1,5 @@
 import { MessageEmbed } from 'discord.js';
-import { BotCommand } from '../@extensions/BotCommand';
+import { BotCommand } from '@extensions/BotCommand';
 
 export default class invite extends BotCommand {
     constructor() {

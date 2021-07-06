@@ -1,4 +1,5 @@
 import { BotCommand } from '@extensions/BotCommand';
+import commandManager from '@functions/commandManager';
 import utils from '@functions/utils'
 
 export default class templateCommand extends BotCommand {
@@ -13,6 +14,7 @@ export default class templateCommand extends BotCommand {
         })
     }
     async exec(message, args) {
+        if (!commandManager.checkIfCommandCanBeUsed(message, this.id)) { return }
         message.reply('hi')
     }
 }

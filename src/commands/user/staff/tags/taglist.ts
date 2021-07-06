@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { BotCommand } from "../../../@extensions/BotCommand";
+import { BotCommand } from "../../@extensions/BotCommand";
 import language from "../../../../constants/language";
 import db from "@functions/database";
 
