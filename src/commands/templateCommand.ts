@@ -6,11 +6,10 @@ export default class templateCommand extends BotCommand {
     constructor() {
         super('templateCommand', {
             aliases: ['templateCommand'],
-            description: {
-                description: 'This is an example command!',
-                usage: '-templateCommand',
-                defaultPerms: 'none'
-            }
+            description: 'This is an example command!',
+            usage: '-templateCommand',
+            discordPerms: ['none']
+
         })
     }
     async exec(message, args) {

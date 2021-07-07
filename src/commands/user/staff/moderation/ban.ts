@@ -1,5 +1,5 @@
 import language from "../../../../constants/language";
-import { BotCommand } from "../../@extensions/BotCommand";
+import { BotCommand } from "@extensions/BotCommand";
 import utils from "@functions/utils";
 
 export default class ban extends BotCommand {
@@ -10,12 +10,10 @@ export default class ban extends BotCommand {
                 { id: `member`, type: `member` },
                 { id: `reason`, type: `string`, match: `restContent` },
             ],
-            userPermissions: ['BAN_MEMBERS'],
-            description: {
-                description: 'This is an example command!',
-                usage: '`-ban <member> <reason>`',
-                defaultPerms: ['BAN_MEMBERS', 'KICK_MEMBERS']
-            }
+            description: 'This is an example command!',
+            usage: '`-ban <member> <reason>`',
+            discordPerms: ['BAN_MEMBERS']
+
         });
     }
 

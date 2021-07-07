@@ -57,7 +57,6 @@ async function getUserPerms(message: Message) {
             }
         })
 
-        //if (message.author.id == message.guild.ownerID) { perms = 'owner' }
         return perms
     })
 }
@@ -73,9 +72,6 @@ function getAllUserPerms(userPerms: string) {
 }
 
 function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
-    // console.log(getAllUserPerms(userPerms))
-    // console.log(commandPerms)
-    // console.log(getAllUserPerms(userPerms).includes(commandPerms))
     return getAllUserPerms(userPerms).includes(commandPerms)
 }
 
@@ -95,15 +91,12 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
     })
     if (lockedChannelFound == false) { channelPerms = true }
 
-    // utils.debug(`channelPerms: ${channelPerms}`)
-    // utils.debug(`Is this channel locked to a role?: ${lockedChannelFound}`)
-    // console.log(`\n`)
     return channelPerms
 }
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
     const commandDetails = await commandManager.getCommandDetails(commandID, message.client as BotClient)
-    const discordPerms = message.member.permissions.has(commandDetails.description.defaultPerms)
+    const discordPerms = message.member.permissions.has(commandDetails.discordPerms)
     const guildDB = (await database.read(message.member.guild.id))[0]
 
     let existsInDB = false

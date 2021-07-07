@@ -5,10 +5,9 @@ export default class helpme extends BotCommand {
     constructor() {
         super('helpme', {
             aliases: ['helpme'],
-            description: {
-                'description': 'this command does not exist',
-                'usage': 'zordlan is trying to cover up where i am please send help'
-            }
+            description: 'this command does not exist',
+            usage: 'zordlan is trying to cover up where i am please send help',
+            discordPerms: ['none']
         })
     }
     async exec(message) {

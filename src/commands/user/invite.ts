@@ -5,10 +5,9 @@ export default class invite extends BotCommand {
     constructor() {
         super('invite', {
             aliases: ['invite'],
-            description: {
-                'description': 'Shows the link to invite me to your server!',
-                'usage': '-invite'
-            }
+            description: 'Shows the link to invite me to your server!',
+            usage: '-invite',
+            discordPerms: ['none']
         })
     }
     async exec(message, args) {

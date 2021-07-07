@@ -27,17 +27,22 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
         console.log(chalk`{bgMagenta Info} ${info}`)
     }
 
-    if (msg.channel.type == 'text') {
-        cmdInfo(`Channel name: ${msg.channel.name}`)
-    }
-    cmdInfo(`Command ID: ${commandID}`)
-    cmdInfo(`User: ${msg.author.tag}`)
 
-    console.log(chalk`{bgCyan User's permissions} ${userPerms}`)
-    console.log(chalk`{bgGreen Can the user run the command at all in this guild?} ${userCanRunCommandInGuild}`)
-    console.log(chalk`{bgBlue Can the user run commands in this channel} ${commandCanBeUsedInChannel}`)
-    console.log(chalk`{bgRed Is the command enabled everywhere?} ${checkCommandEnabled}`)
-    console.log('\n')
+    const debugLog = false
+
+    if (debugLog) {
+        if (msg.channel.type == 'text') {
+            cmdInfo(`Channel name: ${msg.channel.name}`)
+        }
+        cmdInfo(`Command ID: ${commandID}`)
+        cmdInfo(`User: ${msg.author.tag}`)
+
+        console.log(chalk`{bgCyan User's permissions} ${userPerms}`)
+        console.log(chalk`{bgGreen Can the user run the command at all in this guild?} ${userCanRunCommandInGuild}`)
+        console.log(chalk`{bgBlue Can the user run commands in this channel} ${commandCanBeUsedInChannel}`)
+        console.log(chalk`{bgRed Is the command enabled everywhere?} ${checkCommandEnabled}`)
+        console.log('\n')
+    }
 
     if (checkCommandEnabled == false) {
         return false
@@ -61,7 +66,6 @@ async function getAllCommandIDs(client: BotClient) {
         if (command.category.id.toLowerCase().includes('testing')) { return }
 
         if (command.ownerOnly) { return }
-        if (command.id == 'templateCommand') { return }
 
         else { IDs.push(command.id) }
     })

@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import language from "../../../../constants/language";
-import { BotCommand } from "../../@extensions/BotCommand";
+import { BotCommand } from "@extensions/BotCommand";
 import database from "@functions/database";
 import db from "@functions/database";
 import utils from "@functions/utils";
@@ -14,12 +14,11 @@ export default class tags extends BotCommand {
                 { id: `tagName`, type: `string`, },
                 { id: `tagContent`, type: `string`, match: `restContent` }
             ],
-            userPermissions: ['MANAGE_MESSAGES'],
-            description: {
-                description: 'Tags! If you don\'t know what they are, they\'re basically custom text responses.',
-                usage: 'To create tags: `-tag create <tagName> <tagResponse>`\nTo edit tags: `-tag edit <tagName> <newTagResponse>`\nTo delete tags: `-tag delete <tagName>`\nTo view tags: `-tag <tagName>`'
-            }
-        });
+            description: 'Tags! If you don\'t know what they are, they\'re basically custom text responses.',
+            usage: 'To create tags: `-tag create <tagName> <tagResponse>`\nTo edit tags: `-tag edit <tagName> <newTagResponse>`\nTo delete tags: `-tag delete <tagName>`\nTo view tags: `-tag <tagName>`',
+            discordPerms: ['MANAGE_MESSAGES']
+
+        })
     }
 
     async exec(message, args) {

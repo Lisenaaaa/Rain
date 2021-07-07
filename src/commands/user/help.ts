@@ -7,10 +7,9 @@ export default class help extends BotCommand {
         super('help', {
             aliases: ['help'],
             args: [{ id: 'command', type: 'string' }],
-            description: {
-                'description': 'You already know what this does, otherwise you wouldnt be using it, right?',
-                'usage': '-help\n-help <command ID>'
-            }
+            description: 'You already know what this does, otherwise you wouldnt be using it, right?',
+            usage: '-help\n-help <command ID>',
+            discordPerms: ['none']
         })
     }
     async exec(message, args) {
@@ -21,12 +20,12 @@ export default class help extends BotCommand {
             message.channel.send(commandIDs)
         }
         if (args.command) {
-            const command = this.client.commandHandler.modules.get(args.command)
+            const command = this.client.commandHandler.modules.get(args.command) as BotCommand
 
             const helpEmbed = new MessageEmbed()
                 .setTitle(command.id)
-                .setDescription(command.description.description)
-                .addField('Usage', command.description.usage)
+                .setDescription(command.description)
+                .addField('Usage', command.usage)
 
             message.channel.send(helpEmbed)
         }

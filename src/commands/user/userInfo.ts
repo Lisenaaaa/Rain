@@ -6,11 +6,10 @@ export default class userInfo extends BotCommand {
         super('userInfo', {
             aliases: ['userInfo', 'user', 'ui', 'u'],
             args: [{ id: 'person', type: 'member', match: 'rest', default: message => message.member }],
-            description: {
                 description: 'Shows information about a user.',
                 usage: '`-user`, `-user <user>`',
-                defaultPerms: 'none'
-            }
+                discordPerms: ['none']
+            
         })
     }
     async exec(message, args) {
