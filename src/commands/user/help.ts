@@ -9,7 +9,7 @@ export default class help extends BotCommand {
             args: [{ id: 'command', type: 'string' }],
             description: 'You already know what this does, otherwise you wouldnt be using it, right?',
             usage: '-help\n-help <command ID>',
-            discordPerms: ['none']
+            discordPerms: ['SEND_MESSAGES']
         })
     }
     async exec(message, args) {

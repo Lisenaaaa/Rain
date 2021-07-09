@@ -9,7 +9,7 @@ export default class taglist extends BotCommand {
             aliases: ["taglist", "tags"],
             description: 'This is an example command!',
             usage: '-templateCommand',
-            discordPerms: ['none']
+            discordPerms: ['SEND_MESSAGES']
 
         });
     }

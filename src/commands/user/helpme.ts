@@ -7,7 +7,7 @@ export default class helpme extends BotCommand {
             aliases: ['helpme'],
             description: 'this command does not exist',
             usage: 'zordlan is trying to cover up where i am please send help',
-            discordPerms: ['none']
+            discordPerms: ['SEND_MESSAGES']
         })
     }
     async exec(message) {

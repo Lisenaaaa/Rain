@@ -11,7 +11,7 @@ export default class pronouns extends BotCommand {
             args: [{ id: 'person', type: 'user', match: 'rest', default: message => message.author }],
                 description: 'Shows the pronouns of a user, if they have them set on https://pronoundb.org',
                 usage: '-pronouns <user>',
-                discordPerms: ['none']
+                discordPerms: ['SEND_MESSAGES']
 
             
         })

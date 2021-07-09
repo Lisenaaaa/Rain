@@ -8,7 +8,7 @@ export default class userInfo extends BotCommand {
             args: [{ id: 'person', type: 'member', match: 'rest', default: message => message.member }],
                 description: 'Shows information about a user.',
                 usage: '`-user`, `-user <user>`',
-                discordPerms: ['none']
+                discordPerms: ['SEND_MESSAGES']
             
         })
     }

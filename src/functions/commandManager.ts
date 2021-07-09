@@ -55,6 +55,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
         commandCanBeRan = false
     }
 
+    if (debugLog) {console.log(chalk`{bgMagenta Can the user run the command?} ${commandCanBeRan}`)}
     return commandCanBeRan
 }
 

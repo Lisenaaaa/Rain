@@ -8,12 +8,12 @@ export default class templateCommand extends BotCommand {
             aliases: ['templateCommand'],
             description: 'This is an example command!',
             usage: '-templateCommand',
-            discordPerms: ['none']
+            discordPerms: ['SEND_MESSAGES'] //THIS NEEDS TO BE AN ACTUAL PERMISSION NOW
 
         })
     }
     async exec(message, args) {
-        if (!commandManager.checkIfCommandCanBeUsed(message, this.id)) { return }
+        if (!await commandManager.checkIfCommandCanBeUsed(message, this.id)) { return }
         message.reply('hi')
     }
 }

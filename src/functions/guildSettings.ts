@@ -96,7 +96,7 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
     const commandDetails = await commandManager.getCommandDetails(commandID, message.client as BotClient)
-    const discordPerms = message.member.permissions.has(commandDetails.discordPerms)
+    const discordPerms = message.member.permissions.has(commandDetails.discordPerms, true)
     const guildDB = (await database.read(message.member.guild.id))[0]
 
     let existsInDB = false

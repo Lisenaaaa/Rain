@@ -78,7 +78,7 @@ export default class evaluate extends BotCommand {
             if (!args.silent && !args.codeToEval.includes('message.channel.delete()')) {
                 const evalOutputEmbed = new MessageEmbed()
                     .setTitle('Evaluated Code')
-                    .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
+                    .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codeToEval}\`\`\``)
                     .setColor(message.member.displayColor)
 
                 if (inspect(output, { depth: 0 }).length > 1000) {
