@@ -83,10 +83,14 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
         const lockedChannels = db.guildSettings.lockedChannels
 
         getAllUserPerms(userPerms).forEach(perm => {
-            if (lockedChannels[perm] == channelID) {
-                channelPerms = true
-                lockedChannelFound = true
-            }
+            lockedChannels.forEach(pain => {
+                if (pain.id == perm) {
+                    if (pain.channels.includes(channelID)) {
+                        channelPerms = true
+                        lockedChannelFound = true
+                    }
+                }
+            })
         })
     })
     if (lockedChannelFound == false) { channelPerms = true }

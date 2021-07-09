@@ -8,15 +8,18 @@ export class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message) => {
 			if (message.guild) {
-				if (!await database.read(message.guild.id)) {
-					await database.add(message.guild.id)
-					console.log(false)
+				try {
+					return database.add(message.guild.id).then(async () => {
+						try{
+							return (await database.read(message.guild.id))[0].guildSettings.prefix
+						}
+						catch (err) { return '-' }
+					})
 				}
-
-				try { return (await database.read(message.guild.id))[0].guildSettings.prefix }
 				catch (err) { return '-' }
 			}
 			else { return '-' }
+			//return '-'
 		},
 		commandUtil: true,
 		handleEdits: true,

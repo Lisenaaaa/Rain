@@ -42,9 +42,32 @@ function defaultDBSchema(messageGuildID) {
                 helper: 'null',
                 trialHelper: 'null'
             },
-            helperOnlyChannels: [],
-            modOnlyChannels: [],
-            adminOnlyChannels: []
+            lockedChannels:[
+                {
+                    id:'owner',
+                    channels:[]
+                },
+                {
+                    id:'admin',
+                    channels:[]
+                },
+                {
+                    id:'srMod',
+                    channels:[]
+                },
+                {
+                    id:'moderator',
+                    channels:[]
+                },
+                {
+                    id:'helper',
+                    channels:[]
+                },
+                {
+                    id:'trialHelper',
+                    channels:[]
+                },
+            ]
         },
         commandSettings: [],
         tags: []
@@ -142,9 +165,9 @@ async function guildSettings(messageGuildID: string) {
     return data[0].guildSettings
 }
 
-async function editGuildSettingsPerms(messageGuildID: string, roleToEdit: string, newRole: string) {
+async function editRolePermissions(messageGuildID: string, roleToEdit: string, newRoleID: string) {
     let query = { guildID: messageGuildID }
-    let object = { ['guildSettings.staffRoles.' + roleToEdit]: newRole }
+    let object = { ['guildSettings.staffRoles.' + roleToEdit]: newRoleID }
     let update = { $set: object }
 
     return await db.collection('guildsv2')
@@ -157,6 +180,21 @@ async function addCommandToGuildDB(guildID: string, commandID: string) {
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
+}
+
+async function checkIfCommandInGuildDB(guildID: string, commandID: string) {
+    let found = false
+    return read(guildID).then(async db => {
+        db[0].commandSettings.forEach(cmd => {
+            if (cmd.id == commandID) { return found = true }
+        })
+
+        if (found == false) {
+            await addCommandToGuildDB(guildID, commandID)
+            found = true
+        }
+        return found
+    })
 }
 
 /* GLOBAL THINGS */
@@ -223,7 +261,8 @@ export = {
     guildSettings,
     addOverrideOther,
     addCommandToGuildDB,
-    editGuildSettingsPerms,
+    editRolePermissions,
+    checkIfCommandInGuildDB,
 
     //GLOBAL THINGS//
     addCommandToGlobalDB,

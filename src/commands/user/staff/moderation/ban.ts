@@ -10,11 +10,11 @@ export default class ban extends BotCommand {
                 { id: `member`, type: `member` },
                 { id: `reason`, type: `string`, match: `restContent` },
             ],
+            
             description: 'This is an example command!',
             usage: '`-ban <member> <reason>`',
             discordPerms: ['BAN_MEMBERS']
-
-        });
+        })
     }
 
     async exec(message, args) {
