@@ -1,13 +1,14 @@
 import chalk from "chalk"
 import { AkairoClient } from "discord-akairo"
-import { Client } from "discord.js"
-import { Message } from "discord.js"
+import { Client, Message } from "discord.js"
 import { BotClient } from "@extensions/BotClient"
-import database from "./database"
-import guildSettings from "./guildSettings"
-import utils from "./utils"
+import database from "@functions/database"
+import guildSettings from "@functions/guildSettings"
+import utils from "@functions/utils"
 
 async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
+    if (!msg.guild) { return }
+    
     let commandCanBeRan = false
 
     const userID = msg.author.id
@@ -55,7 +56,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
         commandCanBeRan = false
     }
 
-    if (debugLog) {console.log(chalk`{bgMagenta Can the user run the command?} ${commandCanBeRan}`)}
+    if (debugLog) { console.log(chalk`{bgMagenta Can the user run the command?} ${commandCanBeRan}`) }
     return commandCanBeRan
 }
 

@@ -1,5 +1,4 @@
 import { MessageEmbed } from "discord.js";
-import language from "../../../../constants/language";
 import { BotCommand } from "@extensions/BotCommand";
 import database from "@functions/database";
 import db from "@functions/database";
@@ -41,11 +40,11 @@ export default class tags extends BotCommand {
             addTriggers.forEach(thing => {
                 if (args.action == thing) {
                     //check if tag name is one of the above triggers
-                    if (addTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
-                    if (editTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
-                    if (removeTriggers.includes(args.tagName)) { return message.util.send(language.badTagName) }
+                    if (addTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
+                    if (editTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
+                    if (removeTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
 
-                    if (!args.tagContent) { return message.util.send(language.tagNoResponse) }
+                    if (!args.tagContent) { return message.util.send(`You can't create a tag with no response!`) }
 
                     db.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
                         if (e.result.ok == 1) {

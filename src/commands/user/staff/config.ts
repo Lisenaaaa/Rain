@@ -20,33 +20,32 @@ export default class config extends BotCommand {
             return message.reply('<a:nonofast:862857752124194816> you arent cool enough to config')
         }
 
-        const row = new MessageActionRow()
-            .addComponents(
-                new MessageSelectMenu()
-                    .setCustomID('configCommand1')
-                    .setPlaceholder('Nothing selected')
-                    .addOptions([
-                        {
-                            label: 'Toggle commands',
-                            description: 'enable/disable a command',
-                            value: 'configToggleCommand',
-                        },
-                        {
-                            label: 'Set role permissions',
-                            description: 'Set a role to admin, moderator, helper, etc',
-                            value: 'configSetRolePerms'
-                        }
-                    ])
-            )
+        const row = new MessageActionRow().addComponents(
+            new MessageSelectMenu()
+                .setCustomID('configCommand1')
+                .setPlaceholder('Nothing selected')
+                .addOptions([
+                    {
+                        label: 'Toggle commands',
+                        description: 'enable/disable a command',
+                        value: 'configToggleCommand',
+                    },
+                    {
+                        label: 'Set role permissions',
+                        description: 'Set a role to admin, moderator, helper, etc',
+                        value: 'configSetRolePerms'
+                    }
+                ])
+        )
 
-        message.reply({ content: 'config', components: [row] })
+        message.reply({ content: 'config (you have 15 seconds to choose an option this may go up later but probably not)', components: [row] })
 
         await message.channel.awaitMessageComponentInteraction({ time: 15000 }).then(interaction => {
             console.log(interaction.values)
             if (interaction.values[0] == 'configToggleCommand') {
                 interaction.reply({ content: 'you have chosen to toggle a command', ephemeral: true })
             }
-            
+
             if (interaction.values.includes('configSetRolePerms')) {
                 interaction.reply({ content: 'you have chosen to set/change role permissions', ephemeral: true })
             }

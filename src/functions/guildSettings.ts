@@ -1,11 +1,10 @@
-import { GuildMember } from "discord.js";
-import { Message, User } from "discord.js";
+import { Message, User, GuildMember } from "discord.js";
 import { BotClient } from "@extensions/BotClient";
 
-import commandManager from './commandManager'
+import commandManager from '@functions/commandManager'
 
-import database from "./database";
-import utils from "./utils";
+import database from "@functions/database";
+import utils from "@functions/utils";
 
 const permNames = {
     owner: 'owner',

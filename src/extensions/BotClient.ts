@@ -27,7 +27,8 @@ export class BotClient extends AkairoClient {
 		allowMention: true,
 		automateCategories: true,
 		autoRegisterSlashCommands: true,
-		autoDefer: false
+		autoDefer: false,
+		
 	})
 	public listenerHandler: ListenerHandler = new ListenerHandler(this, {
 		directory: join(__dirname, "..", "listeners"),

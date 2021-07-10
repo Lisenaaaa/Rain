@@ -1,13 +1,8 @@
 import axios from "axios";
 import chalk from "chalk";
 import { AkairoClient, Command, CommandHandler } from "discord-akairo";
-import { TextChannel } from "discord.js";
-import { GuildMember } from "discord.js";
-import { User } from "discord.js";
-import { Client } from "discord.js";
-import { Message, MessageEmbed } from "discord.js";
+import { TextChannel, GuildMember, User, Client, Message, MessageEmbed } from "discord.js";
 import got from "got/dist/source";
-import language from "../constants/language";
 
 interface hastebinRes {
     key: string;
@@ -214,7 +209,7 @@ async function getPronouns(user: User, context: string) {
     catch (err) {
         //if they don't have pronouns set, or if pronoundb is down
         if (err == `Error: Request failed with status code 404`) {
-            if (context == `details`) { return await language.noPronounsSet(user) }
+            if (context == `details`) { return await `${user.tag} doesn't have their pronouns set! Tell them to set them at https://pronoundb.org.` }
             if (context == `ownedBy`) { return `this person's` }
             if (context == `singular`) { return `this person` }
         }
@@ -246,6 +241,16 @@ function getRandomInt(max) {
     return Math.floor(Math.random() * max)
 }
 
+function splitArrayIntoMultiple(array: Array<object>, number: number) {
+    let outputArray = []
+    let fakeOutputArray
+    while (array.length > 0) {
+        fakeOutputArray = array.splice(0, number)
+        outputArray.push(fakeOutputArray)
+    }
+    return outputArray
+}
+
 export = {
     slashGuilds,
     haste,
@@ -258,5 +263,6 @@ export = {
     getPronouns,
     debug,
     getRolePriority,
-    getRandomInt
+    getRandomInt,
+    splitArrayIntoMultiple
 }

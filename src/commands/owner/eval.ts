@@ -1,12 +1,10 @@
 import chalk from 'chalk';
 import { exec } from 'child_process';
 import { MessageEmbed } from 'discord.js';
-import { promisify } from 'util';
-import { inspect } from 'util';
+import { promisify, inspect } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
 
 import importUtils from '@functions/utils'
-//utils
 const utils = importUtils
 
 import importDatabase from '@functions/database'
@@ -29,22 +27,12 @@ export default class evaluate extends BotCommand {
 
     async exec(message, args) {
         try {
-            if (args.codeToEval.includes('token')) {
-                return (message.util.send('no token'))
-            }
-            if (args.codeToEval.includes('env')) {
-                return message.util.send('no env')
-            }
+            if (args.codeToEval.includes('token')) { return (message.util.send('no token')) }
+            if (args.codeToEval.includes('env')) { return message.util.send('no env') }
 
-            if (args.codeToEval.includes('channel.delete')) {
-                return message.util.send('Are you IRONM00N?')
-            }
-            if (args.codeToEval.includes('message.guild.delete')) {
-                return message.util.send('You\'re like IRONM00N but infinitely more stupid!')
-            }
-            if (args.codeToEval.includes('delete') && !args.sudo) {
-                return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license')
-            }
+            if (args.codeToEval.includes('channel.delete')) { return message.util.send('Are you IRONM00N?') }
+            if (args.codeToEval.includes('message.guild.delete')) { return message.util.send('You\'re like IRONM00N but infinitely more stupid!') }
+            if (args.codeToEval.includes('delete') && !args.sudo) { return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license') }
 
             let guild = message.guild
             let client = this.client
@@ -57,9 +45,9 @@ export default class evaluate extends BotCommand {
 
             let output = await eval(args.codeToEval)
 
-            if (inspect(output).includes(process.env['token'])) {
-                return message.util.send('Message containing token wasn\'t sent.')
-            }
+            if (inspect(output).includes(process.env['token'])) { return message.util.send('Message containing token wasn\'t sent.') }
+            if (inspect(output).includes(process.env['pctoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
+            if (inspect(output).includes(process.env['devtoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
 
 
             const evalEmbedDisabledGuilds = [
@@ -84,16 +72,13 @@ export default class evaluate extends BotCommand {
                 if (inspect(output, { depth: 0 }).length > 1000) {
                     await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output)))
                 }
-                else {
-                    evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``)
-                }
+
+                else { evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``) }
 
                 await message.util.send({ embeds: [evalOutputEmbed] })
             }
             if (args.silent) {
-                if (args.codetoeval.includes('message.delete')) {
-                    return
-                }
+                if (args.codetoeval.includes('message.delete')) { return }
                 message.react('<:success:838816341007269908>')
             }
 
