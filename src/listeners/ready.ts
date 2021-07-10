@@ -1,8 +1,7 @@
-import chalk from 'chalk';
-import { Listener } from 'discord-akairo';
-import { BotListener } from '@extensions/BotListener';
-import commandManager from '@functions/commandManager';
-import database from '@functions/database';
+import chalk from 'chalk'
+import { BotListener } from '@extensions/BotListener'
+import commandManager from '@functions/commandManager'
+import database from '@functions/database'
 
 class ReadyListener extends BotListener {
     constructor() {
@@ -48,4 +47,4 @@ class ReadyListener extends BotListener {
     }
 }
 
-module.exports = ReadyListener;
+module.exports = ReadyListener

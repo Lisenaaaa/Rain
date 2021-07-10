@@ -4,12 +4,11 @@ import { BotClient } from "@extensions/BotClient";
 import { BotListener } from "@extensions/BotListener";
 
 export default class missingPermissions extends BotListener {
-    client: BotClient;
     public constructor(client: BotClient) {
-        super("missingPermissions", {
-            emitter: "commandHandler",
-            event: "missingPermissions",
-            category: "commandHandler"
+        super('missingPermissions', {
+            emitter: 'commandHandler',
+            event: 'missingPermissions',
+            category: 'commandHandler'
         });
         this.client = client;
     }
@@ -19,7 +18,7 @@ export default class missingPermissions extends BotListener {
             .setColor('#ff0000')
             .setTitle('Something went wrong!')
 
-        if (type == "user") {
+        if (type == 'user') {
             let perm = command.userPermissions[0]
             PermsErrorEmbed.setDescription(`You cannot run this command, as you don't have \`${perm}\`.`)
         } else {
