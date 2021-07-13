@@ -42,30 +42,30 @@ function defaultDBSchema(messageGuildID) {
                 helper: 'null',
                 trialHelper: 'null'
             },
-            lockedChannels:[
+            lockedChannels: [
                 {
-                    id:'owner',
-                    channels:[]
+                    id: 'owner',
+                    channels: []
                 },
                 {
-                    id:'admin',
-                    channels:[]
+                    id: 'admin',
+                    channels: []
                 },
                 {
-                    id:'srMod',
-                    channels:[]
+                    id: 'srMod',
+                    channels: []
                 },
                 {
-                    id:'moderator',
-                    channels:[]
+                    id: 'moderator',
+                    channels: []
                 },
                 {
-                    id:'helper',
-                    channels:[]
+                    id: 'helper',
+                    channels: []
                 },
                 {
-                    id:'trialHelper',
-                    channels:[]
+                    id: 'trialHelper',
+                    channels: []
                 },
             ]
         },
@@ -131,7 +131,7 @@ async function add(messageGuildID: string) {
 }
 
 //THIS WILL PROBABLY BREAK EVERYTHING IF USED, SO DON'T FUCKING USE IT
-async function addOverrideOther(messageGuildID: string) {
+async function addGuildWithoutCheck(messageGuildID: string) {
     return await db.collection('guildsv2')
         .insertOne(defaultDBSchema(messageGuildID))
 }
@@ -240,12 +240,8 @@ async function getEntireUserDB() {
 
 async function userAdd(userID: string) {
 
-    let allDB = await getEntireUserDB()
-
-    for (let e of allDB) {
-        if (e.userID == userID) {
-            return
-        }
+    for (let e of await getEntireUserDB()) {
+        if (e.userID == userID) { return }
     }
 
     return await db.collection('user')
@@ -259,7 +255,7 @@ export = {
     editTag,
     deleteTag,
     guildSettings,
-    addOverrideOther,
+    addGuildWithoutCheck,
     addCommandToGuildDB,
     editRolePermissions,
     checkIfCommandInGuildDB,
