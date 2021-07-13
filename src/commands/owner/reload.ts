@@ -30,6 +30,7 @@ export default class reload extends BotCommand {
                 await this.client.commandHandler.reloadAll()
                 await this.client.listenerHandler.reloadAll()
                 await this.client.inhibitorHandler.reloadAll()
+                await this.client.taskHandler.reloadAll()
 
                 console.log(chalk.green(`Reloaded!\n`))
 

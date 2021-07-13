@@ -1,5 +1,5 @@
 import chalk from "chalk"
-import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler } from "discord-akairo"
+import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from "discord-akairo"
 import { Intents } from "discord.js"
 import { join } from "path"
 import database from "@functions/database"
@@ -10,7 +10,7 @@ export class BotClient extends AkairoClient {
 			if (message.guild) {
 				try {
 					return database.add(message.guild.id).then(async () => {
-						try{
+						try {
 							return (await database.read(message.guild.id))[0].guildSettings.prefix
 						}
 						catch (err) { return '-' }
@@ -28,7 +28,7 @@ export class BotClient extends AkairoClient {
 		automateCategories: true,
 		autoRegisterSlashCommands: true,
 		autoDefer: false,
-		
+
 	})
 	public listenerHandler: ListenerHandler = new ListenerHandler(this, {
 		directory: join(__dirname, "..", "listeners"),
@@ -38,6 +38,11 @@ export class BotClient extends AkairoClient {
 	public inhibitorHandler: InhibitorHandler = new InhibitorHandler(this, {
 		directory: join(__dirname, "..", "inhibitors")
 	})
+
+	public taskHandler: TaskHandler = new TaskHandler(this, {
+		directory: join(__dirname, "..", "tasks")
+	})
+
 	public constructor() {
 		super({
 			ownerID: [
@@ -67,10 +72,12 @@ export class BotClient extends AkairoClient {
 			commands: this.commandHandler,
 			listeners: this.listenerHandler,
 			inhibitors: this.inhibitorHandler,
+			tasks: this.taskHandler,
 		}
 		for (const loader of Object.keys(loaders)) {
 			try {
 				loaders[loader].loadAll()
+				if (loader == 'tasks') { loaders[loader].startAll() }
 				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)

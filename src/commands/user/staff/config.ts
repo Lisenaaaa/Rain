@@ -2,6 +2,7 @@ import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 import database from '@functions/database';
 import utils from '@functions/utils'
+import { MessageButton } from 'discord.js';
 import { MessageActionRow, MessageSelectMenu } from 'discord.js';
 
 export default class config extends BotCommand {
@@ -24,6 +25,8 @@ export default class config extends BotCommand {
         const filter = i => i.user.id == message.author.id
         const filterMsg = m => m.author.id == message.author.id
 
+        const dotThen = message.channel.createMessageCollector({ filter: filterMsg, time: 15000 })
+
         const row = new MessageActionRow().addComponents(
             new MessageSelectMenu()
                 .setCustomID('configCommand1')
@@ -45,14 +48,29 @@ export default class config extends BotCommand {
         const botMsg = await message.reply({ content: 'config (you have 15 seconds to choose an option this may go up later but probably not)', components: [row] })
 
         await message.channel.awaitMessageComponentInteraction({ filter, time: 15000 }).then(async interaction => {
-            //console.log(interaction.values)
             if (interaction.values[0] == 'configToggleCommand') {
-                interaction.reply({ content: 'you have chosen to toggle a command', ephemeral: true })
-                botMsg.edit(`**${message.author.tag}** is currently configuring my settings\ncurrent config menu: toggle commands`)
+                const allIDs = commandManager.getAllCommandIDs(this.client)
+                let idString = ''
+
+                allIDs.forEach(id => {
+                    idString += `\`${id}\`,\n`
+                })
+                idString = idString.substring(0, idString.length - 2)
+
+                const allIDButton = new MessageButton()
+                    .setCustomID('configViewAllCommandIDs')
+                    .setLabel('Show All IDs')
+                    .setStyle('PRIMARY')
+                await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components:[[allIDButton]]})
+                dotThen.once('collect', async msg => {
+                    if (allIDs.includes(msg.content)) {
+                        botMsg.edit('that is a command')
+                    }
+                })
+                //interaction.reply(idString)
             }
 
             if (interaction.values.includes('configSetRolePerms')) {
-                //botMsg.edit(`**${message.author.tag}** is currently configuring my settings\ncurrent config menu: change role permissions`)
 
                 const roleRow = new MessageActionRow().addComponents(
                     new MessageSelectMenu()
@@ -91,15 +109,12 @@ export default class config extends BotCommand {
                             }
                         ])
                 )
-                interaction.reply({ content: 'Which position would you like to set the permissions of?', components: [roleRow] })
-
-
-
+                botMsg.edit({ content: 'Which position would you like to set the permissions of?', components: [roleRow] })
 
                 await message.channel.awaitMessageComponentInteraction({ filter, time: 15000 }).then(async interaction => {
                     const position = interaction.values[0]
                     await interaction.reply({ content: `Please mention or send the ID of the role you would like to set to ${position}` })
-                    const dotThen = message.channel.createMessageCollector({ filter: filterMsg, time: 15000 })
+
                     let role
                     dotThen.once('collect', async msg => {
                         if (msg.author.id != message.author.id) { return msg.reply('you cant do that') }

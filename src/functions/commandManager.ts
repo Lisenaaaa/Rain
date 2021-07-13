@@ -8,7 +8,7 @@ import utils from "@functions/utils"
 
 async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     if (!msg.guild) { return }
-    
+
     let commandCanBeRan = false
 
     const userID = msg.author.id
@@ -60,12 +60,13 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     return commandCanBeRan
 }
 
-async function getAllCommandIDs(client: BotClient) {
+function getAllCommandIDs(client: BotClient) {
     let IDs = []
 
     client.commandHandler.modules.forEach(command => {
         if (command.category.id.toLowerCase().includes('owner')) { return }
         if (command.category.id.toLowerCase().includes('testing')) { return }
+        if (command.id == 'templateCommand') { return }
 
         if (command.ownerOnly) { return }
 
