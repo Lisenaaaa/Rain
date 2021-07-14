@@ -189,16 +189,23 @@ async function toggleCommand(client: BotClient, messageGuildID: string, commandT
         if (allCommands.includes(commandToToggle)) {
             //return 'command is in bot but not guild db'
             await addCommandToGuildDB(messageGuildID, commandToToggle)
-            return 'command was not in guild db, now it is'
         }
         else { return 'not a command' }
     }
-    else { return cmd }
-    // let object = { ['commandSettings.' + commandToToggle]: false }
-    // let update = { $set: object }
 
-    // return await db.collection('guildsv2')
-    //     .updateOne(query, update)
+    let object
+
+    if ((allGuildCommands.find(cmd => cmd.id == commandToToggle)).enabled == true) {
+        object = { ['commandSettings.' + commandToToggle]: false }
+    }
+    else {
+        object = { ['commandSettings.' + commandToToggle]: true }
+    }
+
+    let update = { $set: object }
+
+    return await db.collection('guildsv2')
+        .updateOne(query, update)
 }
 
 async function addCommandToGuildDB(guildID: string, commandID: string) {

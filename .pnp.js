@@ -44,8 +44,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
-            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"],
-            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"],
+            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
@@ -92,10 +92,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@discordjs/builders", [
-        ["npm:0.1.1", {
-          "packageLocation": "./.yarn/cache/@discordjs-builders-npm-0.1.1-86a3db61e4-2902d53542.zip/node_modules/@discordjs/builders/",
+        ["npm:0.2.0", {
+          "packageLocation": "./.yarn/cache/@discordjs-builders-npm-0.2.0-7a1dcef5dd-d273d10d71.zip/node_modules/@discordjs/builders/",
           "packageDependencies": [
-            ["@discordjs/builders", "npm:0.1.1"],
+            ["@discordjs/builders", "npm:0.2.0"],
             ["discord-api-types", "npm:0.18.1"],
             ["tslib", "npm:2.3.0"]
           ],
@@ -897,10 +897,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["discord-akairo", [
-        ["https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343", {
-          "packageLocation": "./.yarn/cache/discord-akairo-https-0a589e263f-190358ad6d.zip/node_modules/discord-akairo/",
+        ["https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36", {
+          "packageLocation": "./.yarn/cache/discord-akairo-https-cde5392047-58d7b0c22c.zip/node_modules/discord-akairo/",
           "packageDependencies": [
-            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"]
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"]
           ],
           "linkType": "HARD",
         }]
@@ -922,11 +922,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["discord.js", [
-        ["npm:13.0.0-dev.64f093f.1625054868", {
-          "packageLocation": "./.yarn/cache/discord.js-npm-13.0.0-dev.64f093f.1625054868-9756db4a57-860de9cab3.zip/node_modules/discord.js/",
+        ["npm:13.0.0-dev.98c6078.1626264203", {
+          "packageLocation": "./.yarn/cache/discord.js-npm-13.0.0-dev.98c6078.1626264203-aa97ca8eec-e2e0371082.zip/node_modules/discord.js/",
           "packageDependencies": [
-            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
-            ["@discordjs/builders", "npm:0.1.1"],
+            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
+            ["@discordjs/builders", "npm:0.2.0"],
             ["@discordjs/collection", "npm:0.1.6"],
             ["@discordjs/form-data", "npm:3.0.1"],
             ["@sapphire/async-queue", "npm:1.1.4"],
@@ -934,7 +934,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["abort-controller", "npm:3.0.0"],
             ["discord-api-types", "npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e"],
             ["node-fetch", "npm:2.6.1"],
-            ["ws", "virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1"]
+            ["ws", "virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1"]
           ],
           "linkType": "HARD",
         }]
@@ -2110,8 +2110,8 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/parser", "virtual:dbeddcad54329cbef570c10718c2536d3dc9d8ecf3f64191fe59d46d6449cba184a7d052e3fc17699e9fef22b2a39942f3fbd16667a6d087e83a633b674be694#npm:4.15.2"],
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
-            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"],
-            ["discord.js", "npm:13.0.0-dev.64f093f.1625054868"],
+            ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"],
+            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["got", "npm:11.8.2"],
@@ -2431,10 +2431,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1", {
-          "packageLocation": "./.yarn/$$virtual/ws-virtual-61515c0d93/0/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
+        ["virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1", {
+          "packageLocation": "./.yarn/$$virtual/ws-virtual-f747a5cedc/0/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
           "packageDependencies": [
-            ["ws", "virtual:9756db4a574ac3abed7352a2ab817aaf922c75b5f58cda612ab7a043d79809abc1f54808f83fecf488adf5c442668676a607cab563b6a15ec9f79f8d053a1a93#npm:7.5.1"],
+            ["ws", "virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1"],
             ["@types/bufferutil", null],
             ["@types/utf-8-validate", null],
             ["bufferutil", null],

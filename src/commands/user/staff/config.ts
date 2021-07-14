@@ -29,7 +29,7 @@ export default class config extends BotCommand {
 
         const row = new MessageActionRow().addComponents(
             new MessageSelectMenu()
-                .setCustomID('configCommand1')
+                .setCustomId('configCommand1')
                 .setPlaceholder('Nothing selected')
                 .addOptions([
                     {
@@ -58,7 +58,7 @@ export default class config extends BotCommand {
                 idString = idString.substring(0, idString.length - 2)
 
                 const allIDButton = new MessageButton()
-                    .setCustomID('configViewAllCommandIDs')
+                    .setCustomId('configViewAllCommandIDs')
                     .setLabel('Show All IDs')
                     .setStyle('PRIMARY')
                 await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components: [[allIDButton]] })
@@ -79,7 +79,7 @@ export default class config extends BotCommand {
 
                 const roleRow = new MessageActionRow().addComponents(
                     new MessageSelectMenu()
-                        .setCustomID('configCommandSetRolePermsDropdown')
+                        .setCustomId('configCommandSetRolePermsDropdown')
                         .setPlaceholder('I can\'t change the permissions of nothing!')
                         .addOptions([
                             {

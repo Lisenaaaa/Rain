@@ -13,7 +13,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 
     const userID = msg.author.id
     const channelID = msg.channel.id
-    const ownerID = msg.guild.ownerID
+    const ownerID = msg.guild.ownerId
     const guildID = msg.guild.id
 
     const userPerms = await guildSettings.getUserPerms(msg)
@@ -32,7 +32,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     const debugLog = false
 
     if (debugLog) {
-        if (msg.channel.type == 'text') {
+        if (msg.channel.type == 'GUILD_TEXT') {
             cmdInfo(`Channel name: ${msg.channel.name}`)
         }
         cmdInfo(`Command ID: ${commandID}`)

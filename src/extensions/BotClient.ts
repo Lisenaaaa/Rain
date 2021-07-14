@@ -49,14 +49,13 @@ export class BotClient extends AkairoClient {
 				"492488074442309642",
 				"545277690303741962"
 			],
-			intents: Intents.NON_PRIVILEGED
-
+			intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 		},
 			{
 				allowedMentions: {
 					parse: ["users"]
 				},
-				intents: Intents.NON_PRIVILEGED
+				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 			})
 	}
 	private async _init(): Promise<void> {

@@ -32,13 +32,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/builders@npm:^0.1.1":
-  version: 0.1.1
-  resolution: "@discordjs/builders@npm:0.1.1"
+"@discordjs/builders@npm:^0.2.0":
+  version: 0.2.0
+  resolution: "@discordjs/builders@npm:0.2.0"
   dependencies:
     discord-api-types: ^0.18.1
     tslib: ^2.3.0
-  checksum: 2902d53542467c9fe3353b412c12b273a9ecba10ad3f86029613ef3822eba68a83b491fac644bdc37e254520b6a1fcaa91ae58c3ad859d0a768e47fbd2fe3e06
+  checksum: d273d10d711ba0d45e0fff35d7e722231ce008bdbef04fe993488d551aea222d8e5754e4727e71e3e6cbe7d39900a47320d859c4db5c49c1ea3f780b4ab5d64b
   languageName: node
   linkType: hard
 
@@ -676,8 +676,8 @@ __metadata:
 
 "discord-akairo@git+https://github.com/SkyBlockDev/discord-akairo.git":
   version: 8.2.2
-  resolution: "discord-akairo@https://github.com/SkyBlockDev/discord-akairo.git#commit=a6a59951b1fe256167b842a54649dba2800da343"
-  checksum: 190358ad6da3ba8a5a7d52b12f55a5a96729359fa2019a9786999a498725edce1f182f460c47c30c3fb45def62d1e1b2f6fbf8c3f312655886ea333c60175d6a
+  resolution: "discord-akairo@https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"
+  checksum: 58d7b0c22cf39a46ce22bf6cfcf2daa8fbc5323dbb1b0fcbcd54d0c0815ba0faa855d394ac87d89045567d9a988ae77f4c7d63f31dbf5b7955c725a966b65fa2
   languageName: node
   linkType: hard
 
@@ -696,10 +696,10 @@ __metadata:
   linkType: hard
 
 "discord.js@npm:dev":
-  version: 13.0.0-dev.64f093f.1625054868
-  resolution: "discord.js@npm:13.0.0-dev.64f093f.1625054868"
+  version: 13.0.0-dev.98c6078.1626264203
+  resolution: "discord.js@npm:13.0.0-dev.98c6078.1626264203"
   dependencies:
-    "@discordjs/builders": ^0.1.1
+    "@discordjs/builders": ^0.2.0
     "@discordjs/collection": ^0.1.6
     "@discordjs/form-data": ^3.0.1
     "@sapphire/async-queue": ^1.1.4
@@ -708,7 +708,7 @@ __metadata:
     discord-api-types: ^0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e
     node-fetch: ^2.6.1
     ws: ^7.5.1
-  checksum: 860de9cab340f6434f5c3755b3d7627c51a74d2ee8ff7b42d78fc1cc9011451ea9d503bdcfd928f5d0771d4d4f4507053d861c364e7514b52b6f5caec444e9b6
+  checksum: e2e0371082d3d9158e0f966d47912f185a9843ab2c720c46eac39ec657efde98805cb7b2e60ec7ad8051ae90df9ffab9e3b5be288a40afe67a738ea52a95e1c0
   languageName: node
   linkType: hard
 

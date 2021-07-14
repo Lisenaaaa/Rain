@@ -5,7 +5,7 @@ class pingResponse extends BotListener {
     constructor() {
         super('pingResponse', {
             emitter: 'client',
-            event: 'message'
+            event: 'messageCreate'
         });
     }
 
