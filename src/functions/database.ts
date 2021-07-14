@@ -1,4 +1,9 @@
+import { BotClient } from "@extensions/BotClient";
 import chalk from "chalk";
+import { AkairoClient } from "discord-akairo";
+import { Message } from "discord.js";
+import commandManager from "./commandManager";
+
 
 require('dotenv').config()
 const { MongoClient } = require('mongodb');
@@ -174,6 +179,28 @@ async function editRolePermissions(messageGuildID: string, roleToEdit: string, n
         .updateOne(query, update)
 }
 
+async function toggleCommand(client: BotClient, messageGuildID: string, commandToToggle: string) {
+    let query = { guildID: messageGuildID }
+    const allGuildCommands = (await read(messageGuildID))[0].commandSettings
+    const allCommands = commandManager.getAllCommandIDs(client)
+    const cmd = allGuildCommands.find(cmd => cmd.id == commandToToggle)
+
+    if (cmd == undefined) {
+        if (allCommands.includes(commandToToggle)) {
+            //return 'command is in bot but not guild db'
+            await addCommandToGuildDB(messageGuildID, commandToToggle)
+            return 'command was not in guild db, now it is'
+        }
+        else { return 'not a command' }
+    }
+    else { return cmd }
+    // let object = { ['commandSettings.' + commandToToggle]: false }
+    // let update = { $set: object }
+
+    // return await db.collection('guildsv2')
+    //     .updateOne(query, update)
+}
+
 async function addCommandToGuildDB(guildID: string, commandID: string) {
     let query = { guildID: guildID }
     let update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
@@ -259,6 +286,7 @@ export = {
     addCommandToGuildDB,
     editRolePermissions,
     checkIfCommandInGuildDB,
+    toggleCommand,
 
     //GLOBAL THINGS//
     addCommandToGlobalDB,

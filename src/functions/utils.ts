@@ -24,13 +24,13 @@ async function haste(content: string) {
     ];
     for (const url of urls) {
         try {
-            const res: hastebinRes = await got.post(`${url}/documents`, { body: content }).json();
-            return `${url}/${res.key}`;
+            const res: hastebinRes = await got.post(`${url}/documents`, { body: content }).json()
+            return `${url}/${res.key}`
         } catch (e) {
-            continue;
+            continue
         }
     }
-    return 'Unable to post';
+    return 'Unable to post'
 }
 
 async function errorhandling(err: string, message: Message) {

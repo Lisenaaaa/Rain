@@ -61,7 +61,12 @@ export default class config extends BotCommand {
                     .setCustomID('configViewAllCommandIDs')
                     .setLabel('Show All IDs')
                     .setStyle('PRIMARY')
-                await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components:[[allIDButton]]})
+                await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components: [[allIDButton]] })
+
+                await message.channel.awaitMessageComponentInteraction({ time: 1500000 }).then(interaction => {
+                    interaction.reply({ content: idString, ephemeral: true })
+                })
+
                 dotThen.once('collect', async msg => {
                     if (allIDs.includes(msg.content)) {
                         botMsg.edit('that is a command')
