@@ -14,7 +14,7 @@ export default class taglist extends BotCommand {
     }
 
     async exec(message) {
-        await db.read(message.guild.id).then(data => {
+        await db.readGuild(message.guild.id).then(data => {
             let taglist = ``
             let tagsEmbed = new MessageEmbed()
 

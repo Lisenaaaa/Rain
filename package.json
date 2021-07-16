@@ -30,10 +30,8 @@
 		"discord-akairo": "git+https://github.com/SkyBlockDev/discord-akairo.git",
 		"discord.js": "dev",
 		"dotenv": "^10.0.0",
-		"got": "^11.8.2",
-		"jsonfile": "^6.1.0",
 		"module-alias": "^2.2.2",
-		"mongodb": "^3.6.9"
+		"mongodb": "^4.0.0"
 	},
 	"prettier": {
 		"tabWidth": 4,

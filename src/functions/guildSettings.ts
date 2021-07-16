@@ -1,10 +1,10 @@
-import { Message, User, GuildMember } from "discord.js";
+import { Message } from "discord.js";
 import { BotClient } from "@extensions/BotClient";
 
 import commandManager from '@functions/commandManager'
 
 import database from "@functions/database";
-import utils from "@functions/utils";
+//import utils from "@functions/utils";
 
 const permNames = {
     owner: 'owner',
@@ -16,48 +16,49 @@ const permNames = {
 }
 
 async function getUserPerms(message: Message) {
-    return database.read(message.guild.id).then(settings => {
-        let found = false
-        let perms = 'everyone'
+    //e
+    const settings = await database.readGuild(message.guild.id)
 
-        const roleSettings = settings[0].guildSettings.staffRoles
+    let found = false
+    let perms = 'everyone'
 
-        const owner = roleSettings.owner
-        const admin = roleSettings.admin
-        const srMod = roleSettings.srMod
-        const moderator = roleSettings.moderator
-        const helper = roleSettings.helper
-        const trialHelper = roleSettings.trialHelper
+    const roleSettings = settings[0].guildSettings.staffRoles
 
-        message.member.roles.cache.forEach(role => {
-            if (role == owner && found == false) {
-                found = true
-                return perms = 'owner'
-            }
-            else if (role == admin && found == false) {
-                found = true
-                return perms = 'admin'
-            }
-            else if (role == srMod && found == false) {
-                found = true
-                return perms = 'srMod'
-            }
-            else if (role == moderator && found == false) {
-                found = true
-                return perms = 'moderator'
-            }
-            else if (role == helper && found == false) {
-                found = true
-                return perms = 'helper'
-            }
-            else if (role == trialHelper && found == false) {
-                found = true
-                return perms = 'trialHelper'
-            }
-        })
+    const owner = roleSettings.owner
+    const admin = roleSettings.admin
+    const srMod = roleSettings.srMod
+    const moderator = roleSettings.moderator
+    const helper = roleSettings.helper
+    const trialHelper = roleSettings.trialHelper
 
-        return perms
+    message.member.roles.cache.forEach(role => {
+        if (role == owner && found == false) {
+            found = true
+            return perms = 'owner'
+        }
+        else if (role == admin && found == false) {
+            found = true
+            return perms = 'admin'
+        }
+        else if (role == srMod && found == false) {
+            found = true
+            return perms = 'srMod'
+        }
+        else if (role == moderator && found == false) {
+            found = true
+            return perms = 'moderator'
+        }
+        else if (role == helper && found == false) {
+            found = true
+            return perms = 'helper'
+        }
+        else if (role == trialHelper && found == false) {
+            found = true
+            return perms = 'trialHelper'
+        }
     })
+
+    return perms
 }
 
 function getAllUserPerms(userPerms: string) {
@@ -77,7 +78,7 @@ function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
 async function checkUserCanUseCommandsInChannel(guildID: string, channelID: string, userPerms: string) {
     let channelPerms = false
     let lockedChannelFound = false
-    database.read(guildID).then(database => {
+    database.readGuild(guildID).then(database => {
         const db = database[0]
         const lockedChannels = db.guildSettings.lockedChannels
 
@@ -100,7 +101,7 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
     const commandDetails = await commandManager.getCommandDetails(commandID, message.client as BotClient)
     const discordPerms = message.member.permissions.has(commandDetails.discordPerms, true)
-    const guildDB = (await database.read(message.member.guild.id))[0]
+    const guildDB = (await database.readGuild(message.member.guild.id))[0]
 
     let existsInDB = false
     let userHasBotPerms = false

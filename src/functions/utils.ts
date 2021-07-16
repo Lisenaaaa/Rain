@@ -2,7 +2,7 @@ import axios from "axios";
 import chalk from "chalk";
 import { AkairoClient, Command, CommandHandler } from "discord-akairo";
 import { TextChannel, GuildMember, User, Client, Message, MessageEmbed } from "discord.js";
-import got from "got/dist/source";
+//import got from "got/dist/source";
 
 interface hastebinRes {
     key: string;
@@ -15,6 +15,7 @@ const slashGuilds = ['824680357936103497', '780181693100982273', '79461082831703
 async function haste(content: string) {
     const urls = [
         'https://hst.sh',
+        'https://h.inv.wtf',
         'https://hasteb.in',
         'https://hastebin.com',
         'https://mystb.in',
@@ -24,7 +25,7 @@ async function haste(content: string) {
     ];
     for (const url of urls) {
         try {
-            const res: hastebinRes = await got.post(`${url}/documents`, { body: content }).json()
+            const res: hastebinRes = (await axios.post(`${url}/documents`, { body: content })).data
             return `${url}/${res.key}`
         } catch (e) {
             continue

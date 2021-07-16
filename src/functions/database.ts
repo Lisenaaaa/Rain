@@ -1,7 +1,5 @@
 import { BotClient } from "@extensions/BotClient";
 import chalk from "chalk";
-import { AkairoClient } from "discord-akairo";
-import { Message } from "discord.js";
 import commandManager from "./commandManager";
 
 
@@ -112,7 +110,7 @@ function userDBSchema(userID: string) {
     }
 }
 
-async function read(messageGuildID: string) {
+async function readGuild(messageGuildID: string) {
     return await db.collection('guildsv2')
         .find({ guildID: messageGuildID })
         .toArray()
@@ -166,7 +164,7 @@ async function deleteTag(messageGuildID: string, tagName: string) {
 }
 
 async function guildSettings(messageGuildID: string) {
-    const data = await read(messageGuildID)
+    const data = await readGuild(messageGuildID)
     return data[0].guildSettings
 }
 
@@ -181,7 +179,7 @@ async function editRolePermissions(messageGuildID: string, roleToEdit: string, n
 
 async function toggleCommand(client: BotClient, messageGuildID: string, commandToToggle: string) {
     let query = { guildID: messageGuildID }
-    const allGuildCommands = (await read(messageGuildID))[0].commandSettings
+    const allGuildCommands = (await readGuild(messageGuildID))[0].commandSettings
     const allCommands = commandManager.getAllCommandIDs(client)
     const cmd = allGuildCommands.find(cmd => cmd.id == commandToToggle)
 
@@ -218,7 +216,7 @@ async function addCommandToGuildDB(guildID: string, commandID: string) {
 
 async function checkIfCommandInGuildDB(guildID: string, commandID: string) {
     let found = false
-    return read(guildID).then(async db => {
+    return readGuild(guildID).then(async db => {
         db[0].commandSettings.forEach(cmd => {
             if (cmd.id == commandID) { return found = true }
         })
@@ -283,7 +281,7 @@ async function userAdd(userID: string) {
 }
 
 export = {
-    read,
+    readGuild,
     add,
     addTag,
     editTag,

@@ -11,7 +11,7 @@ class pingResponse extends BotListener {
 
     async exec(message) {
         if (message.content == `<@!${this.client.user.id}>` || message.content == `<@${this.client.user.id}`) {
-            database.read(message.guild.id).then(settings => {
+            database.readGuild(message.guild.id).then(settings => {
                 const prefixes = (settings[0].guildSettings.prefix)
                 let prefixString = new String
 

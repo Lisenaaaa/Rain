@@ -77,7 +77,7 @@ export default class tags extends BotCommand {
                 }
             })
 
-            await database.read(message.guild.id).then(guildDB => {
+            await database.readGuild(message.guild.id).then(guildDB => {
                 const tags = guildDB[0].tags
                 tags.forEach(tag => {
                     if (message.content == `${this.prefix}tag ${tag.name}` && message.author.bot == false) { message.util.send(tag.value) }

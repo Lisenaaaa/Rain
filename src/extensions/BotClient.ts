@@ -11,7 +11,7 @@ export class BotClient extends AkairoClient {
 				try {
 					return database.add(message.guild.id).then(async () => {
 						try {
-							return (await database.read(message.guild.id))[0].guildSettings.prefix
+							return (await database.readGuild(message.guild.id))[0].guildSettings.prefix
 						}
 						catch (err) { return '-' }
 					})

@@ -70,7 +70,7 @@ export default class evaluate extends BotCommand {
                     .setColor(message.member.displayColor)
 
                 if (inspect(output, { depth: 0 }).length > 1000) {
-                    await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output)))
+                    await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output, { depth: 0 })))
                 }
 
                 else { evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``) }

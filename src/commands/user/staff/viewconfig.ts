@@ -1,7 +1,6 @@
 import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 import database from '@functions/database';
-import utils from '@functions/utils'
 import { MessageEmbed } from 'discord.js';
 
 export default class viewConfig extends BotCommand {
@@ -14,10 +13,10 @@ export default class viewConfig extends BotCommand {
 
         })
     }
-    async exec(message, args) {
+    async exec(message) {
         if (!await commandManager.checkIfCommandCanBeUsed(message, this.id)) { return }
 
-        const db = (await database.read(message.guild.id))[0]
+        const db = (await database.readGuild(message.guild.id))[0]
 
         //console.log(db.guildSettings.staffRoles)
 
