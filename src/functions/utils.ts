@@ -246,7 +246,7 @@ function splitArrayIntoMultiple(array: Array<object>, number: number) {
     return outputArray
 }
 
-export = {
+export default {
     slashGuilds,
     haste,
     errorhandling,

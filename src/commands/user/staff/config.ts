@@ -47,7 +47,7 @@ export default class config extends BotCommand {
 
         const botMsg = await message.reply({ content: 'config (you have 15 seconds to choose an option this may go up later but probably not)', components: [row] })
 
-        await message.channel.awaitMessageComponentInteraction({ filter, time: 15000 }).then(async interaction => {
+        await message.channel.awaitMessageComponent({ filter, time: 15000 }).then(async interaction => {
             if (interaction.values[0] == 'configToggleCommand') {
                 const allIDs = commandManager.getAllCommandIDs(this.client)
                 let idString = ''
@@ -63,7 +63,7 @@ export default class config extends BotCommand {
                     .setStyle('PRIMARY')
                 await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components: [[allIDButton]] })
 
-                await message.channel.awaitMessageComponentInteraction({ time: 1500000 }).then(interaction => {
+                await message.channel.awaitMessageComponent({ time: 1500000 }).then(interaction => {
                     interaction.reply({ content: idString, ephemeral: true })
                 })
 
@@ -116,7 +116,7 @@ export default class config extends BotCommand {
                 )
                 botMsg.edit({ content: 'Which position would you like to set the permissions of?', components: [roleRow] })
 
-                await message.channel.awaitMessageComponentInteraction({ filter, time: 15000 }).then(async interaction => {
+                await message.channel.awaitMessageComponent({ filter, time: 15000 }).then(async interaction => {
                     const position = interaction.values[0]
                     await interaction.reply({ content: `Please mention or send the ID of the role you would like to set to ${position}` })
 

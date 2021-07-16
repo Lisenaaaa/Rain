@@ -111,9 +111,11 @@ function userDBSchema(userID: string) {
 }
 
 async function readGuild(messageGuildID: string) {
-    return await db.collection('guildsv2')
+    const fuckYouTypescript = await db.collection('guildsv2')
         .find({ guildID: messageGuildID })
         .toArray()
+
+    return fuckYouTypescript
 }
 
 async function getEntireGuildsDB() {
@@ -280,7 +282,7 @@ async function userAdd(userID: string) {
         .insertOne(userDBSchema(userID))
 }
 
-export = {
+export default {
     readGuild,
     add,
     addTag,
@@ -303,4 +305,5 @@ export = {
     //USER THINGS//
     userRead,
     userAdd,
+    getEntireUserDB,
 }

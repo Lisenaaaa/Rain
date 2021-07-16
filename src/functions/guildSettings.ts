@@ -16,7 +16,6 @@ const permNames = {
 }
 
 async function getUserPerms(message: Message) {
-    //e
     const settings = await database.readGuild(message.guild.id)
 
     let found = false
@@ -140,7 +139,7 @@ async function checkUserCanUseSpecificCommand(commandID: string, message: Messag
 }
 
 
-export = {
+export default {
     getUserPerms,
     checkUserHasPermsForCommand,
     checkUserCanUseCommandsInChannel,

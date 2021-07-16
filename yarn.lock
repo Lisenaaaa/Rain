@@ -127,9 +127,9 @@ __metadata:
   linkType: hard
 
 "@types/node@npm:*":
-  version: 14.14.37
-  resolution: "@types/node@npm:14.14.37"
-  checksum: 5e2d9baf7594ebacaf016716515f30de0765169412787f981481c2fb8b468923149bb9e2e3219ee672399811672ceddc339a7372a61cf15bc656836a5494d991
+  version: 16.3.3
+  resolution: "@types/node@npm:16.3.3"
+  checksum: e597a54070815170d8f541c778900023f2522c27be9c56b2b8411d663da1ef5226f9d16ec158c5d9c84ddcc85551e3d02aa68046aa108b4c6085bc7c95a5bebb
   languageName: node
   linkType: hard
 
@@ -148,11 +148,11 @@ __metadata:
   linkType: hard
 
 "@types/ws@npm:^7.4.5":
-  version: 7.4.5
-  resolution: "@types/ws@npm:7.4.5"
+  version: 7.4.6
+  resolution: "@types/ws@npm:7.4.6"
   dependencies:
     "@types/node": "*"
-  checksum: b467f596cc9992dde38ea9bb824135f20d0eae92515304e3de25e4b98a3b41e71897801900563c1e72f36fa7a6277c873896b842bd6d1b9d4b9457834533903b
+  checksum: bf81b170ab2caeb5f602e1094058d31b2e19fbb725d25007fbca01c1043c10c3fdd0ee67dd29cadab3bdfed52cf930d9d0ec06bb51b811e67176959476cbd043
   languageName: node
   linkType: hard
 
@@ -598,8 +598,8 @@ __metadata:
   linkType: hard
 
 "discord.js@npm:dev":
-  version: 13.0.0-dev.98c6078.1626264203
-  resolution: "discord.js@npm:13.0.0-dev.98c6078.1626264203"
+  version: 13.0.0-dev.f200f14.1626436969
+  resolution: "discord.js@npm:13.0.0-dev.f200f14.1626436969"
   dependencies:
     "@discordjs/builders": ^0.2.0
     "@discordjs/collection": ^0.1.6
@@ -610,7 +610,7 @@ __metadata:
     discord-api-types: ^0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e
     node-fetch: ^2.6.1
     ws: ^7.5.1
-  checksum: e2e0371082d3d9158e0f966d47912f185a9843ab2c720c46eac39ec657efde98805cb7b2e60ec7ad8051ae90df9ffab9e3b5be288a40afe67a738ea52a95e1c0
+  checksum: b352f1c01bc014892d9aff79f20d0ef02bfb86008975c0500f5913fc54ce9c76cb731cc59b0e56f2d384e81f8b0f558633905f6cbe515adcaf7dff69f069aeab
   languageName: node
   linkType: hard
 
@@ -1681,8 +1681,8 @@ typescript@^4.2.2:
   linkType: hard
 
 "ws@npm:^7.5.1":
-  version: 7.5.1
-  resolution: "ws@npm:7.5.1"
+  version: 7.5.3
+  resolution: "ws@npm:7.5.3"
   peerDependencies:
     bufferutil: ^4.0.1
     utf-8-validate: ^5.0.2
@@ -1691,7 +1691,7 @@ typescript@^4.2.2:
       optional: true
     utf-8-validate:
       optional: true
-  checksum: e56541a73cac1d5b4b5e81ddd7e9925e84e45abaab6f3ee5e088e0089b5518f862d8429897243e12482b118971ad8a9a75b1d4900769bce3877878a0a7470043
+  checksum: 77ce9a21297a3a2a7a312f17bd7b98c14df11c151db12f1df814393c0e9c11e94592fc4b5b26e6d3da9de5006cbdb4bdfed0a7a2fb165fc5010d43af07b50d1c
   languageName: node
   linkType: hard
 

@@ -17,6 +17,6 @@ async function reply(message: Message, content: ReplyMessageOptions) {
     }
 }
 
-export = {
+export default {
     reply
 }

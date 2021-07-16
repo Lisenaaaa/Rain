@@ -45,7 +45,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
             ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"],
-            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
+            ["discord.js", "npm:13.0.0-dev.f200f14.1626436969"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["module-alias", "npm:2.2.2"],
@@ -206,10 +206,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           ],
           "linkType": "HARD",
         }],
-        ["npm:14.14.37", {
-          "packageLocation": "./.yarn/cache/@types-node-npm-14.14.37-6783f920bd-5e2d9baf75.zip/node_modules/@types/node/",
+        ["npm:16.3.3", {
+          "packageLocation": "./.yarn/cache/@types-node-npm-16.3.3-0c09c861f5-e597a54070.zip/node_modules/@types/node/",
           "packageDependencies": [
-            ["@types/node", "npm:14.14.37"]
+            ["@types/node", "npm:16.3.3"]
           ],
           "linkType": "HARD",
         }]
@@ -224,11 +224,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["@types/ws", [
-        ["npm:7.4.5", {
-          "packageLocation": "./.yarn/cache/@types-ws-npm-7.4.5-3f11000a5b-b467f596cc.zip/node_modules/@types/ws/",
+        ["npm:7.4.6", {
+          "packageLocation": "./.yarn/cache/@types-ws-npm-7.4.6-292d5dff7c-bf81b170ab.zip/node_modules/@types/ws/",
           "packageDependencies": [
-            ["@types/ws", "npm:7.4.5"],
-            ["@types/node", "npm:14.14.37"]
+            ["@types/ws", "npm:7.4.6"],
+            ["@types/node", "npm:16.3.3"]
           ],
           "linkType": "HARD",
         }]
@@ -806,19 +806,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["discord.js", [
-        ["npm:13.0.0-dev.98c6078.1626264203", {
-          "packageLocation": "./.yarn/cache/discord.js-npm-13.0.0-dev.98c6078.1626264203-aa97ca8eec-e2e0371082.zip/node_modules/discord.js/",
+        ["npm:13.0.0-dev.f200f14.1626436969", {
+          "packageLocation": "./.yarn/cache/discord.js-npm-13.0.0-dev.f200f14.1626436969-f8a642a704-b352f1c01b.zip/node_modules/discord.js/",
           "packageDependencies": [
-            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
+            ["discord.js", "npm:13.0.0-dev.f200f14.1626436969"],
             ["@discordjs/builders", "npm:0.2.0"],
             ["@discordjs/collection", "npm:0.1.6"],
             ["@discordjs/form-data", "npm:3.0.1"],
             ["@sapphire/async-queue", "npm:1.1.4"],
-            ["@types/ws", "npm:7.4.5"],
+            ["@types/ws", "npm:7.4.6"],
             ["abort-controller", "npm:3.0.0"],
             ["discord-api-types", "npm:0.19.0-next.f393ba520d7d6d2aacaca7b3ca5d355fab614f6e"],
             ["node-fetch", "npm:2.6.1"],
-            ["ws", "virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1"]
+            ["ws", "virtual:f8a642a704f6f554fcf8dfdf9098ecf066157de6b642dd3e1c710f28514cb944a506b9301100da13c2efbc890f1ec6339fb68e12c71b9e93ea453bfe0d0a79d6#npm:7.5.3"]
           ],
           "linkType": "HARD",
         }]
@@ -1751,7 +1751,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["axios", "npm:0.21.1"],
             ["chalk", "npm:4.1.1"],
             ["discord-akairo", "https://github.com/SkyBlockDev/discord-akairo.git#commit=47b4e6cc55b99ba9c32396606918053a955c4f36"],
-            ["discord.js", "npm:13.0.0-dev.98c6078.1626264203"],
+            ["discord.js", "npm:13.0.0-dev.f200f14.1626436969"],
             ["dotenv", "npm:10.0.0"],
             ["eslint", "npm:7.20.0"],
             ["module-alias", "npm:2.2.2"],
@@ -2065,17 +2065,17 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]
       ]],
       ["ws", [
-        ["npm:7.5.1", {
-          "packageLocation": "./.yarn/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
+        ["npm:7.5.3", {
+          "packageLocation": "./.yarn/cache/ws-npm-7.5.3-3a046a0b1a-77ce9a2129.zip/node_modules/ws/",
           "packageDependencies": [
-            ["ws", "npm:7.5.1"]
+            ["ws", "npm:7.5.3"]
           ],
           "linkType": "SOFT",
         }],
-        ["virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1", {
-          "packageLocation": "./.yarn/$$virtual/ws-virtual-f747a5cedc/0/cache/ws-npm-7.5.1-4a7f17d1e0-e56541a73c.zip/node_modules/ws/",
+        ["virtual:f8a642a704f6f554fcf8dfdf9098ecf066157de6b642dd3e1c710f28514cb944a506b9301100da13c2efbc890f1ec6339fb68e12c71b9e93ea453bfe0d0a79d6#npm:7.5.3", {
+          "packageLocation": "./.yarn/$$virtual/ws-virtual-bda65f69de/0/cache/ws-npm-7.5.3-3a046a0b1a-77ce9a2129.zip/node_modules/ws/",
           "packageDependencies": [
-            ["ws", "virtual:aa97ca8eecaee08623b2b18c7d4a10cc50d92ff49c9011c16e964d9a190613d4f778b8f010141a31c454330b86e2fc8a54d83998223ebe9587901143d5f1eb02#npm:7.5.1"],
+            ["ws", "virtual:f8a642a704f6f554fcf8dfdf9098ecf066157de6b642dd3e1c710f28514cb944a506b9301100da13c2efbc890f1ec6339fb68e12c71b9e93ea453bfe0d0a79d6#npm:7.5.3"],
             ["@types/bufferutil", null],
             ["@types/utf-8-validate", null],
             ["bufferutil", null],
