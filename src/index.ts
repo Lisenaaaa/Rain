@@ -10,6 +10,5 @@ import { BotClient } from '@extensions/BotClient'
 
 const client = new BotClient()
 
-try {client.start()}
+try {client.start(process.env.devtoken)}
 catch(error){console.error(error)}
-

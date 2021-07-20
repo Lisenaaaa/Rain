@@ -12,7 +12,7 @@ export class BotClient extends AkairoClient {
 				try {
 					return database.add(message.guild.id).then(async () => {
 						try {
-							return (await database.readGuild(message.guild.id))[0].guildSettings.prefix
+							return (await database.readGuild(message.guild.id)).guildSettings.prefix
 						}
 						catch (err) {
 							this.listenerHandler.modules.find(listener => listener.id == 'miscErrorListener').exec(err)
@@ -121,8 +121,8 @@ export class BotClient extends AkairoClient {
 		}
 	}
 
-	public async start(): Promise<string> {
+	public async start(token: string): Promise<string> {
 		await this._init()
-		return this.login(process.env["devtoken"])
+		return this.login(token)
 	}
 }
