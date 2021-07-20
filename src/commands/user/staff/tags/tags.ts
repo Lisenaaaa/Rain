@@ -20,71 +20,67 @@ export default class tags extends BotCommand {
     }
 
     async exec(message, args) {
+        if (!message.guild) { return }
 
-        try {
-            let addTriggers = [
-                "add",
-                "create",
-                "make"
-            ]
-            let editTriggers = [
-                "edit",
-                "update"
-            ]
-            let removeTriggers = [
-                "remove",
-                "delete"
-            ]
+        let addTriggers = [
+            "add",
+            "create",
+            "make"
+        ]
+        let editTriggers = [
+            "edit",
+            "update"
+        ]
+        let removeTriggers = [
+            "remove",
+            "delete"
+        ]
 
-            addTriggers.forEach(thing => {
-                if (args.action == thing) {
-                    //check if tag name is one of the above triggers
-                    if (addTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
-                    if (editTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
-                    if (removeTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
+        addTriggers.forEach(thing => {
+            if (args.action == thing) {
+                //check if tag name is one of the above triggers
+                if (addTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
+                if (editTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
+                if (removeTriggers.includes(args.tagName)) { return message.util.send(`You can't create a tag with that name!`) }
 
-                    if (!args.tagContent) { return message.util.send(`You can't create a tag with no response!`) }
+                if (!args.tagContent) { return message.util.send(`You can't create a tag with no response!`) }
 
-                    database.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
-                        if (e.result.ok == 1) {
-                            const successEmbed = new MessageEmbed()
-                                .setDescription(`Tag \`${args.tagName}\` successfully created!`)
+                database.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
+                    // const successEmbed = new MessageEmbed()
+                    //     .setDescription(`Tag \`${args.tagName}\` successfully created!`)
 
-                            message.util.send(successEmbed)
-                        }
-                    })
-                }
-            })
-
-            editTriggers.forEach(thing => {
-                if (args.action == thing) {
-                    database.editTag(message.guild.id, args.tagName, args.tagContent).then(e => {
-                        if (e.result.ok == 1) {
-                            message.react(`<:success:838816341007269908>`)
-                        }
-                    })
-                }
-            })
-
-            removeTriggers.forEach(thing => {
-                if (args.action == thing) {
-                    database.deleteTag(message.guild.id, args.tagName).then(e => {
-                        if (e.result.ok == 1) {
-                            message.util.send(`Tag \`${args.tagName}\` successfully deleted!`)
-                        }
-                    })
-                }
-            })
-
-            await database.readGuild(message.guild.id).then(guildDB => {
-                const tags = guildDB[0].tags
-                tags.forEach(tag => {
-                    if (message.content == `${this.prefix}tag ${tag.name}` && message.author.bot == false) { message.util.send(tag.value) }
+                    // message.util.send({ embeds: [successEmbed] })
+                    console.log(e)
+                    
                 })
+            }
+        })
+
+        editTriggers.forEach(thing => {
+            if (args.action == thing) {
+                database.editTag(message.guild.id, args.tagName, args.tagContent).then(e => {
+                    //if (e.result.ok == 1) {
+                    message.react(`<:success:838816341007269908>`)
+                    //}
+                })
+            }
+        })
+
+        removeTriggers.forEach(thing => {
+            if (args.action == thing) {
+                database.deleteTag(message.guild.id, args.tagName).then(e => {
+                    //if (e.result.ok == 1) {
+                    message.util.send(`Tag \`${args.tagName}\` successfully deleted!`)
+                    //}
+                })
+            }
+        })
+
+        await database.readGuild(message.guild.id).then(guildDB => {
+            const tags = guildDB.tags
+            tags.forEach(tag => {
+                if (message.content == `${this.prefix}tag ${tag.name}` && message.author.bot == false) { message.util.send(tag.value) }
             })
-        }
-        catch (err) {
-            if (err == `TypeError: Cannot read property 'id' of null`) { return }
-        }
+        })
     }
 }

@@ -1,7 +1,9 @@
-import { BotClient } from "@extensions/BotClient";
 import chalk from "chalk";
 import commandManager from "./commandManager";
 
+import { BotClient } from '@extensions/BotClient'
+
+const client = new BotClient()
 
 require('dotenv').config()
 const { MongoClient } = require('mongodb');
@@ -145,8 +147,12 @@ async function addTag(messageGuildID: string, tagName: string, tagResponse: stri
     let query = { guildID: messageGuildID }
     let update = { $push: { tags: { name: tagName, value: tagResponse } } }
 
-    return await db.collection('guildsv2')
-        .updateOne(query, update)
+    try {
+        await db.collection('guildsv2')
+            .updateOne(query, update)
+        return 'success'
+    }
+    catch (error) { client.error(error) }
 }
 
 async function editTag(messageGuildID: string, tagName: string, newTagResponse: string) {

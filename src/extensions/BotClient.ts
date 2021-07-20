@@ -79,6 +79,7 @@ export class BotClient extends AkairoClient {
 	}
 
 	public database = database
+	public utils = utils
 
 	public constructor() {
 		super({

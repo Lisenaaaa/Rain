@@ -45,7 +45,7 @@ export default class evaluate extends BotCommand {
         let output
 
         try {
-            output = await eval(`(async () => {return ${args.codeToEval}})()`)
+            output = await eval(`(async () => {${args.codeToEval}})()`)
             //if (args.codeToEval == '520 == 300') { output = true }
             output = inspect(output, { depth: 0 })
         }
