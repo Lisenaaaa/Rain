@@ -26,68 +26,70 @@ export default class evaluate extends BotCommand {
     }
 
     async exec(message, args) {
+        if (args.codeToEval.includes('token')) { return (message.util.send('no token')) }
+        if (args.codeToEval.includes('env')) { return message.util.send('no env') }
+
+        if (args.codeToEval.includes('channel.delete')) { return message.util.send('Are you IRONM00N?') }
+        if (args.codeToEval.includes('message.guild.delete')) { return message.util.send('You\'re like IRONM00N but infinitely more stupid!') }
+        if (args.codeToEval.includes('delete') && !args.sudo) { return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license') }
+
+        let guild = message.guild
+        let client = this.client
+        let channel = message.channel
+        let embed = new MessageEmbed()
+        let user = message.author
+        let member = message.member
+        let botUser = this.client.user
+        let botMember = message.guild.me
+
+        let output
+
         try {
-            if (args.codeToEval.includes('token')) { return (message.util.send('no token')) }
-            if (args.codeToEval.includes('env')) { return message.util.send('no env') }
-
-            if (args.codeToEval.includes('channel.delete')) { return message.util.send('Are you IRONM00N?') }
-            if (args.codeToEval.includes('message.guild.delete')) { return message.util.send('You\'re like IRONM00N but infinitely more stupid!') }
-            if (args.codeToEval.includes('delete') && !args.sudo) { return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license') }
-
-            let guild = message.guild
-            let client = this.client
-            let channel = message.channel
-            let embed = new MessageEmbed()
-            let user = message.author
-            let member = message.member
-            let botUser = this.client.user
-            let botMember = message.guild.me
-
-            let output = await eval(args.codeToEval)
-
-            if (inspect(output).includes(process.env['token'])) { return message.util.send('Message containing token wasn\'t sent.') }
-            if (inspect(output).includes(process.env['pctoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
-            if (inspect(output).includes(process.env['devtoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
-
-
-            const evalEmbedDisabledGuilds = [
-                '794610828317032458'
-            ]
-            const evalDisabledGuildChannelBypass = [
-                '834878498941829181'
-            ]
-
-            if (evalEmbedDisabledGuilds.includes(message.guild.id) && !evalDisabledGuildChannelBypass.includes(message.channel.id)) {
-                if (args.codeToEval.includes('message.delete')) { return }
-                else { return message.react('<:success:838816341007269908>') }
-            }
-
-
-            if (!args.silent && !args.codeToEval.includes('message.channel.delete()')) {
-                const evalOutputEmbed = new MessageEmbed()
-                    .setTitle('Evaluated Code')
-                    .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codeToEval}\`\`\``)
-                    .setColor(message.member.displayColor)
-
-                if (inspect(output, { depth: 0 }).length > 1000) {
-                    await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output, { depth: 0 })))
-                }
-
-                else { evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${inspect(output, { depth: 0 })}\`\`\``) }
-
-                await message.util.send({ embeds: [evalOutputEmbed] })
-            }
-            if (args.silent) {
-                if (args.codetoeval.includes('message.delete')) { return }
-                message.react('<:success:838816341007269908>')
-            }
-
+            output = await eval(`(async () => {return ${args.codeToEval}})()`)
+            //if (args.codeToEval == '520 == 300') { output = true }
+            output = inspect(output, { depth: 0 })
         }
         catch (err) {
-            try { await utils.errorhandling(err, message) }
-            catch (err) {
-                await utils.errorchannelsend(err)
-            }
+            let errorStack = err.stack.substring(0, 1000)
+
+            output = errorStack
+        }
+
+        if (inspect(output).includes(process.env['token'])) { return message.util.send('Message containing token wasn\'t sent.') }
+        if (inspect(output).includes(process.env['pctoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
+        if (inspect(output).includes(process.env['devtoken'])) { return message.util.send('Message containing token wasn\'t sent.') }
+
+        const evalEmbedDisabledGuilds = [
+            '794610828317032458'
+        ]
+        const evalDisabledGuildChannelBypass = [
+            '834878498941829181'
+        ]
+
+        if (evalEmbedDisabledGuilds.includes(message.guild.id) && !evalDisabledGuildChannelBypass.includes(message.channel.id)) {
+            if (args.codeToEval.includes('message.delete')) { return }
+            else { return message.react('<:success:838816341007269908>') }
+        }
+
+
+        if (!args.silent && !args.codeToEval.includes('message.channel.delete()')) {
+            const evalOutputEmbed = new MessageEmbed()
+                .setTitle('Evaluated Code')
+                .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codeToEval}\`\`\``)
+                .setColor(message.member.displayColor)
+
+            // if (inspect(output, { depth: 0 }).length > 1000) {
+            //     await evalOutputEmbed.addField(':outbox_tray: **Output**', await utils.haste(inspect(output, { depth: 0 })))
+            // }
+
+            evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${output}\`\`\``)
+
+            await message.util.send({ embeds: [evalOutputEmbed] })
+        }
+        if (args.silent) {
+            if (args.codeToEval.includes('message.delete')) { return }
+            message.react('<:success:838816341007269908>')
         }
     }
 }
+

@@ -9,5 +9,7 @@ const uri = process.env['mongodb']
 import { BotClient } from '@extensions/BotClient'
 
 const client = new BotClient()
-client.start()
+
+try {client.start()}
+catch(error){console.error(error)}
 

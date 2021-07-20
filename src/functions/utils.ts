@@ -2,6 +2,7 @@ import axios from "axios";
 import chalk from "chalk";
 import { AkairoClient, Command, CommandHandler } from "discord-akairo";
 import { TextChannel, GuildMember, User, Client, Message, MessageEmbed } from "discord.js";
+import got from "got/dist/source";
 //import got from "got/dist/source";
 
 interface hastebinRes {
@@ -10,38 +11,58 @@ interface hastebinRes {
 
 const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337']
 
-//this next function is taken from bush bot (https://github.com/NotEnoughUpdates/bush-bot), the repo is private so if you get a 404 then deal with it, removed a thing from the line under these comments because it didn't seem to be doing anything
-//and it works fine without it as far as i can tell
 async function haste(content: string) {
+
     const urls = [
-        'https://hst.sh',
         'https://h.inv.wtf',
+        'https://hst.sh',
         'https://hasteb.in',
         'https://hastebin.com',
         'https://mystb.in',
         'https://haste.clicksminuteper.net',
         'https://paste.pythondiscord.com',
         'https://haste.unbelievaboat.com'
-    ];
+    ]
+
     for (const url of urls) {
-        try {
-            const res: hastebinRes = (await axios.post(`${url}/documents`, { body: content })).data
-            return `${url}/${res.key}`
-        } catch (e) {
-            continue
-        }
+        const body = await got.post(`${url}/documents`, {
+            body: content,
+            responseType: 'json'
+        }).json()
+
+        const key = body['key']
+
+        return `${url}/${key}`
     }
-    return 'Unable to post'
+    return 'Couldn\'t post'
 }
 
-async function errorhandling(err: string, message: Message) {
-    const errorEmbed = new MessageEmbed()
-        .setTitle('Something went wrong!')
-        .setDescription(`\`\`\`\n${err}\`\`\``)
-        .setColor('#ff0000')
+async function hasteJson(content: object) {
+    const urls = [
+        'https://h.inv.wtf',
+        'https://hst.sh',
+        'https://hasteb.in',
+        'https://hastebin.com',
+        'https://mystb.in',
+        'https://haste.clicksminuteper.net',
+        'https://paste.pythondiscord.com',
+        'https://haste.unbelievaboat.com'
+    ]
 
-    await message.util.send({ embeds: [errorEmbed] })
+    for (const url of urls) {
+        const body = await got.post(`${url}/documents`, {
+            body: JSON.stringify(content, null, 4),
+            responseType: 'json'
+        }).json()
+
+        const key = body['key']
+
+        return `${url}/${key}`
+    }
+    return 'Couldn\'t post'
 }
+
+
 
 async function errorchannelsend(err: string) {
     const errorChannel = this.client.channels.cache.get('824680761470746646') as TextChannel
@@ -64,17 +85,6 @@ async function resetToken(message: Message) {
 
 async function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time));
-}
-
-async function dConsole(thingToLog: string, functionClient: Client) {
-    let output = thingToLog
-    if (thingToLog.length > 1000) { output = await haste(thingToLog) }
-
-    const consoleChannel = functionClient.channels.cache.get('839215645715595316') as TextChannel
-    const consoleEmbed = new MessageEmbed()
-        .setDescription(output)
-
-    consoleChannel.send({ embeds: [consoleEmbed] })
 }
 
 async function getObjectDifferences(object1: object, object2: object, thingToCheck: string = `all`) {
@@ -249,11 +259,10 @@ function splitArrayIntoMultiple(array: Array<object>, number: number) {
 export default {
     slashGuilds,
     haste,
-    errorhandling,
+    hasteJson,
     errorchannelsend,
     resetToken,
     sleep,
-    dConsole,
     getObjectDifferences,
     getPronouns,
     debug,

@@ -1,6 +1,7 @@
 import { BotListener } from '@extensions/BotListener';
 import database from '@functions/database';
 import utils from '@functions/utils';
+import { TextChannel } from 'discord.js';
 
 class guildJoinDBCreate extends BotListener {
     constructor() {
@@ -22,7 +23,8 @@ class guildJoinDBCreate extends BotListener {
                 dbconsole = 'Guild already in DB, so entry was not created.'
             }
 
-            utils.dConsole(`Joined **${guild.name}**\n${dbconsole}`, this.client)
+            const logChannel = this.client.channels.cache.get('839215645715595316') as TextChannel
+            logChannel.send(`Joined ${guild.name}\n${dbconsole}`)
         })
     }
 }

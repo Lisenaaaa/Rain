@@ -1,8 +1,9 @@
 import chalk from "chalk"
 import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from "discord-akairo"
-import { Intents } from "discord.js"
+import { Intents, MessageEmbed, TextChannel } from "discord.js"
 import { join } from "path"
 import database from "@functions/database"
+import utils from "@functions/utils"
 
 export class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
@@ -13,10 +14,16 @@ export class BotClient extends AkairoClient {
 						try {
 							return (await database.readGuild(message.guild.id))[0].guildSettings.prefix
 						}
-						catch (err) { return '-' }
+						catch (err) {
+							this.listenerHandler.modules.find(listener => listener.id == 'miscErrorListener').exec(err)
+							return '-'
+						}
 					})
 				}
-				catch (err) { return '-' }
+				catch (err) {
+					this.listenerHandler.modules.find(listener => listener.id == 'miscErrorListener').exec(err)
+					return '-'
+				}
 			}
 			else { return '-' }
 			//return '-'
@@ -42,6 +49,36 @@ export class BotClient extends AkairoClient {
 	public taskHandler: TaskHandler = new TaskHandler(this, {
 		directory: join(__dirname, "..", "tasks")
 	})
+
+	public error(error: Error, type?: string) {
+		const errorChannel = this.channels.cache.get('824680761470746646') as TextChannel
+
+		const errorCode = utils.getRandomInt(69696969696969)
+
+		let errorStack = error.stack
+
+		if (errorStack.length > 1000) {
+			errorStack = errorStack.substring(0, 1000)
+		}
+
+		const errorEmbed = new MessageEmbed()
+		if (!type) { errorEmbed.setTitle('An error occured!') }
+		else { errorEmbed.setTitle(`A${type} error occured!`) }
+		errorEmbed.addField('Error code', `\`${errorCode}\``)
+		errorEmbed.setDescription(`\`\`\`js\n${errorStack}\`\`\``)
+		errorEmbed.setColor('DARK_RED')
+
+		errorChannel.send({ /*content: `\`\`\`js\n${errorStack}\`\`\``,*/ embeds: [errorEmbed] })
+
+		const returnErrorEmbed = new MessageEmbed()
+			.setTitle('An error occured!')
+			.setDescription(`Please give my developer code \`${errorCode}\``)
+			.setColor('DARK_RED')
+
+		return returnErrorEmbed
+	}
+
+	public database = database
 
 	public constructor() {
 		super({

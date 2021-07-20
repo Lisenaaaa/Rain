@@ -1,7 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { BotCommand } from "@extensions/BotCommand";
 import database from "@functions/database";
-import db from "@functions/database";
 import utils from "@functions/utils";
 
 export default class tags extends BotCommand {
@@ -46,7 +45,7 @@ export default class tags extends BotCommand {
 
                     if (!args.tagContent) { return message.util.send(`You can't create a tag with no response!`) }
 
-                    db.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
+                    database.addTag(message.guild.id, args.tagName, args.tagContent).then(e => {
                         if (e.result.ok == 1) {
                             const successEmbed = new MessageEmbed()
                                 .setDescription(`Tag \`${args.tagName}\` successfully created!`)
@@ -59,7 +58,7 @@ export default class tags extends BotCommand {
 
             editTriggers.forEach(thing => {
                 if (args.action == thing) {
-                    db.editTag(message.guild.id, args.tagName, args.tagContent).then(e => {
+                    database.editTag(message.guild.id, args.tagName, args.tagContent).then(e => {
                         if (e.result.ok == 1) {
                             message.react(`<:success:838816341007269908>`)
                         }
@@ -69,7 +68,7 @@ export default class tags extends BotCommand {
 
             removeTriggers.forEach(thing => {
                 if (args.action == thing) {
-                    db.deleteTag(message.guild.id, args.tagName).then(e => {
+                    database.deleteTag(message.guild.id, args.tagName).then(e => {
                         if (e.result.ok == 1) {
                             message.util.send(`Tag \`${args.tagName}\` successfully deleted!`)
                         }
@@ -86,7 +85,6 @@ export default class tags extends BotCommand {
         }
         catch (err) {
             if (err == `TypeError: Cannot read property 'id' of null`) { return }
-            else { utils.errorhandling(err, message) }
         }
     }
 }

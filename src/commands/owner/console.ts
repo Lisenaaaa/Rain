@@ -3,14 +3,14 @@ import { MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
-import functions from '@functions/utils'
+import utils from '@functions/utils'
 
 const sh = promisify(exec);
 
 export default class console extends BotCommand {
     constructor() {
         super('console', {
-            aliases: ['console'],
+            aliases: ['console', 'sh'],
             args: [
                 {
                     id: 'command',
@@ -24,25 +24,19 @@ export default class console extends BotCommand {
     }
 
     async exec(message, args) {
-        try {
-            let output = await eval(`sh('${args.command}')`)
+        let output = await eval(`sh('${args.command}')`)
 
-            let outputembed = new MessageEmbed()
-                .setTitle(`Console Command Ran`)
-                .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
+        let outputembed = new MessageEmbed()
+            .setTitle(`Console Command Ran`)
+            .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
 
-            if (inspect(output).length > 1000) {
-                await outputembed.addField(`:outbox_tray: **Output**`, await functions.haste(inspect(output)))
-            }
-            else {
-                outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
-            }
-
-            message.util.send(outputembed)
+        if (inspect(output).length > 1000) {
+            await outputembed.addField(`:outbox_tray: **Output**`, await utils.haste(inspect(output)))
+        }
+        else {
+            outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
         }
 
-        catch (err) {
-            functions.errorhandling(err, message)
-        }
+        message.util.send(outputembed)
     }
 }

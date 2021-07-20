@@ -18,29 +18,24 @@ export default class reload extends BotCommand {
 
 
     async exec(message) {
-        try {
-            const reloadEmbed = new MessageEmbed()
-                .setDescription(`Reloading!`)
-                .setColor(message.member.displayColor)
-            message.util.send({ embeds: [reloadEmbed] }).then(async sent => {
-                console.log(chalk.greenBright(`Reloading!`))
+        const reloadEmbed = new MessageEmbed()
+            .setDescription(`Reloading!`)
+            .setColor(message.member.displayColor)
+        message.util.send({ embeds: [reloadEmbed] }).then(async sent => {
+            console.log(chalk.greenBright(`Reloading!`))
 
-                await sh("yarn build");
+            await sh("yarn build");
 
-                await this.client.commandHandler.reloadAll()
-                await this.client.listenerHandler.reloadAll()
-                await this.client.inhibitorHandler.reloadAll()
-                await this.client.taskHandler.reloadAll()
+            await this.client.commandHandler.reloadAll()
+            await this.client.listenerHandler.reloadAll()
+            await this.client.inhibitorHandler.reloadAll()
+            await this.client.taskHandler.reloadAll()
 
-                console.log(chalk.green(`Reloaded!\n`))
+            console.log(chalk.green(`Reloaded!\n`))
 
-                reloadEmbed.setDescription(`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.`)
-                sent.channel.send({ embeds: [reloadEmbed] })
-                sent.delete()
-            })
-        }
-        catch (err) {
-            utils.errorhandling(err, message)
-        }
+            reloadEmbed.setDescription(`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.`)
+            sent.channel.send({ embeds: [reloadEmbed] })
+            sent.delete()
+        })
     }
 }

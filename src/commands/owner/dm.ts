@@ -23,17 +23,12 @@ export default class dm extends BotCommand {
     }
 
     async exec(message, args) {
-        try {
-            const dmembed = new MessageEmbed()
-                .setTitle(`Message was sent to **${args.user.tag}**`)
-                .addField(`Contents`, `${args.message}`)
-                .setTimestamp()
+        const dmembed = new MessageEmbed()
+            .setTitle(`Message was sent to **${args.user.tag}**`)
+            .addField(`Contents`, `${args.message}`)
+            .setTimestamp()
 
-            args.user.send(`${args.message}`)
-            message.util.send(dmembed)
-        }
-        catch (err) {
-            utils.errorhandling
-        }
+        args.user.send(`${args.message}`)
+        message.util.send(dmembed)
     }
 }

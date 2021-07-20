@@ -2,6 +2,7 @@ import chalk from 'chalk'
 import { BotListener } from '@extensions/BotListener'
 import commandManager from '@functions/commandManager'
 import database from '@functions/database'
+import { TextChannel } from 'discord.js';
 
 class ReadyListener extends BotListener {
     constructor() {
@@ -12,9 +13,12 @@ class ReadyListener extends BotListener {
     }
 
     async exec() {
-        console.log(chalk.magenta(`Bot Online!`))
+        console.log(chalk`{magenta Logged in as} {magentaBright.bold ${this.client.user.tag}}`)
         console.log(`\n`)
         console.log(chalk.magentaBright(`---Bot Output---\n`))
+
+        // const logChannel = this.client.channels.cache.get('839215645715595316') as TextChannel
+        // logChannel.send(`Logged in as **${this.client.user.tag}**`)
 
         this.client.user.setActivity('Zordlan create me', { type: 'WATCHING' })
 

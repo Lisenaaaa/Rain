@@ -111,11 +111,11 @@ function userDBSchema(userID: string) {
 }
 
 async function readGuild(messageGuildID: string) {
-    const fuckYouTypescript = await db.collection('guildsv2')
+    const guildDB = await db.collection('guildsv2')
         .find({ guildID: messageGuildID })
         .toArray()
 
-    return fuckYouTypescript
+    return guildDB[0]
 }
 
 async function getEntireGuildsDB() {
