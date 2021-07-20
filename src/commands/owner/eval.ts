@@ -84,7 +84,7 @@ export default class evaluate extends BotCommand {
 
             evalOutputEmbed.addField(':outbox_tray: **Output**', `\`\`\`js\n${output}\`\`\``)
 
-            await message.util.send({ embeds: [evalOutputEmbed] })
+            await message.util.reply({ embeds: [evalOutputEmbed] })
         }
         if (args.silent) {
             if (args.codeToEval.includes('message.delete')) { return }

@@ -29,6 +29,6 @@ export default class dm extends BotCommand {
             .setTimestamp()
 
         args.user.send(`${args.message}`)
-        message.util.send(dmembed)
+        message.util.reply(dmembed)
     }
 }

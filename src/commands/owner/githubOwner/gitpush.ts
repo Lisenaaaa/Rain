@@ -43,7 +43,7 @@ export default class gitpush extends BotCommand {
         let githubpush = await eval(`sh('git push')`)
         githubembed.addField(`\`git push\``, `\`\`\`js\n${inspect(githubpush)}\`\`\``)
 
-        message.util.send(githubembed)
+        message.util.reply(githubembed)
 
     }
 }

@@ -25,7 +25,7 @@ export default class registerAllNewCommands extends BotCommand {
         missingFromDB.forEach(id => {
             database.addCommandToGlobalDB(id)
             console.log(chalk`{blue Added {magenta ${id}} to the database!}`)
-            message.channel.send(`Added ${id} to the database!`)
+            message.reply(`Added ${id} to the database!`)
         })
     }
 }
