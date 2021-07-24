@@ -1,8 +1,9 @@
-import chalk from 'chalk';
-import { exec } from 'child_process';
-import { MessageEmbed } from 'discord.js';
-import { promisify, inspect } from 'util';
-import { BotCommand } from '@extensions/BotCommand';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import chalk from 'chalk'
+import { exec } from 'child_process'
+import { MessageEmbed } from 'discord.js'
+import { promisify, inspect } from 'util'
+import { BotCommand } from '@extensions/BotCommand'
 
 import importUtils from '@functions/utils'
 const utils = importUtils
@@ -33,14 +34,14 @@ export default class evaluate extends BotCommand {
         if (args.codeToEval.includes('message.guild.delete')) { return message.util.send('You\'re like IRONM00N but infinitely more stupid!') }
         if (args.codeToEval.includes('delete') && !args.sudo) { return message.util.send('This would be blocked by smooth brain protection, but BushBot has a license') }
 
-        let guild = message.guild
-        let client = this.client
-        let channel = message.channel
-        let embed = new MessageEmbed()
-        let user = message.author
-        let member = message.member
-        let botUser = this.client.user
-        let botMember = message.guild.me
+        const guild = message.guild
+        const client = this.client
+        const channel = message.channel
+        const embed = new MessageEmbed()
+        const user = message.author
+        const member = message.member
+        const botUser = this.client.user
+        const botMember = message.guild.me
 
         let output
 
@@ -50,7 +51,7 @@ export default class evaluate extends BotCommand {
             output = inspect(output, { depth: 0 })
         }
         catch (err) {
-            let errorStack = err.stack.substring(0, 1000)
+            const errorStack = err.stack.substring(0, 1000)
 
             output = errorStack
         }

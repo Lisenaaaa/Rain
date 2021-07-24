@@ -5,7 +5,7 @@ async function reply(message: Message, content: ReplyMessageOptions) {
         if (message.channel.type == 'GUILD_TEXT') {
             const repliedMessage = await message.channel.messages.fetch(message.reference.messageId)
 
-            let coolReplyContent = {
+            const coolReplyContent = {
                 ...content,
                 ...{ allowedMentions: { repliedUser: true } }
             }

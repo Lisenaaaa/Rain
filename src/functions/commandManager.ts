@@ -1,19 +1,19 @@
 import chalk from "chalk"
-import { AkairoClient } from "discord-akairo"
-import { Client, Message } from "discord.js"
-import { BotClient } from "@extensions/BotClient"
+import {  } from "discord-akairo"
+import {  Message } from "discord.js"
 import database from "@functions/database"
 import guildSettings from "@functions/guildSettings"
-import utils from "@functions/utils"
+
+import client from '@src/index'
+
+//const client = new BotClient()
 
 async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     if (!msg.guild) { return }
 
     let commandCanBeRan = false
 
-    const userID = msg.author.id
     const channelID = msg.channel.id
-    const ownerID = msg.guild.ownerId
     const guildID = msg.guild.id
 
     const userPerms = await guildSettings.getUserPerms(msg)
@@ -60,8 +60,8 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
     return commandCanBeRan
 }
 
-function getAllCommandIDs(client: BotClient) {
-    let IDs = []
+function getAllCommandIDs() {
+    const IDs = []
 
     client.commandHandler.modules.forEach(command => {
         if (command.category.id.toLowerCase().includes('owner')) { return }
@@ -76,7 +76,7 @@ function getAllCommandIDs(client: BotClient) {
     return IDs
 }
 
-async function getAllCommandsAndCategories(client: BotClient) {
+async function getAllCommandsAndCategories() {
     return client.commandHandler.modules.forEach(command => {
         if (command.category.id.toLowerCase().includes('owner')) { return }
         if (command.category.id.toLowerCase().includes('testing')) { return }
@@ -85,7 +85,7 @@ async function getAllCommandsAndCategories(client: BotClient) {
     })
 }
 
-async function getCommandDetails(commandID: string, client: BotClient) {
+async function getCommandDetails(commandID: string) {
     let fuckYouTypescript
     client.commandHandler.modules.forEach(command => {
         if (command.id == commandID) { fuckYouTypescript = command }

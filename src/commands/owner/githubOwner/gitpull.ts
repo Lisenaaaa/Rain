@@ -3,6 +3,7 @@ import { MessageEmbed } from 'discord.js';
 import { inspect, promisify } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sh = promisify(exec);
 
 export default class gitpull extends BotCommand {
@@ -14,10 +15,10 @@ export default class gitpull extends BotCommand {
         });
     }
 
-    async exec(message, args) {
+    async exec(message) {
         const githubembed = new MessageEmbed()
         
-        let pull = await eval(`sh('git pull')`)
+        const pull = sh('git pull')
         githubembed.setDescription(`\`\`\`js\n${inspect(pull)}\`\`\``)
 
         message.util.reply(githubembed)

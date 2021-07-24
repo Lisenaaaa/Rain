@@ -15,6 +15,7 @@
 		"paths": {
 			"@functions/*": ["src/functions/*"],
 			"@extensions/*": ["src/extensions/*"],
+			"@src/*": ["src/"]
 		}
 	},
 	"include": ["src/**/*", "src/*"],

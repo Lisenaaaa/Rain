@@ -4,8 +4,10 @@ import { Intents, MessageEmbed, TextChannel } from "discord.js"
 import { join } from "path"
 import database from "@functions/database"
 import utils from "@functions/utils"
+//import {BotClientUtils} from '@extensions/BotClientUtils'
 
-export class BotClient extends AkairoClient {
+
+class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message) => {
 			if (message.guild) {
@@ -26,8 +28,8 @@ export class BotClient extends AkairoClient {
 				}
 			}
 			else { return '-' }
-			//return '-'
 		},
+
 		commandUtil: true,
 		handleEdits: true,
 		directory: join(__dirname, "..", "commands"),
@@ -35,8 +37,8 @@ export class BotClient extends AkairoClient {
 		automateCategories: true,
 		autoRegisterSlashCommands: true,
 		autoDefer: false,
-
 	})
+
 	public listenerHandler: ListenerHandler = new ListenerHandler(this, {
 		directory: join(__dirname, "..", "listeners"),
 		automateCategories: true
@@ -50,7 +52,10 @@ export class BotClient extends AkairoClient {
 		directory: join(__dirname, "..", "tasks")
 	})
 
-	public error(error: Error, type?: string) {
+	public database = database
+	//public utils = new BotClientUtils(new AkairoClient())
+
+	public error = (error: Error, type?: string) => {
 		const errorChannel = this.channels.cache.get('824680761470746646') as TextChannel
 
 		const errorCode = utils.getRandomInt(69696969696969)
@@ -78,9 +83,6 @@ export class BotClient extends AkairoClient {
 		return returnErrorEmbed
 	}
 
-	public database = database
-	public utils = utils
-
 	public constructor() {
 		super({
 			ownerID: [
@@ -96,6 +98,7 @@ export class BotClient extends AkairoClient {
 				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 			})
 	}
+
 	private async _init(): Promise<void> {
 		this.commandHandler.useListenerHandler(this.listenerHandler)
 		this.commandHandler.useInhibitorHandler(this.inhibitorHandler)
@@ -127,3 +130,5 @@ export class BotClient extends AkairoClient {
 		return this.login(token)
 	}
 }
+
+export default BotClient

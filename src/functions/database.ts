@@ -1,9 +1,6 @@
 import chalk from "chalk";
 import commandManager from "./commandManager";
 
-import { BotClient } from '@extensions/BotClient'
-
-const client = new BotClient()
 
 require('dotenv').config()
 const { MongoClient } = require('mongodb');
@@ -23,7 +20,9 @@ async function run() {
 
         console.log(chalk.blue('Connected to MongoDB.'))
 
-    } finally { }
+    }
+    //catch(err){/*client*/.utils.error(err)}
+    catch (err) { console.log(err.stack) }
 }
 run().catch(console.dir)
 
@@ -125,9 +124,9 @@ async function getEntireGuildsDB() {
 }
 
 async function add(messageGuildID: string) {
-    let allDB = await getEntireGuildsDB()
+    const allDB = await getEntireGuildsDB()
 
-    for (let e of allDB) {
+    for (const e of allDB) {
         if (e.guildID == messageGuildID) {
             return
         }
@@ -144,28 +143,30 @@ async function addGuildWithoutCheck(messageGuildID: string) {
 }
 
 async function addTag(messageGuildID: string, tagName: string, tagResponse: string) {
-    let query = { guildID: messageGuildID }
-    let update = { $push: { tags: { name: tagName, value: tagResponse } } }
+    const query = { guildID: messageGuildID }
+    const update = { $push: { tags: { name: tagName, value: tagResponse } } }
 
     try {
         await db.collection('guildsv2')
             .updateOne(query, update)
         return 'success'
     }
-    catch (error) { client.error(error) }
+    catch (error) { //client.error(error) }
+        console.log(error)
+    }
 }
 
 async function editTag(messageGuildID: string, tagName: string, newTagResponse: string) {
-    let query = { guildID: messageGuildID, tags: { $elemMatch: { name: tagName } } }
-    let update = { $set: { 'tags.$.value': newTagResponse } }
+    const query = { guildID: messageGuildID, tags: { $elemMatch: { name: tagName } } }
+    const update = { $set: { 'tags.$.value': newTagResponse } }
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
 async function deleteTag(messageGuildID: string, tagName: string) {
-    let query = { guildID: messageGuildID }
-    let update = { $pull: { tags: { name: tagName } } }
+    const query = { guildID: messageGuildID }
+    const update = { $pull: { tags: { name: tagName } } }
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
@@ -177,18 +178,18 @@ async function guildSettings(messageGuildID: string) {
 }
 
 async function editRolePermissions(messageGuildID: string, roleToEdit: string, newRoleID: string) {
-    let query = { guildID: messageGuildID }
-    let object = { ['guildSettings.staffRoles.' + roleToEdit]: newRoleID }
-    let update = { $set: object }
+    const query = { guildID: messageGuildID }
+    const object = { ['guildSettings.staffRoles.' + roleToEdit]: newRoleID }
+    const update = { $set: object }
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
-async function toggleCommand(client: BotClient, messageGuildID: string, commandToToggle: string) {
-    let query = { guildID: messageGuildID }
+async function toggleCommand(messageGuildID: string, commandToToggle: string) {
+    const query = { guildID: messageGuildID }
     const allGuildCommands = (await readGuild(messageGuildID))[0].commandSettings
-    const allCommands = commandManager.getAllCommandIDs(client)
+    const allCommands = commandManager.getAllCommandIDs()
     const cmd = allGuildCommands.find(cmd => cmd.id == commandToToggle)
 
     if (cmd == undefined) {
@@ -208,15 +209,15 @@ async function toggleCommand(client: BotClient, messageGuildID: string, commandT
         object = { ['commandSettings.' + commandToToggle]: true }
     }
 
-    let update = { $set: object }
+    const update = { $set: object }
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
 }
 
 async function addCommandToGuildDB(guildID: string, commandID: string) {
-    let query = { guildID: guildID }
-    let update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
+    const query = { guildID: guildID }
+    const update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
 
     return await db.collection('guildsv2')
         .updateOne(query, update)
@@ -280,7 +281,7 @@ async function getEntireUserDB() {
 
 async function userAdd(userID: string) {
 
-    for (let e of await getEntireUserDB()) {
+    for (const e of await getEntireUserDB()) {
         if (e.userID == userID) { return }
     }
 

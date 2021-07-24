@@ -14,7 +14,7 @@ export default class help extends BotCommand {
     }
     async exec(message, args) {
         if (!args.command) {
-            let commandIDs = await commandManager.getAllCommandIDs(this.client)
+            let commandIDs = await commandManager.getAllCommandIDs()
             commandIDs = commandIDs.filter(ID => ID != 'help')
 
             message.channel.send(commandIDs)

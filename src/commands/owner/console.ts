@@ -24,9 +24,9 @@ export default class console extends BotCommand {
     }
 
     async exec(message, args) {
-        let output = await eval(`sh('${args.command}')`)
+        const output = await sh(args.command)
 
-        let outputembed = new MessageEmbed()
+        const outputembed = new MessageEmbed()
             .setTitle(`Console Command Ran`)
             .addField(`:inbox_tray: Command`, `\`\`\`${args.command}\`\`\``)
 
@@ -37,6 +37,6 @@ export default class console extends BotCommand {
             outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
         }
 
-        message.util.reply(outputembed)
+        message.util.reply({ embeds: [outputembed] })
     }
 }

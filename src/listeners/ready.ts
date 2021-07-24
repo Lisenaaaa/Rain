@@ -2,7 +2,6 @@ import chalk from 'chalk'
 import { BotListener } from '@extensions/BotListener'
 import commandManager from '@functions/commandManager'
 import database from '@functions/database'
-import { TextChannel } from 'discord.js';
 
 class ReadyListener extends BotListener {
     constructor() {
@@ -24,9 +23,10 @@ class ReadyListener extends BotListener {
 
         //check if all commands are in the DB, and add missing ones
 
-        let commandIDs = await commandManager.getAllCommandIDs(this.client)
+        const commandIDs = await commandManager.getAllCommandIDs()
         //commandIDs = []
 
+        // eslint-disable-next-line prefer-const
         let dbIDs = []
         await database.readCommandGlobal().then(db => {
             db.forEach(command => {

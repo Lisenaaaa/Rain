@@ -1,16 +1,12 @@
-import { Listener } from "discord-akairo";
 import { MessageEmbed } from "discord.js";
-import { BotClient } from "@extensions/BotClient";
 import { BotListener } from "@extensions/BotListener";
 
 export default class missingPermissions extends BotListener {
-    public constructor(client: BotClient) {
+    constructor() {
         super('missingPermissions', {
             emitter: 'commandHandler',
-            event: 'missingPermissions',
-            category: 'commandHandler'
-        });
-        this.client = client;
+            event: 'missingPermissions'
+        })
     }
 
     exec(message, command, type) {
@@ -19,10 +15,10 @@ export default class missingPermissions extends BotListener {
             .setTitle('Something went wrong!')
 
         if (type == 'user') {
-            let perm = command.userPermissions[0]
+            const perm = command.userPermissions[0]
             PermsErrorEmbed.setDescription(`You cannot run this command, as you don't have \`${perm}\`.`)
         } else {
-            let perm = command.clientPermissions[0]
+            const perm = command.clientPermissions[0]
             PermsErrorEmbed.setDescription(`I don't have \`${perm}\`, which I need to have to run this command.`)
         }
         message.util.send(PermsErrorEmbed)

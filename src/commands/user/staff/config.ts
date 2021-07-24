@@ -50,7 +50,7 @@ export default class config extends BotCommand {
         try {
             await message.channel.awaitMessageComponent({ filter, time: 15000 }).then(async interaction => {
                 if (interaction.values[0] == 'configToggleCommand') {
-                    const allIDs = commandManager.getAllCommandIDs(this.client)
+                    const allIDs = commandManager.getAllCommandIDs()
                     let idString = ''
 
                     allIDs.forEach(id => {
@@ -153,7 +153,7 @@ export default class config extends BotCommand {
                 console.log('edited msg because its been 15 seconds')
             }
             else {
-                console.log(err)
+                message.reply(this.client.error(err, ' command'))
             }
         }
     }

@@ -10,7 +10,7 @@ export default class invite extends BotCommand {
             discordPerms: ['SEND_MESSAGES']
         })
     }
-    async exec(message, args) {
+    async exec(message) {
         const inviteLink = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
         const inviteEmbed = new MessageEmbed()

@@ -1,7 +1,5 @@
-import { MessageEmbed } from "discord.js";
 import { BotCommand } from "@extensions/BotCommand";
 import database from "@functions/database";
-import utils from "@functions/utils";
 
 export default class tags extends BotCommand {
     constructor() {
@@ -22,16 +20,16 @@ export default class tags extends BotCommand {
     async exec(message, args) {
         if (!message.guild) { return }
 
-        let addTriggers = [
+        const addTriggers = [
             "add",
             "create",
             "make"
         ]
-        let editTriggers = [
+        const editTriggers = [
             "edit",
             "update"
         ]
-        let removeTriggers = [
+        const removeTriggers = [
             "remove",
             "delete"
         ]
@@ -50,8 +48,7 @@ export default class tags extends BotCommand {
                     //     .setDescription(`Tag \`${args.tagName}\` successfully created!`)
 
                     // message.util.send({ embeds: [successEmbed] })
-                    console.log(e)
-                    
+                    console.log(e) 
                 })
             }
         })

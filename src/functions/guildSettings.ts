@@ -1,11 +1,11 @@
 import { Message } from "discord.js";
-import { BotClient } from "@extensions/BotClient";
-
 import commandManager from '@functions/commandManager'
+
 
 import database from "@functions/database";
 //import utils from "@functions/utils";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const permNames = {
     owner: 'owner',
     admin: 'administrator',
@@ -21,7 +21,7 @@ async function getUserPerms(message: Message) {
     let found = false
     let perms = 'everyone'
 
-    const roleSettings = settings[0].guildSettings.staffRoles
+    const roleSettings = settings.guildSettings.staffRoles
 
     const owner = roleSettings.owner
     const admin = roleSettings.admin
@@ -78,7 +78,7 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
     let channelPerms = false
     let lockedChannelFound = false
     database.readGuild(guildID).then(database => {
-        const db = database[0]
+        const db = database
         const lockedChannels = db.guildSettings.lockedChannels
 
         getAllUserPerms(userPerms).forEach(perm => {
@@ -98,14 +98,14 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 }
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
-    const commandDetails = await commandManager.getCommandDetails(commandID, message.client as BotClient)
+    const commandDetails = await commandManager.getCommandDetails(commandID)
     const discordPerms = message.member.permissions.has(commandDetails.discordPerms, true)
-    const guildDB = (await database.readGuild(message.member.guild.id))[0]
+    const guildDB = (await database.readGuild(message.member.guild.id))
 
     let existsInDB = false
     let userHasBotPerms = false
 
-    let fuckYouTypescriptIWantMyCodeRunningInOrder = []
+    const fuckYouTypescriptIWantMyCodeRunningInOrder = []
 
     await guildDB.commandSettings.forEach(async cmd => {
         if (cmd.id == commandID && existsInDB == false) {

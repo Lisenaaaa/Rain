@@ -11,9 +11,9 @@ export default class registerAllNewCommands extends BotCommand {
         })
     }
     async exec(message) {
-        const commandIDs = await commandManager.getAllCommandIDs(this.client)
+        const commandIDs = await commandManager.getAllCommandIDs()
 
-        let dbIDs = []
+        const dbIDs = []
         await database.readCommandGlobal().then(db => {
             db.forEach(command => {
                 dbIDs.push(command.id)

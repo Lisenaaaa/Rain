@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import { inspect } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sh = promisify(exec);
 
 export default class gitpush extends BotCommand {
@@ -29,21 +30,21 @@ export default class gitpush extends BotCommand {
 
         const hiyesthisisanembed = new MessageEmbed()
             .setDescription(`Pushing changes to [GitHub](https://github.com/Zordlan/SkyClientBot)`)
-        message.util.send(hiyesthisisanembed)
+        message.util.send({ embeds: [hiyesthisisanembed] })
 
         const githubembed = new MessageEmbed()
             .setTitle(`Command Output`)
 
-        let gitadd = await eval(`sh('git add .')`)
+        const gitadd = await sh('git add .')
         githubembed.addField(`\`git add .\``, `\`\`\`js\n${inspect(gitadd)}\`\`\``)
 
-        let gitcommit = await eval(`sh('git commit -m "${args.commitReason}"')`)
+        const gitcommit = await sh('git commit -m "${args.commitReason}"')
         githubembed.addField(`\`git commit "${args.commitReason}"\``, `\`\`\`js\n${inspect(gitcommit)}\`\`\``)
 
-        let githubpush = await eval(`sh('git push')`)
+        const githubpush = await sh('git push')
         githubembed.addField(`\`git push\``, `\`\`\`js\n${inspect(githubpush)}\`\`\``)
 
-        message.util.reply(githubembed)
+        message.util.reply({ embeds: [githubembed] })
 
     }
 }

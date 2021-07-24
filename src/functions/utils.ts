@@ -1,13 +1,10 @@
 import axios from "axios";
 import chalk from "chalk";
-import { AkairoClient, Command, CommandHandler } from "discord-akairo";
-import { TextChannel, GuildMember, User, Client, Message, MessageEmbed } from "discord.js";
+import { TextChannel, GuildMember, User, Message, MessageEmbed } from "discord.js";
 import got from "got/dist/source";
 //import got from "got/dist/source";
 
-interface hastebinRes {
-    key: string;
-}
+import client from '@src/index'
 
 const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337']
 
@@ -37,7 +34,7 @@ async function haste(content: string) {
     return 'Couldn\'t post'
 }
 
-async function hasteJson(content: object) {
+async function hasteJson(content: Record<string, unknown>) {
     const urls = [
         'https://h.inv.wtf',
         'https://hst.sh',
@@ -63,9 +60,8 @@ async function hasteJson(content: object) {
 }
 
 
-
 async function errorchannelsend(err: string) {
-    const errorChannel = this.client.channels.cache.get('824680761470746646') as TextChannel
+    const errorChannel = client.channels.cache.get('824680761470746646') as TextChannel
     const errorEmbed = new MessageEmbed()
         .setTitle('Something went really wrong!')
         .setDescription(`\`\`\`js\n${err}\`\`\``)
@@ -87,13 +83,13 @@ async function sleep(time: number) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
 
-async function getObjectDifferences(object1: object, object2: object, thingToCheck: string = `all`) {
+async function getObjectDifferences(object1: Record<string, unknown>, object2: Record<string, unknown>, thingToCheck = `all`) {
     if (thingToCheck == 'all') {
         //difference between the objects
-        let firstObjectKeys = Object.keys(object1)
-        let secondObjectKeys = Object.keys(object2)
+        const firstObjectKeys = Object.keys(object1)
+        const secondObjectKeys = Object.keys(object2)
 
-        let object = {}
+        const object = {}
 
         firstObjectKeys.forEach(key => {
             if (secondObjectKeys.includes(key)) {
@@ -242,18 +238,25 @@ async function getRolePriority(user: GuildMember, otherperson: GuildMember) {
 }
 
 //this is stolen from javascript docs
-function getRandomInt(max) {
+function getRandomInt(max = 10) {
     return Math.floor(Math.random() * max)
 }
 
-function splitArrayIntoMultiple(array: Array<object>, number: number) {
-    let outputArray = []
+function splitArrayIntoMultiple(array: Array<Record<string, unknown>>, number: number) {
+    const outputArray = []
     let fakeOutputArray
     while (array.length > 0) {
         fakeOutputArray = array.splice(0, number)
         outputArray.push(fakeOutputArray)
     }
     return outputArray
+}
+
+function funnyNumber(number: number) {
+    const num = `${number}`
+
+    if (num.includes('69') || num.includes('420') || num.includes('69420') || num.includes('42096')) { return true }
+    else { return false }
 }
 
 export default {
@@ -268,5 +271,6 @@ export default {
     debug,
     getRolePriority,
     getRandomInt,
-    splitArrayIntoMultiple
+    splitArrayIntoMultiple,
+    funnyNumber
 }
