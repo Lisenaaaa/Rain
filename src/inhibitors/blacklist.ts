@@ -1,4 +1,3 @@
-import { Inhibitor } from 'discord-akairo';
 import { BotInhibitor } from '@extensions/BotInhibitor';
 
 class BlacklistInhibitor extends BotInhibitor {
