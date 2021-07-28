@@ -1,8 +1,9 @@
-import { MessageEmbed } from "discord.js"
+import { Message, MessageEmbed, TextChannel } from "discord.js"
 import utils from '@functions/utils'
+import client from '@src/index'
 
-const error = (error: Error, type?: string) => {
-    //const errorChannel = this.channels.cache.get('824680761470746646') as TextChannel
+const error = (error: Error, type?: string, message? :Message) => {
+    const errorChannel = client.channels.cache.get('824680761470746646') as TextChannel
 
     const errorCode = utils.getRandomInt(69696969696969)
 
@@ -19,7 +20,17 @@ const error = (error: Error, type?: string) => {
     errorEmbed.setDescription(`\`\`\`js\n${errorStack}\`\`\``)
     errorEmbed.setColor('DARK_RED')
 
-    //errorChannel.send({ /*content: `\`\`\`js\n${errorStack}\`\`\``,*/ embeds: [errorEmbed] })
+    if (message) {
+        errorEmbed.addField('More Info', `Guild: ${message.guild.name} (\`${message.guild.id}\`)
+        Channel: ${(message.channel as TextChannel).name} (\`${message.channel.id}\`)
+        Message ID: \`${message.id}\`
+        
+        Author: ${message.author.tag} (\`${message.author.id}\`)
+        
+        [Message Link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
+    }
+
+    errorChannel.send({ /*content: `\`\`\`js\n${errorStack}\`\`\``,*/ embeds: [errorEmbed] })
 
     const returnErrorEmbed = new MessageEmbed()
         .setTitle('An error occured!')

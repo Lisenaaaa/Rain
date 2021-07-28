@@ -1,6 +1,6 @@
 import { BotInhibitor } from '@extensions/BotInhibitor';
 
-class BlacklistInhibitor extends BotInhibitor {
+export default class BlacklistInhibitor extends BotInhibitor {
 	constructor() {
 		super('blacklist', {
 			reason: 'blacklist'
@@ -13,5 +13,3 @@ class BlacklistInhibitor extends BotInhibitor {
 		return blacklist.includes(message.author.id)
 	}
 }
-
-module.exports = BlacklistInhibitor;

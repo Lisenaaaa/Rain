@@ -27,7 +27,8 @@
 	"dependencies": {
 		"axios": "^0.21.1",
 		"chalk": "^4.1.1",
-		"discord-akairo": "git+https://github.com/SkyBlockDev/discord-akairo.git",
+		"discord-akairo": "https://github.com/SkyBlockDev/discord-akairo.git",
+		"discord-api-types": "^0.20.2",
 		"discord.js": "dev",
 		"dotenv": "^10.0.0",
 		"got": "^11.8.2",
@@ -69,7 +70,7 @@
 		"ignorePatterns": [
 			"dist"
 		],
-		"rules":{
+		"rules": {
 			"@typescript-eslint/explicit-module-boundary-types": "off",
 			"@typescript-eslint/no-var-requires": "off"
 		}

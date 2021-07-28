@@ -2,7 +2,7 @@ import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 import database from '@functions/database';
 import utils from '@functions/utils'
-import { MessageButton } from 'discord.js';
+import { Message, MessageButton, Role } from 'discord.js';
 import { MessageActionRow, MessageSelectMenu } from 'discord.js';
 
 export default class config extends BotCommand {
@@ -17,7 +17,7 @@ export default class config extends BotCommand {
             slashGuilds: utils.slashGuilds
         })
     }
-    async exec(message) {
+    async exec(message: Message) {
         if (!await commandManager.checkIfCommandCanBeUsed(message, this.id)) {
             return message.reply('<a:nonofast:862857752124194816> you arent cool enough to config')
         }
@@ -58,11 +58,13 @@ export default class config extends BotCommand {
                     })
                     idString = idString.substring(0, idString.length - 2)
 
-                    const allIDButton = new MessageButton()
-                        .setCustomId('configViewAllCommandIDs')
-                        .setLabel('Show All IDs')
-                        .setStyle('PRIMARY')
-                    await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components: [[allIDButton]] })
+                    const row = new MessageActionRow().addComponents(
+                        new MessageButton()
+                            .setCustomId('configViewAllCommandIDs')
+                            .setLabel('Show All IDs')
+                            .setStyle('PRIMARY')
+                    )
+                    await botMsg.edit({ content: 'Please send the ID of the command you want to toggle. (they aren\'t hard to guess, the ban command\'s id is `ban`)', components: [row] })
 
                     await message.channel.awaitMessageComponent({ time: 1500000 }).then(interaction => {
                         interaction.reply({ content: idString, ephemeral: true })
@@ -77,7 +79,6 @@ export default class config extends BotCommand {
                 }
 
                 if (interaction.values.includes('configSetRolePerms')) {
-
                     const roleRow = new MessageActionRow().addComponents(
                         new MessageSelectMenu()
                             .setCustomId('configCommandSetRolePermsDropdown')
@@ -122,24 +123,29 @@ export default class config extends BotCommand {
                         await interaction.reply({ content: `Please mention or send the ID of the role you would like to set to ${position}` })
 
                         let role
-                        dotThen.once('collect', async msg => {
-                            if (msg.author.id != message.author.id) { return msg.reply('you cant do that') }
-                            role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache)
+                        dotThen.once('collect', async (msg: Message) => {
+                            if (msg.author.id != message.author.id) { 
+                                await msg.reply({ content: 'you cant do that' }) 
+                                return
+                                eeeeeeeeeeeeeeeeeeeeeeee
+                            }
+                            role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache) as Role
                             if (role == undefined) {
-                                await msg.reply('That isn\'t a role. You have one more try.')
+                                await msg.reply({ content: 'That isn\'t a role. You have one more try.' })
                                 dotThen.once('collect', async msg => {
                                     role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache)
                                     if (role == undefined) {
-                                        return msg.reply('That isn\'t a role. This command has expired.')
+                                        await msg.reply('That isn\'t a role. This command has expired.')
+                                        return
                                     }
                                     else {
-                                        msg.reply(`Set **${role.name}** to ${position}`)
+                                        await msg.reply(`Set **${role.name}** to ${position}`)
                                         await database.editRolePermissions(message.guild.id, position, role.id)
                                     }
                                 })
                             }
                             else {
-                                msg.reply(`Set ${role} to ${position}`)
+                                await msg.reply(`Set ${role} to ${position}`)
                                 await database.editRolePermissions(message.guild.id, position, role.id)
                             }
                         })
@@ -153,7 +159,7 @@ export default class config extends BotCommand {
                 console.log('edited msg because its been 15 seconds')
             }
             else {
-                message.reply(this.client.error(err, ' command'))
+                this.handler.emitError(err, message, this)
             }
         }
     }
