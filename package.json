@@ -74,5 +74,6 @@
 			"@typescript-eslint/explicit-module-boundary-types": "off",
 			"@typescript-eslint/no-var-requires": "off"
 		}
-	}
+	},
+	"packageManager": "yarn@3.0.0"
 }
