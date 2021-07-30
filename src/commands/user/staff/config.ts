@@ -127,7 +127,6 @@ export default class config extends BotCommand {
                             if (msg.author.id != message.author.id) { 
                                 await msg.reply({ content: 'you cant do that' }) 
                                 return
-                                eeeeeeeeeeeeeeeeeeeeeeee
                             }
                             role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache) as Role
                             if (role == undefined) {
