@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import { BotCommand } from "@extensions/BotCommand";
 import db from "@functions/database";
 
@@ -13,25 +13,25 @@ export default class taglist extends BotCommand {
         });
     }
 
-    async exec(message) {
-        await db.readGuild(message.guild.id).then(data => {
+    async exec(message:Message) {
+        await db.readGuild(message.guild!.id).then(data => {
             let taglist = ``
             const tagsEmbed = new MessageEmbed()
 
-            data[0].tags.forEach(tag => {
+            data[0].tags.forEach((tag:any) => {
                 taglist = taglist + `${tag.name}, `
             })
 
             taglist = taglist.substring(0, taglist.length - 2)
 
-            tagsEmbed.setTitle(`${message.guild.name}'s tags`)
+            tagsEmbed.setTitle(`${message.guild!.name}'s tags`)
 
             if (taglist.length === 0) {
                 taglist = `You don't have any tags! Use \`-tag create <tagName> <tagResponse>\` to make a new one!`
             }
             tagsEmbed.setDescription(taglist)
 
-            message.util.send(tagsEmbed)
+            message.reply({embeds:[tagsEmbed]})
         })
     }
 }

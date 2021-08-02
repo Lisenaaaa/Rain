@@ -1,4 +1,5 @@
 import chalk from "chalk";
+import { Command } from "discord-akairo";
 import commandManager from "./commandManager";
 
 
@@ -11,7 +12,7 @@ const mongoclient = new MongoClient(uri, {
     useUnifiedTopology: true,
 });
 
-let db
+let db:any
 async function run() {
     try {
         await mongoclient.connect().then(() => {
@@ -26,7 +27,7 @@ async function run() {
 }
 run().catch(console.dir)
 
-function defaultDBSchema(messageGuildID) {
+function defaultDBSchema(messageGuildID:string) {
     const defaultDBSchema = {
         guildID: messageGuildID,
         guildSettings: {
@@ -190,7 +191,7 @@ async function toggleCommand(messageGuildID: string, commandToToggle: string) {
     const query = { guildID: messageGuildID }
     const allGuildCommands = (await readGuild(messageGuildID))[0].commandSettings
     const allCommands = commandManager.getAllCommandIDs()
-    const cmd = allGuildCommands.find(cmd => cmd.id == commandToToggle)
+    const cmd = allGuildCommands.find((cmd:Command) => cmd.id == commandToToggle)
 
     if (cmd == undefined) {
         if (allCommands.includes(commandToToggle)) {
@@ -202,7 +203,7 @@ async function toggleCommand(messageGuildID: string, commandToToggle: string) {
 
     let object
 
-    if ((allGuildCommands.find(cmd => cmd.id == commandToToggle)).enabled == true) {
+    if ((allGuildCommands.find((cmd:Command) => cmd.id == commandToToggle)).enabled == true) {
         object = { ['commandSettings.' + commandToToggle]: false }
     }
     else {
@@ -226,7 +227,7 @@ async function addCommandToGuildDB(guildID: string, commandID: string) {
 async function checkIfCommandInGuildDB(guildID: string, commandID: string) {
     let found = false
     return readGuild(guildID).then(async db => {
-        db[0].commandSettings.forEach(cmd => {
+        db[0].commandSettings.forEach((cmd:Command) => {
             if (cmd.id == commandID) { return found = true }
         })
 
@@ -250,7 +251,7 @@ async function readCommandGlobal() {
         .toArray()
 }
 
-async function readSpecificCommandGlobal(commandID) {
+async function readSpecificCommandGlobal(commandID:string) {
     return await db.collection('commands')
         .find({ id: commandID })
         .toArray()

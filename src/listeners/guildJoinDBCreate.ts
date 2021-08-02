@@ -1,7 +1,7 @@
 import { BotListener } from '@extensions/BotListener';
 import database from '@functions/database';
 import utils from '@functions/utils';
-import { TextChannel } from 'discord.js';
+import { Guild, TextChannel } from 'discord.js';
 
 class guildJoinDBCreate extends BotListener {
     constructor() {
@@ -11,8 +11,8 @@ class guildJoinDBCreate extends BotListener {
         });
     }
 
-    async exec(guild) {
-        let dbconsole
+    async exec(guild:Guild) {
+        let dbconsole:string
         database.add(guild.id).then(e => {
             if (e) {
                 if (e.result.ok == 1) {

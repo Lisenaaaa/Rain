@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"strict": true,
 		"module": "commonjs",
 		"target": "esNEXT",
 		"outDir": "dist",
@@ -15,7 +16,7 @@
 		"paths": {
 			"@functions/*": ["src/functions/*"],
 			"@extensions/*": ["src/extensions/*"],
-			"@src/*": ["src/"]
+			"@src/*": ["src/*"]
 		}
 	},
 	"include": ["src/**/*", "src/*"],

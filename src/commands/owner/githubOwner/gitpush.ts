@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
@@ -23,14 +23,10 @@ export default class gitpush extends BotCommand {
         });
     }
 
-    async exec(message, args) {
-        if (args.commitReason.length > 50) {
-            return message.util.send(`Your commit message is too long!`)
-        }
-
-        const hiyesthisisanembed = new MessageEmbed()
+    async exec(message: Message, args: any) {
+        const gitPushingEmbed = new MessageEmbed()
             .setDescription(`Pushing changes to [GitHub](https://github.com/Zordlan/SkyClientBot)`)
-        message.util.send({ embeds: [hiyesthisisanembed] })
+        message.reply({ embeds: [gitPushingEmbed] })
 
         const githubembed = new MessageEmbed()
             .setTitle(`Command Output`)
@@ -44,7 +40,7 @@ export default class gitpush extends BotCommand {
         const githubpush = await sh('git push')
         githubembed.addField(`\`git push\``, `\`\`\`js\n${inspect(githubpush)}\`\`\``)
 
-        message.util.reply({ embeds: [githubembed] })
+        message.channel.send({ embeds: [githubembed] })
 
     }
 }

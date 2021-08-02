@@ -1,6 +1,7 @@
 import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 import utils from '@functions/utils'
+import { Message } from 'discord.js';
 
 export default class templateCommand extends BotCommand {
     constructor() {
@@ -12,7 +13,7 @@ export default class templateCommand extends BotCommand {
 
         })
     }
-    async exec(message, args) {
+    async exec(message:Message, args:any) {
         if (!await commandManager.checkIfCommandCanBeUsed(message, this.id)) { return }
         message.reply('hi')
     }

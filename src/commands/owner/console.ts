@@ -1,5 +1,5 @@
 import { exec } from 'child_process';
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
 import { inspect } from 'util';
 import { BotCommand } from '@extensions/BotCommand';
@@ -23,7 +23,7 @@ export default class console extends BotCommand {
         });
     }
 
-    async exec(message, args) {
+    async exec(message: Message, args: any) {
         const output = await sh(args.command)
 
         const outputembed = new MessageEmbed()
@@ -37,6 +37,6 @@ export default class console extends BotCommand {
             outputembed.addField(`:outbox_tray: **Output**`, `\`\`\`js\n${inspect(output)}\`\`\``)
         }
 
-        message.util.reply({ embeds: [outputembed] })
+        message.reply({ embeds: [outputembed] })
     }
 }

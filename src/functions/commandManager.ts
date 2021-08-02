@@ -61,7 +61,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 }
 
 function getAllCommandIDs() {
-    const IDs = []
+    const IDs: string[] = []
 
     client.commandHandler.modules.forEach(command => {
         if (command.category.id.toLowerCase().includes('owner')) { return }

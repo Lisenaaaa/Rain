@@ -2,6 +2,7 @@ import chalk from 'chalk';
 import { BotCommand } from '@extensions/BotCommand';
 import database from '@functions/database';
 import commandManager from '@functions/commandManager';
+import { Message } from 'discord.js';
 
 export default class registerAllNewCommands extends BotCommand {
     constructor() {
@@ -10,12 +11,12 @@ export default class registerAllNewCommands extends BotCommand {
             ownerOnly: true
         })
     }
-    async exec(message) {
+    async exec(message:Message) {
         const commandIDs = await commandManager.getAllCommandIDs()
 
-        const dbIDs = []
+        const dbIDs: any[] = []
         await database.readCommandGlobal().then(db => {
-            db.forEach(command => {
+            db.forEach((command:any) => {
                 dbIDs.push(command.id)
             })
         })

@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 
@@ -12,12 +12,12 @@ export default class help extends BotCommand {
             discordPerms: ['SEND_MESSAGES']
         })
     }
-    async exec(message, args) {
+    async exec(message:Message, args:any) {
         if (!args.command) {
             let commandIDs = await commandManager.getAllCommandIDs()
             commandIDs = commandIDs.filter(ID => ID != 'help')
 
-            message.channel.send(commandIDs)
+            message.channel.send(JSON.stringify(commandIDs))
         }
         if (args.command) {
             const command = this.client.commandHandler.modules.get(args.command) as BotCommand
@@ -27,7 +27,7 @@ export default class help extends BotCommand {
                 .setDescription(command.description)
                 .addField('Usage', command.usage)
 
-            message.channel.send(helpEmbed)
+            message.channel.send({embeds:[helpEmbed]})
         }
     }
 }

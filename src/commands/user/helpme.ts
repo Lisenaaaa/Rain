@@ -1,5 +1,6 @@
 import { BotCommand } from '@extensions/BotCommand';
 import utils from '@functions/utils';
+import { Message } from 'discord.js';
 
 export default class helpme extends BotCommand {
     constructor() {
@@ -10,7 +11,7 @@ export default class helpme extends BotCommand {
             discordPerms: ['SEND_MESSAGES']
         })
     }
-    async exec(message) {
+    async exec(message:Message) {
         const PLEASESENDHELP = [
             'help im stuck in zordlans basement',
             'i havent eaten anything in weeks',

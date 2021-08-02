@@ -16,7 +16,7 @@ const permNames = {
 }
 
 async function getUserPerms(message: Message) {
-    const settings = await database.readGuild(message.guild.id)
+    const settings = await database.readGuild(message.guild!.id)
 
     let found = false
     let perms = 'everyone'
@@ -30,7 +30,7 @@ async function getUserPerms(message: Message) {
     const helper = roleSettings.helper
     const trialHelper = roleSettings.trialHelper
 
-    message.member.roles.cache.forEach(role => {
+    message.member!.roles.cache.forEach(role => {
         if (role == owner && found == false) {
             found = true
             return perms = 'owner'
@@ -71,7 +71,7 @@ function getAllUserPerms(userPerms: string) {
 }
 
 function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
-    return getAllUserPerms(userPerms).includes(commandPerms)
+    return getAllUserPerms(userPerms)!.includes(commandPerms)
 }
 
 async function checkUserCanUseCommandsInChannel(guildID: string, channelID: string, userPerms: string) {
@@ -81,8 +81,8 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
         const db = database
         const lockedChannels = db.guildSettings.lockedChannels
 
-        getAllUserPerms(userPerms).forEach(perm => {
-            lockedChannels.forEach(pain => {
+        getAllUserPerms(userPerms)!.forEach(perm => {
+            lockedChannels.forEach((pain:any) => {
                 if (pain.id == perm) {
                     if (pain.channels.includes(channelID)) {
                         channelPerms = true
@@ -99,15 +99,16 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
     const commandDetails = await commandManager.getCommandDetails(commandID)
-    const discordPerms = message.member.permissions.has(commandDetails.discordPerms, true)
-    const guildDB = (await database.readGuild(message.member.guild.id))
+    //@ts-ignore
+    const discordPerms = message.member!.permissions.has(commandDetails!.discordPerms, true)
+    const guildDB = (await database.readGuild(message.member!.guild.id))
 
     let existsInDB = false
     let userHasBotPerms = false
 
-    const fuckYouTypescriptIWantMyCodeRunningInOrder = []
+    const fuckYouTypescriptIWantMyCodeRunningInOrder:any = []
 
-    await guildDB.commandSettings.forEach(async cmd => {
+    await guildDB.commandSettings.forEach(async (cmd:any) => {
         if (cmd.id == commandID && existsInDB == false) {
             existsInDB = true
 

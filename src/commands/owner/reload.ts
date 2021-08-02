@@ -1,7 +1,7 @@
 import { BotCommand } from "@extensions/BotCommand"
 import { exec } from 'child_process';
 import { promisify } from 'util';
-import { MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 import chalk from "chalk";
 
 const sh = promisify(exec)
@@ -15,11 +15,11 @@ export default class reload extends BotCommand {
     }
 
 
-    async exec(message) {
+    async exec(message: Message) {
         const reloadEmbed = new MessageEmbed()
             .setDescription(`Reloading!`)
-            .setColor(message.member.displayColor)
-        message.util.send({ embeds: [reloadEmbed] }).then(async sent => {
+            .setColor(message.member!.displayColor)
+        message.reply({ embeds: [reloadEmbed] }).then(async sent => {
             console.log(chalk.greenBright(`Reloading!`))
 
             await sh("yarn build");

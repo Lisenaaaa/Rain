@@ -2,7 +2,7 @@ import { BotCommand } from '@extensions/BotCommand';
 import commandManager from '@functions/commandManager';
 import database from '@functions/database';
 import utils from '@functions/utils'
-import { Message, MessageButton, Role } from 'discord.js';
+import { Guild, Interaction, Message, MessageButton, Role } from 'discord.js';
 import { MessageActionRow, MessageSelectMenu } from 'discord.js';
 
 export default class config extends BotCommand {
@@ -22,8 +22,8 @@ export default class config extends BotCommand {
             return message.reply('<a:nonofast:862857752124194816> you arent cool enough to config')
         }
 
-        const filter = i => i.user.id == message.author.id
-        const filterMsg = m => m.author.id == message.author.id
+        const filter = (i: Interaction) => i.user.id == message.author.id
+        const filterMsg = (m:Message) => m.author.id == message.author.id
 
         const dotThen = message.channel.createMessageCollector({ filter: filterMsg, time: 15000 })
 
@@ -46,10 +46,11 @@ export default class config extends BotCommand {
         )
 
         const botMsg = await message.reply({ content: 'config (you have 15 seconds to choose an option this may go up later but probably not)', components: [row] })
+        const guild = message.guild as Guild
 
         try {
             await message.channel.awaitMessageComponent({ filter, time: 15000 }).then(async interaction => {
-                if (interaction.values[0] == 'configToggleCommand') {
+                if (interaction.customId === 'configToggleCommand') {
                     const allIDs = commandManager.getAllCommandIDs()
                     let idString = ''
 
@@ -78,7 +79,7 @@ export default class config extends BotCommand {
                     //interaction.reply(idString)
                 }
 
-                if (interaction.values.includes('configSetRolePerms')) {
+                if (interaction.customId === 'configSetRolePerms') {
                     const roleRow = new MessageActionRow().addComponents(
                         new MessageSelectMenu()
                             .setCustomId('configCommandSetRolePermsDropdown')
@@ -119,7 +120,7 @@ export default class config extends BotCommand {
                     botMsg.edit({ content: 'Which position would you like to set the permissions of?', components: [roleRow] })
 
                     await message.channel.awaitMessageComponent({ filter, time: 15000 }).then(async interaction => {
-                        const position = interaction.values[0]
+                        const position = interaction.customId
                         await interaction.reply({ content: `Please mention or send the ID of the role you would like to set to ${position}` })
 
                         let role
@@ -128,24 +129,24 @@ export default class config extends BotCommand {
                                 await msg.reply({ content: 'you cant do that' }) 
                                 return
                             }
-                            role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache) as Role
+                            role = this.client.util.resolveRole(msg.content, guild.roles.cache) as Role
                             if (role == undefined) {
                                 await msg.reply({ content: 'That isn\'t a role. You have one more try.' })
                                 dotThen.once('collect', async msg => {
-                                    role = this.client.util.resolveRole(msg.content, msg.guild.roles.cache)
+                                    role = this.client.util.resolveRole(msg.content, guild.roles.cache)
                                     if (role == undefined) {
                                         await msg.reply('That isn\'t a role. This command has expired.')
                                         return
                                     }
                                     else {
                                         await msg.reply(`Set **${role.name}** to ${position}`)
-                                        await database.editRolePermissions(message.guild.id, position, role.id)
+                                        await database.editRolePermissions(guild.id, position, role.id)
                                     }
                                 })
                             }
                             else {
                                 await msg.reply(`Set ${role} to ${position}`)
-                                await database.editRolePermissions(message.guild.id, position, role.id)
+                                await database.editRolePermissions(guild.id, position, role.id)
                             }
                         })
                     })

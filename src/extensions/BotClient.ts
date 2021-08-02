@@ -1,28 +1,29 @@
 import chalk from "chalk"
-import { AkairoClient, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from "discord-akairo"
-import { Intents } from "discord.js"
+import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from "discord-akairo"
+import { Intents, Message } from "discord.js"
 import { join } from "path"
 import database from "@functions/database"
 import clientUtils from './ClientUtils'
+import handler from "@functions/handler"
 
 
 class BotClient extends AkairoClient {
 	public commandHandler: CommandHandler = new CommandHandler(this, {
-		prefix: async (message) => {
+		prefix: async (message: Message) => {
 			if (message.guild) {
 				try {
 					return database.add(message.guild.id).then(async () => {
 						try {
-							return (await database.readGuild(message.guild.id)).guildSettings.prefix
+							return (await database.readGuild(message.guild!.id)).guildSettings.prefix
 						}
 						catch (err) {
-							this.listenerHandler.modules.find(listener => listener.id == 'miscErrorListener').exec(err)
+							this.commandHandler.emitError(err, message)
 							return '-'
 						}
 					})
 				}
 				catch (err) {
-					this.listenerHandler.modules.find(listener => listener.id == 'miscErrorListener').exec(err)
+					this.commandHandler.emitError(err, message)
 					return '-'
 				}
 			}
@@ -79,7 +80,7 @@ class BotClient extends AkairoClient {
 			process
 		})
 		// loads all the stuff
-		const loaders = {
+		const loaders: Record<string, AkairoHandler> = {
 			commands: this.commandHandler,
 			listeners: this.listenerHandler,
 			inhibitors: this.inhibitorHandler,
@@ -87,8 +88,9 @@ class BotClient extends AkairoClient {
 		}
 		for (const loader of Object.keys(loaders)) {
 			try {
-				loaders[loader].loadAll()
-				if (loader == 'tasks') { loaders[loader].startAll() }
+				const pp = loaders[loader]
+				pp.loadAll()
+				if (pp instanceof TaskHandler) { pp.startAll() }
 				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)

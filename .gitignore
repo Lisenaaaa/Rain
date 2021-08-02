@@ -59,3 +59,4 @@ src/config/options_pi.ts
 # IRON BAD
 .env
 testing
+src/config/config.ts

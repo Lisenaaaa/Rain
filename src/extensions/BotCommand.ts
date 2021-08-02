@@ -9,8 +9,8 @@ export class BotCommand extends Command {
 
 	public constructor(id: string, options: BotCommandOptions) {
 		super(id, options)
-		this.usage = options.usage
-		this.discordPerms = options.discordPerms
+		this.usage = options.usage!
+		this.discordPerms = options.discordPerms!
 	}
 }
 

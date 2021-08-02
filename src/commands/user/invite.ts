@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { Message, MessageEmbed } from 'discord.js';
 import { BotCommand } from '@extensions/BotCommand';
 
 export default class invite extends BotCommand {
@@ -10,14 +10,14 @@ export default class invite extends BotCommand {
             discordPerms: ['SEND_MESSAGES']
         })
     }
-    async exec(message) {
+    async exec(message:Message) {
         const inviteLink = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
         const inviteEmbed = new MessageEmbed()
             .setTitle('Invite Me')
             .setDescription(`[Click here to invite me to your server!](${inviteLink})`)
-            .setColor(message.member.roles.highest.color)
+            .setColor(message.member!.roles.highest.color)
 
-        message.channel.send(inviteEmbed)
+        message.channel.send({embeds:[inviteEmbed]})
     }
 }

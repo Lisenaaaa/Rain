@@ -7,7 +7,7 @@ export default class miscErrorListener extends BotListener {
             event: 'unhandledRejection'
         })
     }
-    async exec(error) {
+    async exec(error:any) {
         if (error == "TypeError: Cannot read property 'send' of undefined" && this.client.user == null) {
             console.error(`Couldn't log in.`)
             process.exit()

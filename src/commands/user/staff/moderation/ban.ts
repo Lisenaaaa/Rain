@@ -1,6 +1,6 @@
 import { BotCommand } from "@extensions/BotCommand";
 import utils from "@functions/utils";
-import { MessageEmbed } from "discord.js";
+import { Message, MessageEmbed } from "discord.js";
 
 export default class ban extends BotCommand {
     constructor() {
@@ -17,33 +17,33 @@ export default class ban extends BotCommand {
         })
     }
 
-    async exec(message, args) {
+    async exec(message:Message, args:any) {
         //check if bannable
         const errorEmbed = new MessageEmbed()
             .setColor('DARK_RED')
 
-        if (args.member.user.id == message.guild.owner.id) {
+        if (args.member.user.id == message.guild!.ownerId) {
             errorEmbed.setDescription(`You can't ban the owner of the server!`)
-            message.reply(errorEmbed)
+            message.reply({embeds:[errorEmbed]})
         }
         if (args.member.user.id == message.author.id) {
             errorEmbed.setDescription(`You can't ban yourself!`)
-            message.reply(errorEmbed)
+            message.reply({embeds:[errorEmbed]})
         }
-        if (args.member.user.id == this.client.user.id) {
+        if (args.member.user.id == this.client.user!.id) {
             errorEmbed.setDescription(`Why would you want to ban me?`)
-            message.reply(errorEmbed)
+            message.reply({embeds:[errorEmbed]})
         }
 
         //check for perms
-        if (await utils.getRolePriority(message.member, args.member) == false) {
+        if (await utils.getRolePriority(message.member!, args.member) == false) {
             return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'describe')}.`)
         }
 
         message.delete()
-        args.member.user.send(`You have been banned from **${message.guild.name}** for \`${args.reason}\`.`).then(() => {
+        args.member.user.send(`You have been banned from **${message.guild!.name}** for \`${args.reason}\`.`).then(() => {
             args.member.ban({ reason: `${message.author.tag} | ${args.reason}` })
         })
-        message.util.send(`**${args.member.user.username}** has been banned.`)
+        message.reply(`**${args.member.user.username}** has been banned.`)
     }
 }

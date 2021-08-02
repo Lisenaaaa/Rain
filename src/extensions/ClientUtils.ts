@@ -9,8 +9,8 @@ const error = (error: Error, type?: string, message? :Message) => {
 
     let errorStack = error.stack
 
-    if (errorStack.length > 1000) {
-        errorStack = errorStack.substring(0, 1000)
+    if (errorStack!.length > 1000) {
+        errorStack = errorStack!.substring(0, 1000)
     }
 
     const errorEmbed = new MessageEmbed()
@@ -21,13 +21,13 @@ const error = (error: Error, type?: string, message? :Message) => {
     errorEmbed.setColor('DARK_RED')
 
     if (message) {
-        errorEmbed.addField('More Info', `Guild: ${message.guild.name} (\`${message.guild.id}\`)
+        errorEmbed.addField('More Info', `Guild: ${message.guild!.name} (\`${message.guild!.id}\`)
         Channel: ${(message.channel as TextChannel).name} (\`${message.channel.id}\`)
         Message ID: \`${message.id}\`
         
         Author: ${message.author.tag} (\`${message.author.id}\`)
         
-        [Message Link](https://discord.com/channels/${message.guild.id}/${message.channel.id}/${message.id})`)
+        [Message Link](https://discord.com/channels/${message.guild!.id}/${message.channel.id}/${message.id})`)
     }
 
     errorChannel.send({ /*content: `\`\`\`js\n${errorStack}\`\`\``,*/ embeds: [errorEmbed] })

@@ -1,16 +1,16 @@
 import 'module-alias/register'
-
-// require('dotenv').config()
-// const { MongoClient } = require('mongodb')
-// const uri = process.env['mongodb']
-
-//starting the bot
-
+import config from '@src/config/config'
 import BotClient from "@extensions/BotClient"
 
 const client = new BotClient()
 
-try { client.start(process.env.devtoken) }
-catch (error) { console.error(error) }
+if (Object.keys(config.tokens).includes(config.misc.tokenToUse)) {
+
+const token = config.misc.tokenToUse as keyof typeof config.tokens
+
+client
+    .start(config.tokens[token])
+    .catch(console.error)
+}
 
 export default client
