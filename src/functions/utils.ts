@@ -5,10 +5,13 @@ import got from "got/dist/source";
 //import got from "got/dist/source";
 
 import client from "@src/index";
+import config from "@src/config/config";
+import { inspect } from "util";
 
 const slashGuilds = ["824680357936103497", "780181693100982273", "794610828317032458", "859172615892238337"];
 
 async function haste(content: string) {
+	const output = inspect(content, { depth: 0 })
 	const urls = [
 		"https://h.inv.wtf",
 		"https://hst.sh",
@@ -24,7 +27,7 @@ async function haste(content: string) {
 		try {
 			const body:any = await got
 				.post(`${url}/documents`, {
-					body: content,
+					body: output,
 					responseType: "json",
 				})
 				.json();
@@ -49,7 +52,7 @@ async function hasteJson(content:string) {
 		"https://haste.clicksminuteper.net",
 		"https://paste.pythondiscord.com",
 		"https://haste.unbelievaboat.com",
-	];
+	]
 
 	for (const url of urls) {
 		try {
@@ -286,6 +289,27 @@ function funnyNumber(number: number) {
 	}
 }
 
+function regExpEscape(string:string) {
+    return string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&')
+}
+
+function censorString(string:string){
+	Object.keys(config).forEach((key:string) => {
+		const configObject = config[key as keyof typeof config]
+
+		Object.keys(configObject).forEach((key:string) => {
+			const fuckRegex = new RegExp(regExpEscape(configObject[key as keyof typeof configObject]), 'g')
+			//console.log(key)
+			if (key === 'tokenToUse') {
+				return
+			}
+			string = string.replace(fuckRegex, key)
+		})
+	})
+
+	return string
+}
+
 export default {
 	slashGuilds,
 	haste,
@@ -300,4 +324,6 @@ export default {
 	getRandomInt,
 	splitArrayIntoMultiple,
 	funnyNumber,
-};
+	regExpEscape,
+	censorString
+}

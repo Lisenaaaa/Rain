@@ -1,13 +1,18 @@
 import chalk from "chalk"
 import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from "discord-akairo"
-import { Intents, Message } from "discord.js"
+import { Intents, Message, Structures } from "discord.js"
 import { join } from "path"
 import database from "@functions/database"
 import clientUtils from './ClientUtils'
 import handler from "@functions/handler"
+import config from "@src/config/config"
+import { FancyMessage } from "./Message"
 
 
 class BotClient extends AkairoClient {
+	preStart() {
+		Structures.extend('Message', () => FancyMessage)
+	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message: Message) => {
 			if (message.guild) {
@@ -54,6 +59,7 @@ class BotClient extends AkairoClient {
 
 	public database = database
 	public utils = clientUtils
+	public config = config
 
 	public constructor() {
 		super({
