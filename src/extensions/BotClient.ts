@@ -6,7 +6,7 @@ import database from "@functions/database"
 import clientUtils from './ClientUtils'
 import handler from "@functions/handler"
 import config from "@src/config/config"
-import { FancyMessage } from "./Message"
+import { FancyMessage } from "@extensions/discord.js/Message"
 
 
 class BotClient extends AkairoClient {
