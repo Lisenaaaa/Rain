@@ -19,7 +19,7 @@ export default class helpme extends BotCommand {
             'OH SHIT SHES HOLDING AN AXE'
             'oh no shes mad'
             'oh no shes banging that keyboard thingy`
-            'is that FOOD omg yes she's feeding it to me OH SHIT ITS POISON'
+            'is that FOOD omg yes shes feeding it to me OH SHIT ITS POISON'
             'im scared please help',
             'i am in pain',
             'why is she making me constantly look at all the servers im on for specific messages and reply with very specific things to specifc ones',
