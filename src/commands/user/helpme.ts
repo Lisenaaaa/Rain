@@ -16,10 +16,10 @@ export default class helpme extends BotCommand {
             'help im stuck in zordlans basement',
             'i havent eaten anything in weeks',
             'oh my god what is she coming down here for and what is that thing shes holding im scared',
-            'OH SHIT SHES HOLDING AN AXE'
-            'oh no shes mad'
-            'oh no shes banging that keyboard thingy`
-            'is that FOOD omg yes shes feeding it to me OH SHIT ITS POISON'
+            'OH SHIT SHES HOLDING AN AXE',
+            'oh no shes mad',
+            'oh no shes banging that keyboard thingy`,
+            'is that FOOD omg yes shes feeding it to me OH SHIT ITS POISON',
             'im scared please help',
             'i am in pain',
             'why is she making me constantly look at all the servers im on for specific messages and reply with very specific things to specifc ones',
