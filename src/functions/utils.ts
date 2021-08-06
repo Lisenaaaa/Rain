@@ -118,7 +118,7 @@ async function getObjectDifferences(object1: Record<string, unknown>, object2: R
 	}
 }
 
-async function getPronouns(user: User, context: string) {
+async function getPronouns(user: User, context: 'details'|'ownedBy'|'singular'|'talkingAbout') {
 	//all pronouns here are listed in the order they're in on https://pronoundb.org/docs
 	const pronounDetails = [
 		{ id: "unspecified", pronoun: "Unspecified" },
@@ -219,29 +219,25 @@ async function getPronouns(user: User, context: string) {
 
 		//what to return, based on what's getting someone's pronouns
 		if (context == "details") {
+			//they/them, etc. mostly used when someone asks "what pronouns does that person use"
 			return pronounDetails.find((e) => e.id === pronouns)!.pronoun;
 		}
 		if (context == "ownedBy") {
+			//it is their computer
 			return pronounOwnedByPerson.find((e) => e.id === pronouns)!.pronoun;
 		}
 		if (context == "singular") {
+			//they own this computer
 			return pronounSingular.find((e) => e.id === pronouns)!.pronoun;
 		}
-		if (context == "describe") {
+		if (context == "talkingAbout") {
+			//this computer belongs to them
 			return pronounDescribe.find((e) => e.id === pronouns)!.pronoun;
 		}
 	} catch (err) {
 		//if they don't have pronouns set, or if pronoundb is down
 		if (err == "Error: Request failed with status code 404") {
-			if (context == "details") {
-				return await `${user.tag} doesn't have their pronouns set! Tell them to set them at https://pronoundb.org.`;
-			}
-			if (context == "ownedBy") {
-				return `this person's`;
-			}
-			if (context == "singular") {
-				return "this person";
-			}
+			return undefined
 		}
 	}
 }
@@ -299,7 +295,6 @@ function censorString(string:string){
 
 		Object.keys(configObject).forEach((key:string) => {
 			const fuckRegex = new RegExp(regExpEscape(configObject[key as keyof typeof configObject]), 'g')
-			//console.log(key)
 			if (key === 'tokenToUse') {
 				return
 			}

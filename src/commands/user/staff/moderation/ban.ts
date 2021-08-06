@@ -37,7 +37,7 @@ export default class ban extends BotCommand {
 
         //check for perms
         if (await utils.getRolePriority(message.member!, args.member) == false) {
-            return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'describe')}.`)
+            return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'talkingAbout')}.`)
         }
 
         message.delete()

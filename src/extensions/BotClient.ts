@@ -7,11 +7,13 @@ import clientUtils from './ClientUtils'
 import handler from "@functions/handler"
 import config from "@src/config/config"
 import { FancyMessage } from "@extensions/discord.js/Message"
+import { FancyGuild } from "./discord.js/Guild"
 
 
 class BotClient extends AkairoClient {
 	preStart() {
 		Structures.extend('Message', () => FancyMessage)
+		Structures.extend('Guild', () => FancyGuild)
 	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message: Message) => {
@@ -22,13 +24,13 @@ class BotClient extends AkairoClient {
 							return (await database.readGuild(message.guild!.id)).guildSettings.prefix
 						}
 						catch (err) {
-							this.commandHandler.emitError(err, message)
+							process.emit('uncaughtException', err)
 							return '-'
 						}
 					})
 				}
 				catch (err) {
-					this.commandHandler.emitError(err, message)
+					process.emit('uncaughtException', err)
 					return '-'
 				}
 			}
@@ -69,12 +71,12 @@ class BotClient extends AkairoClient {
 			],
 			intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
 		},
-			{
-				allowedMentions: {
-					parse: ["users"]
-				},
-				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
-			})
+		{
+			allowedMentions: {	
+				parse: ["users"]
+			},
+			intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS]
+		})
 	}
 
 	private async _init(): Promise<void> {
@@ -94,9 +96,9 @@ class BotClient extends AkairoClient {
 		}
 		for (const loader of Object.keys(loaders)) {
 			try {
-				const pp = loaders[loader]
-				pp.loadAll()
-				if (pp instanceof TaskHandler) { pp.startAll() }
+				const loader2 = loaders[loader]
+				loader2.loadAll()
+				if (loader2 instanceof TaskHandler) { loader2.startAll?.() }
 				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)

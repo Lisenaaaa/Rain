@@ -10,6 +10,8 @@ const utils = importUtils
 
 import importDatabase from '@functions/database'
 import config from '@src/config/config'
+import { FancyMessage } from '@extensions/discord.js/Message'
+import { FancyGuild } from '@extensions/discord.js/Guild'
 const database = importDatabase
 
 const sh = promisify(exec);
@@ -26,29 +28,17 @@ export default class evaluate extends BotCommand {
             ownerOnly: true,
             description: 'run code',
 
-            // slash:true,
-            // slashOptions:[
-            //     {
-            //         name: 'codetoeval',
-            //         description: 'The code you want to evaluate.',
-            //         type:'STRING'
-            //     },
-            //     {
-            //         name: 'silent',
-            //         description: 'Toggle the output embed (will show a small message)',
-            //         type: 'BOOLEAN'
-            //     },
-            //     {
-            //         name: 'sudo',
-            //         description: 'Override a few checks.',
-            //         type: 'BOOLEAN'
-            //     }
-            // ],
-            // slashGuilds: ['824680357936103497']
+            slash:true,
+            slashOptions: [
+                {name:'codetoeval',description:'code',type:'STRING',required:true},
+                {name:'silent',description:'no embed',type:'BOOLEAN'},
+                {name:'sudo',description:'bypass a few things',type:'BOOLEAN'},
+            ],
+            slashGuilds: ['824680357936103497']
         })
     }
 
-    async exec(message: Message, args: any) {
+    async exec(message: FancyMessage, args: any) {
         //if (message.author.id != '492488074442309642') {return message.reply('no u')}
 
         if (args.codetoeval.includes('channel.delete')) { return message.reply('Are you IRONM00N?') }
@@ -62,7 +52,7 @@ export default class evaluate extends BotCommand {
         const user = message.author
         const member = message.member
         const botUser = this.client.user
-        const botMember = (message.guild as Guild).me
+        //const botMember = (message.guild as FancyGuild).me
 
         let output
 
@@ -95,7 +85,7 @@ export default class evaluate extends BotCommand {
             const evalOutputEmbed = new MessageEmbed()
                 .setTitle('Evaluated Code')
                 .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
-                .setColor(message.member!.displayColor)
+                //.setColor(message.member!.displayColor)
 
             output = `\`\`\`js\n${output}\`\`\``
 
@@ -107,11 +97,17 @@ export default class evaluate extends BotCommand {
 
             evalOutputEmbed.addField(':outbox_tray: **Output**', utils.censorString(output))
 
-            await message.reply({ embeds: [evalOutputEmbed] })
+            //@ts-ignore strict mode bad this will exist
+            if (!message.interaction){await message.util.reply({ embeds: [evalOutputEmbed] })}
+            if (message.interaction){await message.reply({ embeds: [evalOutputEmbed] })}
         }
-        if (args.silent) {
+        if (args.silent && !message.interaction) {
             if (args.codetoeval.includes('message.delete')) { return }
             message.react('<:success:838816341007269908>')
+        }
+        else if (args.silent && message.interaction) {
+            //@ts-ignore fuck strict mode lol
+            return message.reply({content:'i can\'t really send nothing', ephemeral:true})
         }
     }
 }

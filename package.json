@@ -27,7 +27,7 @@
 	"dependencies": {
 		"axios": "^0.21.1",
 		"chalk": "^4.1.1",
-		"discord-akairo": "SkyBlockDev/discord-akairo",
+		"discord-akairo": "NotEnoughUpdates/discord-akairo",
 		"discord-api-types": "^0.20.2",
 		"discord.js": "NotEnoughUpdates/discord.js",
 		"dotenv": "^10.0.0",

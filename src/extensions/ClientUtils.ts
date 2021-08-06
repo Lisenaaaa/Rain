@@ -40,6 +40,12 @@ const error = (error: Error, type?: string, message? :Message) => {
     return returnErrorEmbed
 }
 
+const emojis = {
+    successAnimated: '<a:CheckMark:866892534948036619>',
+    success: '<:success:838816341007269908>',
+    faliure: '<:faliure:838816356429332531>'
+}
+
 
 export default {
     error
