@@ -3,7 +3,7 @@ import utils from '@functions/utils'
 import client from '@src/index'
 
 const error = (error: Error, type?: string, message? :Message) => {
-    const errorChannel = client.channels.cache.get('824680761470746646') as TextChannel
+    const errorChannel = client.channels.cache.get(client.config.misc[`${client.config.misc.tokenToUse}errorChannelId` as keyof typeof client.config.misc]) as TextChannel
 
     const errorCode = utils.getRandomInt(69696969696969)
 

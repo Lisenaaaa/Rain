@@ -12,6 +12,7 @@ import importDatabase from '@functions/database'
 import config from '@src/config/config'
 import { FancyMessage } from '@extensions/discord.js/Message'
 import { FancyGuild } from '@extensions/discord.js/Guild'
+import { FancyUser } from '@extensions/discord.js/User'
 const database = importDatabase
 
 const sh = promisify(exec);
@@ -49,7 +50,7 @@ export default class evaluate extends BotCommand {
         const client = this.client
         const channel = message.channel
         const embed = new MessageEmbed()
-        const user = message.author
+        const user = message.author as FancyUser
         const member = message.member
         const botUser = this.client.user
         //const botMember = (message.guild as FancyGuild).me
@@ -63,7 +64,7 @@ export default class evaluate extends BotCommand {
         catch (err) {
             const errorStack = err.stack.substring(0, 1000)
 
-            output = utils.censorString(errorStack)
+            //output = utils.censorString(errorStack)
         }
 
         output = utils.censorString(output)
@@ -95,7 +96,7 @@ export default class evaluate extends BotCommand {
                 output = output + `\`\`\`\nThe output was too large to display, so it was uploaded to [hastebin](${haste})`
             }
 
-            evalOutputEmbed.addField(':outbox_tray: **Output**', utils.censorString(output))
+            evalOutputEmbed.addField(':outbox_tray: **Output**', output)
 
             //@ts-ignore strict mode bad this will exist
             if (!message.interaction){await message.util.reply({ embeds: [evalOutputEmbed] })}

@@ -8,12 +8,14 @@ import handler from "@functions/handler"
 import config from "@src/config/config"
 import { FancyMessage } from "@extensions/discord.js/Message"
 import { FancyGuild } from "./discord.js/Guild"
+import { FancyUser } from "./discord.js/User"
 
 
 class BotClient extends AkairoClient {
 	preStart() {
 		Structures.extend('Message', () => FancyMessage)
 		Structures.extend('Guild', () => FancyGuild)
+		Structures.extend('User', () => FancyUser)
 	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: async (message: Message) => {

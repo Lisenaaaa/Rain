@@ -2,16 +2,18 @@ import { DMChannel, Message, NewsChannel, TextChannel, ThreadChannel } from "dis
 import BotClient from "@extensions/BotClient"
 import client from "@src/index"
 import { FancyGuild } from "./Guild"
+import { FancyUser } from "./User"
 
 export class FancyMessage extends Message {
 	declare client: BotClient
     lowerCaseContent: string
-    guild: FancyGuild
+    //guild: FancyGuild
+    
 
 	public constructor(client: BotClient, options: any) {
         super(client, options)
         this.lowerCaseContent = options.content.toLowerCase()
-        //this.guild = this.client.guilds.cache.get(options.guild_id) as FancyGuild
-        this.guild = new FancyGuild(client, client.guilds.cache.get(options.guild_id))
+        //this.user = new FancyUser(this.client, this.author)
 	}
+    public declare user: FancyUser
 }
