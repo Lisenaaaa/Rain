@@ -9,11 +9,13 @@ import importUtils from '@functions/utils'
 const utils = importUtils
 
 import importDatabase from '@functions/database'
+const database = importDatabase
+
 import config from '@src/config/config'
 import { FancyMessage } from '@extensions/discord.js/Message'
 import { FancyGuild } from '@extensions/discord.js/Guild'
 import { FancyUser } from '@extensions/discord.js/User'
-const database = importDatabase
+
 
 const sh = promisify(exec);
 
@@ -60,11 +62,12 @@ export default class evaluate extends BotCommand {
         try {
             output = await eval(`(async () => {${args.codetoeval}})()`)
             output = inspect(output, { depth: 0 })
+            output = utils.censorString(output)
         }
         catch (err) {
             const errorStack = err.stack.substring(0, 1000)
 
-            //output = utils.censorString(errorStack)
+            output = utils.censorString(errorStack)
         }
 
         output = utils.censorString(output)
@@ -86,7 +89,7 @@ export default class evaluate extends BotCommand {
             const evalOutputEmbed = new MessageEmbed()
                 .setTitle('Evaluated Code')
                 .addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
-                //.setColor(message.member!.displayColor)
+                .setColor(message.member!.displayColor)
 
             output = `\`\`\`js\n${output}\`\`\``
 

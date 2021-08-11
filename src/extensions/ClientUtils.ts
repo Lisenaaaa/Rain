@@ -1,6 +1,7 @@
 import { Message, MessageEmbed, TextChannel } from "discord.js"
 import utils from '@functions/utils'
 import client from '@src/index'
+import { FancyUser } from "./discord.js/User"
 
 const error = (error: Error, type?: string, message? :Message) => {
     const errorChannel = client.channels.cache.get(client.config.misc[`${client.config.misc.tokenToUse}errorChannelId` as keyof typeof client.config.misc]) as TextChannel
@@ -46,7 +47,35 @@ const emojis = {
     faliure: '<:faliure:838816356429332531>'
 }
 
+async function fetchUser(user:string) {
+    const akairoResolve = await client.util.resolveUser(user, client.users.cache)
+
+    if (akairoResolve) {
+        return akairoResolve
+    }
+    else {
+        return await client.users.fetch(user)
+    }
+}
+
+const flags = {
+    userFlags: {
+        DISCORD_EMPLOYEE: '<:discord_employee:874817111791398934>',
+        PARTNERED_SERVER_OWNER: '<:partnered_server_owner:874817135174635543>',
+        HYPESQUAD_EVENTS: '<:hypesquad_events:874817149720465458>',
+        BUGHUNTER_LEVEL_1: '<:bughunter_level_1:874817162739589131>',
+        HOUSE_BRAVERY: '<:house_bravery:874817174663991346>',
+        HOUSE_BRILLIANCE: '<:house_brilliance:874817186336739379>',
+        EARLY_SUPPORTER: '<:early_supporter:874817213096415242>',
+        BUGHUNTER_LEVEL_2: '<:bughunter_level_2:874817224857235506>',
+        EARLY_VERIFIED_BOT_DEVELOPER: '<:early_verified_bot_developer:874817236920045609>',
+        DISCORD_CERTIFIED_MODERATOR: '<:never_touched_grass:874817248169197568>',
+        HOUSE_BALANCE: '<:house_balance:874817201708879953>'
+    }
+}
 
 export default {
-    error
+    error,
+    fetchUser,
+    flags
 }

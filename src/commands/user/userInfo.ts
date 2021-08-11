@@ -1,49 +1,39 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { BotCommand } from '@extensions/BotCommand'
+import { FancyUser } from '@extensions/discord.js/User'
 
 export default class userInfo extends BotCommand {
     constructor() {
         super('userInfo', {
             aliases: ['userInfo', 'user', 'ui', 'u'],
-            args: [{ id: 'person', type: 'member', match: 'rest', default: (message:Message) => message.member }],
-                description: 'Shows information about a user.',
-                usage: '`-user`, `-user <user>`',
-                discordPerms: ['SEND_MESSAGES']
-            
+            args: [{ id: 'person', type: 'string', match: 'rest', default: (message:Message) => message.author as FancyUser }],
+            description: 'Shows information about a user.',
+            usage: '`-user`, `-user <user>`',
+            discordPerms: ['SEND_MESSAGES']
         })
     }
     async exec(message:Message, args:any) {
-        const user = args.person.user
-        const member = args.person
-        const roles = message.member!.roles.cache
+        //const member = message.guild?.members.fetch(args.person)
+        const person = args.person
+        const user = await this.client.utils.fetchUser(person) as FancyUser
+        if (!user) {return await message.reply('User not found. Try using an ID instead.')}
+        const member = await message.guild?.members.cache.get(user.id)
+
+        console.log(user)
 
         const badges = {
             botOwner: 'botOwner',
             serverOwner: '<:owner:855483985194647642>'
         }
 
-        let description = ''
-        function descriptionAdd(thingToAdd: string) {
-            description = description + `${thingToAdd} `
-        }
-
-        if (message.guild!.ownerId == user.id) {
-            descriptionAdd(badges.serverOwner)
-        }
-        if (this.client.ownerID.includes(user.id)) {
-            descriptionAdd(badges.botOwner)
-        }
-
-        const userInfoEmbed = new MessageEmbed()
-            .setAuthor(user.tag, user.displayAvatarURL())
-            .setDescription(description)
-
+        const userEmbed = new MessageEmbed()
+            .setTitle(user.tag)
             .addField('About', `
             Mention: ${user}
             ID: \`${user.id}\`
+            Created at: ${user.timestamp}
             `)
 
-        message.channel.send({embeds:[userInfoEmbed]})
-        console.log(roles.size-1)
+        await message.reply({embeds:[userEmbed]})
     }
 }

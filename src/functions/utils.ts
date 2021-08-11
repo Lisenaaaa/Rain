@@ -289,7 +289,10 @@ function regExpEscape(string:string) {
     return string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&')
 }
 
-function censorString(string:string){
+function censorString(string:any){
+	if (typeof string != 'string') {
+		return string
+	}
 	Object.keys(config).forEach((key:string) => {
 		const configObject = config[key as keyof typeof config]
 
