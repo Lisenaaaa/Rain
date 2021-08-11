@@ -25,7 +25,11 @@ async function run() {
     //catch(err){/*client*/.utils.error(err)}
     catch (err) { console.log(err.stack) }
 }
-run().catch(console.dir)
+run()
+    .catch(error => {
+        console.error(chalk.red(`Failed to connect to MongoDB\n${error.stack}`))
+        return process.exit()
+    })
 
 function defaultDBSchema(messageGuildID:string) {
     const defaultDBSchema = {

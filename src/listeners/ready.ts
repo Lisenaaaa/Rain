@@ -12,6 +12,14 @@ class ReadyListener extends BotListener {
     }
 
     async exec() {
+        let globalCommandDB: any = []
+        try {
+            globalCommandDB = await database.readCommandGlobal()
+        }
+        catch(error){
+            console.error(chalk.red(`Failed to connect to MongoDB.\n${error.stack}`))
+            process.exit()
+        }
         console.log(chalk`{magenta Logged in as} {magentaBright.bold ${this.client.user!.tag}}`)
         console.log(`\n`)
         console.log(chalk.magentaBright(`---Bot Output---\n`))
@@ -28,11 +36,11 @@ class ReadyListener extends BotListener {
 
         // eslint-disable-next-line prefer-const
         let dbIDs: string[] = []
-        await database.readCommandGlobal().then(db => {
-            db.forEach((command:any) => {
-                dbIDs.push(command.id)
-            })
+        
+        globalCommandDB.forEach((command:any) => {
+            dbIDs.push(command.id)
         })
+        
 
         const missingFromDB = commandIDs.filter(cmdID => !dbIDs.includes(cmdID))
 

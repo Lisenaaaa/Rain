@@ -42,20 +42,22 @@ const error = (error: Error, type?: string, message? :Message) => {
 }
 
 const emojis = {
-    successAnimated: '<a:CheckMark:866892534948036619>',
+    successAnimated: '<a:CheckMark:874860939411857420>',
     success: '<:success:838816341007269908>',
     faliure: '<:faliure:838816356429332531>'
 }
 
 async function fetchUser(user:string) {
-    const akairoResolve = await client.util.resolveUser(user, client.users.cache)
+    try{const akairoResolve = await client.util.resolveUser(user, client.users.cache)
 
     if (akairoResolve) {
-        return akairoResolve
+        return akairoResolve as FancyUser
     }
     else {
-        return await client.users.fetch(user)
-    }
+        console.log(await client.users.fetch(user))
+        return await client.users.fetch(user) as FancyUser
+    }}
+    catch(err){return undefined}
 }
 
 const flags = {
