@@ -15,7 +15,9 @@
 	"devDependencies": {
 		"@types/module-alias": "^2",
 		"@types/node": "^14.14.31",
+		"@types/pg": "^8",
 		"@types/prettier": "^2.2.3",
+		"@types/validator": "^13.6.3",
 		"@typescript-eslint/eslint-plugin": "^4.15.2",
 		"@typescript-eslint/parser": "^4.15.2",
 		"eslint": "^7.20.0",
@@ -27,14 +29,17 @@
 	"dependencies": {
 		"axios": "^0.21.1",
 		"chalk": "^4.1.1",
-		"discord-akairo": "SkyBlockDev/discord-akairo",
+		"discord-akairo": "NotEnoughUpdates/discord-akairo",
 		"discord-api-types": "^0.20.2",
 		"discord.js": "NotEnoughUpdates/discord.js",
 		"dotenv": "^10.0.0",
 		"got": "^11.8.2",
 		"module-alias": "^2.2.2",
 		"mongodb": "^4.0.0",
-		"ms": "^2.1.3"
+		"ms": "^2.1.3",
+		"pg": "^8.7.1",
+		"pg-hstore": "^2.3.4",
+		"sequelize": "^6.6.5"
 	},
 	"prettier": {
 		"printWidth": 200,
@@ -74,7 +79,8 @@
 			"dist"
 		],
 		"rules": {
-			"@typescript-eslint/explicit-module-boundary-types": "off"
+			"@typescript-eslint/explicit-module-boundary-types": "off",
+			"@typescript-eslint/no-var-requires": "off"
 		}
 	},
 	"packageManager": "yarn@3.0.0"

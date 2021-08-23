@@ -78,9 +78,9 @@ export default class evaluate extends BotCommand {
 
 			output = utils.censorString(errorStack)
 		}
-
+		
 		output = utils.censorString(output)
-
+		
 		const evalEmbedDisabledGuilds = ['794610828317032458']
 		const evalDisabledGuildChannelBypass = ['834878498941829181']
 

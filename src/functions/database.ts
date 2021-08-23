@@ -1,8 +1,21 @@
+import config from '@src/config/config'
 import chalk from 'chalk'
 import { Command } from 'discord-akairo'
 import commandManager from './commandManager'
 
-require('dotenv').config()
+import { Sequelize } from 'sequelize/types'
+const pg = new Sequelize(
+	config.database.pgdbid, 
+	config.database.pguser, 
+	config.database.pguserpassword, 
+	{
+		host: config.database.pghost,
+		dialect: 'postgres'
+	}
+)
+const postgres = pg.authenticate()
+console.log(postgres)
+
 const { MongoClient } = require('mongodb')
 const uri = process.env.mongodb
 
@@ -11,11 +24,18 @@ const mongoclient = new MongoClient(uri, {
 	useUnifiedTopology: true,
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 let db: any
+
 async function run() {
 	try {
 		await mongoclient.connect().then(() => {
 			db = mongoclient.db('bot')
+		})
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
+		.catch((err: unknown) => {
+			//console.error(err)
+			process.exit()
 		})
 
 		console.log(chalk.blue('Connected to MongoDB.'))
@@ -24,13 +44,13 @@ async function run() {
 		console.log(err.stack)
 	}
 }
-run().catch((error) => {
-	console.error(chalk.red(`Failed to connect to MongoDB\n${error.stack}`))
-	return process.exit()
-})
+run()
+
+
 
 function defaultDBSchema(messageGuildID: string) {
-	const defaultDBSchema = {
+	const defaultDBSchema = [{
+		dbID: '',
 		guildID: messageGuildID,
 		guildSettings: {
 			prefix: ['-'],
@@ -78,7 +98,7 @@ function defaultDBSchema(messageGuildID: string) {
 		},
 		commandSettings: [],
 		tags: [],
-	}
+	}]
 	return defaultDBSchema
 }
 
@@ -115,9 +135,58 @@ function userDBSchema(userID: string) {
 }
 
 async function readGuild(messageGuildID: string) {
-	const guildDB = await db.collection('guildsv2').find({ guildID: messageGuildID }).toArray()
+	const defaultDBSchema = [{
+		dbID: '',
+		guildID: messageGuildID,
+		guildSettings: {
+			prefix: ['-'],
+			welcomeChannel: 'null',
+			welcomeMessage: 'null',
+			loggingChannels: {
+				messageLogs: 'null',
+				memberLogs: 'null',
+				moderationLogs: 'null',
+			},
+			staffRoles: {
+				owner: 'null',
+				admin: 'null',
+				srMod: 'null',
+				moderator: 'null',
+				helper: 'null',
+				trialHelper: 'null',
+			},
+			lockedChannels: [
+				{
+					id: 'owner',
+					channels: [],
+				},
+				{
+					id: 'admin',
+					channels: [],
+				},
+				{
+					id: 'srMod',
+					channels: [],
+				},
+				{
+					id: 'moderator',
+					channels: [],
+				},
+				{
+					id: 'helper',
+					channels: [],
+				},
+				{
+					id: 'trialHelper',
+					channels: [],
+				},
+			],
+		},
+		commandSettings: [],
+		tags: [],
+	}]
 
-	return guildDB[0]
+	return defaultDBSchema[0]
 }
 
 async function getEntireGuildsDB() {

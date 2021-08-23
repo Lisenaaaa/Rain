@@ -30,22 +30,22 @@ async function getUserPerms(message: Message) {
 	const trialHelper = roleSettings.trialHelper
 
 	message.member!.roles.cache.forEach((role) => {
-		if (role == owner && found == false) {
+		if (role.id == owner && found == false) {
 			found = true
 			return (perms = 'owner')
-		} else if (role == admin && found == false) {
+		} else if (role.id == admin && found == false) {
 			found = true
 			return (perms = 'admin')
-		} else if (role == srMod && found == false) {
+		} else if (role.id == srMod && found == false) {
 			found = true
 			return (perms = 'srMod')
-		} else if (role == moderator && found == false) {
+		} else if (role.id == moderator && found == false) {
 			found = true
 			return (perms = 'moderator')
-		} else if (role == helper && found == false) {
+		} else if (role.id == helper && found == false) {
 			found = true
 			return (perms = 'helper')
-		} else if (role == trialHelper && found == false) {
+		} else if (role.id == trialHelper && found == false) {
 			found = true
 			return (perms = 'trialHelper')
 		}

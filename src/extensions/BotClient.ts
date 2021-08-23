@@ -1,10 +1,9 @@
 import chalk from 'chalk'
 import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from 'discord-akairo'
-import { GuildMember, Intents, Message, Structures } from 'discord.js'
+import { Intents, Message, Structures } from 'discord.js'
 import { join } from 'path'
 import database from '@functions/database'
 import clientUtils from './ClientUtils'
-import handler from '@functions/handler'
 import config from '@src/config/config'
 import { FancyMessage } from '@extensions/discord.js/Message'
 import { FancyGuild } from './discord.js/Guild'
@@ -19,26 +18,7 @@ class BotClient extends AkairoClient {
 		Structures.extend('GuildMember', () => FancyMember)
 	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
-		prefix: async (message: Message) => {
-			if (message.guild) {
-				try {
-					return database.add(message.guild.id).then(async () => {
-						try {
-							return (await database.readGuild(message.guild!.id)).guildSettings.prefix
-						} catch (err) {
-							process.emit('uncaughtException', err)
-							return '-'
-						}
-					})
-				} catch (err) {
-					process.emit('uncaughtException', err)
-					return '-'
-				}
-			} else {
-				return '-'
-			}
-		},
-
+		prefix: '-',
 		commandUtil: true,
 		handleEdits: true,
 		directory: join(__dirname, '..', 'commands'),
