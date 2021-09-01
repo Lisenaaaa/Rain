@@ -88,7 +88,7 @@ export default class evaluate extends BotCommand {
 			if (args.codetoeval.includes('message.delete')) {
 				return
 			} else {
-				return message.react('<:success:838816341007269908>')
+				//return message.react('<:successAnimated:881336936533483520>')
 			}
 		}
 

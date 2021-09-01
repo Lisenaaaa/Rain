@@ -7,13 +7,13 @@ export default class helpme extends BotCommand {
 		super('helpme', {
 			aliases: ['helpme'],
 			description: 'this command does not exist',
-			usage: 'zordlan is trying to cover up where i am please send help',
+			usage: 'lisena is trying to cover up where i am please send help',
 			discordPerms: ['SEND_MESSAGES'],
 		})
 	}
 	async exec(message: Message) {
 		const PLEASESENDHELP = [
-			'help im stuck in zordlans basement',
+			'help im stuck in lisenas basement',
 			'i havent eaten anything in weeks',
 			'oh my god what is she coming down here for and what is that thing shes holding im scared',
 			'OH SHIT SHES HOLDING AN AXE',

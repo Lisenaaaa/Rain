@@ -17,7 +17,7 @@ export default class ban extends BotCommand {
 		})
 	}
 
-	async exec(message: Message, args: any) {
+	async exec(message: Message, args: {member:GuildMember,reason:string}) {
 		//check if bannable
 		const errorEmbed = new MessageEmbed().setColor('DARK_RED')
 

@@ -1,56 +1,31 @@
 import config from '@src/config/config'
 import chalk from 'chalk'
-import { Command } from 'discord-akairo'
-import commandManager from './commandManager'
+import { Snowflake } from 'discord.js'
 
-import { Sequelize } from 'sequelize/types'
-const pg = new Sequelize(
-	config.database.pgdbid, 
-	config.database.pguser, 
-	config.database.pguserpassword, 
-	{
-		host: config.database.pghost,
-		dialect: 'postgres'
-	}
-)
-const postgres = pg.authenticate()
-console.log(postgres)
-
-const { MongoClient } = require('mongodb')
-const uri = process.env.mongodb
-
-const mongoclient = new MongoClient(uri, {
-	useNewUrlParser: true,
-	useUnifiedTopology: true,
+import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
+import client from '..'
+const pg = new Sequelize(config.database.pgdbid, config.database.pguser, config.database.pguserpassword, {
+	host: config.database.pghost,
+	dialect: 'postgres',
+	logging: false,
 })
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-let db: any
-
-async function run() {
+const thingy = async () => {
 	try {
-		await mongoclient.connect().then(() => {
-			db = mongoclient.db('bot')
-		})
-		// eslint-disable-next-line @typescript-eslint/no-unused-vars
-		.catch((err: unknown) => {
-			//console.error(err)
-			process.exit()
-		})
-
-		console.log(chalk.blue('Connected to MongoDB.'))
+		await pg.authenticate()
+		console.log(chalk.blue('Succesfully connected to the database.'))
 	} catch (err) {
-		//catch(err){/*client*/.utils.error(err)}
-		console.log(err.stack)
+		console.log(chalk.red(err.stack))
 	}
 }
-run()
+thingy()
 
-
+async function rawDbRequest(string: string, options: QueryOptions | QueryOptionsWithType<QueryTypes.RAW> = {}) {
+	return await pg.query(string, options)
+}
 
 function defaultDBSchema(messageGuildID: string) {
-	const defaultDBSchema = [{
-		dbID: '',
+	const defaultDBSchema = {
 		guildID: messageGuildID,
 		guildSettings: {
 			prefix: ['-'],
@@ -98,7 +73,7 @@ function defaultDBSchema(messageGuildID: string) {
 		},
 		commandSettings: [],
 		tags: [],
-	}]
+	}
 	return defaultDBSchema
 }
 
@@ -135,237 +110,49 @@ function userDBSchema(userID: string) {
 }
 
 async function readGuild(messageGuildID: string) {
-	const defaultDBSchema = [{
-		dbID: '',
-		guildID: messageGuildID,
-		guildSettings: {
-			prefix: ['-'],
-			welcomeChannel: 'null',
-			welcomeMessage: 'null',
-			loggingChannels: {
-				messageLogs: 'null',
-				memberLogs: 'null',
-				moderationLogs: 'null',
-			},
-			staffRoles: {
-				owner: 'null',
-				admin: 'null',
-				srMod: 'null',
-				moderator: 'null',
-				helper: 'null',
-				trialHelper: 'null',
-			},
-			lockedChannels: [
-				{
-					id: 'owner',
-					channels: [],
-				},
-				{
-					id: 'admin',
-					channels: [],
-				},
-				{
-					id: 'srMod',
-					channels: [],
-				},
-				{
-					id: 'moderator',
-					channels: [],
-				},
-				{
-					id: 'helper',
-					channels: [],
-				},
-				{
-					id: 'trialHelper',
-					channels: [],
-				},
-			],
-		},
-		commandSettings: [],
-		tags: [],
-	}]
-
-	return defaultDBSchema[0]
+	return (await getEntireGuildsDB()).find(d => d.guildID == messageGuildID)
 }
 
 async function getEntireGuildsDB() {
-	return await db.collection('guildsv2').find().toArray()
+	const guilddb = await rawDbRequest('SELECT * from guilds;')
+	const alldbs = []
+	guilddb[0].forEach((db: any) => {
+		alldbs.push(db.data)
+	})
+
+	return alldbs
 }
 
-async function add(messageGuildID: string) {
-	const allDB = await getEntireGuildsDB()
-
-	for (const e of allDB) {
-		if (e.guildID == messageGuildID) {
-			return
-		}
-	}
-
-	return await db.collection('guildsv2').insertOne(defaultDBSchema(messageGuildID))
-}
-
-//THIS WILL PROBABLY BREAK EVERYTHING IF USED, SO DON'T FUCKING USE IT
-async function addGuildWithoutCheck(messageGuildID: string) {
-	return await db.collection('guildsv2').insertOne(defaultDBSchema(messageGuildID))
-}
-
-async function addTag(messageGuildID: string, tagName: string, tagResponse: string) {
-	const query = { guildID: messageGuildID }
-	const update = { $push: { tags: { name: tagName, value: tagResponse } } }
-
+async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue: any) {
 	try {
-		await db.collection('guildsv2').updateOne(query, update)
-		return 'success'
-	} catch (error) {
-		//client.error(error) }
-		console.log(error)
-	}
-}
+		const guildDB = (await getEntireGuildsDB()).find((d) => d.guildID == guildID)
 
-async function editTag(messageGuildID: string, tagName: string, newTagResponse: string) {
-	const query = { guildID: messageGuildID, tags: { $elemMatch: { name: tagName } } }
-	const update = { $set: { 'tags.$.value': newTagResponse } }
+		const queryArray = query.split('.')
 
-	return await db.collection('guildsv2').updateOne(query, update)
-}
+		let dbObject = guildDB
 
-async function deleteTag(messageGuildID: string, tagName: string) {
-	const query = { guildID: messageGuildID }
-	const update = { $pull: { tags: { name: tagName } } }
+		const lastQueryArray = queryArray.pop()
 
-	return await db.collection('guildsv2').updateOne(query, update)
-}
-
-async function guildSettings(messageGuildID: string) {
-	const data = await readGuild(messageGuildID)
-	return data[0].guildSettings
-}
-
-async function editRolePermissions(messageGuildID: string, roleToEdit: string, newRoleID: string) {
-	const query = { guildID: messageGuildID }
-	const object = { ['guildSettings.staffRoles.' + roleToEdit]: newRoleID }
-	const update = { $set: object }
-
-	return await db.collection('guildsv2').updateOne(query, update)
-}
-
-async function toggleCommand(messageGuildID: string, commandToToggle: string) {
-	const query = { guildID: messageGuildID }
-	const allGuildCommands = (await readGuild(messageGuildID))[0].commandSettings
-	const allCommands = commandManager.getAllCommandIDs()
-	const cmd = allGuildCommands.find((cmd: Command) => cmd.id == commandToToggle)
-
-	if (cmd == undefined) {
-		if (allCommands.includes(commandToToggle)) {
-			//return 'command is in bot but not guild db'
-			await addCommandToGuildDB(messageGuildID, commandToToggle)
-		} else {
-			return 'not a command'
-		}
-	}
-
-	let object
-
-	if (allGuildCommands.find((cmd: Command) => cmd.id == commandToToggle).enabled == true) {
-		object = { ['commandSettings.' + commandToToggle]: false }
-	} else {
-		object = { ['commandSettings.' + commandToToggle]: true }
-	}
-
-	const update = { $set: object }
-
-	return await db.collection('guildsv2').updateOne(query, update)
-}
-
-async function addCommandToGuildDB(guildID: string, commandID: string) {
-	const query = { guildID: guildID }
-	const update = { $push: { commandSettings: commandInGuildSettingsFormat(commandID) } }
-
-	return await db.collection('guildsv2').updateOne(query, update)
-}
-
-async function checkIfCommandInGuildDB(guildID: string, commandID: string) {
-	let found = false
-	return readGuild(guildID).then(async (db) => {
-		db[0].commandSettings.forEach((cmd: Command) => {
-			if (cmd.id == commandID) {
-				return (found = true)
-			}
+		queryArray.forEach((query) => {
+			dbObject = dbObject[query]
 		})
 
-		if (found == false) {
-			await addCommandToGuildDB(guildID, commandID)
-			found = true
-		}
-		return found
-	})
-}
+		dbObject[lastQueryArray] = newValue
 
-/* GLOBAL THINGS */
-async function addCommandToGlobalDB(commandID: string) {
-	return await db.collection('commands').insertOne(commandDBSFormat(commandID))
-}
+		await rawDbRequest('UPDATE guilds SET data = $guildDB WHERE data->>"guildID" = $guildID;', { bind: { guildDB: guildDB, guildID: guildID } })
 
-async function readCommandGlobal() {
-	return await db.collection('commands').find({}).toArray()
-}
-
-async function readSpecificCommandGlobal(commandID: string) {
-	return await db.collection('commands').find({ id: commandID }).toArray()
-}
-
-async function deleteCommandFromGlobalDB(commandID: string) {
-	await db.collection('commands').deleteOne(commandDBsFormatDisabled(commandID))
-	await db.collection('commands').deleteOne(commandDBSFormat(commandID))
-}
-
-async function checkCommandEnabledGlobal(commandID: string) {
-	const fuckYouTypescript = (await readSpecificCommandGlobal(commandID))[0].enabled
-	return fuckYouTypescript
-}
-
-/* USER THINGS */
-async function userRead(userID: string) {
-	return await db.collection('user').find({ ID: userID }).toArray()
-}
-
-async function getEntireUserDB() {
-	return await db.collection('guildsv2').find().toArray()
-}
-
-async function userAdd(userID: string) {
-	for (const e of await getEntireUserDB()) {
-		if (e.userID == userID) {
-			return
-		}
+		return true
 	}
-
-	return await db.collection('user').insertOne(userDBSchema(userID))
+	catch(err) {
+		client.utils.error(err, ' database editing')
+		return false
+	}
 }
 
 export default {
+	defaultDBSchema,
+	getEntireGuildsDB,
+	rawDbRequest,
 	readGuild,
-	add,
-	addTag,
-	editTag,
-	deleteTag,
-	guildSettings,
-	addGuildWithoutCheck,
-	addCommandToGuildDB,
-	editRolePermissions,
-	checkIfCommandInGuildDB,
-	toggleCommand,
-
-	//GLOBAL THINGS//
-	addCommandToGlobalDB,
-	deleteCommandFromGlobalDB,
-	readCommandGlobal,
-	readSpecificCommandGlobal,
-	checkCommandEnabledGlobal,
-
-	//USER THINGS//
-	userRead,
-	userAdd,
-	getEntireUserDB,
+	editSpecificGuildInDB
 }

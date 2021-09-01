@@ -1,6 +1,5 @@
-import { DMChannel, Guild, Message, NewsChannel, TextChannel, ThreadChannel } from 'discord.js'
+import { Guild } from 'discord.js'
 import BotClient from '@extensions/BotClient'
-import client from '@src/index'
 import database from '@functions/database'
 
 export class FancyGuild extends Guild {
@@ -13,6 +12,7 @@ export class FancyGuild extends Guild {
 	}
 
 	public async database() {
+		console.log('hi')
 		return await database.readGuild(this.id)
 	}
 }

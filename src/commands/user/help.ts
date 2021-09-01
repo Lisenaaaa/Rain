@@ -12,7 +12,7 @@ export default class help extends BotCommand {
 			discordPerms: ['SEND_MESSAGES'],
 		})
 	}
-	async exec(message: Message, args: any) {
+	async exec(message: Message, args: {command:string}) {
 		if (!args.command) {
 			let commandIDs = await commandManager.getAllCommandIDs()
 			commandIDs = commandIDs.filter((ID) => ID != 'help')

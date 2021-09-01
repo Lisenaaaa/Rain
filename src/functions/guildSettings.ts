@@ -1,4 +1,4 @@
-import { Message } from 'discord.js'
+import { Message, Snowflake } from 'discord.js'
 import commandManager from '@functions/commandManager'
 
 import database from '@functions/database'
@@ -15,7 +15,7 @@ const permNames = {
 }
 
 async function getUserPerms(message: Message) {
-	const settings = await database.readGuild(message.guild!.id)
+	const settings = await database.readGuild(message.guild?.id as Snowflake)
 
 	let found = false
 	let perms = 'everyone'
@@ -29,7 +29,7 @@ async function getUserPerms(message: Message) {
 	const helper = roleSettings.helper
 	const trialHelper = roleSettings.trialHelper
 
-	message.member!.roles.cache.forEach((role) => {
+	message.member?.roles.cache.forEach((role) => {
 		if (role.id == owner && found == false) {
 			found = true
 			return (perms = 'owner')
@@ -79,7 +79,7 @@ function getAllUserPerms(userPerms: string) {
 }
 
 function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
-	return getAllUserPerms(userPerms)!.includes(commandPerms)
+	return getAllUserPerms(userPerms)?.includes(commandPerms)
 }
 
 async function checkUserCanUseCommandsInChannel(guildID: string, channelID: string, userPerms: string) {
@@ -89,7 +89,7 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 		const db = database
 		const lockedChannels = db.guildSettings.lockedChannels
 
-		getAllUserPerms(userPerms)!.forEach((perm) => {
+		getAllUserPerms(userPerms)?.forEach((perm) => {
 			lockedChannels.forEach((pain: any) => {
 				if (pain.id == perm) {
 					if (pain.channels.includes(channelID)) {
@@ -108,17 +108,17 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 }
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
-	const commandDetails = await commandManager.getCommandDetails(commandID)
-	//@ts-ignore
-	const discordPerms = message.member!.permissions.has(commandDetails!.discordPerms, true)
-	const guildDB = await database.readGuild(message.member!.guild.id)
+	const commandDetails = await commandManager.getCommandDetails(commandID) as any
+
+	const discordPerms = message.member?.permissions.has(commandDetails?.discordPerms, true)
+	const guildDB = await database.readGuild(message.member?.guild.id as Snowflake)
 
 	let existsInDB = false
 	let userHasBotPerms = false
 
-	const fuckYouTypescriptIWantMyCodeRunningInOrder: any = []
+	const fuckYouTypescriptIWantMyCodeRunningInOrder: string[] = []
 
-	await guildDB.commandSettings.forEach(async (cmd: any) => {
+	guildDB.commandSettings.forEach(async (cmd: any) => {
 		if (cmd.id == commandID && existsInDB == false) {
 			existsInDB = true
 
@@ -127,7 +127,7 @@ async function checkUserCanUseSpecificCommand(commandID: string, message: Messag
 				userHasBotPerms = false
 				return
 			}
-			const userPerms = getUserPerms(message)
+			const userPerms = await getUserPerms(message) as string
 
 			fuckYouTypescriptIWantMyCodeRunningInOrder.push(userPerms)
 

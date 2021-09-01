@@ -1,6 +1,6 @@
 import axios from 'axios'
 import chalk from 'chalk'
-import { TextChannel, GuildMember, User, Message, MessageEmbed } from 'discord.js'
+import { TextChannel, GuildMember, User, MessageEmbed } from 'discord.js'
 import got from 'got/dist/source'
 //import got from "got/dist/source";
 
@@ -100,9 +100,10 @@ async function getObjectDifferences(object1: Record<string, unknown>, object2: R
 		const firstObjectKeys = Object.keys(object1)
 		const secondObjectKeys = Object.keys(object2)
 
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const object: any = {}
 
-		firstObjectKeys.forEach((key: any) => {
+		firstObjectKeys.forEach((key: string) => {
 			if (secondObjectKeys.includes(key)) {
 				if (object1[key] != object2[key]) {
 					object[key] = {
@@ -220,19 +221,19 @@ async function getPronouns(user: User, context: 'details' | 'ownedBy' | 'singula
 		//what to return, based on what's getting someone's pronouns
 		if (context == 'details') {
 			//they/them, etc. mostly used when someone asks "what pronouns does that person use"
-			return pronounDetails.find((e) => e.id === pronouns)!.pronoun
+			return pronounDetails.find((e) => e.id === pronouns)?.pronoun
 		}
 		if (context == 'ownedBy') {
 			//it is their computer
-			return pronounOwnedByPerson.find((e) => e.id === pronouns)!.pronoun
+			return pronounOwnedByPerson.find((e) => e.id === pronouns)?.pronoun
 		}
 		if (context == 'singular') {
 			//they own this computer
-			return pronounSingular.find((e) => e.id === pronouns)!.pronoun
+			return pronounSingular.find((e) => e.id === pronouns)?.pronoun
 		}
 		if (context == 'talkingAbout') {
 			//this computer belongs to them
-			return pronounDescribe.find((e) => e.id === pronouns)!.pronoun
+			return pronounDescribe.find((e) => e.id === pronouns)?.pronoun
 		}
 	} catch (err) {
 		//if they don't have pronouns set, or if pronoundb is down
@@ -286,13 +287,10 @@ function funnyNumber(number: number) {
 }
 
 function regExpEscape(string: string) {
-	return string.replace(/[-[\]{}()*+!<=:?.\/\\^$|#\s,]/g, '\\$&')
+	return string.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&')
 }
 
-function censorString(string: any) {
-	if (typeof string != 'string') {
-		return string
-	}
+function censorString(string: string) {
 	Object.keys(config).forEach((key: string) => {
 		const configObject = config[key as keyof typeof config]
 

@@ -1,7 +1,7 @@
 import { BotCommand } from '@extensions/BotCommand'
 import commandManager from '@functions/commandManager'
 import database from '@functions/database'
-import { Message, MessageEmbed } from 'discord.js'
+import { Guild, Message, MessageEmbed } from 'discord.js'
 
 export default class viewConfig extends BotCommand {
 	constructor() {
@@ -17,7 +17,7 @@ export default class viewConfig extends BotCommand {
 			return
 		}
 
-		const db = (await database.readGuild(message.guild!.id))[0]
+		const db = await database.readGuild((message.guild as Guild).id)
 
 		//console.log(db.guildSettings.staffRoles)
 

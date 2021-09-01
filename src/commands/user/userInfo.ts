@@ -1,18 +1,17 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { BotCommand } from '@extensions/BotCommand'
-import { FancyUser } from '@extensions/discord.js/User'
 
 export default class userInfo extends BotCommand {
 	constructor() {
 		super('userInfo', {
-			aliases: ['userInfo', 'user', 'ui', 'u'],
+			aliases: ['userInfo', 'string', 'ui', 'u'],
 			args: [{ id: 'person', type: 'string', match: 'rest', default: (message: Message) => message.author.id }],
 			description: 'Shows information about a user.',
 			usage: '`-user`, `-user <user>`',
 			discordPerms: ['SEND_MESSAGES'],
 		})
 	}
-	async exec(message: Message, args: any) {
+	async exec(message: Message, args: {person:string}) {
 		//const member = message.guild?.members.fetch(args.person)
 		const person = args.person
 		const user = await this.client.utils.fetchUser(person)

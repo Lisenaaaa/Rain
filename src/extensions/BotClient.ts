@@ -1,6 +1,6 @@
 import chalk from 'chalk'
 import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from 'discord-akairo'
-import { Intents, Message, Structures } from 'discord.js'
+import { Intents, Structures } from 'discord.js'
 import { join } from 'path'
 import database from '@functions/database'
 import clientUtils from './ClientUtils'
@@ -48,7 +48,7 @@ class BotClient extends AkairoClient {
 	public constructor() {
 		super(
 			{
-				ownerID: ['492488074442309642', '545277690303741962'],
+				ownerID: ['881310086411190293'],
 				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 			},
 			{
