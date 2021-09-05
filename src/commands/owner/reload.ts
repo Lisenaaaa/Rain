@@ -1,7 +1,7 @@
 import { BotCommand } from '@extensions/BotCommand'
 import { exec } from 'child_process'
 import { promisify } from 'util'
-import { Message, MessageEmbed } from 'discord.js'
+import { ColorResolvable, Message, MessageEmbed } from 'discord.js'
 import chalk from 'chalk'
 
 const sh = promisify(exec)
@@ -11,28 +11,32 @@ export default class reload extends BotCommand {
 		super('reload', {
 			aliases: ['reload'],
 			ownerOnly: true,
+			slash: true,
+			description: 'reloads the bot, owneronly',
+			slashGuilds: ['880637463838724166'],
 		})
 	}
 
 	async exec(message: Message) {
-		const reloadEmbed = new MessageEmbed().setDescription(`Reloading!`).setColor(message.member?.displayColor as number)
-		message.reply({ embeds: [reloadEmbed] }).then(async (sent) => {
-			console.log(chalk.greenBright(`Reloading!`))
+		const reloadEmbed = new MessageEmbed().setDescription(`Reloading!`).setColor((message.member?.displayColor as ColorResolvable))
 
-			await sh('yarn build')
+		const sent = await message.reply({ embeds: [reloadEmbed] })
 
-			await this.client.commandHandler.reloadAll()
-			await this.client.listenerHandler.reloadAll()
-			await this.client.inhibitorHandler.reloadAll()
-			await this.client.taskHandler.reloadAll()
+		console.log(chalk.greenBright(`Reloading!`))
 
-			console.log(chalk.green(`Reloaded!\n`))
+		await sh('yarn build')
 
-			reloadEmbed.setDescription(
-				`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.\n**If you want to reload functions or client stuff, restart the bot**`
-			)
-			sent.channel.send({ embeds: [reloadEmbed] })
-			sent.delete()
-		})
+		await this.client.commandHandler.reloadAll()
+		await this.client.listenerHandler.reloadAll()
+		await this.client.inhibitorHandler.reloadAll()
+		await this.client.taskHandler.reloadAll()
+
+		console.log(chalk.green(`Reloaded!\n`))
+
+		reloadEmbed.setDescription(
+			`Reloaded! Everything that changed in my files (that are managed by Akairo) should now be loaded in the bot.\n**If you want to reload functions or client stuff, restart the bot**`
+		)
+
+		await sent.edit({ embeds: [reloadEmbed] })
 	}
 }

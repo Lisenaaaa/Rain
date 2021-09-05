@@ -21,7 +21,7 @@ export class FancyUser extends User {
 		if (flags === undefined) return []
 
 		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore
+		// @ts-ignore
 		return flags.map((f) => this.client.utils.flags.userFlags[f] ?? `\`${f}\``)
 	}
 

@@ -1,10 +1,11 @@
 import { Guild, GuildMember } from 'discord.js'
 import BotClient from '@extensions/BotClient'
+import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 
 export class FancyMember extends GuildMember {
 	declare client: BotClient
 
-	public constructor(client: BotClient, options: any, guild: Guild) {
+	public constructor(client: BotClient, options: RawGuildMemberData, guild: Guild) {
 		super(client, options, guild)
 	}
 

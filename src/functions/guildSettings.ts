@@ -4,7 +4,6 @@ import commandManager from '@functions/commandManager'
 import database from '@functions/database'
 //import utils from "@functions/utils";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const permNames = {
 	owner: 'owner',
 	admin: 'administrator',
@@ -86,13 +85,12 @@ async function checkUserCanUseCommandsInChannel(guildID: string, channelID: stri
 	let channelPerms = false
 	let lockedChannelFound = false
 	database.readGuild(guildID).then((database) => {
-		const db = database
-		const lockedChannels = db.guildSettings.lockedChannels
+		const lockedChannels = database!.guildSettings.lockedChannels
 
 		getAllUserPerms(userPerms)?.forEach((perm) => {
-			lockedChannels.forEach((pain: any) => {
-				if (pain.id == perm) {
-					if (pain.channels.includes(channelID)) {
+			lockedChannels.forEach((channel: any) => {
+				if (channel.id == perm) {
+					if (channel.channels.includes(channelID)) {
 						channelPerms = true
 						lockedChannelFound = true
 					}

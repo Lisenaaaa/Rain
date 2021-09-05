@@ -1,18 +1,31 @@
-import { Guild } from 'discord.js'
+import { Guild, Role, Snowflake } from 'discord.js'
 import BotClient from '@extensions/BotClient'
 import database from '@functions/database'
+import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 
 export class FancyGuild extends Guild {
 	declare client: BotClient
 
-	public constructor(client: BotClient, options: any) {
-		//console.log(options)
+	public constructor(client: BotClient, options: RawGuildData) {
 		super(client, options)
-		//this.database = database.readGuild(options.id)
 	}
 
-	public async database() {
-		console.log('hi')
-		return await database.readGuild(this.id)
+	async database() {
+		let db = await database.readGuild(this.id)
+		if (db === undefined) {
+			await database.addGuild(this.id)
+			db = await database.readGuild(this.id)
+			return db
+		} else return db
+	}
+
+	async editRole(position: 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper', newRole: Snowflake) {
+		try {
+			await database.editSpecificGuildInDB(this.id, `guildSettings.staffRoles.${position}`, newRole)
+			return true
+		} catch (error) {
+			await this.client.utils.error(error, ' guild role editing')
+			return false
+		}
 	}
 }

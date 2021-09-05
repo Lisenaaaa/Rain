@@ -109,13 +109,16 @@ function userDBSchema(userID: string) {
 	}
 }
 
-async function readGuild(messageGuildID: string) {
-	return (await getEntireGuildsDB()).find(d => d.guildID == messageGuildID)
+async function readGuild(guildID: string) {
+	const guilds = await getEntireGuildsDB()
+	const guildDB = guilds.find((g:any) => g.guildID == guildID)
+
+	return guildDB
 }
 
 async function getEntireGuildsDB() {
 	const guilddb = await rawDbRequest('SELECT * from guilds;')
-	const alldbs = []
+	const alldbs: any = []
 	guilddb[0].forEach((db: any) => {
 		alldbs.push(db.data)
 	})
@@ -123,15 +126,16 @@ async function getEntireGuildsDB() {
 	return alldbs
 }
 
-async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue: any) {
+async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue: unknown) {
+	if (query === 'guildID') return false
 	try {
-		const guildDB = (await getEntireGuildsDB()).find((d) => d.guildID == guildID)
+		const guildDB = (await getEntireGuildsDB()).find((d:any) => d.guildID == guildID)
 
 		const queryArray = query.split('.')
 
-		let dbObject = guildDB
+		let dbObject: any
 
-		const lastQueryArray = queryArray.pop()
+		const lastQueryArray: string = (queryArray.pop() as string)
 
 		queryArray.forEach((query) => {
 			dbObject = dbObject[query]
@@ -139,12 +143,23 @@ async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue
 
 		dbObject[lastQueryArray] = newValue
 
-		await rawDbRequest('UPDATE guilds SET data = $guildDB WHERE data->>"guildID" = $guildID;', { bind: { guildDB: guildDB, guildID: guildID } })
+		await rawDbRequest("UPDATE guilds SET data = $1 WHERE data->>'guildID' = $2;", { bind: [guildDB, guildID] })
 
 		return true
-	}
-	catch(err) {
+	} catch (err) {
 		client.utils.error(err, ' database editing')
+		return false
+	}
+}
+
+async function addGuild(guildID: Snowflake) {
+	try {
+		const schema = JSON.stringify(defaultDBSchema(guildID))
+		const string = `INSERT INTO guilds(data) VALUES ($schema);`
+		await rawDbRequest(string, { bind: { schema: schema } })
+		return true
+	} catch (err) {
+		await client.utils.error(err.stack, ' database adding')
 		return false
 	}
 }
@@ -154,5 +169,6 @@ export default {
 	getEntireGuildsDB,
 	rawDbRequest,
 	readGuild,
-	editSpecificGuildInDB
+	editSpecificGuildInDB,
+	addGuild
 }

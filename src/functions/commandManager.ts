@@ -61,7 +61,7 @@ async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 	// }
 	// return commandCanBeRan
 
-	console.log(`COMMAND ${msg.util.parsed.command.id} WAS RAN, BYPASSING CHECKS, PLEASE FIX FUNCTION IN src/functions/commandManager.ts\nalso config is disabled fix that too dumbass`)
+	console.log(`COMMAND ${msg.util?.parsed?.command?.id} WAS RAN, BYPASSING CHECKS, PLEASE FIX FUNCTION IN src/functions/commandManager.ts\nalso config is disabled fix that too dumbass`)
 
 	return true
 }

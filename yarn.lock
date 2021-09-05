@@ -684,12 +684,12 @@ discord-akairo-message-util@NotEnoughUpdates/discord-akairo-message-util:
 
 discord-akairo@NotEnoughUpdates/discord-akairo:
   version: 8.2.2
-  resolution: "discord-akairo@https://github.com/NotEnoughUpdates/discord-akairo.git#commit=840437bfc666689add3a24037fc5ef90e0335345"
+  resolution: "discord-akairo@https://github.com/NotEnoughUpdates/discord-akairo.git#commit=def85d0de392ef3cb0e0ebec5aa9e06ddb77744e"
   dependencies:
     discord-akairo-message-util: NotEnoughUpdates/discord-akairo-message-util
     lodash: ^4.17.21
     source-map-support: ^0.5.19
-  checksum: 6af32d8b76a22ec25582e806f04e500b3f4ce13d960df871535ef1b34adedbe6940fd19fdc0f12e3ba72f1272fba1f860ffee8e86beac7e624def943c2e57be0
+  checksum: 00178c3bd043e4b472ec39252210efc3ac1373a19905828a69bf15a38a2d29bddf910e01197fd18ffd224c959c9fb6570feda6bf060e32c2435514ae479114a3
   languageName: node
   linkType: hard
 
@@ -709,7 +709,7 @@ discord-akairo@NotEnoughUpdates/discord-akairo:
 
 discord.js@NotEnoughUpdates/discord.js:
   version: 13.2.0-dev
-  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=2965801e1334034c81974a43a9b9e4afdcbfd990"
+  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=b3c676e3286dd3ce39f63231216d2e480e28b567"
   dependencies:
     "@discordjs/builders": ^0.5.0
     "@discordjs/collection": ^0.2.1
@@ -719,7 +719,7 @@ discord.js@NotEnoughUpdates/discord.js:
     discord-api-types: ^0.22.0
     node-fetch: ^2.6.1
     ws: ^7.5.1
-  checksum: 45864600112bd1563c0b0780c1bfe5259a1635ca03e915255f636f40f1efe99b7fb16036cfeddb83d8ea8de895708382a9af845e87ebf03b31f3d4972199b612
+  checksum: 730499fb8c30f648343abdda44d12767819da80a55deb9358942ef9a63280fe354c2b2a638cef9bd5ac946e5efc2f87f29b3a03e6f43d150a3618b252aef445e
   languageName: node
   linkType: hard
 

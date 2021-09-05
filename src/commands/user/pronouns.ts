@@ -1,6 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { BotCommand } from '@extensions/BotCommand'
 import commandManager from '@functions/commandManager'
+import { FancyUser } from '@extensions/discord.js/User'
 
 export default class pronouns extends BotCommand {
 	constructor() {
@@ -25,7 +26,7 @@ export default class pronouns extends BotCommand {
 	async exec(message: Message, args: {person:string}) {
 		if (!commandManager.checkIfCommandCanBeUsed(message, this.id)) return
 
-		const person = await this.client.utils.fetchUser(args.person)
+		const person = await this.client.utils.fetchUser(args.person) ?? message.author as FancyUser
 
 		const pronouns = await person.getPronouns('details')
 		const pronounsEmbed = new MessageEmbed()
