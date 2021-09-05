@@ -1,4 +1,4 @@
-import { Guild, Role, Snowflake } from 'discord.js'
+import { Guild, Snowflake } from 'discord.js'
 import BotClient from '@extensions/BotClient'
 import database from '@functions/database'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
