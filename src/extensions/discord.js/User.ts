@@ -1,7 +1,7 @@
 import { User } from 'discord.js'
 import BotClient from '@extensions/BotClient'
 import { RawUserData } from 'discord.js/typings/rawDataTypes'
-import axios from 'axios'
+import got from 'got/dist/source'
 
 export class FancyUser extends User {
 	declare client: BotClient
@@ -121,26 +121,25 @@ export class FancyUser extends User {
 		]
 
 		try {
-			const pronoundb = await axios(`https://pronoundb.org/api/v1/lookup?platform=discord&id=${this.id}`, { method: 'get' })
-			const pronouns = pronoundb.data.pronouns
-
+			const pronoundb = await got.get(`https://pronoundb.org/api/v1/lookup?platform=discord&id=${this.id}`)
+			const pronouns = JSON.parse(pronoundb.body).pronouns
 			//what to return, based on what's getting someone's pronouns
 			if (context == 'details') {
-				//they/them, etc. mostly used when someone asks "what pronouns does that person use"
-				return pronounDetails.find((e) => e.id === pronouns)?.pronoun
+				return pronounDetails.find(p => p.id == pronouns)?.pronoun
 			}
 			if (context == 'ownedBy') {
 				//it is their computer
-				return pronounOwnedByPerson.find((e) => e.id === pronouns)?.pronoun
+				return pronounOwnedByPerson.find(p => p.id == pronouns)?.pronoun
 			}
 			if (context == 'singular') {
 				//they own this computer
-				return pronounSingular.find((e) => e.id === pronouns)?.pronoun
+				return pronounSingular.find(p => p.id == pronouns)?.pronoun
 			}
 			if (context == 'talkingAbout') {
 				//this computer belongs to them
-				return pronounDescribe.find((e) => e.id === pronouns)?.pronoun
+				return pronounDescribe.find(p => p.id == pronouns)?.pronoun
 			}
+			
 		} catch (err) {
 			//if they don't have pronouns set, or if pronoundb is down
 			if (err == 'Error: Request failed with status code 404') {

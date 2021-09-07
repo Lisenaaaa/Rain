@@ -19,10 +19,9 @@ export class FancyGuild extends Guild {
 		} else return db
 	}
 
-	async editRole(position: 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper', newRole: Snowflake) {
+	async editStaffRole(position: 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper', newRole: Snowflake) {
 		try {
-			await database.editSpecificGuildInDB(this.id, `guildSettings.staffRoles.${position}`, newRole)
-			return true
+			return await database.editSpecificGuildInDB(this.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
 			await this.client.utils.error(error, ' guild role editing')
 			return false

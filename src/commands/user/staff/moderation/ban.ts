@@ -17,7 +17,7 @@ export default class ban extends BotCommand {
 		})
 	}
 
-	async exec(message: Message, args: {member:GuildMember,reason:string}) {
+	async exec(message: Message, args: { member: GuildMember; reason: string }) {
 		//check if bannable
 		const errorEmbed = new MessageEmbed().setColor('DARK_RED')
 
@@ -36,9 +36,7 @@ export default class ban extends BotCommand {
 
 		//check for perms
 		if ((await utils.getRolePriority(message.member as GuildMember, args.member)) == false) {
-			return message.channel.send(
-				`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban ${await utils.getPronouns(args.member.user, 'talkingAbout')}.`
-			)
+			return message.channel.send(`Your highest role is lower than (or the same as) ${args.member.user.username}'s highest role, so you cannot ban them.`)
 		}
 
 		message.delete()

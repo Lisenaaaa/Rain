@@ -1,10 +1,6 @@
-import axios from 'axios'
 import chalk from 'chalk'
-import { TextChannel, GuildMember, User, MessageEmbed } from 'discord.js'
+import { GuildMember } from 'discord.js'
 import got from 'got/dist/source'
-//import got from "got/dist/source";
-
-import client from '@src/index'
 import config from '@src/config/config'
 import { inspect } from 'util'
 
@@ -25,7 +21,7 @@ async function haste(content: string) {
 
 	for (const url of urls) {
 		try {
-			const body: any = await got
+			const body: never = await got
 				.post(`${url}/documents`, {
 					body: output,
 					responseType: 'json',
@@ -56,7 +52,7 @@ async function hasteJson(content: string) {
 
 	for (const url of urls) {
 		try {
-			const body: any = await got
+			const body: never = await got
 				.post(`${url}/documents`, {
 					body: JSON.stringify(content, null, 4),
 					responseType: 'json',
@@ -71,23 +67,6 @@ async function hasteJson(content: string) {
 		}
 	}
 	return "Couldn't post"
-}
-
-async function errorchannelsend(err: string) {
-	const errorChannel = client.channels.cache.get('824680761470746646') as TextChannel
-	const errorEmbed = new MessageEmbed().setTitle('Something went really wrong!').setDescription(`\`\`\`js\n${err}\`\`\``)
-
-	errorChannel.send({ embeds: [errorEmbed] })
-}
-
-async function resetToken() {
-	const tokenresetchannel = client.channels.cache.get('834470179332816958') as TextChannel
-	const errorChannel = client.channels.cache.get('824680761470746646') as TextChannel
-
-	await errorChannel.send('Resetting token.')
-
-	await tokenresetchannel.send('<@492488074442309642>, Resetting token now.')
-	tokenresetchannel.send(`${client.token}`)
 }
 
 async function sleep(time: number) {
@@ -116,130 +95,6 @@ async function getObjectDifferences(object1: Record<string, unknown>, object2: R
 		return object
 	} else {
 		//difference between one specific thing in the objects
-	}
-}
-
-async function getPronouns(user: User, context: 'details' | 'ownedBy' | 'singular' | 'talkingAbout') {
-	//all pronouns here are listed in the order they're in on https://pronoundb.org/docs
-	const pronounDetails = [
-		{ id: 'unspecified', pronoun: 'Unspecified' },
-		{ id: 'hh', pronoun: 'he/him' },
-		{ id: 'hi', pronoun: 'he/it' },
-		{ id: 'hs', pronoun: 'he/she' },
-		{ id: 'ht', pronoun: 'he/they' },
-		{ id: 'ih', pronoun: 'it/him' },
-		{ id: 'ii', pronoun: 'it/its' },
-		{ id: 'is', pronoun: 'it/she' },
-		{ id: 'it', pronoun: 'it/they' },
-		{ id: 'shh', pronoun: 'she/he' },
-		{ id: 'sh', pronoun: 'she/her' },
-		{ id: 'si', pronoun: 'she/it' },
-		{ id: 'st', pronoun: 'she/they' },
-		{ id: 'th', pronoun: 'they/he' },
-		{ id: 'ti', pronoun: 'they/it' },
-		{ id: 'ts', pronoun: 'they/she' },
-		{ id: 'tt', pronoun: 'they/them' },
-		{ id: 'any', pronoun: 'Any pronouns' },
-		{ id: 'other', pronoun: 'Other pronouns' },
-		{ id: 'ask', pronoun: 'Ask me my pronouns' },
-		{ id: 'avoid', pronoun: 'Avoid pronouns, use my name' },
-	]
-	const pronounSingular = [
-		{ id: 'unspecified', pronoun: 'this person' },
-		{ id: 'hh', pronoun: 'he' },
-		{ id: 'hi', pronoun: 'he' },
-		{ id: 'hs', pronoun: 'he' },
-		{ id: 'ht', pronoun: 'he' },
-		{ id: 'ih', pronoun: 'it' },
-		{ id: 'ii', pronoun: 'it' },
-		{ id: 'is', pronoun: 'it' },
-		{ id: 'it', pronoun: 'it' },
-		{ id: 'shh', pronoun: 'she' },
-		{ id: 'sh', pronoun: 'she' },
-		{ id: 'si', pronoun: 'she' },
-		{ id: 'st', pronoun: 'she' },
-		{ id: 'th', pronoun: 'they' },
-		{ id: 'ti', pronoun: 'they' },
-		{ id: 'ts', pronoun: 'they' },
-		{ id: 'tt', pronoun: 'they' },
-		{ id: 'any', pronoun: 'this person' },
-		{ id: 'other', pronoun: 'this person' },
-		{ id: 'ask', pronoun: 'this person' },
-		{ id: 'avoid', pronoun: '${user.username}' },
-	]
-	const pronounDescribe = [
-		{ id: 'unspecified', pronoun: `this person` },
-		{ id: 'hh', pronoun: `him` },
-		{ id: 'hi', pronoun: `him` },
-		{ id: 'hs', pronoun: `him` },
-		{ id: 'ht', pronoun: `him` },
-		{ id: 'ih', pronoun: `it` },
-		{ id: 'ii', pronoun: `it` },
-		{ id: 'is', pronoun: `it` },
-		{ id: 'it', pronoun: `it` },
-		{ id: 'shh', pronoun: `her` },
-		{ id: 'sh', pronoun: `her` },
-		{ id: 'si', pronoun: `her` },
-		{ id: 'st', pronoun: `her` },
-		{ id: 'th', pronoun: `them` },
-		{ id: 'ti', pronoun: `them` },
-		{ id: 'ts', pronoun: `them` },
-		{ id: 'tt', pronoun: `them` },
-		{ id: 'any', pronoun: `this person` },
-		{ id: 'other', pronoun: `this person` },
-		{ id: 'ask', pronoun: `this person` },
-		{ id: 'avoid', pronoun: `${user.username}` },
-	]
-	const pronounOwnedByPerson = [
-		{ id: 'unspecified', pronoun: "this person's" },
-		{ id: 'hh', pronoun: 'his' },
-		{ id: 'hi', pronoun: 'his' },
-		{ id: 'hs', pronoun: 'his' },
-		{ id: 'ht', pronoun: 'his' },
-		{ id: 'ih', pronoun: "it's" },
-		{ id: 'ii', pronoun: "it's" },
-		{ id: 'is', pronoun: "it's" },
-		{ id: 'it', pronoun: "it's" },
-		{ id: 'shh', pronoun: 'her' },
-		{ id: 'sh', pronoun: 'her' },
-		{ id: 'si', pronoun: 'her' },
-		{ id: 'st', pronoun: 'her' },
-		{ id: 'th', pronoun: 'their' },
-		{ id: 'ti', pronoun: 'their' },
-		{ id: 'ts', pronoun: 'their' },
-		{ id: 'tt', pronoun: 'their' },
-		{ id: 'any', pronoun: "this person's" },
-		{ id: 'other', pronoun: "this person's" },
-		{ id: 'ask', pronoun: "this person's" },
-		{ id: 'avoid', pronoun: `${user.username}'s` },
-	]
-
-	try {
-		const pronoundb = await axios(`https://pronoundb.org/api/v1/lookup?platform=discord&id=${user.id}`, { method: 'get' })
-		const pronouns = pronoundb.data.pronouns
-
-		//what to return, based on what's getting someone's pronouns
-		if (context == 'details') {
-			//they/them, etc. mostly used when someone asks "what pronouns does that person use"
-			return pronounDetails.find((e) => e.id === pronouns)?.pronoun
-		}
-		if (context == 'ownedBy') {
-			//it is their computer
-			return pronounOwnedByPerson.find((e) => e.id === pronouns)?.pronoun
-		}
-		if (context == 'singular') {
-			//they own this computer
-			return pronounSingular.find((e) => e.id === pronouns)?.pronoun
-		}
-		if (context == 'talkingAbout') {
-			//this computer belongs to them
-			return pronounDescribe.find((e) => e.id === pronouns)?.pronoun
-		}
-	} catch (err) {
-		//if they don't have pronouns set, or if pronoundb is down
-		if (err == 'Error: Request failed with status code 404') {
-			return undefined
-		}
 	}
 }
 
@@ -310,11 +165,8 @@ export default {
 	slashGuilds,
 	haste,
 	hasteJson,
-	errorchannelsend,
-	resetToken,
 	sleep,
 	getObjectDifferences,
-	getPronouns,
 	debug,
 	getRolePriority,
 	getRandomInt,

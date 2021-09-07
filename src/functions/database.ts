@@ -133,7 +133,7 @@ async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue
 
 		const queryArray = query.split('.')
 
-		let dbObject: any
+		let dbObject: any = guildDB
 
 		const lastQueryArray: string = (queryArray.pop() as string)
 
