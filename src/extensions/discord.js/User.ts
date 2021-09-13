@@ -12,10 +12,6 @@ export class FancyUser extends User {
 		this.timestamp = Math.round(this.createdTimestamp / 1000)
 	}
 
-	isOwner() {
-		return this.client.ownerID.includes(this.id)
-	}
-
 	getBadges() {
 		const flags = this.flags?.toArray()
 		if (flags === undefined) return []

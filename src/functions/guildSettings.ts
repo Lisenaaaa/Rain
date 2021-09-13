@@ -19,14 +19,14 @@ async function getUserPerms(message: Message) {
 	let found = false
 	let perms = 'everyone'
 
-	const roleSettings = settings.guildSettings.staffRoles
+	const roleSettings = settings?.guildSettings.staffRoles
 
-	const owner = roleSettings.owner
-	const admin = roleSettings.admin
-	const srMod = roleSettings.srMod
-	const moderator = roleSettings.moderator
-	const helper = roleSettings.helper
-	const trialHelper = roleSettings.trialHelper
+	const owner = roleSettings?.owner
+	const admin = roleSettings?.admin
+	const srMod = roleSettings?.srMod
+	const moderator = roleSettings?.moderator
+	const helper = roleSettings?.helper
+	const trialHelper = roleSettings?.trialHelper
 
 	message.member?.roles.cache.forEach((role) => {
 		if (role.id == owner && found == false) {
@@ -82,27 +82,29 @@ function checkUserHasPermsForCommand(commandPerms: string, userPerms: string) {
 }
 
 async function checkUserCanUseCommandsInChannel(guildID: string, channelID: string, userPerms: string) {
-	let channelPerms = false
-	let lockedChannelFound = false
-	database.readGuild(guildID).then((database) => {
-		const lockedChannels = database!.guildSettings.lockedChannels
+	// let channelPerms = false
+	// let lockedChannelFound = false
+	// database.readGuild(guildID).then((database) => {
+	// 	const lockedChannels = database!.guildSettings.lockedChannels
 
-		getAllUserPerms(userPerms)?.forEach((perm) => {
-			lockedChannels.forEach((channel: any) => {
-				if (channel.id == perm) {
-					if (channel.channels.includes(channelID)) {
-						channelPerms = true
-						lockedChannelFound = true
-					}
-				}
-			})
-		})
-	})
-	if (lockedChannelFound == false) {
-		channelPerms = true
-	}
+	// 	getAllUserPerms(userPerms)?.forEach((perm) => {
+	// 		lockedChannels.forEach((channel: any) => {
+	// 			if (channel.id == perm) {
+	// 				if (channel.channels.includes(channelID)) {
+	// 					channelPerms = true
+	// 					lockedChannelFound = true
+	// 				}
+	// 			}
+	// 		})
+	// 	})
+	// })
+	// if (lockedChannelFound == false) {
+	// 	channelPerms = true
+	// }
 
-	return channelPerms
+	// return channelPerms
+
+	return true
 }
 
 async function checkUserCanUseSpecificCommand(commandID: string, message: Message) {
@@ -116,7 +118,7 @@ async function checkUserCanUseSpecificCommand(commandID: string, message: Messag
 
 	const fuckYouTypescriptIWantMyCodeRunningInOrder: string[] = []
 
-	guildDB.commandSettings.forEach(async (cmd: any) => {
+	guildDB?.commandSettings.forEach(async (cmd: any) => {
 		if (cmd.id == commandID && existsInDB == false) {
 			existsInDB = true
 

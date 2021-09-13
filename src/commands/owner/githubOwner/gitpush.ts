@@ -24,7 +24,7 @@ export default class gitpush extends BotCommand {
 	}
 
 	async exec(message: Message, args: {commitReason:string}) {
-		const gitPushingEmbed = new MessageEmbed().setDescription(`Pushing changes to [GitHub](https://github.com/Lisenaaaaa/SkyClientBot)`)
+		const gitPushingEmbed = new MessageEmbed().setDescription(`Pushing changes to [GitHub](https://github.com/Lisenaaaaa/Rain)`)
 		message.reply({ embeds: [gitPushingEmbed] })
 
 		const githubembed = new MessageEmbed().setTitle(`Command Output`)

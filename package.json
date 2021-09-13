@@ -1,5 +1,5 @@
 {
-	"name": "skyclientbot",
+	"name": "rain",
 	"version": "0.0.0",
 	"description": "",
 	"main": "dist/index.js",
@@ -54,7 +54,8 @@
 	"_moduleAliases": {
 		"@functions": "dist/functions",
 		"@extensions": "dist/extensions",
-		"@src": "dist"
+		"@src": "dist",
+		"@types": "dist/types"
 	},
 	"eslintConfig": {
 		"env": {

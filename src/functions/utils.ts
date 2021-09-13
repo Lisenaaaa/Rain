@@ -1,8 +1,11 @@
 import chalk from 'chalk'
-import { GuildMember } from 'discord.js'
+import { GuildMember, Snowflake } from 'discord.js'
 import got from 'got/dist/source'
 import config from '@src/config/config'
 import { inspect } from 'util'
+import client from '..'
+import { FancyUser } from '@extensions/discord.js/User'
+import { modlogs } from '@src/whatdoicallthis/types'
 
 const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337']
 
@@ -161,6 +164,10 @@ function censorString(string: string) {
 	return string
 }
 
+function generateModlogEntry(data: modlogs) {
+	return data
+}
+
 export default {
 	slashGuilds,
 	haste,
@@ -174,4 +181,5 @@ export default {
 	funnyNumber,
 	regExpEscape,
 	censorString,
+	generateModlogEntry,
 }

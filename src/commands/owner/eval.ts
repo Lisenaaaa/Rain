@@ -10,6 +10,7 @@ const utils = importUtils
 
 import importDatabase from '@functions/database'
 import { AkairoMessage } from 'discord-akairo'
+import { EvalOptions, modlogs } from '@src/whatdoicallthis/types'
 const database = importDatabase
 
 const sh = promisify(exec)
@@ -45,8 +46,8 @@ export default class evaluate extends BotCommand {
 		})
 	}
 
-	async exec(message: Message, args: { codetoeval: string; silent: boolean; sudo: boolean }) {
-		//if (message.author.id != '492488074442309642') {return message.reply('no u')}
+	async exec(message: Message, args: EvalOptions) {
+		//if (message.author.id != '881310086411190293') {return message.reply('no u')}
 
 		if (args.codetoeval.includes('channel.delete')) {
 			return message.reply('Are you IRONM00N?')
@@ -78,9 +79,9 @@ export default class evaluate extends BotCommand {
 
 			output = utils.censorString(errorStack)
 		}
-		
+
 		output = utils.censorString(output)
-		
+
 		const evalEmbedDisabledGuilds = ['794610828317032458']
 		const evalDisabledGuildChannelBypass = ['834878498941829181']
 

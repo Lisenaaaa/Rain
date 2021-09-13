@@ -60,3 +60,4 @@ src/config/options_pi.ts
 .env
 testing
 src/config/config.ts
+testing.ts
