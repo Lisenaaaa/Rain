@@ -24,6 +24,7 @@ export default class helpme extends BotCommand {
 			'i am in pain',
 			'why is she making me constantly look at all the servers im on for specific messages and reply with very specific things to specifc ones',
 			'**HELP ME**',
+			'i diagnose you with brian damage',
 		]
 
 		message.channel.send(PLEASESENDHELP[utils.getRandomInt(PLEASESENDHELP.length)])
