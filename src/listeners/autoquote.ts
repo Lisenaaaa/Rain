@@ -18,7 +18,7 @@ module.exports = class autoquote extends BotListener {
 
 			if (matches.length === 0) return
 
-			const messageArray = matches //[0].split('/')
+			const messageArray = matches
 
 			messageArray.forEach(async (msgArray) => {
 				const mArray = msgArray[0].split('/')
