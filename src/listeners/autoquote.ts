@@ -40,12 +40,16 @@ module.exports = class autoquote extends BotListener {
 				const msg = await channel.messages.fetch(messageID)
 				if (msg === undefined) return
 
-				const webhooks = await(message.channel as TextChannel).fetchWebhooks()
-				const foundWebhook = webhooks.find((w) => w.name == `Rain Quoting - ${(message.channel as TextChannel).name}`)
+				const webhooks = await (message.channel as TextChannel).fetchWebhooks()
+				const foundWebhook = webhooks.find((w) => w.name == `Rain Quoting - ${(message.channel as TextChannel).name}` && w.owner?.id === this.client.user?.id)
 				let webhook
-				if (foundWebhook === undefined)
-					webhook = await(message.channel as TextChannel).createWebhook(`Rain Quoting - ${(message.channel as TextChannel).name}`, { avatar: this.client.user?.displayAvatarURL() })
-				else webhook = foundWebhook
+				if (foundWebhook === undefined) {
+					webhook = await (message.channel as TextChannel).createWebhook(`Rain Quoting - ${(message.channel as TextChannel).name}`, { avatar: this.client.user?.displayAvatarURL() })
+				} else if (foundWebhook.owner?.id != this.client.user?.id) {
+					webhook = await (message.channel as TextChannel).createWebhook(`Rain Quoting - ${(message.channel as TextChannel).name}`, { avatar: this.client.user?.displayAvatarURL() })
+				} else {
+					webhook = foundWebhook
+				}
 
 				if (msg.content)
 					await webhook.send({ content: msg.content, files: msg.attachments.toJSON(), embeds: msg.embeds, username: `${msg.author.tag}`, avatarURL: msg.author.displayAvatarURL() })
