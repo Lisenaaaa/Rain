@@ -1,5 +1,5 @@
 import config from '@src/config/config'
-import { databaseCreator, database } from '@src/whatdoicallthis/database'
+import { databaseCreator, database } from '@src/types/database'
 import chalk from 'chalk'
 import { Snowflake } from 'discord.js'
 
@@ -17,6 +17,7 @@ const initializeDatabase = async () => {
 		console.log(chalk.blue('Succesfully connected to the database.'))
 	} catch (err) {
 		console.log(chalk.red(err.stack))
+		process.exit()
 	}
 }
 initializeDatabase()
@@ -41,7 +42,7 @@ function defaultDBSchema(guildID: Snowflake) {
 	})
 }
 
-async function readGuild(guildID: string) {
+async function readGuild(guildID: Snowflake) {
 	const guilds = await getEntireGuildsDB()
 	const guildDB = guilds.find((g: database) => g.guildID == guildID)
 

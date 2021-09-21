@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js'
-import { dbModlogs, guildCommandSettings } from './types'
+import { dbModlogs, guildCommandSettings } from './misc'
 
 export interface database {
     guildID: Snowflake
@@ -35,5 +35,3 @@ export class databaseCreator {
     public commandSettings: guildCommandSettings[]
     public features: {id:string,enabled:boolean}[]
 }
-
-//export type database = databaseOptions

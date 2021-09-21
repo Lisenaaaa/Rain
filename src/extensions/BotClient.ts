@@ -5,17 +5,17 @@ import { join } from 'path'
 import database from '@functions/database'
 import clientUtils from './ClientUtils'
 import config from '@src/config/config'
-import { FancyMessage } from './discord.js/Message'
-import { FancyGuild } from './discord.js/Guild'
-import { FancyUser } from './discord.js/User'
-import { FancyMember } from './discord.js/GuildMember'
+import { RainMessage } from './discord.js/Message'
+import { RainGuild } from './discord.js/Guild'
+import { RainUser } from './discord.js/User'
+import { RainMember } from './discord.js/GuildMember'
 
 class BotClient extends AkairoClient {
 	static preStart() {
-		Structures.extend('Message', () => FancyMessage)
-		Structures.extend('Guild', () => FancyGuild)
-		Structures.extend('User', () => FancyUser)
-		Structures.extend('GuildMember', () => FancyMember)
+		Structures.extend('Message', () => RainMessage)
+		Structures.extend('Guild', () => RainGuild)
+		Structures.extend('User', () => RainUser)
+		Structures.extend('GuildMember', () => RainMember)
 	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: '-',

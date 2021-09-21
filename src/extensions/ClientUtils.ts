@@ -1,7 +1,7 @@
 import { Message, MessageEmbed, TextChannel } from 'discord.js'
 import utils from '@functions/utils'
 import client from '@src/index'
-import { FancyUser } from './discord.js/User'
+import { RainUser } from './discord.js/User'
 
 const error = (error: Error, type?: string, message?: Message) => {
 	const errorChannel = client.channels.cache.get(client.config.misc[`${client.config.misc.tokenToUse}errorChannelId` as keyof typeof client.config.misc]) as TextChannel
@@ -55,9 +55,9 @@ async function fetchUser(user: string) {
 		const akairoResolve = await client.util.resolveUser(user, client.users.cache)
 
 		if (akairoResolve) {
-			return akairoResolve as FancyUser
+			return akairoResolve as RainUser
 		} else {
-			return (await client.users.fetch(user)) as FancyUser
+			return (await client.users.fetch(user)) as RainUser
 		}
 	} catch (err) {
 		return undefined

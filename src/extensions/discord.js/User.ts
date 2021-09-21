@@ -3,7 +3,7 @@ import BotClient from '@extensions/BotClient'
 import { RawUserData } from 'discord.js/typings/rawDataTypes'
 import got from 'got/dist/source'
 
-export class FancyUser extends User {
+export class RainUser extends User {
 	declare client: BotClient
 	public declare timestamp: number
 

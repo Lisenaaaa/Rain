@@ -10,7 +10,7 @@ const utils = importUtils
 
 import importDatabase from '@functions/database'
 import { AkairoMessage } from 'discord-akairo'
-import { EvalOptions, modlogs } from '@src/whatdoicallthis/types'
+import { EvalOptions, modlogs } from '@src/types/misc'
 const database = importDatabase
 
 const sh = promisify(exec)

@@ -2,7 +2,7 @@ import { Message } from 'discord.js'
 import BotClient from '@extensions/BotClient'
 import { RawMessageData } from 'discord.js/typings/rawDataTypes'
 
-export class FancyMessage extends Message {
+export class RainMessage extends Message {
 	declare client: BotClient
 	lowerCaseContent: string
 

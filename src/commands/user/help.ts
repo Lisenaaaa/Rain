@@ -15,9 +15,14 @@ export default class help extends BotCommand {
 	async exec(message: Message, args: {command:string}) {
 		if (!args.command) {
 			let commandIDs = await commandManager.getAllCommandIDs()
-			commandIDs = commandIDs.filter((ID) => ID != 'help')
+			let commandString = ''
+			commandIDs = commandIDs.filter((ID) => !ID.includes('help'))
 
-			message.channel.send(JSON.stringify(commandIDs))
+			commandString = (`\`${commandIDs.shift()}\``)
+
+			commandIDs.forEach(c => commandString = commandString + `, \`${c}\``)
+
+			await message.reply(commandString)
 		}
 		if (args.command) {
 			const command = this.client.commandHandler.modules.get(args.command) as BotCommand

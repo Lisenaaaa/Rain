@@ -2,8 +2,9 @@ import { Guild, Snowflake } from 'discord.js'
 import BotClient from '@extensions/BotClient'
 import database from '@functions/database'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
+import { perms } from '@src/types/misc'
 
-export class FancyGuild extends Guild {
+export class RainGuild extends Guild {
 	declare client: BotClient
 
 	public constructor(client: BotClient, options: RawGuildData) {
@@ -19,7 +20,7 @@ export class FancyGuild extends Guild {
 		} else return db
 	}
 
-	async editStaffRole(position: 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper', newRole: Snowflake) {
+	async editStaffRole(position: perms, newRole: Snowflake) {
 		try {
 			return await database.editSpecificGuildInDB(this.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
@@ -28,5 +29,27 @@ export class FancyGuild extends Guild {
 		}
 	}
 
-	
+	async restrictChannel(channel: Snowflake, perms: perms) {
+		const currentLockedChannels = (await this.database())?.guildSettings.lockedChannels[perms]
+
+		currentLockedChannels?.push(channel)
+
+		return await database.editSpecificGuildInDB(this.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
+	}
+
+	async unrestrictChannel(channel: Snowflake, perms: perms) {
+		const currentLockedChannels = (await this.database())?.guildSettings.lockedChannels[perms]
+
+		const newLockedChannels = currentLockedChannels?.filter(c => c != channel)
+
+		return await database.editSpecificGuildInDB(this.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
+	}
+
+	async setLogChannel(type: 'message'|'member'|'moderation'|'action', channel: Snowflake) {
+		return await database.editSpecificGuildInDB(this.id, `guildSettings.loggingChannels.${type}`, channel)
+	}
+
+	async resetLogChannel(type: 'message'|'member'|'moderation'|'action') {
+		return await database.editSpecificGuildInDB(this.id, `guildSettings.loggingChannels.${type}`, null)
+	}
 }

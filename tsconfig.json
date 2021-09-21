@@ -17,7 +17,7 @@
 			"@functions/*": ["src/functions/*"],
 			"@extensions/*": ["src/extensions/*"],
 			"@src/*": ["src/*"],
-			"@types/*": ["src/whatdoicallthis/*"]
+			"@types/*": ["src/types/*"]
 		}
 	},
 	"include": ["src/**/*", "src/*"],

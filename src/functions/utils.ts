@@ -1,11 +1,9 @@
 import chalk from 'chalk'
-import { GuildMember, Snowflake } from 'discord.js'
+import { GuildMember } from 'discord.js'
 import got from 'got/dist/source'
 import config from '@src/config/config'
 import { inspect } from 'util'
-import client from '..'
-import { FancyUser } from '@extensions/discord.js/User'
-import { modlogs } from '@src/whatdoicallthis/types'
+import { modlogs } from '@src/types/misc'
 
 const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337']
 
