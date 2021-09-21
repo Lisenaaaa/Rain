@@ -1,15 +1,15 @@
-import { BotCommand } from '@extensions/BotCommand'
-import { BotListener } from '@extensions/BotListener'
+import { RainCommand } from '@extensions/RainCommand'
+import { RainListener } from '@extensions/RainListener'
 import { Message } from 'discord.js'
 
-export default class commandErrorListener extends BotListener {
+export default class commandErrorListener extends RainListener {
 	constructor() {
 		super('commandErrorListener', {
 			emitter: 'commandHandler',
 			event: 'error',
 		})
 	}
-	async exec(error: any, message: Message, command: BotCommand) {
+	async exec(error: any, message: Message, command: RainCommand) {
 		if (this.client.ownerID.includes(message.author.id)) {
 			message.reply(`An error occured!\n\`\`\`js\n${error.stack}\`\`\``)
 		} else {

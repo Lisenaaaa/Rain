@@ -1,9 +1,9 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import commandManager from '@functions/commandManager'
 import { RainUser } from '@extensions/discord.js/User'
 
-export default class pronouns extends BotCommand {
+export default class pronouns extends RainCommand {
 	constructor() {
 		super('pronouns', {
 			aliases: ['pronouns'],

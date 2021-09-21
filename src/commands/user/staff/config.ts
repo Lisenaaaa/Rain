@@ -1,11 +1,10 @@
-import { BotCommand } from '@extensions/BotCommand'
-import { RainGuild } from '@extensions/discord.js/Guild'
+import { RainCommand } from '@extensions/RainCommand'
 import { RainMessage } from '@extensions/discord.js/Message'
 import utils from '@functions/utils'
 import { GuildTextBasedChannels } from 'discord-akairo'
 import { BaseGuildVoiceChannel, Collection, Interaction, InteractionReplyOptions, Message, MessageActionRow, MessageButton } from 'discord.js'
 
-export default class config extends BotCommand {
+export default class config extends RainCommand {
 	constructor() {
 		super('config', {
 			aliases: ['config'],

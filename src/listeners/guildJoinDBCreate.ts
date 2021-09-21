@@ -1,9 +1,9 @@
-// import { BotListener } from '@extensions/BotListener'
+// import { RainListener } from '@extensions/RainListener'
 // import database from '@functions/database'
 // import utils from '@functions/utils'
 // import { Guild, TextChannel } from 'discord.js'
 
-// class guildJoinDBCreate extends BotListener {
+// class guildJoinDBCreate extends RainListener {
 // 	constructor() {
 // 		super('guildJoinDBCreate', {
 // 			emitter: 'client',

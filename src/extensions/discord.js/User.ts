@@ -1,5 +1,5 @@
 import { User } from 'discord.js'
-import BotClient from '@extensions/BotClient'
+import BotClient from '@extensions/RainClient'
 import { RawUserData } from 'discord.js/typings/rawDataTypes'
 import got from 'got/dist/source'
 

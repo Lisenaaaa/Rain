@@ -10,7 +10,7 @@ import { RainGuild } from './discord.js/Guild'
 import { RainUser } from './discord.js/User'
 import { RainMember } from './discord.js/GuildMember'
 
-class BotClient extends AkairoClient {
+export default class RainClient extends AkairoClient {
 	static preStart() {
 		Structures.extend('Message', () => RainMessage)
 		Structures.extend('Guild', () => RainGuild)
@@ -94,5 +94,3 @@ class BotClient extends AkairoClient {
 		return this.login(token)
 	}
 }
-
-export default BotClient

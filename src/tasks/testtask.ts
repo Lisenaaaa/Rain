@@ -1,6 +1,6 @@
-import { BotTasks } from '@extensions/BotTasks'
+import { RainTasks } from '@extensions/RainTasks'
 
-export default class extends BotTasks {
+export default class extends RainTasks {
 	constructor() {
 		super('hello', {
 			delay: 20000,

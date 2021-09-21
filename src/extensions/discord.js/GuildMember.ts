@@ -1,5 +1,5 @@
 import { Guild, GuildMember } from 'discord.js'
-import BotClient from '@extensions/BotClient'
+import BotClient from '@extensions/RainClient'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 
 export class RainMember extends GuildMember {

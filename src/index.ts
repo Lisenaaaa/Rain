@@ -1,10 +1,10 @@
 import 'module-alias/register'
 import config from '@src/config/config'
-import BotClient from '@extensions/BotClient'
+import RainClient from '@extensions/RainClient'
 
-BotClient.preStart()
+RainClient.preStart()
 
-const client = new BotClient()
+const client = new RainClient()
 
 const token = config.misc.tokenToUse as keyof typeof config.tokens
 

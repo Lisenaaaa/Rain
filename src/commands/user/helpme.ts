@@ -1,8 +1,8 @@
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import utils from '@functions/utils'
 import { Message } from 'discord.js'
 
-export default class helpme extends BotCommand {
+export default class helpme extends RainCommand {
 	constructor() {
 		super('helpme', {
 			aliases: ['helpme'],

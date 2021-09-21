@@ -2,12 +2,12 @@ import { exec } from 'child_process'
 import { Message, MessageEmbed } from 'discord.js'
 import { promisify } from 'util'
 import { inspect } from 'util'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import utils from '@functions/utils'
 
 const sh = promisify(exec)
 
-export default class console extends BotCommand {
+export default class console extends RainCommand {
 	constructor() {
 		super('console', {
 			aliases: ['console', 'sh'],

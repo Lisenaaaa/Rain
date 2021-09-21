@@ -1,7 +1,7 @@
-import { BotListener } from '@extensions/BotListener'
+import { RainListener } from '@extensions/RainListener'
 import { Guild, Message, TextChannel } from 'discord.js'
 
-module.exports = class autoquote extends BotListener {
+module.exports = class autoquote extends RainListener {
 	constructor() {
 		super('autoquote', {
 			emitter: 'client',

@@ -2,12 +2,12 @@ import { exec } from 'child_process'
 import { Message, MessageEmbed } from 'discord.js'
 import { promisify } from 'util'
 import { inspect } from 'util'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sh = promisify(exec)
 
-export default class gitpush extends BotCommand {
+export default class gitpush extends RainCommand {
 	constructor() {
 		super('gitpush', {
 			aliases: ['gitpush', 'push'],

@@ -1,5 +1,5 @@
 import { Message } from 'discord.js'
-import BotClient from '@extensions/BotClient'
+import BotClient from '@extensions/RainClient'
 import { RawMessageData } from 'discord.js/typings/rawDataTypes'
 
 export class RainMessage extends Message {

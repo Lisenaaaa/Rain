@@ -1,6 +1,6 @@
-import { BotListener } from '@extensions/BotListener'
+import { RainListener } from '@extensions/RainListener'
 
-export default class miscErrorListener extends BotListener {
+export default class miscErrorListener extends RainListener {
 	constructor() {
 		super('miscErrorListener', {
 			emitter: 'process',

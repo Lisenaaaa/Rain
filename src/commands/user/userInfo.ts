@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
-export default class userInfo extends BotCommand {
+export default class userInfo extends RainCommand {
 	constructor() {
 		super('userInfo', {
 			aliases: ['userInfo', 'string', 'ui', 'u'],

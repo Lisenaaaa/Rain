@@ -1,11 +1,11 @@
 import { exec } from 'child_process'
 import { Message, MessageEmbed } from 'discord.js'
 import { inspect, promisify } from 'util'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
 const sh = promisify(exec)
 
-export default class gitpull extends BotCommand {
+export default class gitpull extends RainCommand {
 	constructor() {
 		super('gitpull', {
 			aliases: ['gitpull', 'pull'],

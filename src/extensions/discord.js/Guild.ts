@@ -1,5 +1,5 @@
 import { Guild, Snowflake } from 'discord.js'
-import BotClient from '@extensions/BotClient'
+import BotClient from '@extensions/RainClient'
 import database from '@functions/database'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 import { perms } from '@src/types/misc'

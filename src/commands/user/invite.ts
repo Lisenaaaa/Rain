@@ -1,7 +1,7 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
-export default class invite extends BotCommand {
+export default class invite extends RainCommand {
 	constructor() {
 		super('invite', {
 			aliases: ['invite'],

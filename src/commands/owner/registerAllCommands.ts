@@ -1,10 +1,10 @@
 // import chalk from 'chalk'
-// import { BotCommand } from '@extensions/BotCommand'
+// import { RainCommand } from '@extensions/RainCommand'
 // import database from '@functions/database'
 // import commandManager from '@functions/commandManager'
 // import { Message } from 'discord.js'
 
-// export default class registerAllNewCommands extends BotCommand {
+// export default class registerAllNewCommands extends RainCommand {
 // 	constructor() {
 // 		super('registerAllNewCommands', {
 // 			aliases: ['registerAllNewCommands'],

@@ -1,4 +1,4 @@
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import { exec } from 'child_process'
 import { promisify } from 'util'
 import { ColorResolvable, Message, MessageEmbed } from 'discord.js'
@@ -6,7 +6,7 @@ import chalk from 'chalk'
 
 const sh = promisify(exec)
 
-export default class reload extends BotCommand {
+export default class reload extends RainCommand {
 	constructor() {
 		super('reload', {
 			aliases: ['reload'],

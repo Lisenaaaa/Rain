@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import commandManager from '@functions/commandManager'
 
-export default class help extends BotCommand {
+export default class help extends RainCommand {
 	constructor() {
 		super('help', {
 			aliases: ['help'],
@@ -25,7 +25,7 @@ export default class help extends BotCommand {
 			await message.reply(commandString)
 		}
 		if (args.command) {
-			const command = this.client.commandHandler.modules.get(args.command) as BotCommand
+			const command = this.client.commandHandler.modules.get(args.command) as RainCommand
 
 			const helpEmbed = new MessageEmbed().setTitle(command.id).setDescription(command.description).addField('Usage', command.usage)
 

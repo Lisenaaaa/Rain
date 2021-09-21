@@ -3,7 +3,7 @@ import chalk from 'chalk'
 import { exec } from 'child_process'
 import { Guild, Interaction, Message, MessageEmbed } from 'discord.js'
 import { promisify, inspect } from 'util'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
 import importUtils from '@functions/utils'
 const utils = importUtils
@@ -15,7 +15,7 @@ const database = importDatabase
 
 const sh = promisify(exec)
 
-export default class evaluate extends BotCommand {
+export default class evaluate extends RainCommand {
 	constructor() {
 		super('eval', {
 			aliases: ['eval', 'ev', 'exec'],

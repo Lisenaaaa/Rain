@@ -1,9 +1,9 @@
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 import commandManager from '@functions/commandManager'
 import utils from '@functions/utils'
 import { Message } from 'discord.js'
 
-export default class templateCommand extends BotCommand {
+export default class templateCommand extends RainCommand {
 	constructor() {
 		super('templateCommand', {
 			aliases: ['templateCommand'],

@@ -1,10 +1,10 @@
 import chalk from 'chalk'
-import { BotListener } from '@extensions/BotListener'
+import { RainListener } from '@extensions/RainListener'
 import commandManager from '@functions/commandManager'
 import database from '@functions/database'
-import { BotCommand } from '@extensions/BotCommand'
+import { RainCommand } from '@extensions/RainCommand'
 
-class ReadyListener extends BotListener {
+class ReadyListener extends RainListener {
 	constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -37,7 +37,7 @@ class ReadyListener extends BotListener {
 		// eslint-disable-next-line prefer-const
 		// let dbIDs: string[] = []
 
-		// globalCommandDB.forEach((command: BotCommand) => {
+		// globalCommandDB.forEach((command: RainCommand) => {
 		// 	dbIDs.push(command.id)
 		// })
 
