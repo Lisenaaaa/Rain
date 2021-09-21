@@ -62,7 +62,7 @@ async function getEntireGuildsDB() {
 	return alldbs
 }
 
-async function editSpecificGuildInDB(guildID: Snowflake, query: string, newValue: unknown) {
+async function editGuild(guildID: Snowflake, query: string, newValue: unknown) {
 	if (query === 'guildID') return false
 	try {
 		const guildDB = (await getEntireGuildsDB()).find((d: database) => d.guildID == guildID) as database
@@ -118,7 +118,7 @@ export default {
 	getEntireGuildsDB,
 	rawDbRequest,
 	readGuild,
-	editSpecificGuildInDB,
+	editGuild,
 	addGuild,
 	deleteGuild,
 }

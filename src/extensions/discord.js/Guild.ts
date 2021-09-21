@@ -22,7 +22,7 @@ export class RainGuild extends Guild {
 
 	async editStaffRole(position: perms, newRole: Snowflake) {
 		try {
-			return await database.editSpecificGuildInDB(this.id, `guildSettings.staffRoles.${position}`, newRole)
+			return await database.editGuild(this.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
 			await this.client.utils.error(error, ' guild role editing')
 			return false
@@ -34,7 +34,7 @@ export class RainGuild extends Guild {
 
 		currentLockedChannels?.push(channel)
 
-		return await database.editSpecificGuildInDB(this.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
+		return await database.editGuild(this.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
 	}
 
 	async unrestrictChannel(channel: Snowflake, perms: perms) {
@@ -42,14 +42,14 @@ export class RainGuild extends Guild {
 
 		const newLockedChannels = currentLockedChannels?.filter(c => c != channel)
 
-		return await database.editSpecificGuildInDB(this.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
+		return await database.editGuild(this.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
 	}
 
 	async setLogChannel(type: 'message'|'member'|'moderation'|'action', channel: Snowflake) {
-		return await database.editSpecificGuildInDB(this.id, `guildSettings.loggingChannels.${type}`, channel)
+		return await database.editGuild(this.id, `guildSettings.loggingChannels.${type}`, channel)
 	}
 
 	async resetLogChannel(type: 'message'|'member'|'moderation'|'action') {
-		return await database.editSpecificGuildInDB(this.id, `guildSettings.loggingChannels.${type}`, null)
+		return await database.editGuild(this.id, `guildSettings.loggingChannels.${type}`, null)
 	}
 }
