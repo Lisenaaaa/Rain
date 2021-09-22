@@ -13,6 +13,7 @@
 	"license": "FUCKOFF",
 	"private": true,
 	"devDependencies": {
+		"@types/lodash": "^4.14.173",
 		"@types/module-alias": "^2",
 		"@types/node": "^14.14.31",
 		"@types/pg": "^8",
@@ -28,7 +29,7 @@
 	},
 	"dependencies": {
 		"chalk": "^4.1.1",
-		"discord-akairo": "NotEnoughUpdates/discord-akairo",
+		"discord-akairo": "Lisenaaaa/discord-akairo",
 		"discord-api-types": "^0.20.2",
 		"discord.js": "NotEnoughUpdates/discord.js",
 		"dotenv": "^10.0.0",

@@ -1,11 +1,8 @@
 import chalk from 'chalk'
 import {} from 'discord-akairo'
 import { Message } from 'discord.js'
-import database from '@functions/database'
-import guildSettings from '@functions/guildSettings'
 
 import client from '@src/index'
-
 
 async function checkIfCommandCanBeUsed(msg: Message, commandID: string) {
 	// if (!msg.guild) {

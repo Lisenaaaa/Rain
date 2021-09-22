@@ -39,7 +39,6 @@ export class RainGuild extends Guild {
 
 	async unrestrictChannel(channel: Snowflake, perms: perms) {
 		const currentLockedChannels = (await this.database())?.guildSettings.lockedChannels[perms]
-
 		const newLockedChannels = currentLockedChannels?.filter(c => c != channel)
 
 		return await database.editGuild(this.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)

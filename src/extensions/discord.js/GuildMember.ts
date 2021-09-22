@@ -1,6 +1,8 @@
 import { Guild, GuildMember } from 'discord.js'
 import BotClient from '@extensions/RainClient'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
+import { perms } from '@src/types/misc'
+import { RainGuild } from './Guild'
 
 export class RainMember extends GuildMember {
 	declare client: BotClient
@@ -33,5 +35,66 @@ export class RainMember extends GuildMember {
 		if (permsArray.includes('ADMINISTRATOR')) finalArray = ['ADMINISTRATOR']
 
 		return finalArray
+	}
+
+	async hasPermission(perm: perms) {
+		const roleSettings = (await (this.guild as RainGuild).database())?.guildSettings.staffRoles
+
+		let found = false
+		let perms = 'everyone'
+		const permsArray = []
+
+		const owner = roleSettings?.owner
+		const admin = roleSettings?.admin
+		const srMod = roleSettings?.srMod
+		const moderator = roleSettings?.moderator
+		const helper = roleSettings?.helper
+		const trialHelper = roleSettings?.trialHelper
+
+		this.roles.cache.forEach((role) => {
+			if (role.id == owner && found == false) {
+				found = true
+				return (perms = 'owner')
+			} else if (role.id == admin && found == false) {
+				found = true
+				return (perms = 'admin')
+			} else if (role.id == srMod && found == false) {
+				found = true
+				return (perms = 'srMod')
+			} else if (role.id == moderator && found == false) {
+				found = true
+				return (perms = 'moderator')
+			} else if (role.id == helper && found == false) {
+				found = true
+				return (perms = 'helper')
+			} else if (role.id == trialHelper && found == false) {
+				found = true
+				return (perms = 'trialHelper')
+			}
+		})
+
+		if (perms == 'everyone') {
+			return false
+		}
+		if (perms == 'trialHelper') {
+			permsArray.push(['trialHelper'])
+		}
+		if (perms == 'helper') {
+			permsArray.push(['trialHelper', 'helper'])
+		}
+		if (perms == 'moderator') {
+			permsArray.push(['trialHelper', 'helper', 'moderator'])
+		}
+		if (perms == 'srMod') {
+			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod'])
+		}
+		if (perms == 'admin') {
+			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod', 'admin'])
+		}
+		if (perms == 'owner') {
+			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner'])
+		}
+
+		return permsArray[0].includes(perm)
 	}
 }

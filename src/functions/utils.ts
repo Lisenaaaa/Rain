@@ -5,7 +5,7 @@ import config from '@src/config/config'
 import { inspect } from 'util'
 import { modlogs } from '@src/types/misc'
 
-const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337']
+const slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337', '880637463838724166']
 
 async function haste(content: string) {
 	const output = inspect(content, { depth: 0 })
