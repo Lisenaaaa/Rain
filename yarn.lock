@@ -687,14 +687,14 @@ discord-akairo-message-util@NotEnoughUpdates/discord-akairo-message-util:
   languageName: node
   linkType: hard
 
-discord-akairo@Lisenaaaa/discord-akairo:
+discord-akairo@NotEnoughUpdates/discord-akairo:
   version: 9.0.0
-  resolution: "discord-akairo@https://github.com/Lisenaaaa/discord-akairo.git#commit=08090cd248c8abe4bea63a007f5418147546b5a5"
+  resolution: "discord-akairo@https://github.com/NotEnoughUpdates/discord-akairo.git#commit=5942c3c13accbe48d45d05ecce0516fcf994ef00"
   dependencies:
     discord-akairo-message-util: NotEnoughUpdates/discord-akairo-message-util
     lodash: ^4.17.21
     source-map-support: ^0.5.19
-  checksum: c7c1ec9438bf77a94c5e3be9fde407560e4e95103c2d4d2837124d994a85b6d83c210e28d0a6cca388ee3ed279a97f3d2ed6bd976a07df767889f5d06a9225d6
+  checksum: 95606f6e433dcc52c9cf527caf3c59e102176127068052dc8ef217284aa44a9e12ed91ce5c36f68efd2c56f8df10dfe0be92c17c812862093ef573bc9aec5f39
   languageName: node
   linkType: hard
 
@@ -1739,7 +1739,7 @@ discord.js@NotEnoughUpdates/discord.js:
     "@typescript-eslint/eslint-plugin": ^4.15.2
     "@typescript-eslint/parser": ^4.15.2
     chalk: ^4.1.1
-    discord-akairo: Lisenaaaa/discord-akairo
+    discord-akairo: NotEnoughUpdates/discord-akairo
     discord-api-types: ^0.22.0
     discord.js: NotEnoughUpdates/discord.js
     dotenv: ^10.0.0
