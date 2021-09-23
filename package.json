@@ -21,6 +21,7 @@
 		"@types/validator": "^13.6.3",
 		"@typescript-eslint/eslint-plugin": "^4.15.2",
 		"@typescript-eslint/parser": "^4.15.2",
+		"discord-api-types": "^0.22.0",
 		"eslint": "^7.20.0",
 		"prettier": "^2.2.1",
 		"rimraf": "^3.0.2",
@@ -30,7 +31,6 @@
 	"dependencies": {
 		"chalk": "^4.1.1",
 		"discord-akairo": "Lisenaaaa/discord-akairo",
-		"discord-api-types": "^0.20.2",
 		"discord.js": "NotEnoughUpdates/discord.js",
 		"dotenv": "^10.0.0",
 		"got": "^11.8.2",
