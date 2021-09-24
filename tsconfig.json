@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"strict": true,
+		"resolveJsonModule": true,
 		"module": "commonjs",
 		"target": "esNEXT",
 		"outDir": "dist",

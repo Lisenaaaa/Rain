@@ -1,6 +1,5 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { RainCommand } from '@extensions/RainCommand'
-import commandManager from '@functions/commandManager'
 
 export default class help extends RainCommand {
 	constructor() {
@@ -14,7 +13,10 @@ export default class help extends RainCommand {
 	}
 	async exec(message: Message, args: {command:string}) {
 		if (!args.command) {
-			let commandIDs = await commandManager.getAllCommandIDs()
+			let commandIDs: string[] = []
+			this.client.commandHandler.modules.forEach(c => {
+				if (!c.ownerOnly && !c.id.includes('help') && !c.id.includes('test')) commandIDs.push(c.id)
+			})
 			let commandString = ''
 			commandIDs = commandIDs.filter((ID) => !ID.includes('help'))
 

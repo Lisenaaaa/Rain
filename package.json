@@ -80,7 +80,8 @@
 		],
 		"rules": {
 			"@typescript-eslint/explicit-module-boundary-types": "off",
-			"@typescript-eslint/no-var-requires": "off"
+			"@typescript-eslint/no-var-requires": "off",
+			"@typescript-eslint/ban-ts-comment": "off"
 		}
 	},
 	"packageManager": "yarn@3.0.0"

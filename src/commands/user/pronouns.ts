@@ -1,7 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { RainCommand } from '@extensions/RainCommand'
-import commandManager from '@functions/commandManager'
 import { RainUser } from '@extensions/discord.js/User'
+import { RainMessage } from '@extensions/discord.js/Message'
+import { AkairoMessage } from 'discord-akairo'
 
 export default class pronouns extends RainCommand {
 	constructor() {
@@ -21,11 +22,13 @@ export default class pronouns extends RainCommand {
 					type: 'USER',
 				},
 			],
+			ephemeralWhenNoPerms: true
 		})
 	}
-	async exec(message: Message, args: {person:string}) {
-		if (!commandManager.checkIfCommandCanBeUsed(message, this.id)) return
 
+	async exec (message: RainMessage) {await message.reply('Use this as a slashcommand.')
+}
+	async execSlash(message: AkairoMessage, args: {person:string}) {
 		const person = await this.client.utils.fetchUser(args.person) ?? message.author as RainUser
 
 		const pronouns = await person.getPronouns('details')

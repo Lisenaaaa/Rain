@@ -1,5 +1,5 @@
 import config from '@src/config/config'
-import { databaseCreator, database } from '@src/types/database'
+import { GuildDatabaseCreator, GuildDatabase } from '@src/types/database'
 import chalk from 'chalk'
 import { Snowflake } from 'discord.js'
 
@@ -27,7 +27,7 @@ async function rawDbRequest(string: string, options: QueryOptions | QueryOptions
 }
 
 function defaultDBSchema(guildID: Snowflake) {
-	return new databaseCreator({
+	return new GuildDatabaseCreator({
 		guildID: guildID,
 		guildSettings: {
 			welcomeChannel: 'null',
@@ -44,14 +44,14 @@ function defaultDBSchema(guildID: Snowflake) {
 
 async function readGuild(guildID: Snowflake) {
 	const guilds = await getEntireGuildsDB()
-	const guildDB = guilds.find((g: database) => g.guildID == guildID)
+	const guildDB = guilds.find((g: GuildDatabase) => g.guildID == guildID)
 
 	return guildDB
 }
 
 async function getEntireGuildsDB() {
 	const guilddb = await rawDbRequest('SELECT * from guilds;')
-	const alldbs: database[] = []
+	const alldbs: GuildDatabase[] = []
 
 	/* typescript is stupid and i want eslint to not be yell */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,21 +65,21 @@ async function getEntireGuildsDB() {
 async function editGuild(guildID: Snowflake, query: string, newValue: unknown) {
 	if (query === 'guildID') return false
 	try {
-		const guildDB = (await getEntireGuildsDB()).find((d: database) => d.guildID == guildID) as database
+		const guildDB = (await getEntireGuildsDB()).find((d: GuildDatabase) => d.guildID == guildID) as GuildDatabase
 
 		const queryArray = query.split('.')
 
-		let dbObject: database = guildDB
+		let dbObject: GuildDatabase = guildDB
 
 		const finalQuery = queryArray.pop()
 
 		queryArray.forEach((query) => {
 
-			//@ts-expect-error bad
+			//@ts-ignore ok typescript
 			dbObject = dbObject?.[query as keyof typeof dbObject]
 		})
 
-		//@ts-expect-error eslint hates ts-ignore
+		//@ts-ignore ok typescript
 		dbObject[finalQuery as keyof typeof dbObject] = newValue
 
 		await rawDbRequest("UPDATE guilds SET data = $1 WHERE data->>'guildID' = $2;", { bind: [guildDB, guildID] })

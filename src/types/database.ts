@@ -1,7 +1,7 @@
 import { Snowflake } from 'discord.js'
 import { dbModlogs, guildCommandSettings } from './misc'
 
-export interface database {
+export interface GuildDatabase {
     guildID: Snowflake
     guildSettings: {
         welcomeChannel:string,
@@ -15,8 +15,8 @@ export interface database {
     features: {id:string,enabled:boolean}[]
 }
 
-export class databaseCreator {
-    public constructor(options: database) {
+export class GuildDatabaseCreator {
+    public constructor(options: GuildDatabase) {
         this.guildID = options.guildID
         this.guildSettings = options.guildSettings
         this.commandSettings = options.commandSettings
@@ -34,4 +34,9 @@ export class databaseCreator {
     }
     public commandSettings: guildCommandSettings[]
     public features: {id:string,enabled:boolean}[]
+}
+
+export type UserDatabase = {
+    userID: Snowflake,
+    badges: string[]
 }
