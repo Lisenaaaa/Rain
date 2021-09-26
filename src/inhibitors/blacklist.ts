@@ -11,7 +11,7 @@ export default class BlacklistInhibitor extends RainInhibitor {
 	}
 
 	exec(message: RainMessage) {
-		/* if (message.util.parsed?.command?.id && message.util.parsed?.command?.id != 'test') */console.log('go fix commandManager.ts smh its not functional rn')
+		/* if (message.util.parsed?.command?.id && message.util.parsed?.command?.id != 'test') */console.log('go make a perms handler idiot')
 		//you dont even deserve the honor of being in my database
 		const blacklist = ['600875620808785941']
 		return blacklist.includes(message.author.id)

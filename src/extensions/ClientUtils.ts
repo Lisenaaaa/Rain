@@ -80,9 +80,15 @@ async function fetchUser(user: string) {
 // 	},
 // }
 
+async function console(thing: string) {
+	const channel = await client.channels.fetch('880655568417751102')
+	return await (channel as TextChannel).send(thing)
+}
+
 export default {
 	error,
 	fetchUser,
+	console,
 	//flags,
 	emojis
 }

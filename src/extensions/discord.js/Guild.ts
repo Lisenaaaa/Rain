@@ -31,6 +31,7 @@ export class RainGuild extends Guild {
 
 	async restrictChannel(channel: Snowflake, perms: perms) {
 		const currentLockedChannels = (await this.database())?.guildSettings.lockedChannels[perms]
+		if (currentLockedChannels?.includes(channel)) return true
 
 		currentLockedChannels?.push(channel)
 

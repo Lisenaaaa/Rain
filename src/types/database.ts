@@ -38,5 +38,6 @@ export class GuildDatabaseCreator {
 
 export type UserDatabase = {
     userID: Snowflake,
-    badges: string[]
+    badges: string[],
+    superuser: boolean
 }
