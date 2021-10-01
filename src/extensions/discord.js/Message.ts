@@ -1,13 +1,23 @@
-import { Message } from 'discord.js'
+import { InteractionReplyOptions, Message, ReplyMessageOptions } from 'discord.js'
 import BotClient from '@extensions/RainClient'
 import { RawMessageData } from 'discord.js/typings/rawDataTypes'
 
-export class RainMessage extends Message {
+export class dRainMessage extends Message {
 	declare client: BotClient
 	lowerCaseContent: string
 
 	public constructor(client: BotClient, options: RawMessageData) {
 		super(client, options)
 		this.lowerCaseContent = options.content.toLowerCase()
+	}
+
+	async send(content: ReplyMessageOptions | InteractionReplyOptions, data: { reply: boolean } = { reply: true }) {
+		return data.reply ? await this.reply(content) : await this.channel.send(content)
+	}
+
+	async editReply(content: InteractionReplyOptions) {
+
+		//@ts-ignore
+		return this.interaction?.editReply(content)
 	}
 }

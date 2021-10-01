@@ -42,7 +42,7 @@ export default class evaluate extends RainCommand {
 					type: 'BOOLEAN',
 				},
 			],
-			slashGuilds: ['824680357936103497'],
+			slashGuilds: ['880637463838724166'],
 		})
 	}
 
@@ -52,7 +52,7 @@ export default class evaluate extends RainCommand {
 		if (args.codetoeval.includes('channel.delete')) {
 			return message.reply('Are you IRONM00N?')
 		}
-		if (args.codetoeval.includes('message.guild.delete')) {
+		if (args.codetoeval.includes('guild.delete')) {
 			return message.reply("You're like IRONM00N but infinitely more stupid!")
 		}
 		if (args.codetoeval.includes('delete') && !args.sudo) {

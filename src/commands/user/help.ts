@@ -1,5 +1,6 @@
-import { Message, MessageEmbed } from 'discord.js'
+import {  MessageEmbed } from 'discord.js'
 import { RainCommand } from '@extensions/RainCommand'
+import { RainMessage } from '@extensions/akairo/AkairoMessage'
 
 export default class help extends RainCommand {
 	constructor() {
@@ -11,7 +12,7 @@ export default class help extends RainCommand {
 			discordPerms: ['SEND_MESSAGES'],
 		})
 	}
-	async exec(message: Message, args: {command:string}) {
+	async execSlash(message: RainMessage, args: {command:string}) {
 		if (!args.command) {
 			let commandIDs: string[] = []
 			this.client.commandHandler.modules.forEach(c => {
@@ -31,7 +32,7 @@ export default class help extends RainCommand {
 
 			const helpEmbed = new MessageEmbed().setTitle(command.id).setDescription(command.description).addField('Usage', command.usage)
 
-			message.channel.send({ embeds: [helpEmbed] })
+			message.send({ embeds: [helpEmbed] })
 		}
 	}
 }

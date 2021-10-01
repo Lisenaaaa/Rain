@@ -5,14 +5,14 @@ import { join } from 'path'
 import database from '@functions/database'
 import clientUtils from './ClientUtils'
 import config from '@src/config/config'
-import { RainMessage } from './discord.js/Message'
+import { dRainMessage } from './discord.js/Message'
 import { RainGuild } from './discord.js/Guild'
 import { RainUser } from './discord.js/User'
 import { RainMember } from './discord.js/GuildMember'
 
 export default class RainClient extends AkairoClient {
 	static preStart() {
-		Structures.extend('Message', () => RainMessage)
+		Structures.extend('Message', () => dRainMessage)
 		Structures.extend('Guild', () => RainGuild)
 		Structures.extend('User', () => RainUser)
 		Structures.extend('GuildMember', () => RainMember)

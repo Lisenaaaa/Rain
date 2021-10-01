@@ -16,7 +16,8 @@ import {
 } from 'discord.js'
 import { RainGuild } from '@extensions/discord.js/Guild'
 import { perms } from '@src/types/misc'
-import { RainMessage } from '@extensions/discord.js/Message'
+import { dRainMessage } from '@extensions/discord.js/Message'
+import { RainChannel } from '@extensions/discord.js/Channel'
 
 export default class config extends RainCommand {
 	constructor() {
@@ -31,7 +32,7 @@ export default class config extends RainCommand {
 		})
 	}
 
-	async exec(message: RainMessage) {
+	async exec(message: dRainMessage) {
 		await message.reply('use this as a slashcommand')
 	}
 
@@ -131,22 +132,18 @@ export default class config extends RainCommand {
 
 							interactionCollector.once('collect', async (i) => {
 								if (i.customId === 'configYes') {
-									const editedChannel = await (message.guild as RainGuild).restrictChannel(channel.id, perm as perms)
+									const channels = (await (interaction.guild as RainGuild).database())?.guildSettings.lockedChannels as {
+										owner: string[]
+										admin: string[]
+										srMod: string[]
+										moderator: string[]
+										helper: string[]
+										trialHelper: string[]
+									}
 
-									if (editedChannel === true) {
-										await message.interaction.editReply({
-											content: `I have succesfully made it so that only people with ${perm} can run commands in ${channel}.\nSome slashcommands will still work, they'll just be ephemeral.`,
-											embeds: [],
-											components: [],
-										})
-										return
-									} else {
-										await message.interaction.editReply({
-											content: `I failed to restrict ${channel}. This error has been automatically reported to my developer.`,
-											embeds: [],
-											components: [],
-										})
-										return
+									if ((message.channel as RainChannel).isLocked()) {
+										const perms = await (message.channel as RainChannel).getRestrictedPerms()
+										console.log(channels[perms as keyof typeof channels])
 									}
 								}
 							})
@@ -220,15 +217,15 @@ export default class config extends RainCommand {
 						components: [],
 					})
 
-					messageCollector.once('collect', async m => {
-						const role = this.client.util.resolveRole(m.content, (interaction.guild?.roles.cache as Collection<Snowflake, Role>))
+					messageCollector.once('collect', async (m) => {
+						const role = this.client.util.resolveRole(m.content, interaction.guild?.roles.cache as Collection<Snowflake, Role>)
 						await m.delete()
 
 						if (role === undefined) {
 							await interaction.editReply({
 								content: "I couldn't find that role.",
 								embeds: [],
-								components: []
+								components: [],
 							})
 						}
 
@@ -246,29 +243,27 @@ export default class config extends RainCommand {
 							content: `Alright! What perms would you like to give to ${role}?`,
 							embeds: [],
 							components: [staffRoleRow1, staffRoleRow2],
-							allowedMentions: {}
+							allowedMentions: {},
 						})
 
-						staffRolesInteractionCollector.once('collect', async i => {
+						staffRolesInteractionCollector.once('collect', async (i) => {
 							await i.deferUpdate()
 
-							const editedRole = await (interaction.guild as RainGuild).editStaffRole((i.customId.split('|')[1] as perms), (role?.id as Snowflake))
+							const editedRole = await (interaction.guild as RainGuild).editStaffRole(i.customId.split('|')[1] as perms, role?.id as Snowflake)
 
 							if (editedRole === true) {
 								await interaction.editReply({
 									content: `${role} has been given ${i.customId.split('|')[1]} perms.`,
 									embeds: [],
 									components: [],
-									allowedMentions: {}
+									allowedMentions: {},
 								})
-							}
-
-							else {
+							} else {
 								await interaction.editReply({
 									content: `I failed to give ${role} ${i.customId.split('|')[1]} perms. This error has been automatically reported to my developer.`,
-									embeds:[],
-									components:[],
-									allowedMentions:{}
+									embeds: [],
+									components: [],
+									allowedMentions: {},
 								})
 							}
 						})

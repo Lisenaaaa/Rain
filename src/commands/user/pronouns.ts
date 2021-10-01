@@ -1,8 +1,8 @@
 import { Message, MessageEmbed } from 'discord.js'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainUser } from '@extensions/discord.js/User'
-import { RainMessage } from '@extensions/discord.js/Message'
-import { AkairoMessage } from 'discord-akairo'
+import { dRainMessage } from '@extensions/discord.js/Message'
+import { RainMessage } from '@extensions/akairo/AkairoMessage'
 
 export default class pronouns extends RainCommand {
 	constructor() {
@@ -26,9 +26,9 @@ export default class pronouns extends RainCommand {
 		})
 	}
 
-	async exec (message: RainMessage) {await message.reply('Use this as a slashcommand.')
+	async exec (message: dRainMessage) {await message.reply('Use this as a slashcommand.')
 }
-	async execSlash(message: AkairoMessage, args: {person:string}) {
+	async execSlash(message: RainMessage, args: {person:string}) {
 		const person = await this.client.utils.fetchUser(args.person) ?? message.author as RainUser
 
 		const pronouns = await person.getPronouns('details')
@@ -47,6 +47,6 @@ export default class pronouns extends RainCommand {
 		}
 		pronounsEmbed.setFooter('Data from https://pronoundb.org')
 
-		message.reply({ embeds: [pronounsEmbed] })
+		message.send({ embeds: [pronounsEmbed] })
 	}
 }
