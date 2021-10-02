@@ -42,7 +42,7 @@ export class RainMember extends GuildMember {
 
 		let found = false
 		let perms = 'everyone'
-		const permsArray = []
+		let permsArray: perms[] = []
 
 		const owner = roleSettings?.owner
 		const admin = roleSettings?.admin
@@ -77,24 +77,24 @@ export class RainMember extends GuildMember {
 			return false
 		}
 		if (perms == 'trialHelper') {
-			permsArray.push(['trialHelper'])
+			permsArray=['trialHelper']
 		}
 		if (perms == 'helper') {
-			permsArray.push(['trialHelper', 'helper'])
+			permsArray=['trialHelper', 'helper']
 		}
 		if (perms == 'moderator') {
-			permsArray.push(['trialHelper', 'helper', 'moderator'])
+			permsArray=['trialHelper', 'helper', 'moderator']
 		}
 		if (perms == 'srMod') {
-			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod'])
+			permsArray=['trialHelper', 'helper', 'moderator', 'srMod']
 		}
 		if (perms == 'admin') {
-			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod', 'admin'])
+			permsArray=['trialHelper', 'helper', 'moderator', 'srMod', 'admin']
 		}
 		if (perms == 'owner') {
-			permsArray.push(['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner'])
+			permsArray=['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
 		}
 
-		return permsArray[0].includes(perm)
+		return permsArray.includes(perm)
 	}
 }

@@ -71,7 +71,7 @@ export default class evaluate extends RainCommand {
 		let output
 
 		try {
-			output = await eval(`(async () => {${args.codetoeval}})()`)
+			output = await eval(`(async () => {${args.codetoeval.includes('return') ? args.codetoeval : `return ${args.codetoeval}`}})()`)
 			output = inspect(output, { depth: 0 })
 			output = utils.censorString(output)
 		} catch (err) {

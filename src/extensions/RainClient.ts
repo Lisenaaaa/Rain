@@ -9,9 +9,11 @@ import { dRainMessage } from './discord.js/Message'
 import { RainGuild } from './discord.js/Guild'
 import { RainUser } from './discord.js/User'
 import { RainMember } from './discord.js/GuildMember'
+import { RainChannel } from './discord.js/Channel'
 
 export default class RainClient extends AkairoClient {
 	static preStart() {
+		Structures.extend('TextChannel', () => RainChannel)
 		Structures.extend('Message', () => dRainMessage)
 		Structures.extend('Guild', () => RainGuild)
 		Structures.extend('User', () => RainUser)
@@ -86,6 +88,15 @@ export default class RainClient extends AkairoClient {
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)
 			}
+		}
+	}
+
+	debugLog(name: string, thing: unknown) {
+		if (typeof thing === 'string' || typeof thing === 'number' || typeof thing === 'boolean' || typeof thing == 'bigint' || typeof thing == 'undefined')
+			console.log(chalk`{red.bold DEBUG/${name}:} ${thing}`)
+		else {
+			console.log(chalk`{red.bold DEBUG/${name}:}`)
+			console.log(thing)
 		}
 	}
 

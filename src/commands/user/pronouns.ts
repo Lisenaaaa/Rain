@@ -47,6 +47,6 @@ export default class pronouns extends RainCommand {
 		}
 		pronounsEmbed.setFooter('Data from https://pronoundb.org')
 
-		message.send({ embeds: [pronounsEmbed] })
+		message.reply({ embeds: [pronounsEmbed] })
 	}
 }
