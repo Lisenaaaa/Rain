@@ -1,6 +1,6 @@
-import {  MessageEmbed } from 'discord.js'
-import { RainCommand } from '@extensions/RainCommand'
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
+import { RainCommand } from '@extensions/RainCommand'
+import { MessageEmbed } from 'discord.js'
 
 export default class help extends RainCommand {
 	constructor() {
@@ -12,18 +12,18 @@ export default class help extends RainCommand {
 			discordPerms: ['SEND_MESSAGES'],
 		})
 	}
-	async execSlash(message: RainMessage, args: {command:string}) {
+	async execSlash(message: RainMessage, args: { command: string }) {
 		if (!args.command) {
 			let commandIDs: string[] = []
-			this.client.commandHandler.modules.forEach(c => {
+			this.client.commandHandler.modules.forEach((c) => {
 				if (!c.ownerOnly && !c.id.includes('help') && !c.id.includes('test')) commandIDs.push(c.id)
 			})
 			let commandString = ''
 			commandIDs = commandIDs.filter((ID) => !ID.includes('help'))
 
-			commandString = (`\`${commandIDs.shift()}\``)
+			commandString = `\`${commandIDs.shift()}\``
 
-			commandIDs.forEach(c => commandString = commandString + `, \`${c}\``)
+			commandIDs.forEach((c) => (commandString = commandString + `, \`${c}\``))
 
 			await message.reply(commandString)
 		}

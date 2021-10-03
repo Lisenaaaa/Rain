@@ -1,9 +1,9 @@
 import { RainListener } from '@extensions/RainListener'
 import chalk from 'chalk'
 
-export default class miscErrorListener extends RainListener {
+export default class MiscErrorListener extends RainListener {
 	constructor() {
-		super('miscErrorListener', {
+		super('miscError', {
 			emitter: 'process',
 			event: 'unhandledRejection',
 		})

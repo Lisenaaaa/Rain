@@ -1,8 +1,8 @@
-import { InteractionReplyOptions, Message, ReplyMessageOptions } from 'discord.js'
 import BotClient from '@extensions/RainClient'
+import { InteractionReplyOptions, Message, ReplyMessageOptions } from 'discord.js'
 import { RawMessageData } from 'discord.js/typings/rawDataTypes'
 
-export class dRainMessage extends Message {
+export class DRainMessage extends Message {
 	declare client: BotClient
 	lowerCaseContent: string
 

@@ -1,6 +1,6 @@
+import RainClient from '@extensions/RainClient'
 import { Command, CommandOptions } from 'discord-akairo'
 import { PermissionResolvable, Snowflake } from 'discord.js'
-import RainClient from '@extensions/RainClient'
 
 export class RainCommand extends Command {
 	declare client: RainClient

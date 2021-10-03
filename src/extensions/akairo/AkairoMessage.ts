@@ -1,6 +1,6 @@
-import { CommandInteraction, InteractionReplyOptions, ReplyMessageOptions } from 'discord.js'
 import BotClient from '@extensions/RainClient'
 import { AkairoMessage } from 'discord-akairo'
+import { CommandInteraction, InteractionReplyOptions, ReplyMessageOptions } from 'discord.js'
 
 export class RainMessage extends AkairoMessage {
 	declare client: BotClient

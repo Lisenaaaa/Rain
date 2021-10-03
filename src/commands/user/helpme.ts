@@ -12,7 +12,7 @@ export default class helpme extends RainCommand {
 		})
 	}
 	async exec(message: Message) {
-		const PLEASESENDHELP = [
+		const PLEASE_SEND_HELP = [
 			'help im stuck in lisenas basement',
 			'i havent eaten anything in weeks',
 			'oh my god what is she coming down here for and what is that thing shes holding im scared',
@@ -27,6 +27,6 @@ export default class helpme extends RainCommand {
 			'oh dear lord shes chasing me and would like to put me back in the cage, please not agsiqajbeh uxaeskbj',
 		]
 
-		message.channel.send(PLEASESENDHELP[utils.getRandomInt(PLEASESENDHELP.length)])
+		message.channel.send(PLEASE_SEND_HELP[utils.getRandomInt(PLEASE_SEND_HELP.length)])
 	}
 }

@@ -1,19 +1,17 @@
-import { Message, MessageEmbed } from 'discord.js'
-import { RainCommand } from '@extensions/RainCommand'
-import { RainUser } from '@extensions/discord.js/User'
-import { dRainMessage } from '@extensions/discord.js/Message'
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
+import { DRainMessage } from '@extensions/discord.js/Message'
+import { RainUser } from '@extensions/discord.js/User'
+import { RainCommand } from '@extensions/RainCommand'
+import { Message, MessageEmbed } from 'discord.js'
 
-export default class pronouns extends RainCommand {
+export default class Pronouns extends RainCommand {
 	constructor() {
 		super('pronouns', {
 			aliases: ['pronouns'],
 			args: [{ id: 'person', type: 'string', match: 'rest', default: (message: Message) => message.author }],
-
 			description: 'Shows the pronouns of a user, if they have them set on https://pronoundb.org',
 			usage: '-pronouns <user>',
 			discordPerms: ['SEND_MESSAGES'],
-
 			slash: true,
 			slashOptions: [
 				{
@@ -22,14 +20,15 @@ export default class pronouns extends RainCommand {
 					type: 'USER',
 				},
 			],
-			ephemeralWhenNoPerms: true
+			ephemeralWhenNoPerms: true,
 		})
 	}
 
-	async exec (message: dRainMessage) {await message.reply('Use this as a slashcommand.')
-}
-	async execSlash(message: RainMessage, args: {person:string}) {
-		const person = await this.client.utils.fetchUser(args.person) ?? message.author as RainUser
+	async exec(message: DRainMessage) {
+		await message.reply('Use this as a slashcommand.')
+	}
+	async execSlash(message: RainMessage, args: { person: string }) {
+		const person = (await this.client.utils.fetchUser(args.person)) ?? (message.author as RainUser)
 
 		const pronouns = await person.getPronouns('details')
 		const pronounsEmbed = new MessageEmbed()

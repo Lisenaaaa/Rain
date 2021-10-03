@@ -7,9 +7,9 @@ import { RainCommand } from '@extensions/RainCommand'
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const sh = promisify(exec)
 
-export default class gitpush extends RainCommand {
+export default class GitPush extends RainCommand {
 	constructor() {
-		super('gitpush', {
+		super('gitPush', {
 			aliases: ['gitpush', 'push'],
 			args: [
 				{

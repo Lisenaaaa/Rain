@@ -1,12 +1,12 @@
 import { RainGuild } from '@extensions/discord.js/Guild'
-import { dRainMessage } from '@extensions/discord.js/Message'
+import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import utils from '@functions/utils'
 import { perms } from '@src/types/misc'
 import { AkairoMessage } from 'discord-akairo'
 import { Channel } from 'discord.js'
 
-export default class extends RainCommand {
+export default class ChannelPerms extends RainCommand {
 	constructor() {
 		super('channelPerms', {
 			aliases: ['channelPerms'],
@@ -28,7 +28,7 @@ export default class extends RainCommand {
 							value: 'remove',
 						},
 					],
-					required: true
+					required: true,
 				},
 				{
 					name: 'channel',
@@ -54,7 +54,7 @@ export default class extends RainCommand {
 		})
 	}
 
-	async exec(message: dRainMessage) {
+	async exec(message: DRainMessage) {
 		await message.reply('Please use this as a slashcommand.')
 	}
 

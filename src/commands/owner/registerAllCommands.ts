@@ -1,10 +1,10 @@
-// import chalk from 'chalk'
 // import { RainCommand } from '@extensions/RainCommand'
-// import database from '@functions/database'
 // import commandManager from '@functions/commandManager'
+// import database from '@functions/database'
+// import chalk from 'chalk'
 // import { Message } from 'discord.js'
 
-// export default class registerAllNewCommands extends RainCommand {
+// export default class RegisterAllNewCommands extends RainCommand {
 // 	constructor() {
 // 		super('registerAllNewCommands', {
 // 			aliases: ['registerAllNewCommands'],
@@ -16,7 +16,7 @@
 
 // 		const dbIDs: string[] = []
 // 		await database.readCommandGlobal().then((db) => {
-// 			db.forEach((command: {id:string,enabled:boolean}) => {
+// 			db.forEach((command: { id: string; enabled: boolean }) => {
 // 				dbIDs.push(command.id)
 // 			})
 // 		})

@@ -1,10 +1,10 @@
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
-import { dRainMessage, } from '@extensions/discord.js/Message'
+import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import utils from '@functions/utils'
 import { Channel } from 'discord.js'
 
-export default class extends RainCommand {
+export default class SetLogCommand extends RainCommand {
 	constructor() {
 		super('setLogChannel', {
 			aliases: ['setLogChannel'],
@@ -36,7 +36,7 @@ export default class extends RainCommand {
 		})
 	}
 
-	async exec(message: dRainMessage) {
+	async exec(message: DRainMessage) {
 		await message.reply('Please use this as a slashcommand.')
 	}
 
