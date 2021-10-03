@@ -1,8 +1,8 @@
-import { Guild, Snowflake } from 'discord.js'
 import BotClient from '@extensions/RainClient'
 import database from '@functions/database'
-import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 import { perms } from '@src/types/misc'
+import { Guild, Snowflake } from 'discord.js'
+import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 
 export class RainGuild extends Guild {
 	declare client: BotClient
@@ -24,7 +24,7 @@ export class RainGuild extends Guild {
 		try {
 			return await database.editGuild(this.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
-			await this.client.utils.error(error, ' guild role editing')
+			this.client.utils.error(error, ' guild role editing')
 			return false
 		}
 	}

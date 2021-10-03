@@ -1,5 +1,9 @@
+import { RainChannel } from '@extensions/discord.js/Channel'
+import { RainGuild } from '@extensions/discord.js/Guild'
+import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import utils from '@functions/utils'
+import { perms } from '@src/types/misc'
 import { AkairoMessage, GuildTextBasedChannels } from 'discord-akairo'
 import {
 	BaseGuildVoiceChannel,
@@ -14,12 +18,8 @@ import {
 	Role,
 	Snowflake,
 } from 'discord.js'
-import { RainGuild } from '@extensions/discord.js/Guild'
-import { perms } from '@src/types/misc'
-import { dRainMessage } from '@extensions/discord.js/Message'
-import { RainChannel } from '@extensions/discord.js/Channel'
 
-export default class config extends RainCommand {
+export default class Config extends RainCommand {
 	constructor() {
 		super('config', {
 			aliases: ['config'],
@@ -32,7 +32,7 @@ export default class config extends RainCommand {
 		})
 	}
 
-	async exec(message: dRainMessage) {
+	async exec(message: DRainMessage) {
 		await message.reply('use this as a slashcommand')
 	}
 
@@ -141,7 +141,7 @@ export default class config extends RainCommand {
 										trialHelper: string[]
 									}
 
-									if ((message.channel as RainChannel).isLocked()) {
+									if (await (message.channel as RainChannel).isLocked()) {
 										const perms = await (message.channel as RainChannel).getRestrictedPerms()
 										console.log(channels[perms as keyof typeof channels])
 									}

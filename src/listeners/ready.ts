@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 import { RainListener } from '@extensions/RainListener'
 
-class ReadyListener extends RainListener {
+export default class ReadyListener extends RainListener {
 	constructor() {
 		super('ready', {
 			emitter: 'client',
@@ -10,7 +10,6 @@ class ReadyListener extends RainListener {
 	}
 
 	async exec() {
-
 		console.log(chalk`{magenta Logged in as} {magentaBright.bold ${this.client.user?.tag}}`)
 		console.log(`\n`)
 		console.log(chalk.magentaBright(`---Bot Output---\n`))
@@ -18,5 +17,3 @@ class ReadyListener extends RainListener {
 		this.client.user?.setActivity('Lisena create me', { type: 'WATCHING' })
 	}
 }
-
-module.exports = ReadyListener

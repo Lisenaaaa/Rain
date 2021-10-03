@@ -19,7 +19,8 @@
 			"@extensions/*": ["src/extensions/*"],
 			"@src/*": ["src/*"],
 			"@types/*": ["src/types/*"]
-		}
+		},
+		"useUnknownInCatchVariables": false
 	},
 	"include": ["src/**/*", "src/*"],
 	"exclude": ["node_modules"]

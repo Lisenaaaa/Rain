@@ -2,9 +2,9 @@ import { RainListener } from '@extensions/RainListener'
 import chalk from 'chalk'
 import { Message } from 'discord.js'
 
-export default class commandErrorListener extends RainListener {
+export default class CommandErrorListener extends RainListener {
 	constructor() {
-		super('commandErrorListener', {
+		super('commandError', {
 			emitter: 'commandHandler',
 			event: 'error',
 		})

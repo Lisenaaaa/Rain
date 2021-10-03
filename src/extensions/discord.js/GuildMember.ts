@@ -1,7 +1,7 @@
-import { Guild, GuildMember } from 'discord.js'
 import BotClient from '@extensions/RainClient'
-import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 import { perms } from '@src/types/misc'
+import { Guild, GuildMember } from 'discord.js'
+import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 import { RainGuild } from './Guild'
 
 export class RainMember extends GuildMember {
@@ -77,22 +77,22 @@ export class RainMember extends GuildMember {
 			return false
 		}
 		if (perms == 'trialHelper') {
-			permsArray=['trialHelper']
+			permsArray = ['trialHelper']
 		}
 		if (perms == 'helper') {
-			permsArray=['trialHelper', 'helper']
+			permsArray = ['trialHelper', 'helper']
 		}
 		if (perms == 'moderator') {
-			permsArray=['trialHelper', 'helper', 'moderator']
+			permsArray = ['trialHelper', 'helper', 'moderator']
 		}
 		if (perms == 'srMod') {
-			permsArray=['trialHelper', 'helper', 'moderator', 'srMod']
+			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod']
 		}
 		if (perms == 'admin') {
-			permsArray=['trialHelper', 'helper', 'moderator', 'srMod', 'admin']
+			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod', 'admin']
 		}
 		if (perms == 'owner') {
-			permsArray=['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
+			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
 		}
 
 		return permsArray.includes(perm)

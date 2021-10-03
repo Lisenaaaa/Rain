@@ -1,9 +1,8 @@
 // import { RainListener } from '@extensions/RainListener'
 // import database from '@functions/database'
-// import utils from '@functions/utils'
 // import { Guild, TextChannel } from 'discord.js'
 
-// class guildJoinDBCreate extends RainListener {
+// export default class guildJoinDBCreateListener extends RainListener {
 // 	constructor() {
 // 		super('guildJoinDBCreate', {
 // 			emitter: 'client',
@@ -27,5 +26,3 @@
 // 		})
 // 	}
 // }
-
-// module.exports = guildJoinDBCreate

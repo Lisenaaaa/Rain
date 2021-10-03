@@ -1,13 +1,13 @@
+import { RainCommand } from '@extensions/RainCommand'
 import { exec } from 'child_process'
 import { Message, MessageEmbed } from 'discord.js'
 import { inspect, promisify } from 'util'
-import { RainCommand } from '@extensions/RainCommand'
 
 const sh = promisify(exec)
 
-export default class gitpull extends RainCommand {
+export default class GitPull extends RainCommand {
 	constructor() {
-		super('gitpull', {
+		super('gitPull', {
 			aliases: ['gitpull', 'pull'],
 			ownerOnly: true,
 			channel: 'guild',

@@ -1,9 +1,9 @@
 import { RainListener } from '@extensions/RainListener'
 import { Guild, Message, TextChannel } from 'discord.js'
 
-module.exports = class autoquote extends RainListener {
+export default class AutoQuoteListener extends RainListener {
 	constructor() {
-		super('autoquote', {
+		super('autoQuote', {
 			emitter: 'client',
 			event: 'messageCreate',
 		})

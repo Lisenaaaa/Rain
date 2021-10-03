@@ -6,7 +6,7 @@ import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
 import { perms } from '@src/types/misc'
 
-export default class extends RainInhibitor {
+export default class CommandHandlerInhibitor extends RainInhibitor {
 	constructor() {
 		super('commandHandler', {
 			reason: 'commandHandler',

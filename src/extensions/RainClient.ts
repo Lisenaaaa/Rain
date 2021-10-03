@@ -1,20 +1,20 @@
+import database from '@functions/database'
+import config from '@src/config/config'
 import chalk from 'chalk'
 import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from 'discord-akairo'
 import { Intents, Structures } from 'discord.js'
 import { join } from 'path'
-import database from '@functions/database'
 import clientUtils from './ClientUtils'
-import config from '@src/config/config'
-import { dRainMessage } from './discord.js/Message'
-import { RainGuild } from './discord.js/Guild'
-import { RainUser } from './discord.js/User'
-import { RainMember } from './discord.js/GuildMember'
 import { RainChannel } from './discord.js/Channel'
+import { RainGuild } from './discord.js/Guild'
+import { RainMember } from './discord.js/GuildMember'
+import { DRainMessage } from './discord.js/Message'
+import { RainUser } from './discord.js/User'
 
 export default class RainClient extends AkairoClient {
 	static preStart() {
 		Structures.extend('TextChannel', () => RainChannel)
-		Structures.extend('Message', () => dRainMessage)
+		Structures.extend('Message', () => DRainMessage)
 		Structures.extend('Guild', () => RainGuild)
 		Structures.extend('User', () => RainUser)
 		Structures.extend('GuildMember', () => RainMember)

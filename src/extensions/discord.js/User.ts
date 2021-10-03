@@ -1,5 +1,5 @@
-import { User } from 'discord.js'
 import BotClient from '@extensions/RainClient'
+import { User } from 'discord.js'
 import { RawUserData } from 'discord.js/typings/rawDataTypes'
 import got from 'got/dist/source'
 
@@ -121,21 +121,20 @@ export class RainUser extends User {
 			const pronouns = JSON.parse(pronoundb.body).pronouns
 			//what to return, based on what's getting someone's pronouns
 			if (context == 'details') {
-				return pronounDetails.find(p => p.id == pronouns)?.pronoun
+				return pronounDetails.find((p) => p.id == pronouns)?.pronoun
 			}
 			if (context == 'ownedBy') {
 				//it is their computer
-				return pronounOwnedByPerson.find(p => p.id == pronouns)?.pronoun
+				return pronounOwnedByPerson.find((p) => p.id == pronouns)?.pronoun
 			}
 			if (context == 'singular') {
 				//they own this computer
-				return pronounSingular.find(p => p.id == pronouns)?.pronoun
+				return pronounSingular.find((p) => p.id == pronouns)?.pronoun
 			}
 			if (context == 'talkingAbout') {
 				//this computer belongs to them
-				return pronounDescribe.find(p => p.id == pronouns)?.pronoun
+				return pronounDescribe.find((p) => p.id == pronouns)?.pronoun
 			}
-			
 		} catch (err) {
 			//if they don't have pronouns set, or if pronoundb is down
 			if (err == 'Error: Request failed with status code 404') {

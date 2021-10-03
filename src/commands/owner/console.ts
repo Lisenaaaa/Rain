@@ -7,7 +7,7 @@ import utils from '@functions/utils'
 
 const sh = promisify(exec)
 
-export default class console extends RainCommand {
+export default class Console extends RainCommand {
 	constructor() {
 		super('console', {
 			aliases: ['console', 'sh'],

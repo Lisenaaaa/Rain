@@ -1,10 +1,10 @@
 import config from '@src/config/config'
-import { GuildDatabaseCreator, GuildDatabase } from '@src/types/database'
+import { GuildDatabase, GuildDatabaseCreator } from '@src/types/database'
 import chalk from 'chalk'
 import { Snowflake } from 'discord.js'
-
 import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
 import client from '..'
+
 const pg = new Sequelize(config.database.pgdbid, config.database.pguser, config.database.pguserpassword, {
 	host: config.database.pghost,
 	dialect: 'postgres',
@@ -74,7 +74,6 @@ async function editGuild(guildID: Snowflake, query: string, newValue: unknown) {
 		const finalQuery = queryArray.pop()
 
 		queryArray.forEach((query) => {
-
 			//@ts-ignore ok typescript
 			dbObject = dbObject?.[query as keyof typeof dbObject]
 		})
