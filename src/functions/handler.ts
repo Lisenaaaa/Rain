@@ -1,11 +1,12 @@
+import { RainCommand } from '@extensions/RainCommand'
 import client from '@src/index'
 
 export default class Handler {
-	static getCommand(id: string) {
+	static getCommand(id: string): RainCommand | undefined {
 		try {
 			client.commandHandler.modules.find((command) => command.id === id)
 		} catch (err) {
-			return "Couldn't find command."
+			return undefined
 		}
 	}
 
@@ -34,5 +35,18 @@ export default class Handler {
 		} catch (err) {
 			return "Couldn't find command."
 		}
+	}
+
+	static getAllCommands() {
+		const commandArray: string[] = []
+
+		client.commandHandler.modules.forEach((c) => {
+			if (c.ownerOnly) return
+			if (c.id === 'helpme') return
+			if (c.id.includes('test')) return
+			commandArray.push(c.id)
+		})
+
+		return commandArray
 	}
 }

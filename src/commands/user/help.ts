@@ -10,6 +10,7 @@ export default class help extends RainCommand {
 			description: 'You already know what this does, otherwise you wouldnt be using it, right?',
 			usage: '-help\n-help <command ID>',
 			discordPerms: ['SEND_MESSAGES'],
+			defaultPerms: 'none'
 		})
 	}
 	async execSlash(message: RainMessage, args: { command: string }) {

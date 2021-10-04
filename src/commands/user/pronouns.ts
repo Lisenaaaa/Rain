@@ -21,6 +21,7 @@ export default class Pronouns extends RainCommand {
 				},
 			],
 			ephemeralWhenNoPerms: true,
+			defaultPerms: 'none'
 		})
 	}
 

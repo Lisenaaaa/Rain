@@ -26,6 +26,7 @@ export default class Evaluate extends RainCommand {
 				{ name: 'sudo', description: 'bypass a few things', type: 'BOOLEAN' },
 			],
 			slashGuilds: ['880637463838724166'],
+			defaultPerms: 'owner'
 		})
 	}
 

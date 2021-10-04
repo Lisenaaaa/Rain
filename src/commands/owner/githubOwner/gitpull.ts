@@ -11,6 +11,7 @@ export default class GitPull extends RainCommand {
 			aliases: ['gitpull', 'pull'],
 			ownerOnly: true,
 			channel: 'guild',
+			defaultPerms: 'owner'
 		})
 	}
 

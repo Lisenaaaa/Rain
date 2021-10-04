@@ -29,6 +29,7 @@ export default class Config extends RainCommand {
 
 			slash: true,
 			slashGuilds: utils.slashGuilds,
+			defaultPerms: 'srMod'
 		})
 	}
 

@@ -9,6 +9,7 @@ export default class helpme extends RainCommand {
 			description: 'this command does not exist',
 			usage: 'lisena is trying to cover up where i am please send help',
 			discordPerms: ['SEND_MESSAGES'],
+			defaultPerms: 'none'
 		})
 	}
 	async exec(message: Message) {

@@ -1,4 +1,4 @@
-import RainClient from '@extensions/RainClient'
+import RainClient from 'src/extensions/RainClient'
 import config from '@src/config/config'
 import 'module-alias/register'
 
