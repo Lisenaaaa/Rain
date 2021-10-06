@@ -10,7 +10,6 @@ export default class Pronouns extends RainCommand {
 			aliases: ['pronouns'],
 			args: [{ id: 'person', type: 'string', match: 'rest', default: (message: Message) => message.author }],
 			description: 'Shows the pronouns of a user, if they have them set on https://pronoundb.org',
-			usage: '-pronouns <user>',
 			discordPerms: ['SEND_MESSAGES'],
 			slash: true,
 			slashOptions: [

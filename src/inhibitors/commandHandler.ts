@@ -2,6 +2,7 @@ import { RainMessage } from '@extensions/akairo/AkairoMessage'
 import { RainChannel } from '@extensions/discord.js/Channel'
 import { RainGuild } from '@extensions/discord.js/Guild'
 import { RainMember } from '@extensions/discord.js/GuildMember'
+import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
 import { perms } from '@src/types/misc'
@@ -15,6 +16,13 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	async exec(message: RainMessage, command: RainCommand) {
+		if (command.ownerOnly && !(message.author as RainUser).isOwner()) {
+			await message.reply({
+				content: "Hey, you aren't my owner!",
+				ephemeral: true,
+			})
+			return false
+		}
 		const { debugLog } = this.client
 		const debug = true
 		const staffRoles = (await (message.guild as RainGuild).database())?.guildSettings.staffRoles
@@ -26,6 +34,6 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 			debugLog('member can use commands in channel', await (message.member as RainMember).hasPermission(channelPerms as perms))
 			console.log('\n\n')
 		}
-		return await (message.member as RainMember).hasPermission(channelPerms as perms)
+		return (await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
 	}
 }

@@ -1,6 +1,7 @@
-import RainClient from 'src/extensions/RainClient'
-import config from '@src/config/config'
 import 'module-alias/register'
+
+import RainClient from '@extensions/RainClient'
+import config from '@src/config/config'
 
 RainClient.preStart()
 

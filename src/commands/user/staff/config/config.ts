@@ -24,7 +24,6 @@ export default class Config extends RainCommand {
 		super('config', {
 			aliases: ['config'],
 			description: 'configure the bot',
-			usage: '-config',
 			discordPerms: ['MANAGE_GUILD'],
 
 			slash: true,

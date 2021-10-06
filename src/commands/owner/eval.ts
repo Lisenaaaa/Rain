@@ -26,7 +26,7 @@ export default class Evaluate extends RainCommand {
 				{ name: 'sudo', description: 'bypass a few things', type: 'BOOLEAN' },
 			],
 			slashGuilds: ['880637463838724166'],
-			defaultPerms: 'owner'
+			defaultPerms: 'owner',
 		})
 	}
 
@@ -58,7 +58,15 @@ export default class Evaluate extends RainCommand {
 		let output
 
 		try {
-			output = await eval(`(async () => {${args.codetoeval.includes('return') ? args.codetoeval : `return ${args.codetoeval}`}})()`)
+			/*
+				if it DOES NOT include `await` and it DOES NOT include `return`, run normal function
+				if it includes `await` but not `return`, run async function with return in front of code
+				if it includes both, run async function with just code
+			*/
+			let codeToEval = `(async () => {${args.codetoeval}})()`
+			if (!args.codetoeval.includes('await') && !args.codetoeval.includes('return')) codeToEval = args.codetoeval
+			if (args.codetoeval.includes('await') && !args.codetoeval.includes('return')) codeToEval = `(async () => { return ${args.codetoeval}})()`
+			output = await eval(codeToEval)
 			output = inspect(output, { depth: 0 })
 			output = utils.censorString(output)
 		} catch (err) {
@@ -83,28 +91,22 @@ export default class Evaluate extends RainCommand {
 			const evalOutputEmbed = new MessageEmbed().setTitle('Evaluated Code').addField(':inbox_tray: **Input**', `\`\`\`js\n${args.codetoeval}\`\`\``)
 			if (message.member) evalOutputEmbed.setColor(message.member.displayColor)
 
-			output = `\`\`\`js\n${output}\`\`\``
+			let newOutput = `\`\`\`js\n${output}\`\`\``
 
-			if (output.length > 900) {
+			if (newOutput.length > 900) {
 				const haste = await utils.haste(utils.censorString(output))
-				output = output.substring(0, 900)
+				newOutput = `\`\`\`js\n${output.substring(0, 900)}\`\`\``
 				output += `\`\`\`\nThe output was too large to display, so it was uploaded to [hastebin](${haste})`
 			}
 
-			evalOutputEmbed.addField(':outbox_tray: **Output**', output)
-
-			if (!message.interaction) {
-				await message.util?.reply({ embeds: [evalOutputEmbed] })
-			}
-			if (message.interaction) {
-				await message.reply({ embeds: [evalOutputEmbed] })
-			}
+			evalOutputEmbed.addField(':outbox_tray: **Output**', newOutput)
+			await message.reply({ embeds: [evalOutputEmbed] })
 		}
 		if (args.silent && !message.interaction) {
 			if (args.codetoeval.includes('message.delete')) {
 				return
 			}
-			message.react('<:success:838816341007269908>')
+			await message.react('<:success:838816341007269908>')
 		} else if (args.silent && message instanceof AkairoMessage) {
 			return message.reply({
 				content: "i can't really send nothing",

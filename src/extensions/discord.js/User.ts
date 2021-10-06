@@ -142,4 +142,8 @@ export class RainUser extends User {
 			}
 		}
 	}
+
+	isOwner() {
+		return this.client.ownerID.includes(this.id)
+	}
 }

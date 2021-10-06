@@ -7,7 +7,6 @@ export default class helpme extends RainCommand {
 		super('helpme', {
 			aliases: ['helpme'],
 			description: 'this command does not exist',
-			usage: 'lisena is trying to cover up where i am please send help',
 			discordPerms: ['SEND_MESSAGES'],
 			defaultPerms: 'none'
 		})

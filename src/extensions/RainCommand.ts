@@ -5,14 +5,12 @@ import { PermissionResolvable, Snowflake } from 'discord.js'
 
 export class RainCommand extends Command {
 	declare client: RainClient
-	usage: string
 	discordPerms: PermissionResolvable[]
 	ephemeralWhenNoPerms: boolean
 	defaultPerms: perms
 
 	public constructor(id: string, options: RainCommandOptions) {
 		super(id, options)
-		this.usage = options.usage as string
 		this.discordPerms = options.discordPerms as PermissionResolvable[]
 		this.ephemeralWhenNoPerms = options.ephemeralWhenNoPerms as boolean
 		this.defaultPerms = options.defaultPerms as perms
@@ -27,7 +25,6 @@ export class RainCommand extends Command {
 
 interface RainCommandOptions extends CommandOptions {
 	description?: string
-	usage?: string
 	discordPerms?: PermissionResolvable[]
 	ephemeralWhenNoPerms?: boolean
 	defaultPerms: perms | 'none'

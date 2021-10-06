@@ -37,7 +37,9 @@ export class RainMember extends GuildMember {
 		return finalArray
 	}
 
-	async hasPermission(perm: perms) {
+	async hasPermission(perm: perms): Promise<boolean> {
+		if (this.user.id === this.guild.ownerId) return true
+
 		const roleSettings = (await (this.guild as RainGuild).database())?.guildSettings.staffRoles
 
 		let found = false
