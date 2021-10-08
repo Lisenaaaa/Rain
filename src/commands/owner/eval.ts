@@ -58,11 +58,6 @@ export default class Evaluate extends RainCommand {
 		let output
 
 		try {
-			/*
-				if it DOES NOT include `await` and it DOES NOT include `return`, run normal function
-				if it includes `await` but not `return`, run async function with return in front of code
-				if it includes both, run async function with just code
-			*/
 			let codeToEval = `(async () => {${args.codetoeval}})()`
 			if (!args.codetoeval.includes('await') && !args.codetoeval.includes('return')) codeToEval = args.codetoeval
 			if (args.codetoeval.includes('await') && !args.codetoeval.includes('return')) codeToEval = `(async () => { return ${args.codetoeval}})()`
@@ -83,7 +78,7 @@ export default class Evaluate extends RainCommand {
 			if (args.codetoeval.includes('message.delete')) {
 				return
 			} else {
-				//return message.react('<:successAnimated:881336936533483520>')
+				return message.react('<a:successAnimated:881336936533483520>')
 			}
 		}
 
@@ -96,7 +91,7 @@ export default class Evaluate extends RainCommand {
 			if (newOutput.length > 900) {
 				const haste = await utils.haste(utils.censorString(output))
 				newOutput = `\`\`\`js\n${output.substring(0, 900)}\`\`\``
-				output += `\`\`\`\nThe output was too large to display, so it was uploaded to [hastebin](${haste})`
+				newOutput += `The output was too large to display, so it was uploaded to [hastebin](${haste})`
 			}
 
 			evalOutputEmbed.addField(':outbox_tray: **Output**', newOutput)
@@ -106,9 +101,9 @@ export default class Evaluate extends RainCommand {
 			if (args.codetoeval.includes('message.delete')) {
 				return
 			}
-			await message.react('<:success:838816341007269908>')
+			await message.react('<a:successAnimated:881336936533483520>')
 		} else if (args.silent && message instanceof AkairoMessage) {
-			return message.reply({
+			return await message.reply({
 				content: "i can't really send nothing",
 				ephemeral: true,
 			})

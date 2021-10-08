@@ -30,9 +30,7 @@ export default class Utils {
 					})
 					.json()
 
-				const key = body['key']
-
-				return `${url}/${key}`
+				return `${url}/${body['key']}`
 			} catch (err) {
 				continue
 			}
@@ -40,7 +38,7 @@ export default class Utils {
 		return "Couldn't post"
 	}
 
-	static async hasteJson(content: string) {
+	static async hasteJson<T>(content: T): Promise<string> {
 		const urls = [
 			'https://h.inv.wtf',
 			'https://hst.sh',
@@ -147,7 +145,7 @@ export default class Utils {
 		return string.replace(/[-[\]{}()*+!<=:?./\\^$|#\s,]/g, '\\$&')
 	}
 
-	static censorString(string: string) {
+	static censorString(string: string): string {
 		Object.keys(config).forEach((key: string) => {
 			const configObject = config[key as keyof typeof config]
 
