@@ -30,7 +30,7 @@
 	},
 	"dependencies": {
 		"chalk": "^4.1.2",
-		"discord-akairo": "Lisenaaaa/discord-akairo",
+		"discord-akairo": "NotEnoughUpdates/discord-akairo",
 		"discord.js": "NotEnoughUpdates/discord.js",
 		"dotenv": "^10.0.0",
 		"got": "^11.8.2",

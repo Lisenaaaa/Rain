@@ -667,21 +667,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-discord-akairo-message-util@NotEnoughUpdates/discord-akairo-message-util:
+"discord-akairo-message-util@npm:@notenoughupdates/discord-akairo-message-util@latest":
   version: 1.0.0
-  resolution: "discord-akairo-message-util@https://github.com/NotEnoughUpdates/discord-akairo-message-util.git#commit=9831d4f340bc8c3452d3dfef0497f7844dee0f29"
-  checksum: 037722daf405eb7afebc47423e29a54816f5ab245e4aa0b0f99ad4ed32980839e1d1a399c12310acb1cabd6890d929d870223bddba4b6c2d107b5a79c4a37108
+  resolution: "@notenoughupdates/discord-akairo-message-util@npm:1.0.0"
+  checksum: fdd0f3e7f6410eb2fdc21aa8d293ff6a378b29c81ee8b54afca156da488c6af0353c91856bf01c775b5576da96478ada26cfdbdff76d54b3254e78dcad78bfa7
   languageName: node
   linkType: hard
 
-discord-akairo@Lisenaaaa/discord-akairo:
-  version: 9.0.1
-  resolution: "discord-akairo@https://github.com/Lisenaaaa/discord-akairo.git#commit=3f586ef1b8798ec71b9680b100bd3ffa21fe34d9"
+discord-akairo@NotEnoughUpdates/discord-akairo:
+  version: 9.0.5-dev
+  resolution: "discord-akairo@https://github.com/NotEnoughUpdates/discord-akairo.git#commit=8d2f51c30b11b9680259a1c7321117e6a9d2daf5"
   dependencies:
-    discord-akairo-message-util: NotEnoughUpdates/discord-akairo-message-util
+    discord-akairo-message-util: "npm:@notenoughupdates/discord-akairo-message-util@latest"
     lodash: ^4.17.21
-    source-map-support: ^0.5.19
-  checksum: 3acdf9afa1d97610749e588680e335efa870aca5fdfb6c8cb6bf60d8f9de41bb713b24a9638bad3e254b620b52de2e0b3ceabd48b3911b62c5522e7acf3af6c0
+    source-map-support: ^0.5.20
+  checksum: 01de47e52991dd48bc8c0c3c5d24822ab01ea303320e9a0e544305aabb584227ef0fb0aaf3889d59d806b7714faacdb42c7cfbd48a0e0321d9b86388c0fc61f8
   languageName: node
   linkType: hard
 
@@ -1735,7 +1735,7 @@ discord.js@NotEnoughUpdates/discord.js:
     "@typescript-eslint/eslint-plugin": ^4.32.0
     "@typescript-eslint/parser": ^4.32.0
     chalk: ^4.1.2
-    discord-akairo: Lisenaaaa/discord-akairo
+    discord-akairo: NotEnoughUpdates/discord-akairo
     discord-api-types: ^0.23.1
     discord.js: NotEnoughUpdates/discord.js
     dotenv: ^10.0.0
@@ -1930,7 +1930,7 @@ discord.js@NotEnoughUpdates/discord.js:
   languageName: node
   linkType: hard
 
-"source-map-support@npm:^0.5.19":
+"source-map-support@npm:^0.5.19, source-map-support@npm:^0.5.20":
   version: 0.5.20
   resolution: "source-map-support@npm:0.5.20"
   dependencies:

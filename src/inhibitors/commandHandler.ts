@@ -6,6 +6,7 @@ import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
 import { perms } from '@src/types/misc'
+import { Message } from 'discord.js'
 
 export default class CommandHandlerInhibitor extends RainInhibitor {
 	constructor() {
@@ -14,8 +15,7 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 		})
 	}
 
-	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	async exec(message: RainMessage, command: RainCommand) {
+	async exec(message: Message | RainMessage, command: RainCommand) {
 		if (command.ownerOnly && !(message.author as RainUser).isOwner()) {
 			await message.reply({
 				content: "Hey, you aren't my owner!",
@@ -29,11 +29,13 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 		const channelPerms = await (message.channel as RainChannel).getRestrictedPerms()
 
 		if (debug) {
+			debugLog('commandId', command.id)
 			debugLog('staffRoles', staffRoles)
 			debugLog('channelPerms', channelPerms)
+			debugLog('commandEnabled', await command.enabled(message.guild?.id as string))
 			debugLog('member can use commands in channel', await (message.member as RainMember).hasPermission(channelPerms as perms))
-			console.log('\n\n')
+			console.log('\n')
 		}
-		return (await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
+		return false//(await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
 	}
 }

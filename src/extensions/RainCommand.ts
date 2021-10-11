@@ -19,7 +19,11 @@ export class RainCommand extends Command {
 	async enabled(guildID: Snowflake): Promise<boolean> {
 		const db = await this.client.database.readGuild(guildID)
 
+		if (this.ownerOnly) return true
 		return (db?.commandSettings.find(c => c.id == this.id))?.enabled as boolean
+	}
+	async enabledGlobally() {
+		throw new Error('Function not implemented.')
 	}
 }
 
