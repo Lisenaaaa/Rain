@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { RainMessage } from '@extensions/akairo/AkairoMessage'
+import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import importDatabase from '@functions/database'
 import importUtils from '@functions/utils'
@@ -30,7 +32,7 @@ export default class Evaluate extends RainCommand {
 		})
 	}
 
-	async exec(message: Message, args: EvalOptions) {
+	async exec(message: DRainMessage, args: EvalOptions) {
 		//if (message.author.id != '881310086411190293') {return message.reply('no u')}
 
 		if (args.codetoeval.includes('channel.delete')) {
@@ -78,7 +80,7 @@ export default class Evaluate extends RainCommand {
 			if (args.codetoeval.includes('message.delete')) {
 				return
 			} else {
-				return message.react('<a:successAnimated:881336936533483520>')
+				return await message.react('<a:successAnimated:881336936533483520>')
 			}
 		}
 
@@ -95,7 +97,9 @@ export default class Evaluate extends RainCommand {
 			}
 
 			evalOutputEmbed.addField(':outbox_tray: **Output**', newOutput)
-			await message.reply({ embeds: [evalOutputEmbed] })
+
+			//@ts-ignore stfu typescript
+			await message.util.reply({ embeds: [evalOutputEmbed] })
 		}
 		if (args.silent && !message.interaction) {
 			if (args.codetoeval.includes('message.delete')) {
@@ -103,7 +107,7 @@ export default class Evaluate extends RainCommand {
 			}
 			await message.react('<a:successAnimated:881336936533483520>')
 		} else if (args.silent && message instanceof AkairoMessage) {
-			return await message.reply({
+			return await message.util.reply({
 				content: "i can't really send nothing",
 				ephemeral: true,
 			})

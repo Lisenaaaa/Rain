@@ -15,7 +15,7 @@ export interface GuildDatabase {
 	features: { id: string; enabled: boolean }[]
 }
 
-export class GuildDatabaseCreator {
+export class GuildDatabaseConstructor {
 	public constructor(options: GuildDatabase) {
 		this.guildID = options.guildID
 		this.guildSettings = options.guildSettings
@@ -36,8 +36,25 @@ export class GuildDatabaseCreator {
 	public features: { id: string; enabled: boolean }[]
 }
 
+export class UserDatabaseConstructor {
+	public constructor(options: UserDatabase) {
+		this.userID = options.userID
+		this.badges = options.badges
+		this.superuser = options.superuser
+	}
+
+	public userID: Snowflake
+	public badges: string[]
+	public superuser: boolean
+}
+
 export type UserDatabase = {
 	userID: Snowflake
 	badges: string[]
 	superuser: boolean
+}
+
+export type CommandDatabase = {
+	id: string,
+	enabled: boolean
 }

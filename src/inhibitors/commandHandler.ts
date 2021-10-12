@@ -2,10 +2,12 @@ import { RainMessage } from '@extensions/akairo/AkairoMessage'
 import { RainChannel } from '@extensions/discord.js/Channel'
 import { RainGuild } from '@extensions/discord.js/Guild'
 import { RainMember } from '@extensions/discord.js/GuildMember'
+import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
 import { perms } from '@src/types/misc'
+import { AkairoMessage } from 'discord-akairo'
 import { Message } from 'discord.js'
 
 export default class CommandHandlerInhibitor extends RainInhibitor {
@@ -15,7 +17,7 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 		})
 	}
 
-	async exec(message: Message | RainMessage, command: RainCommand) {
+	async exec(message: Message | AkairoMessage, command: RainCommand) {
 		if (command.ownerOnly && !(message.author as RainUser).isOwner()) {
 			await message.reply({
 				content: "Hey, you aren't my owner!",

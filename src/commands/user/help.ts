@@ -29,7 +29,7 @@ export default class help extends RainCommand {
 
 			const helpEmbed = new MessageEmbed().setTitle(command.id).setDescription(command.description)
 
-			message.send({ embeds: [helpEmbed] })
+			message.reply({ embeds: [helpEmbed] })
 		}
 	}
 }

@@ -1,5 +1,5 @@
 import config from '@src/config/config'
-import { GuildDatabase, GuildDatabaseCreator } from '@src/types/database'
+import { GuildDatabase, GuildDatabaseConstructor, UserDatabaseConstructor } from '@src/types/database'
 import chalk from 'chalk'
 import { Snowflake } from 'discord.js'
 import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
@@ -27,7 +27,7 @@ async function rawDbRequest(string: string, options: QueryOptions | QueryOptions
 }
 
 function defaultDBSchema(guildID: Snowflake) {
-	return new GuildDatabaseCreator({
+	return new GuildDatabaseConstructor({
 		guildID: guildID,
 		guildSettings: {
 			welcomeChannel: 'null',
@@ -112,6 +112,63 @@ async function deleteGuild(guildID: Snowflake) {
 	}
 }
 
+async function addUser(userID: Snowflake) {
+	try {
+		const schema = JSON.stringify(new UserDatabaseConstructor({userID: userID, badges: [], superuser: false}))
+		const string = `INSERT INTO users(data) VALUES ($schema);`
+		await rawDbRequest(string, { bind: { schema: schema } })
+		return true
+	} catch (err) {
+		await client.utils.error(err.stack, ' database adding')
+		return false
+	}
+}
+
+async function getEntireUsersDB() {
+	const userdb = await rawDbRequest('SELECT * from users;')
+	const alldbs: {userID: Snowflake, badges: string[], superuser: boolean}[] = []
+
+	/* typescript is stupid and i want eslint to not be yell */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	userdb[0].forEach((db: any) => {
+		alldbs.push(db.data)
+	})
+
+	return alldbs
+}
+
+async function getUser(userID: Snowflake) {
+	const usersDB = await getEntireUsersDB()
+	return usersDB.find(user => user.userID === userID)
+}
+
+async function editUser(userID: Snowflake, query: 'badges'|'superuser', newValue: unknown) {
+	try {
+		const userDB = (await getUser(userID)) as {userID: Snowflake, badges: string[], superuser: boolean}
+
+		const queryArray = query.split('.')
+
+		let dbObject: {userID: Snowflake, badges: string[], superuser: boolean} = userDB
+
+		const finalQuery = queryArray.pop()
+
+		queryArray.forEach((query) => {
+			//@ts-ignore ok typescript
+			dbObject = dbObject?.[query as keyof typeof dbObject]
+		})
+
+		//@ts-ignore ok typescript
+		dbObject[finalQuery as keyof typeof dbObject] = newValue
+
+		await rawDbRequest("UPDATE users SET data = $1 WHERE data->>'userID' = $2;", { bind: [userDB, userID] })
+
+		return true
+	} catch (err) {
+		client.utils.error(err, ' database editing')
+		return false
+	}
+}
+
 export default {
 	defaultDBSchema,
 	getEntireGuildsDB,
@@ -120,4 +177,9 @@ export default {
 	editGuild,
 	addGuild,
 	deleteGuild,
+
+	addUser,
+	getUser,
+	getEntireUsersDB,
+	editUser
 }

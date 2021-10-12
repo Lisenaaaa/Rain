@@ -11,13 +11,24 @@ export class RainGuild extends Guild {
 		super(client, options)
 	}
 
-	async database() {
+	async database(query?: string) {
 		let db = await database.readGuild(this.id)
 		if (db === undefined) {
 			await database.addGuild(this.id)
 			db = await database.readGuild(this.id)
-			return db
-		} else return db
+		}
+
+		if (query) {
+			const queryArray = query.split('.')
+			let dbObject = db
+			queryArray.forEach((query) => {
+				//@ts-ignore ok typescript
+				dbObject = dbObject?.[query as keyof typeof dbObject]
+			})
+	
+			return dbObject
+		}
+		else return db
 	}
 
 	async editStaffRole(position: perms, newRole: Snowflake | null) {
