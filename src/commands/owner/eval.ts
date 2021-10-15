@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { RainMessage } from '@extensions/akairo/AkairoMessage'
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import importDatabase from '@functions/database'
@@ -7,9 +5,10 @@ import importUtils from '@functions/utils'
 import { EvalOptions } from '@src/types/misc'
 import { exec } from 'child_process'
 import { AkairoMessage } from 'discord-akairo'
-import { Message, MessageEmbed } from 'discord.js'
+import { MessageEmbed } from 'discord.js'
 import { inspect, promisify } from 'util'
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 export default class Evaluate extends RainCommand {
 	constructor() {
 		super('eval', {
@@ -33,8 +32,6 @@ export default class Evaluate extends RainCommand {
 	}
 
 	async exec(message: DRainMessage, args: EvalOptions) {
-		//if (message.author.id != '881310086411190293') {return message.reply('no u')}
-
 		if (args.codetoeval.includes('channel.delete')) {
 			return message.reply('Are you IRONM00N?')
 		}
