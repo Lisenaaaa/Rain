@@ -9,6 +9,9 @@ import { MessageEmbed } from 'discord.js'
 import { inspect, promisify } from 'util'
 
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import djsImport from 'discord.js'
+const djs = djsImport
+
 export default class Evaluate extends RainCommand {
 	constructor() {
 		super('eval', {
