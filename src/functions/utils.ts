@@ -164,4 +164,8 @@ export default class Utils {
 	static generateModlogEntry(data: modlogs) {
 		return data
 	}
+
+	static currentTimestamp() {
+		return Math.round(Date.now() / 1000)
+	}
 }

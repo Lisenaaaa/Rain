@@ -1,6 +1,7 @@
 import BotClient from '@extensions/RainClient'
+import Utils from '@functions/utils'
 import { perms } from '@src/types/misc'
-import { Guild, GuildMember } from 'discord.js'
+import { Guild, GuildMember, Snowflake } from 'discord.js'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 import { RainGuild } from './Guild'
 
@@ -11,7 +12,7 @@ export class RainMember extends GuildMember {
 		super(client, options, guild)
 	}
 
-	importantPerms() {
+	get importantPerms() {
 		const permsArray = this.permissions.toArray()
 		const importantPerms = [
 			'BAN_MEMBERS',
@@ -98,5 +99,13 @@ export class RainMember extends GuildMember {
 		}
 
 		return permsArray.includes(perm)
+	}
+
+	get perms(): perms | 'none' {
+		throw new Error('Function not implemented')
+	}
+
+	async createModlogs(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {
+		console.log(Utils.currentTimestamp())
 	}
 }
