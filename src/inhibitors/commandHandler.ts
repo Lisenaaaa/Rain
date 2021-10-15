@@ -1,8 +1,6 @@
-import { RainMessage } from '@extensions/akairo/AkairoMessage'
 import { RainChannel } from '@extensions/discord.js/Channel'
 import { RainGuild } from '@extensions/discord.js/Guild'
 import { RainMember } from '@extensions/discord.js/GuildMember'
-import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
