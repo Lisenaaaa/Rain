@@ -20,10 +20,10 @@ export class RainCommand extends Command {
 		const db = await this.client.database.readGuild(guildID)
 
 		if (this.ownerOnly) return true
-		return (db?.commandSettings.find(c => c.id == this.id))?.enabled as boolean
+		return db?.commandSettings.find((c) => c.id == this.id)?.enabled as boolean
 	}
 	async enabledGlobally() {
-		throw new Error('Function not implemented.')
+		return (await this.client.database.getCommand(this.id))?.enabled
 	}
 }
 
