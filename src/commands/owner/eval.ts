@@ -12,6 +12,9 @@ import { inspect, promisify } from 'util'
 import djsImport from 'discord.js'
 const djs = djsImport
 
+import HandlerImport from '@functions/handler'
+const handler = HandlerImport
+
 export default class Evaluate extends RainCommand {
 	constructor() {
 		super('eval', {

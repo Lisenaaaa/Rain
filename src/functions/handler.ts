@@ -4,8 +4,9 @@ import client from '@src/index'
 export default class Handler {
 	static getCommand(id: string): RainCommand | undefined {
 		try {
-			client.commandHandler.modules.find((command) => command.id === id)
+			return client.commandHandler.modules.find((command) => command.id === id) as RainCommand
 		} catch (err) {
+			console.error(err)
 			return undefined
 		}
 	}

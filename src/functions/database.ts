@@ -217,7 +217,7 @@ async function editCommand(commandID: string, query: 'enabled', newValue: unknow
 		//@ts-ignore ok typescript
 		dbObject[finalQuery as keyof typeof dbObject] = newValue
 
-		await rawDbRequest("UPDATE commands SET data = $1 WHERE data->>'userID' = $2;", { bind: [commandsDB, commandID] })
+		await rawDbRequest("UPDATE commands SET data = $1 WHERE data->>'commandID' = $2;", { bind: [commandsDB, commandID] })
 
 		return true
 	} catch (err) {

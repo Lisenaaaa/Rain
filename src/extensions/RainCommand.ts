@@ -23,6 +23,7 @@ export class RainCommand extends Command {
 		return db?.commandSettings.find((c) => c.id == this.id)?.enabled as boolean
 	}
 	async enabledGlobally() {
+		if (this.ownerOnly) return true
 		return (await this.client.database.getCommand(this.id))?.enabled
 	}
 }

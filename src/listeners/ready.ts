@@ -14,8 +14,8 @@ export default class ReadyListener extends RainListener {
 
 	async exec() {
 		const guilds = await database.getEntireGuildsDB()
+		const allCommands = Handler.getAllCommands()
 		guilds.forEach(async (g) => {
-			const allCommands = Handler.getAllCommands()
 			let allGuildCommands = g.commandSettings
 			const guildCommandsArray: string[] = []
 
@@ -42,6 +42,16 @@ export default class ReadyListener extends RainListener {
 			})
 
 			await database.editGuild(g.guildID, 'commandSettings', allGuildCommands)
+		})
+		allCommands.forEach(async cmd => {
+			const allDBCommands = await database.getEntireCommandsDB()
+			if (!allDBCommands.find(c => c.commandID === cmd)) {
+				if (await database.addCommand(cmd) === false) {
+					console.log(chalk`{red Failed to add} {red.bold ${cmd}} {red to the global database.}`)
+					return process.exit()
+				}
+				console.log(chalk`{green Added} {greenBright ${cmd}} {green to the global database.}`)
+			}
 		})
 
 		console.log(chalk`{magenta Logged in as} {magentaBright.bold ${this.client.user?.tag}}`)
