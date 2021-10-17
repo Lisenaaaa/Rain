@@ -197,6 +197,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/node-fetch@npm:^2.5.12":
+  version: 2.5.12
+  resolution: "@types/node-fetch@npm:2.5.12"
+  dependencies:
+    "@types/node": "*"
+    form-data: ^3.0.0
+  checksum: ad63c85ba6a9477b8e057ec8682257738130d98e8ece4e31141789bd99df9d9147985cc8bc0cb5c8983ed5aa6bb95d46df23d1e055f4ad5cf8b82fc69cf626c7
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:*, @types/node@npm:^16.10.2":
   version: 16.10.2
   resolution: "@types/node@npm:16.10.2"
@@ -701,17 +711,18 @@ discord-akairo@NotEnoughUpdates/discord-akairo:
 
 discord.js@NotEnoughUpdates/discord.js:
   version: 13.3.0-dev
-  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=db08bdd37043fc567aa3c80523c22ef92ef5a5ee"
+  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=a6fde079fa04629cfe65210ecba09b0506a17a9b"
   dependencies:
     "@discordjs/builders": ^0.6.0
     "@discordjs/collection": ^0.2.1
     "@discordjs/form-data": ^3.0.1
     "@sapphire/async-queue": ^1.1.5
+    "@types/node-fetch": ^2.5.12
     "@types/ws": ^8.2.0
     discord-api-types: ^0.23.1
     node-fetch: ^2.6.1
     ws: ^8.2.3
-  checksum: f57f398f5bb1ce4a08af3cdf98741958d7067eac1baa3732dc2369f433adecf2d8980fe2e695593c183f323a70bfe95053d5bcd7d0b6cecd44da6c82d2304e67
+  checksum: 4448b43d970dee14bdf1f42ed2905a4cac212edc1d06b0345ad347cc4c2d41a3edbfd21320eea280f04899b241fd3214108daac1736aa038a25ad856c979c13a
   languageName: node
   linkType: hard
 
@@ -1015,6 +1026,17 @@ discord.js@NotEnoughUpdates/discord.js:
   version: 3.2.2
   resolution: "flatted@npm:3.2.2"
   checksum: 9d5e03fd9309b9103f345cf6d0cef4fa46201baa053b0ca3d57fa489449b0bee687b7355407898f630afbb1a1286d2a6658e7e77dea3b85c3cd6c6ce2894a5c3
+  languageName: node
+  linkType: hard
+
+"form-data@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "form-data@npm:3.0.1"
+  dependencies:
+    asynckit: ^0.4.0
+    combined-stream: ^1.0.8
+    mime-types: ^2.1.12
+  checksum: b019e8d35c8afc14a2bd8a7a92fa4f525a4726b6d5a9740e8d2623c30e308fbb58dc8469f90415a856698933c8479b01646a9dff33c87cc4e76d72aedbbf860d
   languageName: node
   linkType: hard
 
