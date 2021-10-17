@@ -101,8 +101,42 @@ export class RainMember extends GuildMember {
 		return permsArray.includes(perm)
 	}
 
-	get perms(): perms | 'none' {
-		throw new Error('Function not implemented')
+	async perms(): Promise<perms | "none"> {
+		const roleSettings = await (this.guild as RainGuild).database('guildSettings.staffRoles')
+
+		let found = false
+		let perms = 'none'
+
+		const owner = roleSettings?.owner
+		const admin = roleSettings?.admin
+		const srMod = roleSettings?.srMod
+		const moderator = roleSettings?.moderator
+		const helper = roleSettings?.helper
+		const trialHelper = roleSettings?.trialHelper
+
+		this.roles.cache.forEach((role) => {
+			if (role.id == owner && found == false) {
+				found = true
+				return (perms = 'owner')
+			} else if (role.id == admin && found == false) {
+				found = true
+				return (perms = 'admin')
+			} else if (role.id == srMod && found == false) {
+				found = true
+				return (perms = 'srMod')
+			} else if (role.id == moderator && found == false) {
+				found = true
+				return (perms = 'moderator')
+			} else if (role.id == helper && found == false) {
+				found = true
+				return (perms = 'helper')
+			} else if (role.id == trialHelper && found == false) {
+				found = true
+				return (perms = 'trialHelper')
+			}
+		})
+
+		return perms as perms | 'none'
 	}
 
 	async createModlogs(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {

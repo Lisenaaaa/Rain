@@ -11,7 +11,7 @@ export class RainGuild extends Guild {
 		super(client, options)
 	}
 
-	async database(query?: string) {
+	async database(query?: string): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
 		let db = await database.readGuild(this.id)
 		if (db === undefined) {
 			await database.addGuild(this.id)
@@ -51,7 +51,7 @@ export class RainGuild extends Guild {
 
 	async removeChannelPerms(channel: Snowflake, perms: perms) {
 		const currentLockedChannels = (await this.database())?.guildSettings.lockedChannels[perms]
-		const newLockedChannels = currentLockedChannels?.filter((c) => c != channel)
+		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
 
 		return await database.editGuild(this.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
 	}
