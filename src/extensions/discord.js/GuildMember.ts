@@ -146,7 +146,7 @@ export class RainMember extends GuildMember {
 		return perms as perms | 'none'
 	}
 
-	async createModlogs(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {
+	async createModlogs(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) { // eslint-disable-line @typescript-eslint/no-unused-vars
 		console.log(Utils.currentTimestamp())
 	}
 }
