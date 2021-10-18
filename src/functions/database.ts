@@ -35,8 +35,8 @@ function defaultDBSchema(guildID: Snowflake) {
 			loggingChannels: { message: null, member: null, moderation: null, action: null },
 			staffRoles: { owner: null, admin: null, srMod: null, moderator: null, helper: null, trialHelper: null },
 			lockedChannels: { owner: [], admin: [], srMod: [], moderator: [], helper: [], trialHelper: [] },
-			modlogs: [],
 		},
+		modlogs: [],
 		commandSettings: [],
 		features: [],
 	})

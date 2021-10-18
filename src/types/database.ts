@@ -9,8 +9,8 @@ export interface GuildDatabase {
 		loggingChannels: { message: Snowflake | null; member: Snowflake | null; moderation: Snowflake | null; action: Snowflake | null }
 		staffRoles: { owner: Snowflake | null; admin: Snowflake | null; srMod: Snowflake | null; moderator: Snowflake | null; helper: Snowflake | null; trialHelper: Snowflake | null }
 		lockedChannels: { owner: Snowflake[]; admin: Snowflake[]; srMod: Snowflake[]; moderator: Snowflake[]; helper: Snowflake[]; trialHelper: Snowflake[] }
-		modlogs: dbModlogs[]
 	}
+	modlogs: dbModlogs[]
 	commandSettings: guildCommandSettings[]
 	features: { id: string; enabled: boolean }[]
 }
@@ -19,6 +19,7 @@ export class GuildDatabaseConstructor {
 	public constructor(options: GuildDatabase) {
 		this.guildID = options.guildID
 		this.guildSettings = options.guildSettings
+		this.modlogs = options.modlogs
 		this.commandSettings = options.commandSettings
 		this.features = options.features
 	}
@@ -30,8 +31,8 @@ export class GuildDatabaseConstructor {
 		loggingChannels: { message: Snowflake | null; member: Snowflake | null; moderation: Snowflake | null; action: Snowflake | null }
 		staffRoles: { owner: Snowflake | null; admin: Snowflake | null; srMod: Snowflake | null; moderator: Snowflake | null; helper: Snowflake | null; trialHelper: Snowflake | null }
 		lockedChannels: { owner: Snowflake[]; admin: Snowflake[]; srMod: Snowflake[]; moderator: Snowflake[]; helper: Snowflake[]; trialHelper: Snowflake[] }
-		modlogs: dbModlogs[]
 	}
+	modlogs: dbModlogs[]
 	public commandSettings: guildCommandSettings[]
 	public features: { id: string; enabled: boolean }[]
 }
@@ -55,6 +56,6 @@ export type UserDatabase = {
 }
 
 export type CommandDatabase = {
-	id: string,
+	id: string
 	enabled: boolean
 }

@@ -165,7 +165,7 @@ export default class Utils {
 		return data
 	}
 
-	static currentTimestamp() {
+	static get currentTimestamp() {
 		return Math.round(Date.now() / 1000)
 	}
 }

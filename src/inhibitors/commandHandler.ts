@@ -1,5 +1,4 @@
 import { RainChannel } from '@extensions/discord.js/Channel'
-import { RainGuild } from '@extensions/discord.js/Guild'
 import { RainMember } from '@extensions/discord.js/GuildMember'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
@@ -16,7 +15,7 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 	}
 
 	async exec(message: Message | AkairoMessage, command: RainCommand) {
-		if (command.ownerOnly && !(message.author as RainUser).isOwner()) {
+		if (command.ownerOnly && !(message.author as RainUser).owner) {
 			await message.reply({
 				content: "Hey, you aren't my owner!",
 				ephemeral: true,

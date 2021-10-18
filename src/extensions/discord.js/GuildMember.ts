@@ -1,9 +1,11 @@
 import BotClient from '@extensions/RainClient'
 import Utils from '@functions/utils'
-import { perms } from '@src/types/misc'
+import { perms, dbModlogs, modlogs } from '@src/types/misc'
 import { Guild, GuildMember, Snowflake } from 'discord.js'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 import { RainGuild } from './Guild'
+import { nanoid } from 'nanoid'
+import database from '@functions/database'
 
 export class RainMember extends GuildMember {
 	declare client: BotClient
@@ -108,7 +110,7 @@ export class RainMember extends GuildMember {
 
 	async perms(): Promise<perms | 'none'> {
 		if (this.isOwner) return 'owner'
-		
+
 		const roleSettings = await (this.guild as RainGuild).database('guildSettings.staffRoles')
 
 		let found = false
@@ -146,7 +148,32 @@ export class RainMember extends GuildMember {
 		return perms as perms | 'none'
 	}
 
-	async createModlogs(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) { // eslint-disable-line @typescript-eslint/no-unused-vars
-		console.log(Utils.currentTimestamp())
+	async addModlogEntry(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {
+		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: reason ? reason : 'No Reason Provided', createdTimestamp: Utils.currentTimestamp }
+		if (duration) modlogEntry.duration = duration
+
+		const modlogs = await this.getModlogs()
+		let newModlogs: dbModlogs
+		if (modlogs === undefined) {
+			newModlogs = { memberID: this.user.id, logs: [] }
+			const dbLogs = await (this.guild as RainGuild).database('modlogs')
+			dbLogs.push(newModlogs)
+			const edited = await database.editGuild(this.guild.id, 'modlogs', dbLogs)
+			if (edited === false) return false
+			else return true
+		}
+
+		else {
+			modlogs.push(modlogEntry)
+			const dbLogs = await (this.guild as RainGuild).database('modlogs')
+			dbLogs.find((m: dbModlogs) => m.memberID === this.id).logs.push(modlogEntry)
+			const edited = await database.editGuild(this.guild.id, 'modlogs', dbLogs)
+			if (edited === false) return false
+			else return true
+		}
+	}
+
+	async getModlogs(): Promise<modlogs[] | undefined> {
+		return (await (this.guild as RainGuild).database('modlogs')).find((m: dbModlogs) => m.memberID === this.user.id).logs
 	}
 }
