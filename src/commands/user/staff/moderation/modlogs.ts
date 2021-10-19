@@ -4,7 +4,6 @@ import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import Utils from '@functions/utils'
-import { modlogs } from '@src/types/misc'
 
 export default class Modlogs extends RainCommand {
 	constructor() {
@@ -14,36 +13,40 @@ export default class Modlogs extends RainCommand {
 			description: "Views a user's modlogs",
 			discordPerms: ['MANAGE_MESSAGES'],
 			defaultPerms: 'trialHelper',
-            slash:true,
-            slashOptions: [
-                {
-                    name: 'user',
-                    description: 'The user to view the modlogs of',
-                    type: 'USER',
-                    required: true
-                }
-            ],
+			slash: true,
+			slashOptions: [
+				{
+					name: 'user',
+					description: 'The user to view the modlogs of',
+					type: 'USER',
+					required: true,
+				},
+			],
 
-            slashGuilds: Utils.slashGuilds
+			slashGuilds: Utils.slashGuilds,
 		})
 	}
 
-    async exec(message: DRainMessage) {await message.reply('slashcommands only :)')}
+	async exec(message: DRainMessage) {
+		await message.reply('slashcommands only :)')
+	}
 
-	async execSlash(message: RainMessage, args: { user: RainUser }) { // eslint-disable-line @typescript-eslint/no-unused-vars
-		const modlogs = await (await message.guild?.members.fetch(args.user.id) as RainMember).getModlogs()
+	async execSlash(message: RainMessage, args: { user: RainUser }) {
+		// eslint-disable-line @typescript-eslint/no-unused-vars
+		const modlogs = await ((await message.guild?.members.fetch(args.user.id)) as RainMember).getModlogs()
 		if (modlogs === undefined) return await message.reply('That user has no modlogs!')
 
-		const firstModlog = modlogs[0]
+		let modlogString = ``
+		for (const modlog of modlogs) {
+			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.client.users.fetch(modlog.modID)} (${await (
+				await this.client.users.fetch(modlog.modID)
+			).tag})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : ``}\nCreated at <t:${modlog.createdTimestamp}>`
+			if (modlogString.length === 0) modlogString += formattedModlog
+			else {
+				modlogString += `\n----------------------------------------------\n${formattedModlog}`
+			}
+		}
 
-		const firstModlogFormatted = `
-ID: \`${firstModlog.id}\`
-Type: ${firstModlog.type}
-Reason: ${firstModlog.reason}
-Responsible Moderator: ${await this.client.users.fetch(firstModlog.modID)} (${await (await this.client.users.fetch(firstModlog.modID)).tag})
-${firstModlog.duration ? `Expires: <t:${firstModlog.duration}:R>` : ``}
-		`
-
-		await message.reply({content: firstModlogFormatted, allowedMentions: {parse: []}})
+		await message.reply({ embeds: [{ title: `${args.user.tag}'s modlogs`, description: modlogString }] })
 	}
 }
