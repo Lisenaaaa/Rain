@@ -149,6 +149,8 @@ export class RainMember extends GuildMember {
 	}
 
 	async addModlogEntry(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {
+		if (!type) throw new Error('Modlog was created without a type.')
+		if (!moderator) throw new Error('Modlog was created without a moderator ID.')
 		// creating the entry
 		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: reason ? reason : 'No Reason Provided', createdTimestamp: Utils.currentTimestamp }
 		if (duration) modlogEntry.duration = duration
@@ -186,6 +188,7 @@ export class RainMember extends GuildMember {
 	async getModlogs(): Promise<modlogs[] | undefined> {
 		const logs = (await (this.guild as RainGuild).database('modlogs')).find((m: dbModlogs) => m.memberID === this.user.id)
 		if (logs === undefined) return undefined
+		else if (logs.logs.length === 0) return undefined
 		else return logs.logs
 	}
 

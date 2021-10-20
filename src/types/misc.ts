@@ -2,7 +2,7 @@ import { Snowflake } from 'discord.js'
 
 export type perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper'
 export type EvalOptions = { codetoeval: string; silent: boolean; sudo: boolean }
-export type modlogs = { id: string; type: 'BAN' | 'MUTE' | 'WARN'; modID: Snowflake; reason: string; duration?: string; createdTimestamp: number; evidence?: string }
+export type modlogs = { id: string; type: 'BAN' | 'MUTE' | 'WARN' | 'UNKNOWN'; modID: Snowflake; reason: string; duration?: string; createdTimestamp: number; evidence?: string }
 export type guildCommandSettings = { id: string; enabled: boolean; lockedRoles: perms; lockedChannels: Snowflake[]; data?: unknown }
 export type dbModlogs = { memberID: Snowflake; logs: modlogs[] }
 export type codeblockLangs =

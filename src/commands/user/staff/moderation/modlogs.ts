@@ -4,6 +4,7 @@ import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import Utils from '@functions/utils'
+import { MessageEmbed, MessageEmbedOptions } from 'discord.js'
 
 export default class Modlogs extends RainCommand {
 	constructor() {
@@ -34,17 +35,28 @@ export default class Modlogs extends RainCommand {
 		const modlogs = await ((await message.guild?.members.fetch(args.user.id)) as RainMember).getModlogs()
 		if (modlogs === undefined) return await message.reply('That user has no modlogs!')
 
-		let modlogString = ``
+		const allModlogs = []
 		for (const modlog of modlogs) {
 			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.client.users.fetch(modlog.modID)} (${await (
 				await this.client.users.fetch(modlog.modID)
 			).tag})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : ``}\nCreated at <t:${modlog.createdTimestamp}>`
-			if (modlogString.length === 0) modlogString += formattedModlog
-			else {
-				modlogString += `\n----------------------------------------------\n${formattedModlog}`
-			}
+
+			allModlogs.push(formattedModlog)
 		}
 
-		await message.reply({ embeds: [{ title: `${args.user.tag}'s modlogs`, description: modlogString }] })
+		const newModlogArray = Utils.splitArrayIntoMultiple(allModlogs, 6)
+		const embedsArray: MessageEmbedOptions[] = []
+
+		for (const modlogs of newModlogArray) {
+			let modlogString = ''
+			for (const modlog of modlogs) {
+				if (modlogString.length === 0) modlogString += modlog
+				else modlogString += `\n-------------------------------------\n${modlog}`
+			}
+
+			embedsArray.push({title: `${args.user.tag}'s modlogs`, description: modlogString})
+		}
+
+		await Utils.paginate(message, embedsArray)
 	}
 }
