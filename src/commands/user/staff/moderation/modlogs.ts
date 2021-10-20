@@ -22,7 +22,6 @@ export default class Modlogs extends RainCommand {
 					required: true,
 				},
 			],
-
 			slashGuilds: Utils.slashGuilds,
 		})
 	}
@@ -32,7 +31,6 @@ export default class Modlogs extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser }) {
-		// eslint-disable-line @typescript-eslint/no-unused-vars
 		const modlogs = await ((await message.guild?.members.fetch(args.user.id)) as RainMember).getModlogs()
 		if (modlogs === undefined) return await message.reply('That user has no modlogs!')
 

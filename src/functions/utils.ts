@@ -1,9 +1,10 @@
 import chalk from 'chalk'
-import { GuildMember } from 'discord.js'
+import { GuildMember, Message, MessageEmbed } from 'discord.js'
 import got from 'got/dist/source'
 import config from '@src/config/config'
 import { inspect } from 'util'
 import { modlogs } from '@src/types/misc'
+import { RainMessage } from '@extensions/akairo/AkairoMessage'
 
 export default class Utils {
 	static slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337', '880637463838724166']
@@ -161,11 +162,15 @@ export default class Utils {
 		return string
 	}
 
-	static generateModlogEntry(data: modlogs) {
-		return data
-	}
-
 	static get currentTimestamp() {
 		return Math.round(Date.now() / 1000)
+	}
+
+	/**
+	 * @param message The message to reply to.
+	 * @param embeds An array of embeds, to use for the pages.
+	 */
+	static async paginate(message: RainMessage, embeds: MessageEmbed[]) {
+		throw new Error('Function not implemented.')
 	}
 }
