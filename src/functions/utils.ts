@@ -1,11 +1,9 @@
 import chalk from 'chalk'
-import { GuildMember, Message, MessageActionRow, MessageButton, MessageEmbed, MessageEmbedOptions } from 'discord.js'
+import { GuildMember, MessageActionRow, MessageButton, MessageEmbedOptions } from 'discord.js'
 import got from 'got/dist/source'
 import config from '@src/config/config'
 import { inspect } from 'util'
-import { modlogs } from '@src/types/misc'
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
-import client from '..'
 
 export default class Utils {
 	static slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337', '880637463838724166']
