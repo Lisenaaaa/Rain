@@ -4,7 +4,7 @@ import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import Utils from '@functions/utils'
-import { MessageEmbed, MessageEmbedOptions } from 'discord.js'
+import { MessageEmbedOptions } from 'discord.js'
 
 export default class Modlogs extends RainCommand {
 	constructor() {
