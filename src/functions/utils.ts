@@ -203,7 +203,10 @@ export default class Utils {
 					break
 				}
 				case 'pageBackOne': {
-					if (currentPage === 1) break
+					if (currentPage === 1) {
+						await button.deferUpdate()
+						break
+					}
 					currentPage -= 1
 					await button.deferUpdate()
 					await message.interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
@@ -223,6 +226,16 @@ export default class Utils {
 					break
 				}
 			}
+		})
+		interactionCollector?.once('end', async () => {
+			const buttonRowDisabled = new MessageActionRow().addComponents([
+				new MessageButton().setLabel('back all').setCustomId('pageBackAll').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('back 1').setCustomId('pageBackOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('forwards 1').setCustomId('pageForwardsOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('forwards all').setCustomId('pageForwardsAll').setStyle('PRIMARY').setDisabled(true),
+			])
+			const interaction = await message.interaction.fetchReply()
+			await message.interaction.editReply({embeds: interaction.embeds, components: [buttonRowDisabled]})
 		})
 	}
 }
