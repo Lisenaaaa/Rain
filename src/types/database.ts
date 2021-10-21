@@ -42,17 +42,20 @@ export class UserDatabaseConstructor {
 		this.userID = options.userID
 		this.badges = options.badges
 		this.superuser = options.superuser
+		this.blacklisted = options.blacklisted
 	}
 
 	public userID: Snowflake
 	public badges: string[]
 	public superuser: boolean
+	public blacklisted: boolean
 }
 
 export type UserDatabase = {
 	userID: Snowflake
 	badges: string[]
 	superuser: boolean
+	blacklisted: boolean
 }
 
 export type CommandDatabase = {

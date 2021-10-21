@@ -114,7 +114,7 @@ async function deleteGuild(guildID: Snowflake) {
 
 async function addUser(userID: Snowflake) {
 	try {
-		const schema = JSON.stringify(new UserDatabaseConstructor({userID: userID, badges: [], superuser: false}))
+		const schema = JSON.stringify(new UserDatabaseConstructor({userID: userID, badges: [], superuser: false, blacklisted: false}))
 		const string = `INSERT INTO users(data) VALUES ($schema);`
 		await rawDbRequest(string, { bind: { schema: schema } })
 		return true

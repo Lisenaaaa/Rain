@@ -11,7 +11,7 @@ export default class MiscErrorListener extends RainListener {
 	async exec(error: Error) {
 		if (error.message == "TypeError: Cannot read property 'send' of undefined" && this.client.user == null) {
 			console.error(`Couldn't log in.`)
-			//process.exit()
+			process.exit()
 		}
 
 		if (error.message == "TypeError: Cannot read property 'send' of undefined" && this.client.user != null) {
@@ -19,6 +19,6 @@ export default class MiscErrorListener extends RainListener {
 		}
 
 		await this.client.utils.error(error)
-		console.error(chalk.red(error.stack))
+		this.client.debug ? console.error(chalk.red(error.stack)) : {}
 	}
 }
