@@ -16,7 +16,6 @@ export class DRainMessage extends Message {
 	}
 
 	async editReply(content: InteractionReplyOptions) {
-
 		//@ts-ignore
 		return this.interaction?.editReply(content)
 	}

@@ -44,7 +44,7 @@ export default class Modlogs extends RainCommand {
 			allModlogs.push(formattedModlog)
 		}
 
-		const newModlogArray = Utils.splitArrayIntoMultiple(allModlogs, 6)
+		const newModlogArray = Utils.splitArrayIntoMultiple(allModlogs, 5)
 		const embedsArray: MessageEmbedOptions[] = []
 
 		for (const modlogs of newModlogArray) {
@@ -57,6 +57,6 @@ export default class Modlogs extends RainCommand {
 			embedsArray.push({title: `${args.user.tag}'s modlogs`, description: modlogString})
 		}
 
-		await message.paginate(embedsArray)
+		await Utils.paginate(message, embedsArray)
 	}
 }

@@ -15,12 +15,17 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 	}
 
 	async exec(message: Message | AkairoMessage, command: RainCommand) {
+		if (!(message.author as RainUser).owner) {
+			await message.reply({ content: "Sorry, but I'm being developed right now, so all of my commands are locked.", ephemeral: true })
+			return true
+		}
+
 		if (command.ownerOnly && !(message.author as RainUser).owner) {
 			await message.reply({
 				content: "Hey, you aren't my owner!",
 				ephemeral: true,
 			})
-			return false
+			return true
 		}
 
 		const channelPerms = await (message.channel as RainChannel).getRestrictedPerms()

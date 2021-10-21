@@ -711,7 +711,7 @@ discord-akairo@NotEnoughUpdates/discord-akairo:
 
 discord.js@NotEnoughUpdates/discord.js:
   version: 13.3.0-dev
-  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=a6fde079fa04629cfe65210ecba09b0506a17a9b"
+  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=dfa364c4b929b65a115fd5704cc3cb69f72b809e"
   dependencies:
     "@discordjs/builders": ^0.6.0
     "@discordjs/collection": ^0.2.1
@@ -722,7 +722,7 @@ discord.js@NotEnoughUpdates/discord.js:
     discord-api-types: ^0.23.1
     node-fetch: ^2.6.1
     ws: ^8.2.3
-  checksum: 4448b43d970dee14bdf1f42ed2905a4cac212edc1d06b0345ad347cc4c2d41a3edbfd21320eea280f04899b241fd3214108daac1736aa038a25ad856c979c13a
+  checksum: de8e069bf23dfe644d17bfc33e5fe25fd8937fdb5287d2b2654c9a0102ebd830acc99f6c7d5a07acd9feaffb630ed40cad8df02c9c855540f6b32a3b1bab1bfb
   languageName: node
   linkType: hard
 

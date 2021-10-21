@@ -164,4 +164,78 @@ export default class Utils {
 	static get currentTimestamp() {
 		return Math.round(Date.now() / 1000)
 	}
+
+	/**
+	 * @param message The RainMessage you want to reply to
+	 * @param embeds An array of embeds, to use for the pages. This will overwrite whatever was set as the `footer` for each embed.
+	 */
+	static async paginate(message: RainMessage, embeds: MessageEmbedOptions[]) {
+		const length = embeds.length
+		let currentPage = 1
+		const newEmbeds: MessageEmbedOptions[] = []
+
+		let pages = 0
+		for (const embed of embeds) {
+			pages += 1
+			embed.footer = { text: `Page ${pages} of ${length}` }
+			newEmbeds.push(embed)
+		}
+
+		const buttonRow = new MessageActionRow().addComponents([
+			new MessageButton().setLabel('back all').setCustomId('pageBackAll').setStyle('PRIMARY'),
+			new MessageButton().setLabel('back 1').setCustomId('pageBackOne').setStyle('PRIMARY'),
+			new MessageButton().setLabel('forwards 1').setCustomId('pageForwardsOne').setStyle('PRIMARY'),
+			new MessageButton().setLabel('forwards all').setCustomId('pageForwardsAll').setStyle('PRIMARY'),
+		])
+		await message.interaction.reply({ embeds: [newEmbeds[0]], components: [buttonRow] })
+
+		const interactionCollector = message.channel?.createMessageComponentCollector({ time: 60000 })
+
+		interactionCollector?.on('collect', async (button) => {
+			if (!button.isButton()) return
+			if (button.user.id != message.author.id) return await button.deferUpdate()
+
+			switch (button.customId) {
+				case 'pageBackAll': {
+					currentPage = 1
+					await button.deferUpdate()
+					await message.interaction.editReply({ embeds: [newEmbeds[0]] })
+					break
+				}
+				case 'pageBackOne': {
+					if (currentPage === 1) {
+						await button.deferUpdate()
+						break
+					}
+					currentPage -= 1
+					await button.deferUpdate()
+					await message.interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
+					break
+				}
+				case 'pageForwardsOne': {
+					if (currentPage === pages) currentPage = pages
+					else currentPage += 1
+					await button.deferUpdate()
+					await message.interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
+					break
+				}
+				case 'pageForwardsAll': {
+					currentPage = pages - 1
+					await button.deferUpdate()
+					await message.interaction.editReply({ embeds: [newEmbeds[pages - 1]] })
+					break
+				}
+			}
+		})
+		interactionCollector?.once('end', async () => {
+			const buttonRowDisabled = new MessageActionRow().addComponents([
+				new MessageButton().setLabel('back all').setCustomId('pageBackAll').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('back 1').setCustomId('pageBackOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('forwards 1').setCustomId('pageForwardsOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setLabel('forwards all').setCustomId('pageForwardsAll').setStyle('PRIMARY').setDisabled(true),
+			])
+			const interaction = await message.interaction.fetchReply()
+			await message.interaction.editReply({ embeds: interaction.embeds, components: [buttonRowDisabled] })
+		})
+	}
 }
