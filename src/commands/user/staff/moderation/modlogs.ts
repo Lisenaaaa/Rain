@@ -57,6 +57,6 @@ export default class Modlogs extends RainCommand {
 			embedsArray.push({title: `${args.user.tag}'s modlogs`, description: modlogString})
 		}
 
-		await Utils.paginate(message, embedsArray)
+		await message.paginate(embedsArray)
 	}
 }
