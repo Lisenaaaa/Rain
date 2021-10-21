@@ -19,6 +19,6 @@ export default class MiscErrorListener extends RainListener {
 		}
 
 		await this.client.utils.error(error)
-		this.client.debug ? console.error(chalk.red(error.stack)) : {}
+		if (this.client.debug) console.error(chalk.red(error.stack))
 	}
 }

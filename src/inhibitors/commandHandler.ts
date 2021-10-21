@@ -22,22 +22,21 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 			})
 			return false
 		}
-		const debug = false
 
 		const channelPerms = await (message.channel as RainChannel).getRestrictedPerms()
 		const commandEnabledGuild = await command.enabled(message.guild?.id as string)
 		const commandEnabledGlobally = await command.enabledGlobally()
 		const memberHasPermsInChannel = await (message.member as RainMember).hasPermission(channelPerms as perms)
 
-		if (debug) {
-			const { debugLog } = this.client
+		const { debug, debugLog } = this.client
 
+		if (debug) {
 			debugLog('commandId', command.id)
 			debugLog('commandEnabled', commandEnabledGuild)
 			debugLog('commandEnabledGlobally', commandEnabledGlobally)
 			debugLog('memberHasPermsInChannel', memberHasPermsInChannel)
 			console.log('\n')
 		}
-		return false//(await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
+		return false //(await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
 	}
 }

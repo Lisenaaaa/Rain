@@ -15,7 +15,7 @@ export default class SlashErrorListener extends RainListener {
 			await message.reply(`An error occured!\n\`\`\`js\n${error.stack}\`\`\``)
 		} else {
 			await message.reply({ embeds: [this.client.utils.error(error, ' command', message)] })
-			this.client.debug ? console.error(chalk.red(error.stack)) : {}
+			if (this.client.debug) console.error(chalk.red(error.stack))
 		}
 	}
 }
