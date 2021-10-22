@@ -1,6 +1,6 @@
 import BotClient from '@extensions/RainClient'
 import { Task } from 'discord-akairo'
 
-export class RainTasks extends Task {
+export class RainTask extends Task {
 	declare client: BotClient
 }

@@ -2,6 +2,7 @@ import { RainChannel } from '@extensions/discord.js/Channel'
 import { RainGuild } from '@extensions/discord.js/Guild'
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
+import database from '@functions/database'
 import utils from '@functions/utils'
 import { perms } from '@src/types/misc'
 import { AkairoMessage, GuildTextBasedChannels } from 'discord-akairo'
@@ -28,7 +29,7 @@ export default class Config extends RainCommand {
 
 			slash: true,
 			slashGuilds: utils.slashGuilds,
-			defaultPerms: 'srMod'
+			defaultPerms: 'srMod',
 		})
 	}
 
@@ -62,7 +63,8 @@ export default class Config extends RainCommand {
 		const OptionsRow = new MessageActionRow().addComponents(
 			new MessageButton({ customId: 'configRestrictChannels', label: 'Restrict Channels', style: 'PRIMARY' }),
 			new MessageButton({ customId: 'configLogChannels', label: 'Logging Channels', style: 'PRIMARY' }),
-			new MessageButton({ customId: 'configStaffRoles', label: 'Staff Roles', style: 'PRIMARY' })
+			new MessageButton({ customId: 'configStaffRoles', label: 'Staff Roles', style: 'PRIMARY' }),
+			new MessageButton({ customId: 'configMuteRole', label: 'Set Muted Role', style: 'PRIMARY' })
 		)
 
 		await message.reply({
@@ -74,6 +76,7 @@ export default class Config extends RainCommand {
 						{ name: 'Restrict Channels', value: 'Lock specific channels, so that only users with specific permissions can use my commands in them.', inline: true },
 						{ name: 'Logging Channels', value: 'Set channels for me to log server-related information in.', inline: true },
 						{ name: 'Staff Roles', value: 'Set up roles to use my custom permission system. This is highly recommended.', inline: true },
+						{ name: 'Set Muted Role', value: 'Set my muted role. **This is required for `/mute` to work.**', inline: true },
 					],
 				},
 			],
@@ -269,6 +272,24 @@ export default class Config extends RainCommand {
 						})
 					})
 
+					break
+				}
+				case 'configMuteRole': {
+					await interaction.editReply({ content: 'What role would you like to be the muted role?', embeds: [], components: [] })
+					messageCollector.once('collect', async (msg: Message) => {
+						await msg.delete()
+						const role = await this.client.util.resolveRole(msg.content, msg.guild?.roles.cache as Collection<string, Role>)
+						if (role === undefined) {
+							await interaction.editReply({ content: "I couldn't find that role." })
+							return
+						}
+
+						const edited = await database.editGuild(interaction.guildId as Snowflake, 'guildSettings.muteRole', role.id)
+						if (edited === true) {
+							await interaction.editReply({ content: `The muted role has succesfully been set to ${role}`, allowedMentions: { parse: [] } })
+						}
+						else await interaction.editReply({ content: `I failed to set the muted role to ${role}`, allowedMentions: { parse: [] } })
+					})
 					break
 				}
 			}

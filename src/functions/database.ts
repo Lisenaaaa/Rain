@@ -30,13 +30,14 @@ function defaultDBSchema(guildID: Snowflake) {
 	return new GuildDatabaseConstructor({
 		guildID: guildID,
 		guildSettings: {
+			muteRole: null,
 			welcomeChannel: 'null',
 			welcomeMessage: 'null',
 			loggingChannels: { message: null, member: null, moderation: null, action: null },
 			staffRoles: { owner: null, admin: null, srMod: null, moderator: null, helper: null, trialHelper: null },
 			lockedChannels: { owner: [], admin: [], srMod: [], moderator: [], helper: [], trialHelper: [] },
 		},
-		modlogs: [],
+		members: [],
 		commandSettings: [],
 		features: [],
 	})

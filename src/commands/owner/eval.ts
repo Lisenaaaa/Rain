@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import importDatabase from '@functions/database'
@@ -7,13 +8,9 @@ import { exec } from 'child_process'
 import { AkairoMessage } from 'discord-akairo'
 import { MessageEmbed } from 'discord.js'
 import { inspect, promisify } from 'util'
-
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import djsImport from 'discord.js'
-const djs = djsImport
-
 import HandlerImport from '@functions/handler'
-const handler = HandlerImport
+import msImport from 'ms'
 
 export default class Evaluate extends RainCommand {
 	constructor() {
@@ -39,13 +36,13 @@ export default class Evaluate extends RainCommand {
 
 	async exec(message: DRainMessage, args: EvalOptions) {
 		if (args.codetoeval.includes('channel.delete')) {
-			return message.reply('Are you IRONM00N?')
+			return message.util?.reply('Are you IRONM00N?')
 		}
 		if (args.codetoeval.includes('guild.delete')) {
-			return message.reply("You're like IRONM00N but infinitely more stupid!")
+			return message.util?.reply("You're like IRONM00N but infinitely more stupid!")
 		}
 		if (args.codetoeval.includes('delete') && !args.sudo) {
-			return message.reply('This would be blocked by smooth brain protection, but BushBot has a license')
+			return message.util?.reply('This would be blocked by smooth brain protection, but BushBot has a license')
 		}
 
 		const guild = message.guild,
@@ -58,7 +55,10 @@ export default class Evaluate extends RainCommand {
 			botMember = message.guild?.me,
 			utils = importUtils,
 			database = importDatabase,
-			sh = promisify(exec)
+			sh = promisify(exec),
+			ms = msImport,
+			handler = HandlerImport,
+			djs = djsImport
 
 		let output
 

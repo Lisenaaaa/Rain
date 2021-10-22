@@ -12,10 +12,7 @@ import { DRainMessage } from './discord.js/Message'
 import { RainUser } from './discord.js/User'
 
 export default class RainClient extends AkairoClient {
-
-	
-	public debug = true
-
+	public debug = false
 
 	static preStart() {
 		Structures.extend('TextChannel', () => RainChannel)
@@ -55,7 +52,7 @@ export default class RainClient extends AkairoClient {
 	public constructor() {
 		super(
 			{
-				ownerID: ['545277690303741962','881310086411190293'],
+				ownerID: ['545277690303741962', '881310086411190293'],
 				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 			},
 			{
@@ -82,16 +79,15 @@ export default class RainClient extends AkairoClient {
 			inhibitors: this.inhibitorHandler,
 			tasks: this.taskHandler,
 		}
-		for (const loader of Object.keys(loaders)) {
+		for (const loader in loaders) {
 			try {
 				const loader2 = loaders[loader]
 				loader2.loadAll()
-				if (loader2 instanceof TaskHandler) {
-					loader2.startAll?.()
-				}
+				if (loader2 instanceof TaskHandler) loader2.startAll()
 				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)
+				process.exit()
 			}
 		}
 	}
@@ -103,6 +99,15 @@ export default class RainClient extends AkairoClient {
 			console.log(chalk`{red.bold DEBUG/${name}:}`)
 			console.log(thing)
 		}
+	}
+
+	/**
+	 * 
+	 * @param ms The number of milliseconds that you would like converted into seconds.
+	 * @returns The number you inputted, in seconds.
+	 */
+	time(ms: number): number {
+		return Math.round(ms/1000)
 	}
 
 	public async start(token: string): Promise<string> {

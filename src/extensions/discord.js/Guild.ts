@@ -1,6 +1,8 @@
 import BotClient from '@extensions/RainClient'
 import database from '@functions/database'
-import { perms } from '@src/types/misc'
+import Handler from '@functions/handler'
+import { guildCommandSettings, perms } from '@src/types/misc'
+import chalk from 'chalk'
 import { Guild, Snowflake } from 'discord.js'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 
@@ -15,6 +17,7 @@ export class RainGuild extends Guild {
 		let db = await database.readGuild(this.id)
 		if (db === undefined) {
 			await database.addGuild(this.id)
+			await this.registerCommands()
 			db = await database.readGuild(this.id)
 		}
 
@@ -62,5 +65,36 @@ export class RainGuild extends Guild {
 
 	async resetLogChannel(type: 'message' | 'member' | 'moderation' | 'action') {
 		return await database.editGuild(this.id, `guildSettings.loggingChannels.${type}`, null)
+	}
+
+	async registerCommands() {
+		const g = await this.database()
+		const allCommands = Handler.getAllCommands()
+		let allGuildCommands = g.commandSettings
+		const guildCommandsArray: string[] = []
+
+		allGuildCommands.forEach((c: guildCommandSettings)  => {
+			guildCommandsArray.push(c.id)
+		})
+
+		allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
+			if (!allCommands.includes(guildCommand.id)) {
+				allGuildCommands = allGuildCommands.filter((c: guildCommandSettings) => c.id != guildCommand.id)
+				console.log(chalk`{red Removed} {magenta ${guildCommand.id}} {red from ${g.guildID}'s database entry}`)
+			}
+		})
+
+		allCommands.forEach(c => {
+			if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
+
+			const permissions = Handler.getCommand(c)?.defaultPerms
+
+			const command = { id: c, enabled: true, lockedRoles: (permissions as perms), lockedChannels: [] }
+
+			g.commandSettings.push(command)
+			console.log(chalk`{blue Added} {magenta ${command.id}} {blue to ${g.guildID}'s database entry}`)
+		})
+
+		await database.editGuild(g.guildID, 'commandSettings', allGuildCommands)
 	}
 }
