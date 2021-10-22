@@ -1,6 +1,6 @@
 import BotClient from '@extensions/RainClient'
 import Utils from '@functions/utils'
-import { perms, modlogs } from '@src/types/misc'
+import { perms, modlogs, modlogTypes } from '@src/types/misc'
 import { Guild, GuildMember, Snowflake } from 'discord.js'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
 import { RainGuild } from './Guild'
@@ -149,7 +149,7 @@ export class RainMember extends GuildMember {
 		return perms as perms | 'none'
 	}
 
-	async addModlogEntry(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, data: {reason?: string, duration?: string}) {
+	async addModlogEntry(type: modlogTypes, moderator: Snowflake, data: {reason?: string, duration?: string}) {
 		if (!type) throw new Error("You can't make a modlog entry without a type!")
 		if (!moderator) moderator = this.client.user?.id as string
 		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: data.reason ? data.reason : 'No Reason Provided', createdTimestamp: Utils.now }
