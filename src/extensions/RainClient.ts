@@ -3,6 +3,7 @@ import config from '@src/config/config'
 import chalk from 'chalk'
 import { AkairoClient, AkairoHandler, CommandHandler, InhibitorHandler, ListenerHandler, TaskHandler } from 'discord-akairo'
 import { Intents, Structures } from 'discord.js'
+import ms from 'ms'
 import { join } from 'path'
 import clientUtils from './ClientUtils'
 import { RainChannel } from './discord.js/Channel'
@@ -52,7 +53,7 @@ export default class RainClient extends AkairoClient {
 	public constructor() {
 		super(
 			{
-				ownerID: ['545277690303741962', '881310086411190293'],
+				ownerID: ['881310086411190293'],
 				intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES, Intents.FLAGS.GUILD_MEMBERS],
 			},
 			{
@@ -103,11 +104,11 @@ export default class RainClient extends AkairoClient {
 
 	/**
 	 * 
-	 * @param ms The number of milliseconds that you would like converted into seconds.
-	 * @returns The number you inputted, in seconds.
+	 * @param time A string that you would like formatted into seconds.
+	 * @returns The string you inputted, in seconds.
 	 */
-	time(ms: number): number {
-		return Math.round(ms/1000)
+	time(time: string): number {
+		return Math.round(ms(time)/1000)
 	}
 
 	public async start(token: string): Promise<string> {

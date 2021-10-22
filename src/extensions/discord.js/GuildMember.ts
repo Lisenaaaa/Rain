@@ -149,12 +149,12 @@ export class RainMember extends GuildMember {
 		return perms as perms | 'none'
 	}
 
-	async addModlogEntry(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, reason?: string, duration?: string) {
+	async addModlogEntry(type: 'BAN' | 'MUTE' | 'WARN', moderator: Snowflake, data: {reason?: string, duration?: string}) {
 		if (!type) throw new Error("You can't make a modlog entry without a type!")
 		if (!moderator) moderator = this.client.user?.id as string
-		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: reason ? reason : 'No Reason Provided', createdTimestamp: Utils.currentTimestamp }
+		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: data.reason ? data.reason : 'No Reason Provided', createdTimestamp: Utils.now }
 
-		if (duration) modlogEntry.duration = duration
+		if (data.duration) modlogEntry.duration = data.duration
 
 		let modlogs = await this.getModlogs()
 

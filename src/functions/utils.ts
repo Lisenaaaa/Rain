@@ -161,7 +161,7 @@ export default class Utils {
 		return string
 	}
 
-	static get currentTimestamp() {
+	static get now() {
 		return Math.round(Date.now() / 1000)
 	}
 

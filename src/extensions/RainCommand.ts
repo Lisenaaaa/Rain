@@ -8,12 +8,14 @@ export class RainCommand extends Command {
 	discordPerms: PermissionResolvable[]
 	ephemeralWhenNoPerms: boolean
 	defaultPerms: perms
+	commandType: string
 
 	public constructor(id: string, options: RainCommandOptions) {
 		super(id, options)
 		this.discordPerms = options.discordPerms as PermissionResolvable[]
 		this.ephemeralWhenNoPerms = options.ephemeralWhenNoPerms as boolean
 		this.defaultPerms = options.defaultPerms as perms
+		this.commandType = options.commandType as string
 	}
 
 	async enabled(guildID: Snowflake): Promise<boolean> {
@@ -33,4 +35,5 @@ interface RainCommandOptions extends CommandOptions {
 	discordPerms?: PermissionResolvable[]
 	ephemeralWhenNoPerms?: boolean
 	defaultPerms: perms | 'none'
+	commandType?: string
 }

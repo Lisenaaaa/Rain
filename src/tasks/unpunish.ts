@@ -17,9 +17,14 @@ export default class Unpunish extends RainTask {
 			const guild = this.client.guilds.cache.get(id) as RainGuild
 			const members = await guild.database('members')
 			members.forEach(async (member: databaseMember) => {
-				if (member.muted.status === true && member.muted.expires != null && member.muted.expires <= Utils.currentTimestamp) {
-					const person = await guild.members.fetch(member.id) as RainMember
+				if (member.muted.status === true && member.muted.expires != null && member.muted.expires <= Utils.now) {
+					const person = (await guild.members.fetch(member.id)) as RainMember
 					await person.unmute()
+					try {
+						await person.user.send(`You have been automatically unmuted in **${guild.name}**`)
+					} catch (err) {
+						/*do nothing lol*/
+					}
 				}
 			})
 		}

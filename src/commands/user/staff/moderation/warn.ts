@@ -33,7 +33,7 @@ export default class Warn extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason: string }) {
-		const addedModlog = await ((await message.guild?.members.fetch(args.user)) as RainMember).addModlogEntry('WARN', message.author.id, args.reason)
+		const addedModlog = await ((await message.guild?.members.fetch(args.user)) as RainMember).addModlogEntry('WARN', message.author.id, {reason: args.reason})
 		if (addedModlog === true) {
 			try {
 				await args.user.send(`You have been warned in **${message.guild?.name}** for ${args.reason}`)
