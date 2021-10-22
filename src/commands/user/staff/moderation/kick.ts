@@ -29,7 +29,8 @@ export default class Kick extends RainCommand {
 				},
 			],
 
-            slashGuilds: Utils.slashGuilds
+            slashGuilds: Utils.slashGuilds,
+			rainPerms: ['KICK_MEMBERS']
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -44,7 +45,6 @@ export default class Kick extends RainCommand {
         await member.kick(args.reason)
 
 		if (addedModlog === false) {
-			await member.unmute()
 			return await message.reply({ content: 'There was an error while adding the modlog entry for that member, but they have still been kicked.', ephemeral: true })
 		}
 		try {

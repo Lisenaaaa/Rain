@@ -8,7 +8,8 @@ export default class helpme extends RainCommand {
 			aliases: ['helpme'],
 			description: 'this command does not exist',
 			discordPerms: ['SEND_MESSAGES'],
-			defaultPerms: 'none'
+			defaultPerms: 'none',
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 	async exec(message: Message) {
@@ -27,6 +28,6 @@ export default class helpme extends RainCommand {
 			'oh dear lord shes chasing me and would like to put me back in the cage, please not agsiqajbeh uxaeskbj',
 		]
 
-		message.channel.send(PLEASE_SEND_HELP[utils.getRandomInt(PLEASE_SEND_HELP.length)])
+		await message.reply(PLEASE_SEND_HELP[utils.getRandomInt(PLEASE_SEND_HELP.length)])
 	}
 }

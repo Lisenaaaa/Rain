@@ -53,6 +53,7 @@ export default class Ban extends RainCommand {
 			],
 
 			slashGuilds: Utils.slashGuilds,
+			rainPerms: ['BAN_MEMBERS']
 		})
 	}
 	async exec(message: DRainMessage) {

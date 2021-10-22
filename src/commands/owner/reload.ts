@@ -14,7 +14,8 @@ export default class Reload extends RainCommand {
 			slash: false,
 			description: 'reloads the bot, owneronly',
 			slashGuilds: ['880637463838724166'],
-			defaultPerms: 'owner'
+			defaultPerms: 'owner',
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 

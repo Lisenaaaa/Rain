@@ -51,7 +51,8 @@ export default class ChannelPerms extends RainCommand {
 					required: true,
 				},
 			],
-			defaultPerms: 'srMod'
+			defaultPerms: 'srMod',
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 

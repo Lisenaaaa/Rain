@@ -30,6 +30,7 @@ export default class Config extends RainCommand {
 			slash: true,
 			slashGuilds: utils.slashGuilds,
 			defaultPerms: 'srMod',
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 
@@ -54,11 +55,11 @@ export default class Config extends RainCommand {
 		const filterLog = (i: MessageComponentInteraction) => i.user.id === interaction.user.id && i.customId.startsWith('configLog')
 		const filterStaffRoles = (i: MessageComponentInteraction) => i.user.id === interaction.user.id && i.customId.startsWith('configStaffRoles')
 
-		const interactionCollector = await message.channel?.createMessageComponentCollector({ filter, time: 60000 })
-		const configRestrictChannelsInteractionCollector = await message.channel?.createMessageComponentCollector({ filter: filterRestrictChannels, time: 60000 })
-		const configLogInteractionCollector = await message.channel?.createMessageComponentCollector({ filter: filterLog, time: 60000 })
-		const staffRolesInteractionCollector = await message.channel?.createMessageComponentCollector({ filter: filterStaffRoles, time: 60000 })
-		const messageCollector = await message.channel?.createMessageCollector({ filter: filterMsg, time: 60000 })
+		const interactionCollector = message.channel?.createMessageComponentCollector({ filter, time: 60000 })
+		const configRestrictChannelsInteractionCollector = message.channel?.createMessageComponentCollector({ filter: filterRestrictChannels, time: 60000 })
+		const configLogInteractionCollector = message.channel?.createMessageComponentCollector({ filter: filterLog, time: 60000 })
+		const staffRolesInteractionCollector = message.channel?.createMessageComponentCollector({ filter: filterStaffRoles, time: 60000 })
+		const messageCollector = message.channel?.createMessageCollector({ filter: filterMsg, time: 60000 })
 
 		const OptionsRow = new MessageActionRow().addComponents(
 			new MessageButton({ customId: 'configRestrictChannels', label: 'Restrict Channels', style: 'PRIMARY' }),

@@ -36,7 +36,8 @@ export default class Mute extends RainCommand {
 				},
 			],
 
-			slashGuilds: Utils.slashGuilds
+			slashGuilds: Utils.slashGuilds,
+			rainPerms: ['MANAGE_ROLES']
 		})
 	}
 	async exec(message: DRainMessage) {

@@ -20,7 +20,8 @@ export default class Pronouns extends RainCommand {
 				},
 			],
 			ephemeralWhenNoPerms: true,
-			defaultPerms: 'none'
+			defaultPerms: 'none',
+			rainPerms: []
 		})
 	}
 
@@ -46,6 +47,6 @@ export default class Pronouns extends RainCommand {
 		}
 		pronounsEmbed.setFooter('Data from https://pronoundb.org')
 
-		message.reply({ embeds: [pronounsEmbed] })
+		await message.reply({ embeds: [pronounsEmbed] })
 	}
 }

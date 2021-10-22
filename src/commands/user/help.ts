@@ -11,6 +11,7 @@ export default class help extends RainCommand {
 			description: 'You already know what this does, otherwise you wouldnt be using it, right?',
 			discordPerms: ['SEND_MESSAGES'],
 			defaultPerms: 'none',
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 	async execSlash(message: RainMessage, args: { command: string }) {
@@ -29,7 +30,7 @@ export default class help extends RainCommand {
 
 			const helpEmbed = new MessageEmbed().setTitle(command.id).setDescription(command.description)
 
-			message.reply({ embeds: [helpEmbed] })
+			await message.reply({ embeds: [helpEmbed] })
 		}
 	}
 }

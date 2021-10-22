@@ -33,7 +33,8 @@ export default class SetLogCommand extends RainCommand {
 					required: true,
 				},
 			],
-			defaultPerms: 'srMod'
+			defaultPerms: 'srMod',
+			rainPerms: []
 		})
 	}
 

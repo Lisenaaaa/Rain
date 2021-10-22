@@ -23,7 +23,8 @@ export default class Modlogs extends RainCommand {
 				},
 			],
 
-			slashGuilds: Utils.slashGuilds
+			slashGuilds: Utils.slashGuilds,
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 

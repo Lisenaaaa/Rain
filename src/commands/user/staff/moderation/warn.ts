@@ -29,7 +29,8 @@ export default class Warn extends RainCommand {
 				},
 			],
 
-			slashGuilds: Utils.slashGuilds
+			slashGuilds: Utils.slashGuilds,
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 	async exec(message: DRainMessage) {
