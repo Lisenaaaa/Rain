@@ -20,7 +20,7 @@ export default class Unpunish extends RainTask {
 				if (member.muted.status === true && member.muted.expires != null && member.muted.expires <= Utils.now) {
 					const person = (await guild.members.fetch(member.id)) as RainMember
 					await person.unmute()
-					
+					await person.addModlogEntry('UNMUTE', this.client.user?.id as string, { reason: 'Punishment expired.' })
 					try {
 						await person.user.send(`You have been automatically unmuted in **${guild.name}**`)
 					} catch (err) {
