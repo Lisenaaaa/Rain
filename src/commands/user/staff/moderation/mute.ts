@@ -10,7 +10,6 @@ import { Snowflake } from 'discord.js'
 export default class Mute extends RainCommand {
 	constructor() {
 		super('mute', {
-			commandType: 'mute',
 			aliases: ['mute'],
 			description: 'Mute a user.',
 			discordPerms: ['MANAGE_MESSAGES'],

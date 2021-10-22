@@ -10,7 +10,6 @@ import { Snowflake } from 'discord.js'
 export default class Ban extends RainCommand {
 	constructor() {
 		super('ban', {
-			commandType: 'ban',
 			aliases: ['ban'],
 			description: 'Ban a user.',
 			discordPerms: ['MANAGE_MESSAGES'],

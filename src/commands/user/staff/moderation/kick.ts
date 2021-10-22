@@ -9,7 +9,6 @@ import { Snowflake } from 'discord.js'
 export default class Kick extends RainCommand {
 	constructor() {
 		super('kick', {
-			commandType: 'kick',
 			aliases: ['kick'],
 			description: 'Kick a user.',
 			discordPerms: ['MANAGE_MESSAGES'],
