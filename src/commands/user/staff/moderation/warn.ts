@@ -3,6 +3,8 @@ import { RainMember } from '@extensions/discord.js/GuildMember'
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
+import Utils from '@functions/utils'
+import { Snowflake } from 'discord-api-types'
 
 export default class Warn extends RainCommand {
 	constructor() {
@@ -26,6 +28,8 @@ export default class Warn extends RainCommand {
 					required: true,
 				},
 			],
+
+			slashGuilds: Utils.slashGuilds
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -33,7 +37,9 @@ export default class Warn extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason: string }) {
-		const addedModlog = await ((await message.guild?.members.fetch(args.user)) as RainMember).addModlogEntry('WARN', message.author.id, {reason: args.reason})
+		const member = (await message.guild?.members.fetch(args.user)) as RainMember
+		if (!member) return await message.reply({content: "You can't kick someone that isn't on the server.", ephemeral: true})
+		const addedModlog = await args.user.addModlogEntry((message.guildId as Snowflake), 'WARN', message.author.id, {reason: args.reason})
 		if (addedModlog === true) {
 			try {
 				await args.user.send(`You have been warned in **${message.guild?.name}** for ${args.reason}`)

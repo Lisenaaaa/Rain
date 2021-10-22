@@ -23,7 +23,7 @@ export default class Evaluate extends RainCommand {
 			],
 			ownerOnly: true,
 			description: 'run code',
-			slash: true,
+			slash: false,
 			slashOptions: [
 				{ name: 'codetoeval', description: 'code', type: 'STRING', required: true },
 				{ name: 'silent', description: 'no embed', type: 'BOOLEAN' },

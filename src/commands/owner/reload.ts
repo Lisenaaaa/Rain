@@ -11,7 +11,7 @@ export default class Reload extends RainCommand {
 		super('reload', {
 			aliases: ['reload'],
 			ownerOnly: true,
-			slash: true,
+			slash: false,
 			description: 'reloads the bot, owneronly',
 			slashGuilds: ['880637463838724166'],
 			defaultPerms: 'owner'

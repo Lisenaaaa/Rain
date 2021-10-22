@@ -1,5 +1,4 @@
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
-import { RainMember } from '@extensions/discord.js/GuildMember'
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
@@ -23,7 +22,8 @@ export default class Modlogs extends RainCommand {
 					required: true,
 				},
 			],
-			slashGuilds: Utils.slashGuilds,
+
+			slashGuilds: Utils.slashGuilds
 		})
 	}
 
@@ -32,7 +32,7 @@ export default class Modlogs extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser }) {
-		const modlogs = await ((await message.guild?.members.fetch(args.user.id)) as RainMember).getModlogs()
+		const modlogs = await args.user.getModlogs(message.guild?.id as string)
 		if (modlogs === undefined) return await message.reply('That user has no modlogs!')
 
 		const allModlogs = []

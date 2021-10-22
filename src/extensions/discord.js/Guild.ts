@@ -1,9 +1,10 @@
 import BotClient from '@extensions/RainClient'
 import database from '@functions/database'
 import Handler from '@functions/handler'
+import { databaseMember } from '@src/types/database'
 import { guildCommandSettings, perms } from '@src/types/misc'
 import chalk from 'chalk'
-import { Guild, Snowflake } from 'discord.js'
+import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
 
 export class RainGuild extends Guild {
@@ -13,7 +14,8 @@ export class RainGuild extends Guild {
 		super(client, options)
 	}
 
-	async database(query?: string): Promise<any> { // eslint-disable-line @typescript-eslint/no-explicit-any
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	async database(query?: string): Promise<any> {
 		let db = await database.readGuild(this.id)
 		if (db === undefined) {
 			await database.addGuild(this.id)
@@ -28,10 +30,9 @@ export class RainGuild extends Guild {
 				//@ts-ignore ok typescript
 				dbObject = dbObject?.[query as keyof typeof dbObject]
 			})
-	
+
 			return dbObject
-		}
-		else return db
+		} else return db
 	}
 
 	async editStaffRole(position: perms, newRole: Snowflake | null) {
@@ -73,7 +74,7 @@ export class RainGuild extends Guild {
 		let allGuildCommands = g.commandSettings
 		const guildCommandsArray: string[] = []
 
-		allGuildCommands.forEach((c: guildCommandSettings)  => {
+		allGuildCommands.forEach((c: guildCommandSettings) => {
 			guildCommandsArray.push(c.id)
 		})
 
@@ -84,17 +85,50 @@ export class RainGuild extends Guild {
 			}
 		})
 
-		allCommands.forEach(c => {
+		allCommands.forEach((c) => {
 			if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
 
 			const permissions = Handler.getCommand(c)?.defaultPerms
 
-			const command = { id: c, enabled: true, lockedRoles: (permissions as perms), lockedChannels: [] }
+			const command = { id: c, enabled: true, lockedRoles: permissions as perms, lockedChannels: [] }
 
 			g.commandSettings.push(command)
 			console.log(chalk`{blue Added} {magenta ${command.id}} {blue to ${g.guildID}'s database entry}`)
 		})
 
 		await database.editGuild(g.guildID, 'commandSettings', allGuildCommands)
+	}
+
+	async ban(user: UserResolvable, options: BanOptions, time?: number) {
+		try {
+			const person = await this.client.users.fetch(user)
+			await this.bans.create(user, options)
+			await this.database()
+			return await this.editMemberEntry(person.id, 'banned', { expires: time ? time : null })
+		} catch (err) {
+			await this.client.utils.error(err)
+			return false
+		}
+	}
+
+	async editMemberEntry(id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
+		const logs = await this.database('members')
+		const memberLogs = logs.find((m: databaseMember) => m.id === id)
+
+		if (memberLogs === undefined) {
+			//@ts-ignore what
+			const newModlogs: databaseMember = { id: id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
+			const edited = await database.editGuild(this.id, 'members', newModlogs)
+			if (edited === false) return edited
+
+			//@ts-ignore stfu
+			newModlogs[query] = newValue
+			const edited2 = await database.editGuild(this.id, `members`, logs)
+			return edited2
+		}
+
+		memberLogs[query] = newValue
+		const edited = await database.editGuild(this.id, `members`, logs)
+		return edited
 	}
 }

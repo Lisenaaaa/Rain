@@ -65,4 +65,4 @@ export type CommandDatabase = {
 	enabled: boolean
 }
 
-export type databaseMember = { id: Snowflake; modlogs: modlogs[]; muted: { status: boolean; expires: number | null } }
+export type databaseMember = { id: Snowflake; modlogs: modlogs[]; muted: { status: boolean; expires: number | null }; banned: { expires: number | null } }

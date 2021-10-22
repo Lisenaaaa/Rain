@@ -1,7 +1,13 @@
 import BotClient from '@extensions/RainClient'
-import { User } from 'discord.js'
+import database from '@functions/database'
+import Utils from '@functions/utils'
+import { databaseMember } from '@src/types/database'
+import { modlogTypes, modlogs } from '@src/types/misc'
+import { Snowflake, User } from 'discord.js'
 import { RawUserData } from 'discord.js/typings/rawDataTypes'
 import got from 'got/dist/source'
+import { nanoid } from 'nanoid'
+import { RainGuild } from './Guild'
 
 export class RainUser extends User {
 	declare client: BotClient
@@ -145,5 +151,77 @@ export class RainUser extends User {
 
 	get owner() {
 		return this.client.ownerID.includes(this.id)
+	}
+
+	async addModlogEntry(guildID: Snowflake, type: modlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
+		const guild = this.client.guilds.cache.get(guildID)
+		if (guild === undefined) throw new Error("I couldn't find that guild.")
+		if (!type) throw new Error("You can't make a modlog entry without a type!")
+		if (!moderator) moderator = this.client.user?.id as string
+		const modlogEntry: modlogs = { id: nanoid(), type: type, modID: moderator, reason: data.reason ? data.reason : 'No Reason Provided', createdTimestamp: Utils.now }
+
+		if (data.duration) modlogEntry.duration = data.duration
+
+		let modlogs = await (async () => {
+			const logs = (await (guild as RainGuild).database('members')).find((m: databaseMember) => m.id === this.id)
+			if (logs === undefined) return undefined
+			else if (logs.modlogs.length === 0) return undefined
+			else return logs.modlogs
+		})()
+
+		if (modlogs === undefined) {
+			//@ts-ignore what
+			const newModlogs: databaseMember = { id: this.id, modlogs: [], muted: { status: false, expires: null }, banned: {expires: null} }
+			const dbLogs = await (guild as RainGuild).database('members')
+			dbLogs.push(newModlogs)
+			const edited = await database.editGuild(guild.id, 'members', dbLogs)
+			if (edited === false) return edited
+
+			modlogs = await (async () => {
+				const logs = (await (guild as RainGuild).database('members')).find((m: databaseMember) => m.id === this.id)
+				if (logs === undefined) return undefined
+				else if (logs.modlogs.length === 0) return undefined
+				else return logs.modlogs
+			})()
+			modlogs?.push(modlogEntry)
+			dbLogs.find((m: databaseMember) => m.id === this.id).modlogs.push(modlogEntry)
+			const edited2 = await database.editGuild(guild.id, 'members', dbLogs)
+			return edited2
+		}
+
+		modlogs.push(modlogEntry)
+		const dbLogs = await (guild as RainGuild).database('members')
+		dbLogs.find((m: databaseMember) => m.id === this.id).modlogs.push(modlogEntry)
+		const edited = await database.editGuild(guild.id, 'members', dbLogs)
+		return edited
+	}
+
+	async getModlogs(guildID: Snowflake): Promise<modlogs[] | undefined> {
+		const guild = this.client.guilds.cache.get(guildID) as RainGuild
+		const logs = (await guild.database('members')).find((m: databaseMember) => m.id === this.id)
+		if (logs === undefined) return undefined
+		else if (logs.modlogs.length === 0) return undefined
+		else return logs.modlogs
+	}
+
+	async editGuildEntry(guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
+		const guild = this.client.guilds.cache.get(guildID) as RainGuild
+		const logs = await guild.database('members')
+		const memberLogs = logs.find((m: databaseMember) => m.id === this.id)
+
+		if (memberLogs === undefined) {
+			//@ts-ignore what
+			const newModlogs: databaseMember = { id: this.user.id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
+			const edited = await database.editGuild(guild.id, 'members', newModlogs)
+			if (edited === false) return edited
+
+			memberLogs[query] = newValue
+			const edited2 = await database.editGuild(guild.id, `members`, logs)
+			return edited2
+		}
+
+		memberLogs[query] = newValue
+		const edited = await database.editGuild(guild.id, `members`, logs)
+		return edited
 	}
 }

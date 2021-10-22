@@ -5,6 +5,7 @@ import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import Utils from '@functions/utils'
+import { Snowflake } from 'discord.js'
 
 export default class Mute extends RainCommand {
 	constructor() {
@@ -35,6 +36,8 @@ export default class Mute extends RainCommand {
 					required: false,
 				},
 			],
+
+			slashGuilds: Utils.slashGuilds
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -49,6 +52,7 @@ export default class Mute extends RainCommand {
 			})
 		}
 		const member = (await message.guild?.members.fetch(args.user)) as RainMember
+		if (!member) return await message.reply({content: "You can't mute someone that isn't on the server.", ephemeral: true})
 		let time = null
 
 		if (args.time) {
@@ -57,12 +61,12 @@ export default class Mute extends RainCommand {
 		}
 
 		const muted = time ? await member.mute(time) : await member.mute()
-		const addedModlog = await member.addModlogEntry('MUTE', message.author.id, { reason: args.reason, duration: time ? `${time}` : undefined })
+		const addedModlog = await args.user.addModlogEntry((message.guildId as Snowflake), 'MUTE', message.author.id, { reason: args.reason, duration: time ? `${time}` : undefined })
 
 		if (muted === false) return await message.reply({ content: "There was an error while trying to mute the member. This hasn't been saved to modlogs.", ephemeral: true })
 		if (addedModlog === false) {
 			await member.unmute()
-			return await message.reply({ content: 'There was an error while adding the modlog entry for that member, but they have still been muted.', ephemeral: true })
+			return await message.reply({ content: 'There was an error while adding the modlog entry for that member.', ephemeral: true })
 		}
 		try {
 			await args.user.send(
