@@ -3,9 +3,10 @@ import { RainMember } from '@extensions/discord.js/GuildMember'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
 import { RainInhibitor } from '@extensions/RainInhibitor'
+import Utils from '@functions/utils'
 import { perms } from '@src/types/misc'
-import { AkairoMessage } from 'discord-akairo'
-import { Message } from 'discord.js'
+import { AkairoMessage, GuildTextBasedChannels } from 'discord-akairo'
+import { Message, PermissionString } from 'discord.js'
 
 export default class CommandHandlerInhibitor extends RainInhibitor {
 	constructor() {
@@ -28,10 +29,17 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 			return true
 		}
 
+		if (command.ownerOnly && (message.author as RainUser).owner) return false
+
+		const rain = await message.guild?.members.fetch(this.client.user?.id as string)
+
 		const channelPerms = await (message.channel as RainChannel).getRestrictedPerms()
 		const commandEnabledGuild = await command.enabled(message.guild?.id as string)
 		const commandEnabledGlobally = await command.enabledGlobally()
 		const memberHasPermsInChannel = await (message.member as RainMember).hasPermission(channelPerms as perms)
+		const commandPerms = command.rainPerms as PermissionString[]
+		const rainPermsInChannel = rain?.permissionsIn(message.channel as GuildTextBasedChannels).toArray() as PermissionString[]
+		const rainHasPermsInChannel = Utils.arrayIncludesAllArray(rainPermsInChannel, commandPerms)
 
 		const { debug, debugLog } = this.client
 
@@ -40,6 +48,7 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 			debugLog('commandEnabled', commandEnabledGuild)
 			debugLog('commandEnabledGlobally', commandEnabledGlobally)
 			debugLog('memberHasPermsInChannel', memberHasPermsInChannel)
+			debugLog('rainHasPermsInChannel', rainHasPermsInChannel)
 			console.log('\n')
 		}
 		return false //(await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true

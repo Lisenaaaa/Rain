@@ -111,6 +111,18 @@ export class RainGuild extends Guild {
 		}
 	}
 
+	async unban(user: UserResolvable, reason: string) {
+		try {
+			const person = await this.client.users.fetch(user)
+			await this.bans.remove(user, reason)
+			await this.database()
+			return await this.editMemberEntry(person.id, 'banned', { expires: null })
+		} catch (err) {
+			await this.client.utils.error(err)
+			return false
+		}
+	}
+
 	async editMemberEntry(id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
 		const logs = await this.database('members')
 		const memberLogs = logs.find((m: databaseMember) => m.id === id)

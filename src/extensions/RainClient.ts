@@ -13,7 +13,7 @@ import { DRainMessage } from './discord.js/Message'
 import { RainUser } from './discord.js/User'
 
 export default class RainClient extends AkairoClient {
-	public debug = false
+	public debug = true
 
 	static preStart() {
 		Structures.extend('TextChannel', () => RainChannel)

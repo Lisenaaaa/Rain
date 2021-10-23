@@ -238,4 +238,12 @@ export default class Utils {
 			await message.interaction.editReply({ embeds: interaction.embeds, components: [buttonRowDisabled] })
 		})
 	}
+
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	static arrayIncludesAllArray(array1: any[], array2: any[]) {
+		for (const e of array1) {
+			if (!array2.includes(e)) return false
+		}
+		return true
+	}
 }

@@ -211,7 +211,7 @@ export class RainUser extends User {
 
 		if (memberLogs === undefined) {
 			//@ts-ignore what
-			const newModlogs: databaseMember = { id: this.user.id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
+			const newModlogs: databaseMember = { id: this.id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
 			const edited = await database.editGuild(guild.id, 'members', newModlogs)
 			if (edited === false) return edited
 
