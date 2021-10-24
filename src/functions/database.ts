@@ -67,11 +67,8 @@ async function editGuild(guildID: Snowflake, query: string, newValue: unknown) {
 	if (query === 'guildID') return false
 	try {
 		const guildDB = (await getEntireGuildsDB()).find((d: GuildDatabase) => d.guildID == guildID) as GuildDatabase
-
 		const queryArray = query.split('.')
-
 		let dbObject: GuildDatabase = guildDB
-
 		const finalQuery = queryArray.pop()
 
 		queryArray.forEach((query) => {
@@ -80,7 +77,7 @@ async function editGuild(guildID: Snowflake, query: string, newValue: unknown) {
 		})
 
 		//@ts-ignore ok typescript
-		dbObject[finalQuery as keyof typeof dbObject] = newValue
+		dbObject[finalQuery] = newValue
 
 		await rawDbRequest("UPDATE guilds SET data = $1 WHERE data->>'guildID' = $2;", { bind: [guildDB, guildID] })
 

@@ -10,6 +10,7 @@ import { RainChannel } from './discord.js/Channel'
 import { RainGuild } from './discord.js/Guild'
 import { RainMember } from './discord.js/GuildMember'
 import { DRainMessage } from './discord.js/Message'
+import { RainRole } from './discord.js/Role'
 import { RainUser } from './discord.js/User'
 
 export default class RainClient extends AkairoClient {
@@ -21,6 +22,7 @@ export default class RainClient extends AkairoClient {
 		Structures.extend('Guild', () => RainGuild)
 		Structures.extend('User', () => RainUser)
 		Structures.extend('GuildMember', () => RainMember)
+		Structures.extend('Role', () => RainRole)
 	}
 	public commandHandler: CommandHandler = new CommandHandler(this, {
 		prefix: '-',

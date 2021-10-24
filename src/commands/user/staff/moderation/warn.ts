@@ -38,10 +38,17 @@ export default class Warn extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason: string }) {
-		const member = (await message.guild?.members.fetch(args.user)) as RainMember
-		if (!member) return await message.reply({ content: "You can't kick someone that isn't on the server.", ephemeral: true })
+		let member
+		try {
+			member = (await message.guild?.members.fetch(args.user)) as RainMember
+		} catch (err) {
+			if (!member) return await message.reply({ content: "I couldn't find that person. Most likely they aren't on the server.", ephemeral: true })
+		}
 		if (!(message.member as RainMember).hasRolePriority(member))
-			return await message.reply({ content: `You can't warn **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+			return await message.reply({ content: `You can't ${this.id} **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+		if (member.isOwner) return await message.reply({ content: `You can't ${this.id} the owner of the server.`, ephemeral: true })
+		if (await member.perms() != 'none') return await message.reply({content: `You can't ${this.id} other staff members.`, ephemeral: true})
+
 		const addedModlog = await args.user.addModlogEntry(message.guildId as Snowflake, 'WARN', message.author.id, { reason: args.reason })
 		if (addedModlog === true) {
 			try {

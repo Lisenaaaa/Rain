@@ -1,12 +1,12 @@
-import BotClient from '@extensions/RainClient'
+import RainClient from '@extensions/RainClient'
 import { InteractionReplyOptions, Message, ReplyMessageOptions } from 'discord.js'
 import { RawMessageData } from 'discord.js/typings/rawDataTypes'
 
 export class DRainMessage extends Message {
-	declare client: BotClient
+	declare client: RainClient
 	lowerCaseContent: string
 
-	public constructor(client: BotClient, options: RawMessageData) {
+	public constructor(client: RainClient, options: RawMessageData) {
 		super(client, options)
 		this.lowerCaseContent = options.content.toLowerCase()
 	}

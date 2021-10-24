@@ -58,7 +58,10 @@ export default class Mute extends RainCommand {
 			if (!member) return await message.reply({ content: "I couldn't find that person. Most likely they aren't on the server.", ephemeral: true })
 		}
 		if (!(message.member as RainMember).hasRolePriority(member))
-			return await message.reply({ content: `You can't mute **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+			return await message.reply({ content: `You can't ${this.id} **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+		if (member.isOwner) return await message.reply({ content: `You can't ${this.id} the owner of the server.`, ephemeral: true })
+		if (await member.perms() != 'none') return await message.reply({content: `You can't ${this.id} other staff members.`, ephemeral: true})
+
 		let time = null
 
 		if (args.time) {

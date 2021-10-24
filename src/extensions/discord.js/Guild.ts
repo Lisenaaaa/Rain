@@ -1,22 +1,21 @@
-import BotClient from '@extensions/RainClient'
+import RainClient from '@extensions/RainClient'
 import database from '@functions/database'
 import Handler from '@functions/handler'
-import { databaseMember } from '@src/types/database'
+import { databaseMember, GuildDatabase } from '@src/types/database'
 import { guildCommandSettings, perms } from '@src/types/misc'
 import chalk from 'chalk'
 import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
-import { RainMember } from './GuildMember'
 
 export class RainGuild extends Guild {
-	declare client: BotClient
+	declare client: RainClient
 
-	public constructor(client: BotClient, options: RawGuildData) {
+	public constructor(client: RainClient, options: RawGuildData) {
 		super(client, options)
 	}
 
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async database(query?: string): Promise<any> {
+	async database(query?: string): Promise<GuildDatabase | any> {
 		let db = await database.readGuild(this.id)
 		if (db === undefined) {
 			await database.addGuild(this.id)
@@ -33,7 +32,7 @@ export class RainGuild extends Guild {
 			})
 
 			return dbObject
-		} else return db
+		} else return db as GuildDatabase
 	}
 
 	async editStaffRole(position: perms, newRole: Snowflake | null) {

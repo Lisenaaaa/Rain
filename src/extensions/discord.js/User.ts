@@ -1,4 +1,4 @@
-import BotClient from '@extensions/RainClient'
+import RainClient from '@extensions/RainClient'
 import database from '@functions/database'
 import Utils from '@functions/utils'
 import { databaseMember } from '@src/types/database'
@@ -10,10 +10,10 @@ import { nanoid } from 'nanoid'
 import { RainGuild } from './Guild'
 
 export class RainUser extends User {
-	declare client: BotClient
+	declare client: RainClient
 	public declare timestamp: number
 
-	public constructor(client: BotClient, options: RawUserData) {
+	public constructor(client: RainClient, options: RawUserData) {
 		super(client, options)
 		this.timestamp = Math.round(this.createdTimestamp / 1000)
 	}

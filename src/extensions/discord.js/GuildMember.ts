@@ -1,4 +1,4 @@
-import BotClient from '@extensions/RainClient'
+import RainClient from '@extensions/RainClient'
 import { perms } from '@src/types/misc'
 import { Guild, GuildMember } from 'discord.js'
 import { RawGuildMemberData } from 'discord.js/typings/rawDataTypes'
@@ -8,9 +8,9 @@ import { databaseMember } from '@src/types/database'
 import { RainUser } from './User'
 
 export class RainMember extends GuildMember {
-	declare client: BotClient
+	declare client: RainClient
 
-	public constructor(client: BotClient, options: RawGuildMemberData, guild: Guild) {
+	public constructor(client: RainClient, options: RawGuildMemberData, guild: Guild) {
 		super(client, options, guild)
 	}
 

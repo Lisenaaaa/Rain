@@ -61,9 +61,17 @@ export default class Ban extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason?: string; time: string; days?: number }) {
-		//const member = (await message.guild?.members.fetch(args.user)) as RainMember
+		let member
+		try {
+			member = (await message.guild?.members.fetch(args.user)) as RainMember
+		} catch (err) {
+			if (!member) return await message.reply({ content: "I couldn't find that person. Most likely they aren't on the server.", ephemeral: true })
+		}
+		if (!(message.member as RainMember).hasRolePriority(member))
+			return await message.reply({ content: `You can't ${this.id} **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+		if (member.isOwner) return await message.reply({ content: `You can't ${this.id} the owner of the server.`, ephemeral: true })
+		if (await member.perms() != 'none') return await message.reply({content: `You can't ${this.id} other staff members.`, ephemeral: true})
 
-		//if (!(message.member as RainMember).hasRolePriority(member)) return await message.reply({content: `You can't ban **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true})
 		let time = null
 
 		if (args.time) {
@@ -90,7 +98,10 @@ export default class Ban extends RainCommand {
 
 		if (addedModlog === false) {
 			await (message.guild as RainGuild).unban(args.user, "Modlog entry couldn't be added, so you have been unbanned.")
-			return await message.reply({ content: "There was an error while adding the modlog entry for that member. I already banned them, so I just unbanned them, to not cause issues with my database.", ephemeral: true })
+			return await message.reply({
+				content: 'There was an error while adding the modlog entry for that member. I already banned them, so I just unbanned them, to not cause issues with my database.',
+				ephemeral: true,
+			})
 		}
 		if (sent) {
 			await message.reply({ content: `**${args.user.tag}** has been ${time ? `temporarily banned until <t:${time}>` : `permanently banned.`}` })

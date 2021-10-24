@@ -9,7 +9,7 @@ import { Channel } from 'discord.js'
 export default class ChannelPerms extends RainCommand {
 	constructor() {
 		super('channelPerms', {
-			aliases: ['channelPerms'],
+			aliases: ['setChannelPerms'],
 			slash: true,
 			slashGuilds: utils.slashGuilds,
 			description: 'Set permissions for a channel.',
