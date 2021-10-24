@@ -30,7 +30,7 @@ export default class Warn extends RainCommand {
 			],
 
 			slashGuilds: Utils.slashGuilds,
-			rainPerms: ['SEND_MESSAGES']
+			rainPerms: ['SEND_MESSAGES'],
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -39,18 +39,19 @@ export default class Warn extends RainCommand {
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason: string }) {
 		const member = (await message.guild?.members.fetch(args.user)) as RainMember
-		if (!member) return await message.reply({content: "You can't kick someone that isn't on the server.", ephemeral: true})
-		const addedModlog = await args.user.addModlogEntry((message.guildId as Snowflake), 'WARN', message.author.id, {reason: args.reason})
+		if (!member) return await message.reply({ content: "You can't kick someone that isn't on the server.", ephemeral: true })
+		if (!(message.member as RainMember).hasRolePriority(member))
+			return await message.reply({ content: `You can't warn **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
+		const addedModlog = await args.user.addModlogEntry(message.guildId as Snowflake, 'WARN', message.author.id, { reason: args.reason })
 		if (addedModlog === true) {
 			try {
 				await args.user.send(`You have been warned in **${message.guild?.name}** for ${args.reason}`)
-                await message.reply(`**${args.user.tag}** has been warned.`)
+				await message.reply(`**${args.user.tag}** has been warned.`)
 			} catch (err) {
-                await message.reply({content: `I couldn't DM **${args.user.tag}**. This warning has been saved to their modlogs.`})
-            }
+				await message.reply({ content: `I couldn't DM **${args.user.tag}**. This warning has been saved to their modlogs.` })
+			}
+		} else {
+			await message.reply('There was an error saving the modlog entry. This warning has not been saved, and the user has not been messaged.')
 		}
-        else {
-            await message.reply('There was an error saving the modlog entry. This warning has not been saved, and the user has not been messaged.')
-        }
 	}
 }

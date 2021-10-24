@@ -6,6 +6,7 @@ import { guildCommandSettings, perms } from '@src/types/misc'
 import chalk from 'chalk'
 import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
 import { RawGuildData } from 'discord.js/typings/rawDataTypes'
+import { RainMember } from './GuildMember'
 
 export class RainGuild extends Guild {
 	declare client: BotClient
@@ -130,7 +131,7 @@ export class RainGuild extends Guild {
 		if (memberLogs === undefined) {
 			//@ts-ignore what
 			const newModlogs: databaseMember = { id: id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
-			const edited = await database.editGuild(this.id, 'members', newModlogs)
+			const edited = await database.editGuild(this.id, 'members', (await this.database('members')).push(newModlogs))
 			if (edited === false) return edited
 
 			//@ts-ignore stfu

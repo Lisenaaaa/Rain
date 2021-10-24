@@ -53,7 +53,7 @@ export default class Ban extends RainCommand {
 			],
 
 			slashGuilds: Utils.slashGuilds,
-			rainPerms: ['BAN_MEMBERS']
+			rainPerms: ['BAN_MEMBERS'],
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -61,7 +61,9 @@ export default class Ban extends RainCommand {
 	}
 
 	async execSlash(message: RainMessage, args: { user: RainUser; reason?: string; time: string; days?: number }) {
-		const member = (await message.guild?.members.fetch(args.user)) as RainMember
+		//const member = (await message.guild?.members.fetch(args.user)) as RainMember
+
+		//if (!(message.member as RainMember).hasRolePriority(member)) return await message.reply({content: `You can't ban **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true})
 		let time = null
 
 		if (args.time) {
@@ -87,8 +89,8 @@ export default class Ban extends RainCommand {
 		const addedModlog = await args.user.addModlogEntry(message.guildId as Snowflake, 'BAN', message.author.id, { reason: args.reason, duration: time ? `${time}` : undefined })
 
 		if (addedModlog === false) {
-			await message.guild?.bans.remove(member)
-			return await message.reply({ content: 'There was an error while adding the modlog entry for that member.', ephemeral: true })
+			await (message.guild as RainGuild).unban(args.user, "Modlog entry couldn't be added, so you have been unbanned.")
+			return await message.reply({ content: "There was an error while adding the modlog entry for that member. I already banned them, so I just unbanned them, to not cause issues with my database.", ephemeral: true })
 		}
 		if (sent) {
 			await message.reply({ content: `**${args.user.tag}** has been ${time ? `temporarily banned until <t:${time}>` : `permanently banned.`}` })

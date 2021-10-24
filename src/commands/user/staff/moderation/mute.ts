@@ -37,7 +37,7 @@ export default class Mute extends RainCommand {
 			],
 
 			slashGuilds: Utils.slashGuilds,
-			rainPerms: ['MANAGE_ROLES']
+			rainPerms: ['MANAGE_ROLES'],
 		})
 	}
 	async exec(message: DRainMessage) {
@@ -51,8 +51,14 @@ export default class Mute extends RainCommand {
 				ephemeral: true,
 			})
 		}
-		const member = (await message.guild?.members.fetch(args.user)) as RainMember
-		if (!member) return await message.reply({content: "You can't mute someone that isn't on the server.", ephemeral: true})
+		let member
+		try {
+			member = (await message.guild?.members.fetch(args.user)) as RainMember
+		} catch (err) {
+			if (!member) return await message.reply({ content: "I couldn't find that person. Most likely they aren't on the server.", ephemeral: true })
+		}
+		if (!(message.member as RainMember).hasRolePriority(member))
+			return await message.reply({ content: `You can't mute **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
 		let time = null
 
 		if (args.time) {
@@ -61,12 +67,15 @@ export default class Mute extends RainCommand {
 		}
 
 		const muted = time ? await member.mute(time) : await member.mute()
-		const addedModlog = await args.user.addModlogEntry((message.guildId as Snowflake), 'MUTE', message.author.id, { reason: args.reason, duration: time ? `${time}` : undefined })
-
 		if (muted === false) return await message.reply({ content: "There was an error while trying to mute the member. This hasn't been saved to modlogs.", ephemeral: true })
+
+		const addedModlog = await args.user.addModlogEntry(message.guildId as Snowflake, 'MUTE', message.author.id, { reason: args.reason, duration: time ? `${time}` : undefined })
 		if (addedModlog === false) {
 			await member.unmute()
-			return await message.reply({ content: 'There was an error while adding the modlog entry for that member.', ephemeral: true })
+			return await message.reply({
+				content: 'There was an error while adding the modlog entry for that member. They have been unmuted.',
+				ephemeral: true,
+			})
 		}
 		try {
 			await args.user.send(

@@ -40,6 +40,8 @@ export default class Kick extends RainCommand {
 	async execSlash(message: RainMessage, args: { user: RainUser; reason?: string }) {
 		const member = (await message.guild?.members.fetch(args.user)) as RainMember
 		if (!member) return await message.reply({content: "You can't kick someone that isn't on the server.", ephemeral: true})
+		if (!(message.member as RainMember).hasRolePriority(member))
+		return await message.reply({ content: `You can't kick **${args.user.tag}**, as their highest role is higher than yours.`, ephemeral: true })
 		const addedModlog = await args.user.addModlogEntry((message.guildId as Snowflake), 'KICK', message.author.id, { reason: args.reason })
 
         await member.kick(args.reason)

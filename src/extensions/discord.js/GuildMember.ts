@@ -233,4 +233,10 @@ export class RainMember extends GuildMember {
 			return dbObject
 		} else return db
 	}
+
+	hasRolePriority(otherMember: RainMember) {
+
+
+		return this.roles.highest.position > otherMember.roles.highest.position 
+	}
 }
