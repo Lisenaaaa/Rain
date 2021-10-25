@@ -2,12 +2,13 @@
 
 Config Values:
 
-token: Discord Bot Token obtained from [here](https://discord.com/developers/applications)
+ token: 
+ > Discord Bot Token obtained from [here](https://discord.com/developers/applications)
 
 Config constructors:
 
-RainClient.preStart()
-RainClient().start
+> RainClient.preStart()
+> RainClient().start
 
 Example config:
 
@@ -27,3 +28,5 @@ client.start(config.tokens[token]).catch(console.error)
 
 export default client
 ```
+
+(c) 2021 Raine
