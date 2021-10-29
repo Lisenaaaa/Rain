@@ -46,7 +46,7 @@ export class RainMember extends GuildMember {
 		const roleSettings = (await (this.guild as RainGuild).database())?.guildSettings.staffRoles
 
 		let found = false
-		let perms = 'everyone'
+		let perms = null
 		let permsArray: perms[] = []
 
 		const owner = roleSettings?.owner
@@ -78,26 +78,26 @@ export class RainMember extends GuildMember {
 			}
 		})
 
-		if (perms == 'everyone') {
+		if (perms == null) {
 			return false
 		}
 		if (perms == 'trialHelper') {
-			permsArray = ['trialHelper']
+			permsArray = ['none', 'trialHelper']
 		}
 		if (perms == 'helper') {
-			permsArray = ['trialHelper', 'helper']
+			permsArray = ['none', 'trialHelper', 'helper']
 		}
 		if (perms == 'moderator') {
-			permsArray = ['trialHelper', 'helper', 'moderator']
+			permsArray = ['none', 'trialHelper', 'helper', 'moderator']
 		}
 		if (perms == 'srMod') {
-			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod']
+			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod']
 		}
 		if (perms == 'admin') {
-			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod', 'admin']
+			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin']
 		}
 		if (perms == 'owner') {
-			permsArray = ['trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
+			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
 		}
 
 		return permsArray.includes(perm)
@@ -235,8 +235,6 @@ export class RainMember extends GuildMember {
 	}
 
 	hasRolePriority(otherMember: RainMember) {
-
-
-		return this.roles.highest.position > otherMember.roles.highest.position 
+		return this.roles.highest.position > otherMember.roles.highest.position
 	}
 }

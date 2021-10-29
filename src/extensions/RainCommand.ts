@@ -1,7 +1,8 @@
 import RainClient from '@extensions/RainClient'
-import { perms } from '@src/types/misc'
+import { guildCommandSettings, perms } from '@src/types/misc'
 import { Command, CommandOptions } from 'discord-akairo'
 import { PermissionResolvable, Snowflake } from 'discord.js'
+import { RainGuild } from './discord.js/Guild'
 
 export class RainCommand extends Command {
 	declare client: RainClient
@@ -24,9 +25,19 @@ export class RainCommand extends Command {
 		if (this.ownerOnly) return true
 		return db?.commandSettings.find((c) => c.id == this.id)?.enabled as boolean
 	}
+
 	async enabledGlobally() {
 		if (this.ownerOnly) return true
 		return (await this.client.database.getCommand(this.id))?.enabled
+	}
+
+	async getPerms(guildID: Snowflake): Promise<perms | 'none'> {
+		if (this.ownerOnly) return 'none'
+		const db = (await (this.client.guilds.cache.get(guildID) as RainGuild).database('commandSettings')) as guildCommandSettings[]
+		const command = db.find((c) => c.id === this.id)
+
+		//@ts-ignore this literally cannot not work in the one place i'm going to be using it
+		return command?.lockedRoles
 	}
 }
 

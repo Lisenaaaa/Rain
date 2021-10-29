@@ -3,7 +3,6 @@ import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import importDatabase from '@functions/database'
 import importUtils from '@functions/utils'
-import { EvalOptions } from '@src/types/misc'
 import { exec } from 'child_process'
 import { AkairoMessage } from 'discord-akairo'
 import { MessageEmbed } from 'discord.js'
@@ -35,7 +34,7 @@ export default class Evaluate extends RainCommand {
 		})
 	}
 
-	async exec(message: DRainMessage, args: EvalOptions) {
+	async exec(message: DRainMessage, args: { codetoeval: string; silent: boolean; sudo: boolean }) {
 		if (args.codetoeval.includes('channel.delete')) {
 			return message.util?.reply('Are you IRONM00N?')
 		}
@@ -59,7 +58,8 @@ export default class Evaluate extends RainCommand {
 			sh = promisify(exec),
 			ms = msImport,
 			handler = HandlerImport,
-			djs = djsImport
+			djs = djsImport,
+			rain = await message.guild?.members.fetch(this.client.user?.id as string)
 
 		let output
 

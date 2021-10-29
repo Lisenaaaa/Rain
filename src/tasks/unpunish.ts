@@ -13,7 +13,6 @@ export default class Unpunish extends RainTask {
 		})
 	}
 	async exec() {
-		await Utils.sleep(10)
 		for (const [id] of this.client.guilds.cache) {
 			const guild = this.client.guilds.cache.get(id) as RainGuild
 			const members = await guild.database('members')

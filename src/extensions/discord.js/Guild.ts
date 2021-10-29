@@ -143,4 +143,22 @@ export class RainGuild extends Guild {
 		const edited = await database.editGuild(this.id, `members`, logs)
 		return edited
 	}
+
+	async hasStaffRoles() {
+		const db = await this.database('guildSettings.staffRoles')
+
+		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
+		else return true
+	}
+
+	async setCommandPermissions(command: string, perms: perms) {
+		if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
+
+		const commands = await this.database('commandSettings')
+		const cmd = commands.find((c: guildCommandSettings) => c.id === command)
+
+		cmd.lockedRoles = perms
+
+		return await database.editGuild(this.id, 'commandSettings', commands)
+	}
 }

@@ -12,10 +12,9 @@ import { RainMember } from './discord.js/GuildMember'
 import { DRainMessage } from './discord.js/Message'
 import { RainRole } from './discord.js/Role'
 import { RainUser } from './discord.js/User'
+import fs from 'fs'
 
 export default class RainClient extends AkairoClient {
-	public debug = true
-
 	static preStart() {
 		Structures.extend('TextChannel', () => RainChannel)
 		Structures.extend('Message', () => DRainMessage)
@@ -96,6 +95,8 @@ export default class RainClient extends AkairoClient {
 	}
 
 	debugLog(name: string, thing: unknown) {
+		const debug = JSON.parse(fs.readFileSync('config.json', 'utf-8')).debug
+		if (!debug) return
 		if (typeof thing === 'string' || typeof thing === 'number' || typeof thing === 'boolean' || typeof thing == 'bigint' || typeof thing == 'undefined')
 			console.log(chalk`{red.bold DEBUG/${name}:} ${thing}`)
 		else {
@@ -105,12 +106,16 @@ export default class RainClient extends AkairoClient {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param time A string that you would like formatted into seconds.
 	 * @returns The string you inputted, in seconds.
 	 */
 	time(time: string): number {
-		return Math.round(ms(time)/1000)
+		return Math.round(ms(time) / 1000)
+	}
+
+	public get debug(): boolean {
+		return JSON.parse(fs.readFileSync('config.json', 'utf-8')).debug
 	}
 
 	public async start(token: string): Promise<string> {

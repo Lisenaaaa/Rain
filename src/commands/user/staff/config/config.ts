@@ -3,6 +3,7 @@ import { RainGuild } from '@extensions/discord.js/Guild'
 import { DRainMessage } from '@extensions/discord.js/Message'
 import { RainCommand } from '@extensions/RainCommand'
 import database from '@functions/database'
+import Handler from '@functions/handler'
 import utils from '@functions/utils'
 import { perms } from '@src/types/misc'
 import { AkairoMessage, GuildTextBasedChannels } from 'discord-akairo'
@@ -30,7 +31,7 @@ export default class Config extends RainCommand {
 			slash: true,
 			slashGuilds: utils.slashGuilds,
 			defaultPerms: 'srMod',
-			rainPerms: ['SEND_MESSAGES']
+			rainPerms: ['SEND_MESSAGES'],
 		})
 	}
 
@@ -65,6 +66,7 @@ export default class Config extends RainCommand {
 			new MessageButton({ customId: 'configRestrictChannels', label: 'Restrict Channels', style: 'PRIMARY' }),
 			new MessageButton({ customId: 'configLogChannels', label: 'Logging Channels', style: 'PRIMARY' }),
 			new MessageButton({ customId: 'configStaffRoles', label: 'Staff Roles', style: 'PRIMARY' }),
+			new MessageButton({ customId: 'configLockCommand', label: 'Set Command Permissions', style: 'PRIMARY' }),
 			new MessageButton({ customId: 'configMuteRole', label: 'Set Muted Role', style: 'PRIMARY' })
 		)
 
@@ -77,6 +79,7 @@ export default class Config extends RainCommand {
 						{ name: 'Restrict Channels', value: 'Lock specific channels, so that only users with specific permissions can use my commands in them.', inline: true },
 						{ name: 'Logging Channels', value: 'Set channels for me to log server-related information in.', inline: true },
 						{ name: 'Staff Roles', value: 'Set up roles to use my custom permission system. This is highly recommended.', inline: true },
+						{ name: 'Set Command Permissions', value: 'Set the custom permissions for any command.', inline: true },
 						{ name: 'Set Muted Role', value: 'Set my muted role. **This is required for `/mute` to work.**', inline: true },
 					],
 				},
@@ -288,9 +291,78 @@ export default class Config extends RainCommand {
 						const edited = await database.editGuild(interaction.guildId as Snowflake, 'guildSettings.muteRole', role.id)
 						if (edited === true) {
 							await interaction.editReply({ content: `The muted role has succesfully been set to ${role}`, allowedMentions: { parse: [] } })
-						}
-						else await interaction.editReply({ content: `I failed to set the muted role to ${role}`, allowedMentions: { parse: [] } })
+						} else await interaction.editReply({ content: `I failed to set the muted role to ${role}`, allowedMentions: { parse: [] } })
 					})
+					break
+				}
+				case 'configLockCommand': {
+					await i.deferUpdate()
+					await interaction.editReply({
+						content: 'Which command would you like to set?',
+						embeds: [],
+						components: [
+							{
+								type: 1,
+								components: [
+									{
+										type: 'BUTTON',
+										label: 'All command IDs',
+										style: 'PRIMARY',
+										customId: 'showCommandIDs',
+									},
+								],
+							},
+						],
+					})
+
+					messageCollector.once('collect', async (m: Message) => {
+						await m.delete()
+
+						if (!Handler.getAllCommands().includes(m.content)) {
+							await interaction.editReply({ content: "That ID isn't valid.", components: [] })
+							return
+						}
+
+						const command = m.content
+
+						await interaction.editReply({
+							content: `Which permissions would you like ${command} to have?`,
+							embeds: [],
+							components: [
+								{
+									type: 1,
+									components: [
+										{
+											type: 'BUTTON',
+											label: 'All Permissions',
+											style: 'PRIMARY',
+											customId: 'showPermissions',
+										},
+									],
+								},
+							],
+						})
+
+						messageCollector.once('collect', async (m: Message) => {
+							await m.delete()
+							const permArray = [
+								'owner',
+								'admin',
+								'srMod',
+								'moderator',
+								'helper',
+								'trialHelper'
+							]
+							if (!permArray.includes(m.content)) {await interaction.editReply({content: "That isn't a valid permission!", components: []})}
+
+							const perms = m.content as perms
+
+							const edited = await (message.guild as RainGuild).setCommandPermissions(command, perms)
+
+							await interaction.editReply({content: `${edited ? `I succesfully edited ${command} to only run if you have ${perms}.` : `I failed to edit ${command}.`}`, components: []})
+						})
+					})
+
 					break
 				}
 			}

@@ -239,10 +239,16 @@ export default class Utils {
 		})
 	}
 
+	/**
+	 * 
+	 * @param array1 The master array, with all the objects.
+	 * @param array2 The array you would like to check if everything in it is also in `array1`
+	 * @returns boolean
+	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	static arrayIncludesAllArray(array1: any[], array2: any[]) {
-		for (const e of array1) {
-			if (!array2.includes(e)) return false
+		for (const e of array2) {
+			if (!array1.includes(e)) return false
 		}
 		return true
 	}

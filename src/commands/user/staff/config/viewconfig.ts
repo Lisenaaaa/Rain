@@ -26,7 +26,7 @@ export default class ViewConfig extends RainCommand {
 		const database = (await (message.guild as RainGuild).database()) as GuildDatabase
 
 		const embed = {
-			title: `${message.guild?.name}'s configuration'`,
+			title: `${message.guild?.name}'s configuration`,
 			fields: [
 				{
 					name: 'Muted Role',

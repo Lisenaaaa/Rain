@@ -1,4 +1,5 @@
 import { RainChannel } from '@extensions/discord.js/Channel'
+import { RainGuild } from '@extensions/discord.js/Guild'
 import { RainMember } from '@extensions/discord.js/GuildMember'
 import { RainUser } from '@extensions/discord.js/User'
 import { RainCommand } from '@extensions/RainCommand'
@@ -6,7 +7,7 @@ import { RainInhibitor } from '@extensions/RainInhibitor'
 import Utils from '@functions/utils'
 import { perms } from '@src/types/misc'
 import { AkairoMessage, GuildTextBasedChannels } from 'discord-akairo'
-import { Message, PermissionString } from 'discord.js'
+import { Message, PermissionString, Snowflake } from 'discord.js'
 
 export default class CommandHandlerInhibitor extends RainInhibitor {
 	constructor() {
@@ -40,17 +41,17 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 		const commandPerms = command.rainPerms as PermissionString[]
 		const rainPermsInChannel = rain?.permissionsIn(message.channel as GuildTextBasedChannels).toArray() as PermissionString[]
 		const rainHasPermsInChannel = Utils.arrayIncludesAllArray(rainPermsInChannel, commandPerms)
+		const memberHasPermsForCommand = await (message.guild as RainGuild).hasStaffRoles() ? await (message.member as RainMember).hasPermission(await command.getPerms(message.guildId as Snowflake)) : Utils.arrayIncludesAllArray((message.member as RainMember).permissions.toArray(), commandPerms)
 
-		const { debug, debugLog } = this.client
+		const { debugLog } = this.client
 
-		if (debug) {
-			debugLog('commandId', command.id)
-			debugLog('commandEnabled', commandEnabledGuild)
-			debugLog('commandEnabledGlobally', commandEnabledGlobally)
-			debugLog('memberHasPermsInChannel', memberHasPermsInChannel)
-			debugLog('rainHasPermsInChannel', rainHasPermsInChannel)
-			console.log('\n')
-		}
+		debugLog('commandId', command.id)
+		debugLog('commandEnabled', commandEnabledGuild)
+		debugLog('commandEnabledGlobally', commandEnabledGlobally)
+		debugLog('memberHasPermsInChannel', memberHasPermsInChannel)
+		debugLog('rainHasPermsInChannel', rainHasPermsInChannel)
+		debugLog('memberHasPermsForCommand', memberHasPermsForCommand)
+
 		return false //(await (message.member as RainMember).hasPermission(channelPerms as perms)) ? false : true
 	}
 }
