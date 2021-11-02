@@ -182,10 +182,10 @@ export default class Utils {
 		}
 
 		const buttonRow = new MessageActionRow().addComponents([
-			new MessageButton().setLabel('back all').setCustomId('pageBackAll').setStyle('PRIMARY'),
-			new MessageButton().setLabel('back 1').setCustomId('pageBackOne').setStyle('PRIMARY'),
-			new MessageButton().setLabel('forwards 1').setCustomId('pageForwardsOne').setStyle('PRIMARY'),
-			new MessageButton().setLabel('forwards all').setCustomId('pageForwardsAll').setStyle('PRIMARY'),
+			new MessageButton().setEmoji('<:paginate1:903780818755915796>').setCustomId('pageBackAll').setStyle('PRIMARY'),
+			new MessageButton().setEmoji('<:paginate2:903780882203160656>').setCustomId('pageBackOne').setStyle('PRIMARY'),
+			new MessageButton().setEmoji('<:paginate3:903780978940596295>').setCustomId('pageForwardsOne').setStyle('PRIMARY'),
+			new MessageButton().setEmoji('<:paginate4:903781017544953966>').setCustomId('pageForwardsAll').setStyle('PRIMARY'),
 		])
 		await message.interaction.reply({ embeds: [newEmbeds[0]], components: [buttonRow] })
 
@@ -229,10 +229,10 @@ export default class Utils {
 		})
 		interactionCollector?.once('end', async () => {
 			const buttonRowDisabled = new MessageActionRow().addComponents([
-				new MessageButton().setLabel('back all').setCustomId('pageBackAll').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setLabel('back 1').setCustomId('pageBackOne').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setLabel('forwards 1').setCustomId('pageForwardsOne').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setLabel('forwards all').setCustomId('pageForwardsAll').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setEmoji('<:paginate1:903780818755915796>').setCustomId('pageBackAll').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setEmoji('<:paginate2:903780882203160656>').setCustomId('pageBackOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setEmoji('<:paginate3:903780978940596295>').setCustomId('pageForwardsOne').setStyle('PRIMARY').setDisabled(true),
+				new MessageButton().setEmoji('<:paginate4:903781017544953966>').setCustomId('pageForwardsAll').setStyle('PRIMARY').setDisabled(true),
 			])
 			const interaction = await message.interaction.fetchReply()
 			await message.interaction.editReply({ embeds: interaction.embeds, components: [buttonRowDisabled] })
@@ -240,7 +240,6 @@ export default class Utils {
 	}
 
 	/**
-	 * 
 	 * @param array1 The master array, with all the objects.
 	 * @param array2 The array you would like to check if everything in it is also in `array1`
 	 * @returns boolean

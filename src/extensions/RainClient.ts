@@ -86,7 +86,7 @@ export default class RainClient extends AkairoClient {
 				const loader2 = loaders[loader]
 				loader2.loadAll()
 				if (loader2 instanceof TaskHandler) loader2.startAll()
-				console.log(chalk.blueBright(`Successfully loaded ${loader}.`))
+				console.log(chalk.blue(`Successfully loaded ${loader}.`))
 			} catch (e) {
 				console.error(`Unable to load ${loader} with error ${e}.`)
 				process.exit()
