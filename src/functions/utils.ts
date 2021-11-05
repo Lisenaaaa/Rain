@@ -251,4 +251,12 @@ export default class Utils {
 		}
 		return true
 	}
+
+	/**
+	 * @param bool The boolean you want to reverse.
+	 * @returns boolean
+	 */
+	static oppsite(bool: boolean): boolean {
+		return bool ? false : true
+	}
 }
