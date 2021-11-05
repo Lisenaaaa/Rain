@@ -29,6 +29,7 @@ export default class Pronouns extends RainCommand {
 		await message.reply('Use this as a slashcommand.')
 	}
 	async execSlash(message: RainMessage, args: { person: string }) {
+		await message.interaction.deferReply()
 		const person = (await this.client.utils.fetchUser(args.person)) ?? (message.author as RainUser)
 
 		const pronouns = await person.getPronouns('details')
