@@ -15,7 +15,8 @@ export default class Reload extends RainCommand {
 			description: 'reloads the bot, owneronly',
 			slashGuilds: ['880637463838724166'],
 			defaultPerms: 'owner',
-			rainPerms: ['SEND_MESSAGES']
+			discordPerms: [],
+			rainPerms: []
 		})
 	}
 

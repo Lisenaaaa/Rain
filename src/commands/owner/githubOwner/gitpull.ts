@@ -12,7 +12,8 @@ export default class GitPull extends RainCommand {
 			ownerOnly: true,
 			channel: 'guild',
 			defaultPerms: 'owner',
-			rainPerms: ['ADMINISTRATOR']
+			discordPerms: [],
+			rainPerms: []
 		})
 	}
 

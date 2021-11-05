@@ -52,7 +52,8 @@ export default class ChannelPerms extends RainCommand {
 				},
 			],
 			defaultPerms: 'srMod',
-			rainPerms: ['SEND_MESSAGES']
+			rainPerms: ['SEND_MESSAGES'],
+			discordPerms: ['MANAGE_GUILD']
 		})
 	}
 

@@ -108,7 +108,7 @@ export class RainMember extends GuildMember {
 		else return false
 	}
 
-	async perms(): Promise<perms | 'none'> {
+	async getPerms(): Promise<perms> {
 		if (this.isOwner) return 'owner'
 
 		const roleSettings = await (this.guild as RainGuild).database('guildSettings.staffRoles')
@@ -145,7 +145,7 @@ export class RainMember extends GuildMember {
 			}
 		})
 
-		return perms as perms | 'none'
+		return perms as perms
 	}
 
 	// async addModlogEntry(type: modlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
@@ -235,6 +235,9 @@ export class RainMember extends GuildMember {
 	}
 
 	hasRolePriority(otherMember: RainMember) {
+		if (!this.roles && !otherMember.roles) return false
+		if (!this.roles && otherMember.roles) return false
+		if (this.roles && !otherMember.roles) return true
 		return this.roles.highest.position > otherMember.roles.highest.position
 	}
 }

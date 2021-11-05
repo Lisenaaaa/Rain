@@ -32,23 +32,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@discordjs/builders@npm:^0.6.0":
-  version: 0.6.0
-  resolution: "@discordjs/builders@npm:0.6.0"
+"@discordjs/builders@npm:^0.8.1":
+  version: 0.8.2
+  resolution: "@discordjs/builders@npm:0.8.2"
   dependencies:
-    "@sindresorhus/is": ^4.0.1
-    discord-api-types: ^0.22.0
+    "@sindresorhus/is": ^4.2.0
+    discord-api-types: ^0.24.0
     ow: ^0.27.0
     ts-mixer: ^6.0.0
     tslib: ^2.3.1
-  checksum: a6f1517bc9c55a4156eaea8de25b0f8a064923ba93a366c6ba4ae8724a16b35918121759cb4d9097c76457f2d9f2cc583c39809f5ef5d69e11d607bb0fd1bb39
+  checksum: 6c2f6ee427b0f577ad8b7dd4e4bbaf15c4083385bef983243b9223f68dd7c02715a8fc40aac1b943e667bbba4e262f0c776ae5bc3b0c24bd2faf3eac9c89a58c
   languageName: node
   linkType: hard
 
-"@discordjs/collection@npm:^0.2.1":
-  version: 0.2.1
-  resolution: "@discordjs/collection@npm:0.2.1"
-  checksum: e68d4bbf83b03bc18c7648d0f5c5669d1f1a394596bc2fcbb907284cff65657b28dbf165a1b8ccae20b6bc0726bc8a0a276d8adba8f9413502bb19d61b98598f
+"@discordjs/collection@npm:^0.3.2":
+  version: 0.3.2
+  resolution: "@discordjs/collection@npm:0.3.2"
+  checksum: 77def13598fce0f33cdd1e45e0e57b4452a1fa348e30d7d3a3b5a56409def4c4785462828b163aea83d659b93412d5dc18c22c85eff499dfc11c24011e8b18e6
   languageName: node
   linkType: hard
 
@@ -125,14 +125,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/async-queue@npm:^1.1.5":
-  version: 1.1.5
-  resolution: "@sapphire/async-queue@npm:1.1.5"
-  checksum: 7ede75c6ac22db54969071b0de4b6c7d2db10be4c6af7f075d95b8ac6190dff8c6a8cdff5a9ab6c92c8a95fe858e294cf770d52d12b89386aef681e94fd07905
+"@sapphire/async-queue@npm:^1.1.8":
+  version: 1.1.8
+  resolution: "@sapphire/async-queue@npm:1.1.8"
+  checksum: 6a033c41dd672af51f33c262d7b901dd636b7f9c625022a5efb4da94298b5cea31e1dca8b9ab82d7f9aa124ccd7bca19aef2dde7e09a1dd0f7b179cc3cbbcef4
   languageName: node
   linkType: hard
 
-"@sindresorhus/is@npm:^4.0.0, @sindresorhus/is@npm:^4.0.1":
+"@sindresorhus/is@npm:^4.0.0, @sindresorhus/is@npm:^4.0.1, @sindresorhus/is@npm:^4.2.0":
   version: 4.2.0
   resolution: "@sindresorhus/is@npm:4.2.0"
   checksum: 59040dfb75c2eb6ab76e8c7ac10b7f7f6ba740f0b5ac618a89a8bcdbaf923836a8e998078d59d81f6f13f4b6bbe15bfe1bca962c877edcbe9160d1c100c56fd7
@@ -702,13 +702,6 @@ discord-akairo@NotEnoughUpdates/discord-akairo:
   languageName: node
   linkType: hard
 
-"discord-api-types@npm:^0.22.0":
-  version: 0.22.0
-  resolution: "discord-api-types@npm:0.22.0"
-  checksum: 673bcd960e394d8a3752bb03d50de44e74d508450e3d2cce947a69e0a6dc43c00196e18245c88dd26f3a8b0a56b40e0dbf52e058b7aabc7ed77f0f018003cb04
-  languageName: node
-  linkType: hard
-
 "discord-api-types@npm:^0.23.1":
   version: 0.23.1
   resolution: "discord-api-types@npm:0.23.1"
@@ -716,20 +709,27 @@ discord-akairo@NotEnoughUpdates/discord-akairo:
   languageName: node
   linkType: hard
 
+"discord-api-types@npm:^0.24.0":
+  version: 0.24.0
+  resolution: "discord-api-types@npm:0.24.0"
+  checksum: b1a17cb3be4ade974193cedb92fb37e51ba8f1832dfe3ec0d188ba41f255f3dab8359c9d618d32469f1e648126258f9d6ed8828dc1cb50b74d9fd9d875f3390a
+  languageName: node
+  linkType: hard
+
 discord.js@NotEnoughUpdates/discord.js:
-  version: 13.3.0-dev
-  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=dfa364c4b929b65a115fd5704cc3cb69f72b809e"
+  version: 13.4.0-dev
+  resolution: "discord.js@https://github.com/NotEnoughUpdates/discord.js.git#commit=c19e17f2f8e0d2a3bc623936e2b858ac62592144"
   dependencies:
-    "@discordjs/builders": ^0.6.0
-    "@discordjs/collection": ^0.2.1
+    "@discordjs/builders": ^0.8.1
+    "@discordjs/collection": ^0.3.2
     "@discordjs/form-data": ^3.0.1
-    "@sapphire/async-queue": ^1.1.5
+    "@sapphire/async-queue": ^1.1.8
     "@types/node-fetch": ^2.5.12
     "@types/ws": ^8.2.0
-    discord-api-types: ^0.23.1
+    discord-api-types: ^0.24.0
     node-fetch: ^2.6.1
     ws: ^8.2.3
-  checksum: de8e069bf23dfe644d17bfc33e5fe25fd8937fdb5287d2b2654c9a0102ebd830acc99f6c7d5a07acd9feaffb630ed40cad8df02c9c855540f6b32a3b1bab1bfb
+  checksum: b121ca91d14471110740a5622945414429f86432f51e8409d67fb5f45feb3dd4a79a228a9fa0967c1fef83a118f5830f03c98ea34e7d6f5d4f647bd1f7ccb05d
   languageName: node
   linkType: hard
 

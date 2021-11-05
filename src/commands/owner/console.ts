@@ -21,7 +21,8 @@ export default class Console extends RainCommand {
 			channel: 'guild',
 			ownerOnly: true,
 			defaultPerms: 'owner',
-			rainPerms: ['ADMINISTRATOR']
+			discordPerms: [],
+			rainPerms: []
 		})
 	}
 

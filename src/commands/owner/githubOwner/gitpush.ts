@@ -21,7 +21,8 @@ export default class GitPush extends RainCommand {
 			ownerOnly: true,
 			channel: 'guild',
 			defaultPerms: 'owner',
-			rainPerms: ['ADMINISTRATOR']
+			discordPerms: [],
+			rainPerms: []
 		})
 	}
 

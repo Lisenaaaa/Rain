@@ -43,7 +43,7 @@ export class RainCommand extends Command {
 
 interface RainCommandOptions extends CommandOptions {
 	description?: string
-	discordPerms?: PermissionResolvable[]
+	discordPerms: PermissionResolvable[]
 	ephemeralWhenNoPerms?: boolean
 	defaultPerms: perms | 'none'
 	rainPerms: PermissionResolvable[]

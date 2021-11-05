@@ -15,26 +15,20 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 	}
 
 	async exec(message: Message | AkairoMessage, command: RainCommand) {
-		if (!(message.author as RainUser).owner) {
-			await message.reply({ content: "Sorry, but I'm being developed right now, so all of my commands are locked.", ephemeral: true })
-			return true
-		}
+		// if (!(message.author as RainUser).owner) {
+		// 	await message.reply({ content: "Sorry, but I'm being developed right now, so all of my commands are locked.", ephemeral: true })
+		// 	return true
+		// }
 
-		if (command.ownerOnly && !(message.author as RainUser).owner) {
-			await message.reply({
-				content: "Hey, you aren't my owner!",
-				ephemeral: true,
-			})
-			return true
-		}
+		console.log((message.author as RainUser).owner)
 
-		if (command.ownerOnly && (message.author as RainUser).owner) return false
+		//if (command.ownerOnly && (message.author as RainUser).owner) return false
 
 		const rain = await message.guild?.members.fetch(this.client.user?.id as string)
 
 		const commandEnabledGuild = await command.enabled(message.guild?.id as string)
 		const commandEnabledGlobally = await command.enabledGlobally()
-		const commandPerms = command.rainPerms as PermissionString[]
+		const commandPerms = command.discordPerms as PermissionString[]
 		const rainPermsInChannel = rain?.permissionsIn(message.channel as GuildTextBasedChannels).toArray() as PermissionString[]
 		const rainHasPermsInChannel = Utils.arrayIncludesAllArray(rainPermsInChannel, commandPerms)
 		const memberHasPermsForCommand = (await (message.guild as RainGuild).hasStaffRoles())
@@ -43,14 +37,28 @@ export default class CommandHandlerInhibitor extends RainInhibitor {
 
 		const { debugLog } = this.client
 
+		debugLog('user', message.author.tag)
 		debugLog('commandId', command.id)
 		debugLog('commandEnabled', commandEnabledGuild)
 		debugLog('commandEnabledGlobally', commandEnabledGlobally)
 		debugLog('rainHasPermsInChannel', rainHasPermsInChannel)
 		debugLog('memberHasPermsForCommand', memberHasPermsForCommand)
+		debugLog('                    ', '')
 
-		if (!commandEnabledGlobally) return true
-		if (!commandEnabledGuild) return true
+		if (!commandEnabledGlobally) {
+			await message.reply({
+				content: "This command is disabled globally, probably for a really good reason. It won't work, and there's nothing anyone but my owner can do about it.",
+				ephemeral: true,
+			})
+			return true
+		}
+		if (!commandEnabledGuild) {
+			await message.reply({
+				content: "This command is disabled.",
+				ephemeral: true,
+			})
+			return true
+		}
 		if (!rainHasPermsInChannel) {
 			await message.reply({
 				content: "I don't have the proper permissions to run this command. Please yell at Raine, my developer, to make this error show the perms that are missing.",

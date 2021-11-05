@@ -6,7 +6,7 @@ import { inspect } from 'util'
 import { RainMessage } from '@extensions/akairo/AkairoMessage'
 
 export default class Utils {
-	static slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337', '880637463838724166', '900435143167188992']
+	static slashGuilds = ['824680357936103497', '780181693100982273', '794610828317032458', '859172615892238337', '880637463838724166', '900435143167188992', '906216716873367553']
 
 	static async haste(content: string) {
 		const output = inspect(content, { depth: 0 })

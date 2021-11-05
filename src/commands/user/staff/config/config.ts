@@ -178,6 +178,9 @@ export default class Config extends RainCommand {
 
 						messageCollector?.once('collect', async (m) => {
 							const channel = await this.client.util.resolveChannel(m.content, interaction.guild?.channels.cache as Collection<string, GuildTextBasedChannels | BaseGuildVoiceChannel>)
+							if (channel?.isThread()) {
+								await interaction.editReply({content: "You can't set my logging channels to be threads."})
+							}
 							const confirmationRow = new MessageActionRow().addComponents(
 								new MessageButton({ customId: 'configYes', label: 'Yes', style: 'SUCCESS' }),
 								new MessageButton({ customId: 'configNo', label: 'No', style: 'DANGER' })

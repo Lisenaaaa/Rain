@@ -36,7 +36,8 @@ export default class SetLogCommand extends RainCommand {
 				},
 			],
 			defaultPerms: 'srMod',
-			rainPerms: [],
+			discordPerms: ['MANAGE_GUILD'],
+			rainPerms: ['SEND_MESSAGES']
 		})
 	}
 

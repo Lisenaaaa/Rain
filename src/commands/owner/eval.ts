@@ -30,7 +30,8 @@ export default class Evaluate extends RainCommand {
 			],
 			slashGuilds: ['880637463838724166'],
 			defaultPerms: 'owner',
-			rainPerms: ['ADMINISTRATOR']
+			discordPerms: [],
+			rainPerms: []
 		})
 	}
 
