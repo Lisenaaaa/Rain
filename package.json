@@ -10,7 +10,7 @@
 		"start": "node loading.js && yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
 	},
 	"author": "Lisena",
-	"license": "LICENSE.txt",
+	"license": "DMSPL",
 	"devDependencies": {
 		"@types/lodash": "^4.14.175",
 		"@types/module-alias": "^2.0.1",
