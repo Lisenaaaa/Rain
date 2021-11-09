@@ -27,9 +27,10 @@
     "@sapphire/decorators": "^3.1.4",
     "@sapphire/discord.js-utilities": "^4.1.1",
     "@sapphire/framework": "^2.1.4",
+    "@sapphire/plugin-logger": "^2.0.2",
     "@types/node": "^16.11.7",
-    "chalk": "^4.1.2",
-    "discord.js": "^13.3.1"
+    "discord.js": "^13.3.1",
+    "got": "^11.8.2"
   },
   "prettier": {
     "printWidth": 100,

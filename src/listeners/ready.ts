@@ -1,6 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { Listener, ListenerOptions, SapphireClient } from '@sapphire/framework'
-import chalk from 'chalk'
+import { Listener, ListenerOptions } from '@sapphire/framework'
 
 @ApplyOptions<ListenerOptions>({
 	once: true,
@@ -8,6 +7,6 @@ import chalk from 'chalk'
 })
 export class ReadyListener extends Listener {
 	public run() {
-		console.log(chalk`{blue Logged in as {bold ${this.container.client.user?.tag}}}`)
+		this.container.logger.info(`Logged in as ${this.container.client.user?.tag}`)
 	}
 }

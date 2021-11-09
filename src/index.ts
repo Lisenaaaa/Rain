@@ -1,7 +1,8 @@
-import { SapphireClient } from '@sapphire/framework'
+import '@sapphire/plugin-logger/register';
 import config from './config/config'
+import { RainClient } from './extensions/RainClient';
 
-const client = new SapphireClient({
+const client = new RainClient({
 	intents: ['GUILDS', 'GUILD_MESSAGES'],
 	defaultPrefix: '-',
 	allowedMentions: { parse: [] },
