@@ -28,10 +28,11 @@
     "@sapphire/discord.js-utilities": "^4.1.1",
     "@sapphire/framework": "^2.1.4",
     "@types/node": "^16.11.7",
+    "chalk": "^4.1.2",
     "discord.js": "^13.3.1"
   },
   "prettier": {
-    "printWidth": 200,
+    "printWidth": 100,
     "tabWidth": 4,
     "useTabs": true,
     "semi": false,
