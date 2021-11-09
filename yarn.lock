@@ -78,6 +78,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@sapphire/decorators@npm:^3.1.4":
+  version: 3.1.4
+  resolution: "@sapphire/decorators@npm:3.1.4"
+  dependencies:
+    tslib: ^2.3.1
+  checksum: ba86b727917f0aad8ce875ed526b4c3a2b0b25046d431e2ba4bf783ec699b901f1f0634e1df6242e8a37991f683fd00f5713bab9ae7b368f7e6683787a8d0b42
+  languageName: node
+  linkType: hard
+
 "@sapphire/discord-utilities@npm:^2.2.3":
   version: 2.2.3
   resolution: "@sapphire/discord-utilities@npm:2.2.3"
@@ -184,7 +193,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:*":
+"@types/node@npm:*, @types/node@npm:^16.11.7":
   version: 16.11.7
   resolution: "@types/node@npm:16.11.7"
   checksum: 2706403e6efc4aa40fdce8f0b5d9884d5600c3c8610aedc7fa5e7e298d30366f7e8b7296028d52898dca3edef4c3e827b03bf20952c4780f13fa4e79864f7a86
@@ -969,7 +978,10 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "rain-sapphire@workspace:."
   dependencies:
+    "@sapphire/decorators": ^3.1.4
+    "@sapphire/discord.js-utilities": ^4.1.1
     "@sapphire/framework": ^2.1.4
+    "@types/node": ^16.11.7
     "@types/rimraf": ^3
     "@types/source-map-support": ^0
     discord.js: ^13.3.1
@@ -977,6 +989,7 @@ __metadata:
     prettier: ^2.4.1
     rimraf: ^3.0.2
     source-map-support: ^0.5.20
+    tslib: ^2.3.1
     typescript: ^4.4.4
   languageName: unknown
   linkType: soft
