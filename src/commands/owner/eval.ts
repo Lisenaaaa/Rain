@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
+import util from 'util'
 import utilities from '../../functions/utilities'
 
 @ApplyOptions<CommandOptions>({
@@ -21,6 +22,7 @@ export class EvalCommand extends Command {
 		let output
 		let success
 		try {
+			const inspect = util.inspect
 			output = JSON.stringify(await eval(codeToEval), undefined, '\t')
 			success = true
 		} catch (err) {
