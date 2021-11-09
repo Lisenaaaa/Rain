@@ -8,3 +8,5 @@ const client = new SapphireClient({
 })
 
 void client.login(config.tokens.main)
+
+export default client

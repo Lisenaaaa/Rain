@@ -1,11 +1,10 @@
 import { Precondition } from '@sapphire/framework'
 import { Message } from 'discord.js'
+import users from '../functions/users'
 
 export class OwnerOnlyPrecondition extends Precondition {
 	public async run(message: Message) {
-		const owners: String[] = []
-
-		return owners.includes(message.author.id)
+		return users.isOwner(message.author)
 			? this.ok()
 			: this.error({
 					identifier: 'ownerOnly',
