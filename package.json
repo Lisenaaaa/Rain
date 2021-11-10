@@ -14,6 +14,7 @@
   "license": "UNLICENSED",
   "packageManager": "yarn@3.1.0",
   "devDependencies": {
+    "@types/pg": "^8",
     "@types/rimraf": "^3",
     "@types/source-map-support": "^0",
     "eslint": "^8.2.0",
@@ -27,10 +28,14 @@
     "@sapphire/decorators": "^3.1.4",
     "@sapphire/discord.js-utilities": "^4.1.1",
     "@sapphire/framework": "^2.1.4",
+    "@sapphire/pieces": "^3.1.1",
     "@sapphire/plugin-logger": "^2.0.2",
     "@types/node": "^16.11.7",
     "discord.js": "^13.3.1",
-    "got": "^11.8.2"
+    "got": "^11.8.2",
+    "pg": "^8.7.1",
+    "pg-hstore": "^2.3.4",
+    "sequelize": "^6.9.0"
   },
   "prettier": {
     "printWidth": 100,

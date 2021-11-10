@@ -1,9 +1,8 @@
 import { User } from "discord.js";
-
-const owners: String[] = ['881310086411190293']
+import client from "../index";
 
 function isOwner(user: User) {
-    return owners.includes(user.id)
+    return client.owners.includes(user.id)
 }
 
 

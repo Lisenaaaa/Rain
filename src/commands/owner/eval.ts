@@ -2,7 +2,6 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
 import util from 'util'
-import utilities from '../../functions/utilities'
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
@@ -47,7 +46,7 @@ export class EvalCommand extends Command {
     async formatOutput(output: string): Promise<string> {
 		if (!output) return `\`\`\`js\n${output}\`\`\``
         if (output.length >= 1000) {
-			return await utilities.haste(output)
+			return await this.container.utils.haste(output)
 		}
 
 		else return `\`\`\`js\n${output}\`\`\``

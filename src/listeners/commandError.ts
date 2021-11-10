@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandDeniedPayload, CommandErrorPayload, Listener, ListenerOptions, PreconditionError } from '@sapphire/framework'
+import { RainClient } from 'src/extensions/RainClient'
 import users from '../functions/users'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,6 +10,7 @@ import users from '../functions/users'
 export class CommandErrorListener extends Listener {
 	public async run(error: Error, payload: CommandErrorPayload) {
 		if (users.isOwner(payload.message.author)) await payload.message.reply({content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``})
-        
+
+        else this.container.utils.error(error)
 	}
 }
