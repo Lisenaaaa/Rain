@@ -1,8 +1,8 @@
+import { container } from "@sapphire/pieces";
 import { User } from "discord.js";
-import client from "../index";
 
 function isOwner(user: User) {
-    return client.owners.includes(user.id)
+    return container.config.owners.includes(user.id)
 }
 
 

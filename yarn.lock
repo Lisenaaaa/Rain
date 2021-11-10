@@ -287,6 +287,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/validator@npm:^13":
+  version: 13.6.6
+  resolution: "@types/validator@npm:13.6.6"
+  checksum: cae90ccbb067640bbed2c233b6393b986529fc9b695a04516708354a5df5419cb0f588e5dd4c8a0c6127402d38d060519b9738ab8aab80f70bc92a6b354a43da
+  languageName: node
+  linkType: hard
+
 "@types/ws@npm:^8.2.0":
   version: 8.2.0
   resolution: "@types/ws@npm:8.2.0"
@@ -1400,6 +1407,7 @@ __metadata:
     "@types/pg": ^8
     "@types/rimraf": ^3
     "@types/source-map-support": ^0
+    "@types/validator": ^13
     discord.js: ^13.3.1
     eslint: ^8.2.0
     got: ^11.8.2
@@ -1411,6 +1419,7 @@ __metadata:
     source-map-support: ^0.5.20
     tslib: ^2.3.1
     typescript: ^4.4.4
+    validator: ^13.7.0
   languageName: unknown
   linkType: soft
 
@@ -1741,7 +1750,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"validator@npm:^13.6.0":
+"validator@npm:^13.6.0, validator@npm:^13.7.0":
   version: 13.7.0
   resolution: "validator@npm:13.7.0"
   checksum: 2b83283de1222ca549a7ef57f46e8d49c6669213348db78b7045bce36a3b5843ff1e9f709ebf74574e06223461ee1f264f8cc9a26a0060a79a27de079d8286ef
