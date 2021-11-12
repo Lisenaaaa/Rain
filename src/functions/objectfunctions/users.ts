@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { Snowflake, User } from 'discord.js'
+import { Guild, Snowflake, User } from 'discord.js'
 import got from 'got/dist/source'
 import { nanoid } from 'nanoid'
 import { databaseMember } from '../../types/database'
@@ -158,22 +158,22 @@ export default class Users {
 
 		if (data.duration) modlogEntry.duration = data.duration
 
-		let modlogs = await getModlogs(user, guild.id)
+		let modlogs = await this.getModlogs(user, guild.id)
 
 		if (modlogs === undefined) {
 			//@ts-ignore what
 			const newModlogs: databaseMember = {
-				id: this.id,
+				id: user.id,
 				modlogs: [],
 				muted: { status: false, expires: null },
 				banned: { expires: null },
 			}
-			const dbLogs = await (guild as RainGuild).database('members')
+			const dbLogs = await container.guilds.database(guild as Guild, 'members')
 			dbLogs.push(newModlogs)
 			const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 			if (edited === false) return edited
 
-			modlogs = await getModlogs(user, guild.id)
+			modlogs = await this.getModlogs(user, guild.id)
 			modlogs?.push(modlogEntry)
 			dbLogs.find((m: databaseMember) => m.id === user.id).modlogs.push(modlogEntry)
 			const edited2 = await container.database.guilds.edit(guild.id, 'members', dbLogs)
@@ -181,8 +181,8 @@ export default class Users {
 		}
 
 		modlogs.push(modlogEntry)
-		const dbLogs = await (guild as RainGuild).database('members')
-		dbLogs.find((m: databaseMember) => m.id === this.id).modlogs.push(modlogEntry)
+		const dbLogs = await container.guilds.database(guild as Guild, 'members')
+		dbLogs.find((m: databaseMember) => m.id === user.id).modlogs.push(modlogEntry)
 		const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 		return edited
 	}
@@ -190,7 +190,7 @@ export default class Users {
 	async getModlogs(user: User, guildID: Snowflake): Promise<modlogs[] | undefined> {
 		try {
 			const guild = container.client.guilds.cache.get(guildID)
-			const logs = (await guild.database('members')).find(
+			const logs = (await container.guilds.database(guild as Guild, 'members')).find(
 				(m: databaseMember) => m.id === user.id
 			)
 			if (logs === undefined) return undefined
