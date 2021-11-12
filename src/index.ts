@@ -8,8 +8,7 @@ import Database from './functions/database'
 import Utilities from './functions/utilities'
 
 if (process.platform === 'win32') {
-	console.log('Please switch to a good OS!')
-	process.exit()
+	throw new Error('Please use a good OS.')
 }
 
 new Database().initDB()
