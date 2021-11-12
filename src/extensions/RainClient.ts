@@ -1,7 +1,9 @@
-import { container, SapphireClient } from "@sapphire/framework";
+import { SapphireClient } from "@sapphire/framework";
 import Utilities from "../functions/utilities";
 import Settings from '../config/settings'
 import Database from "../functions/database";
+import Guilds from "../functions/objectfunctions/guilds";
+import Users from "src/functions/objectfunctions/users";
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -20,15 +22,13 @@ export class RainClient extends SapphireClient {
 	}
 }
 
-declare module 'discord.js' {
-	interface Client {
-	}
-}
-
 declare module '@sapphire/pieces' {
 	interface Container {
 		utils: Utilities,
 		config: Settings,
-		database: Database
+		database: Database,
+
+		guilds: Guilds,
+		users: Users
 	}
 }

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandErrorPayload, Listener, ListenerOptions } from '@sapphire/framework'
-import users from '../functions/users'
+import users from '../functions/objectfunctions/users'
 
 @ApplyOptions<ListenerOptions>({
 	event: 'commandError',

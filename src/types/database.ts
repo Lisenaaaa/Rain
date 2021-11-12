@@ -7,9 +7,28 @@ export interface GuildDatabase {
 		muteRole: Snowflake | null
 		welcomeChannel: string | null
 		welcomeMessage: string | null
-		loggingChannels: { message: Snowflake | null; member: Snowflake | null; moderation: Snowflake | null; action: Snowflake | null }
-		staffRoles: { owner: Snowflake | null; admin: Snowflake | null; srMod: Snowflake | null; moderator: Snowflake | null; helper: Snowflake | null; trialHelper: Snowflake | null }
-		lockedChannels: { owner: Snowflake[]; admin: Snowflake[]; srMod: Snowflake[]; moderator: Snowflake[]; helper: Snowflake[]; trialHelper: Snowflake[] }
+		loggingChannels: {
+			message: Snowflake | null
+			member: Snowflake | null
+			moderation: Snowflake | null
+			action: Snowflake | null
+		}
+		staffRoles: {
+			owner: Snowflake | null
+			admin: Snowflake | null
+			srMod: Snowflake | null
+			moderator: Snowflake | null
+			helper: Snowflake | null
+			trialHelper: Snowflake | null
+		}
+		lockedChannels: {
+			owner: Snowflake[]
+			admin: Snowflake[]
+			srMod: Snowflake[]
+			moderator: Snowflake[]
+			helper: Snowflake[]
+			trialHelper: Snowflake[]
+		}
 	}
 	members: databaseMember[]
 	commandSettings: guildCommandSettings[]
@@ -30,9 +49,28 @@ export class GuildDatabaseConstructor {
 		muteRole: Snowflake | null
 		welcomeChannel: string | null
 		welcomeMessage: string | null
-		loggingChannels: { message: Snowflake | null; member: Snowflake | null; moderation: Snowflake | null; action: Snowflake | null }
-		staffRoles: { owner: Snowflake | null; admin: Snowflake | null; srMod: Snowflake | null; moderator: Snowflake | null; helper: Snowflake | null; trialHelper: Snowflake | null }
-		lockedChannels: { owner: Snowflake[]; admin: Snowflake[]; srMod: Snowflake[]; moderator: Snowflake[]; helper: Snowflake[]; trialHelper: Snowflake[] }
+		loggingChannels: {
+			message: Snowflake | null
+			member: Snowflake | null
+			moderation: Snowflake | null
+			action: Snowflake | null
+		}
+		staffRoles: {
+			owner: Snowflake | null
+			admin: Snowflake | null
+			srMod: Snowflake | null
+			moderator: Snowflake | null
+			helper: Snowflake | null
+			trialHelper: Snowflake | null
+		}
+		lockedChannels: {
+			owner: Snowflake[]
+			admin: Snowflake[]
+			srMod: Snowflake[]
+			moderator: Snowflake[]
+			helper: Snowflake[]
+			trialHelper: Snowflake[]
+		}
 	}
 	members: databaseMember[]
 	public commandSettings: guildCommandSettings[]
@@ -65,4 +103,9 @@ export type CommandDatabase = {
 	enabled: boolean
 }
 
-export type databaseMember = { id: Snowflake; modlogs: modlogs[]; muted: { status: boolean; expires: number | null }; banned: { expires: number | null } }
+export type databaseMember = {
+	id: Snowflake
+	modlogs: modlogs[]
+	muted: { status: boolean; expires: number | null }
+	banned: { expires: number | null }
+}
