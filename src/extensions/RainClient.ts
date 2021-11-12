@@ -3,7 +3,8 @@ import Utilities from "../functions/utilities";
 import Settings from '../config/settings'
 import Database from "../functions/database";
 import Guilds from "../functions/objectfunctions/guilds";
-import Users from "src/functions/objectfunctions/users";
+import Users from "../functions/objectfunctions/users";
+import Channels from "../functions/objectfunctions/channels";
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -29,6 +30,7 @@ declare module '@sapphire/pieces' {
 		database: Database,
 
 		guilds: Guilds,
-		users: Users
+		users: Users,
+		channels: Channels
 	}
 }
