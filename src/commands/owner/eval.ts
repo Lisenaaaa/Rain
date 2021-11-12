@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
@@ -21,11 +22,20 @@ export class EvalCommand extends Command {
 		let output
 		let success
 		try {
-			const inspect = util.inspect
+			const inspect = util.inspect,
+				database = this.container.database,
+				utils = this.container.utils,
+				client = this.container.client,
+				config = this.container.config,
+				user = message.author,
+				member = message.member,
+				guild = message.guild,
+				channel = message.channel
+
 			output = JSON.stringify(await eval(codeToEval), undefined, '\t')
 			success = true
 		} catch (err) {
-			output = err
+			output = err.stack
 			success = false
 		}
 
@@ -43,12 +53,10 @@ export class EvalCommand extends Command {
 		})
 	}
 
-    async formatOutput(output: string): Promise<string> {
+	async formatOutput(output: string): Promise<string> {
 		if (!output) return `\`\`\`js\n${output}\`\`\``
-        if (output.length >= 1000) {
+		if (output.length >= 1000) {
 			return await this.container.utils.haste(output)
-		}
-
-		else return `\`\`\`js\n${output}\`\`\``
-    }
+		} else return `\`\`\`js\n${output}\`\`\``
+	}
 }

@@ -4,6 +4,7 @@ export type perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'tria
 export type modlogTypes = 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
 export type modlogs = { id: string; type: modlogTypes; modID: Snowflake; reason: string; duration?: string; createdTimestamp: number; evidence?: string }
 export type guildCommandSettings = { id: string; enabled: boolean; lockedRoles: perms; lockedChannels: Snowflake[]; data?: unknown }
+export type errorDetails = {type: string, data: {note?: string, messageOptions?: {guildID: Snowflake, channelID: Snowflake, messageID: Snowflake}}}
 export type codeblockLangs =
 	| '1c'
 	| 'abnf'

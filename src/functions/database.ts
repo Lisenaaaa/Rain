@@ -13,17 +13,7 @@ const pg = new Sequelize(
 		dialect: 'postgres',
 		logging: false,
 	}
-) // NOOOOOOOOOOOOOO FUCK THIS THE ONLY FIX WAS ADDING A SEMICOLON I FUCKING HATE MY ENTIRE FUCKING LIFE AAAAAAAAAAAAAAAAAAAAAAAAAAAA
-
-async function initDB() {
-	try {
-		await pg.authenticate()
-		container.logger.info('Succesfully connected to the database.')
-	} catch (err) {
-		container.logger.error(err.stack)
-		process.exit()
-	}
-}
+)
 
 function defaultDBSchema(guildID: Snowflake) {
 	return new GuildDatabaseConstructor({
@@ -65,7 +55,15 @@ async function rawDbRequest(
 
 export default class Database {
 	query = rawDbRequest
-	initDB = initDB
+	async initDB() {
+		try {
+			await pg.authenticate()
+			container.logger.info('Succesfully connected to the database.')
+		} catch (err) {
+			container.logger.error(err.stack)
+			process.exit()
+		}
+	}
 
 	guilds = {
 		async fetchOne(guildID: Snowflake) {
@@ -76,16 +74,24 @@ export default class Database {
 		},
 
 		async fetchAll() {
-			const guilddb = await rawDbRequest('SELECT * from guilds;')
-			const alldbs: GuildDatabase[] = []
+			try {
+				const guilddb = await rawDbRequest('SELECT * from guilds;')
+				const alldbs: GuildDatabase[] = []
 
-			/* typescript is stupid and i want eslint to not be yell */
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			guilddb[0].forEach((db: any) => {
-				alldbs.push(db.data)
-			})
+				/* typescript is stupid and i want eslint to not be yell */
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				guilddb[0].forEach((db: any) => {
+					alldbs.push(db.data)
+				})
 
-			return alldbs
+				return alldbs
+			} catch (err) {
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to fetch guilds.' },
+				})
+				return []
+			}
 		},
 
 		async edit(guildID: Snowflake, query: string, newValue: unknown) {
@@ -112,20 +118,26 @@ export default class Database {
 
 				return true
 			} catch (err) {
-				container.utils.error(err, ' database editing')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to edit a guild.' },
+				})
 				return false
 			}
 		},
 
 		async add(guildID: Snowflake) {
-			if (!guildID) throw new Error("I cannot create a guild database entry without an ID")
+			if (!guildID) throw new Error('I cannot create a guild database entry without an ID')
 			try {
 				const schema = JSON.stringify(defaultDBSchema(guildID))
 				const string = `INSERT INTO guilds(data) VALUES ($schema);`
 				await rawDbRequest(string, { bind: { schema: schema } })
 				return true
 			} catch (err) {
-				await container.utils.error(err.stack, ' database adding')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to create a guild.' },
+				})
 				return false
 			}
 		},
@@ -137,14 +149,17 @@ export default class Database {
 				})
 				return true
 			} catch (err) {
-				await container.utils.error(err.stack, ' database guild removal')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to delete a guild.' },
+				})
 				return false
 			}
 		},
 	}
 	users = {
 		async add(userID: Snowflake) {
-			if (!userID) throw new Error("I cannot create a user database entry without an ID")
+			if (!userID) throw new Error('I cannot create a user database entry without an ID')
 			try {
 				const schema = JSON.stringify(
 					new UserDatabaseConstructor({
@@ -158,22 +173,33 @@ export default class Database {
 				await rawDbRequest(string, { bind: { schema: schema } })
 				return true
 			} catch (err) {
-				await container.utils.error(err.stack, ' database adding')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to create a user.' },
+				})
 				return false
 			}
 		},
 
 		async fetchAll() {
-			const userdb = await rawDbRequest('SELECT * from users;')
-			const alldbs: { userID: Snowflake; badges: string[]; superuser: boolean }[] = []
+			try {
+				const userdb = await rawDbRequest('SELECT * from users;')
+				const alldbs: { userID: Snowflake; badges: string[]; superuser: boolean }[] = []
 
-			/* typescript is stupid and i want eslint to not be yell */
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			userdb[0].forEach((db: any) => {
-				alldbs.push(db.data)
-			})
+				/* typescript is stupid and i want eslint to not be yell */
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				userdb[0].forEach((db: any) => {
+					alldbs.push(db.data)
+				})
 
-			return alldbs
+				return alldbs
+			} catch (err) {
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to fetch users.' },
+				})
+				return []
+			}
 		},
 
 		async fetchOne(userID: Snowflake) {
@@ -209,36 +235,51 @@ export default class Database {
 
 				return true
 			} catch (err) {
-				container.utils.error(err, ' database editing')
+				await container.utils.error(err, {
+					type: 'Database',
+					data: { note: 'Failed to edit a user.' },
+				})
 				return false
 			}
 		},
 	}
 	commands = {
 		async add(commandID: Snowflake) {
-			if (!commandID) throw new Error("I cannot create a command database entry without an ID")
+			if (!commandID)
+				throw new Error('I cannot create a command database entry without an ID')
 			try {
 				const schema = JSON.stringify({ commandID: commandID, enabled: true })
 				const string = `INSERT INTO commands(data) VALUES ($schema);`
 				await rawDbRequest(string, { bind: { schema: schema } })
 				return true
 			} catch (err) {
-				await container.utils.error(err.stack, ' database adding')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to create a command.' },
+				})
 				return false
 			}
 		},
 
 		async fetchAll() {
-			const commandsdb = await rawDbRequest('SELECT * from commands;')
-			const alldbs: { commandID: string; enabled: boolean }[] = []
+			try {
+				const commandsdb = await rawDbRequest('SELECT * from commands;')
+				const alldbs: { commandID: string; enabled: boolean }[] = []
 
-			/* typescript is stupid and i want eslint to not be yell */
-			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-			commandsdb[0].forEach((db: any) => {
-				alldbs.push(db.data)
-			})
+				/* typescript is stupid and i want eslint to not be yell */
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
+				commandsdb[0].forEach((db: any) => {
+					alldbs.push(db.data)
+				})
 
-			return alldbs
+				return alldbs
+			} catch (err) {
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to fetch commands.' },
+				})
+				return []
+			}
 		},
 
 		async fetchOne(commandID: string) {
@@ -273,7 +314,10 @@ export default class Database {
 
 				return true
 			} catch (err) {
-				container.utils.error(err, ' database editing')
+				await container.utils.error(err, {
+					type: 'database',
+					data: { note: 'Failed to edit a command.' },
+				})
 				return false
 			}
 		},

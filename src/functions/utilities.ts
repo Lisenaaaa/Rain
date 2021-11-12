@@ -1,6 +1,7 @@
 import { container } from '@sapphire/pieces'
-import { MessageEmbedOptions } from 'discord.js'
+import { MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
+import { errorDetails } from '../types/misc'
 
 export default class Utilities {
 	public async haste(content: string) {
@@ -14,7 +15,7 @@ export default class Utilities {
 			'https://paste.pythondiscord.com',
 			'https://haste.unbelievaboat.com',
 		]
-	
+
 		for (const url of urls) {
 			try {
 				const body: never = await got
@@ -23,7 +24,7 @@ export default class Utilities {
 						responseType: 'json',
 					})
 					.json()
-	
+
 				return `${url}/${body['key']}`
 			} catch (err) {
 				continue
@@ -32,13 +33,42 @@ export default class Utilities {
 		return "Couldn't post."
 	}
 
-	public async error(error: Error, details?: string): Promise<MessageEmbedOptions> {
-		const errorChannel = await container.client.channels.cache.get(container.config.errorChannel)
+	public async error(error: Error, details: errorDetails): Promise<MessageEmbedOptions> {
+		const errorChannel = container.client.channels.cache.get(
+			container.config.errorChannel
+		) as TextChannel
+		const id = `${this.random(696969696969)}`
 
-		console.log(errorChannel)
+		await errorChannel.send({
+			embeds: [
+				{
+					title: `An error occured!`,
+					fields: [
+						{
+							name: 'Details',
+							value: `Type: ${details.type}${
+								details.data.messageOptions
+									? `\n(Message Link)[https://discord.com/${details.data.messageOptions.guildID}/${details.data.messageOptions.channelID}/${details.data.messageOptions.messageID}]`
+									: ''
+							}${details.data.note ? `\nNote: ${details.data.note}` : ''}`,
+							inline: true,
+						},
+						{ name: 'ID', value: id, inline: true },
+					],
+					description: `\`\`\`js\n${error.stack}\`\`\``,
+					color: 'RED',
+				},
+			],
+		})
 
-		return {}
+		return {
+			title: `A(n) ${details.type} error occured!`,
+			description: `${details.data.note ? `**${details.data.note}**\n` : ''}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
+			color: 'RED',
+		}
+	}
+
+	public random(max: number) {
+		return Math.floor(Math.random() * max)
 	}
 }
-
-container.utils = new Utilities()

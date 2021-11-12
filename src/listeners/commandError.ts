@@ -1,16 +1,30 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { CommandDeniedPayload, CommandErrorPayload, Listener, ListenerOptions, PreconditionError } from '@sapphire/framework'
-import { RainClient } from 'src/extensions/RainClient'
+import { CommandErrorPayload, Listener, ListenerOptions } from '@sapphire/framework'
 import users from '../functions/users'
 
 @ApplyOptions<ListenerOptions>({
-	once: true,
 	event: 'commandError',
 })
 export class CommandErrorListener extends Listener {
 	public async run(error: Error, payload: CommandErrorPayload) {
-		if (users.isOwner(payload.message.author)) await payload.message.reply({content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``})
-
-        else this.container.utils.error(error)
+		if (users.isOwner(payload.message.author))
+			await payload.message.reply({
+				content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
+			})
+		else
+			await payload.message.reply({
+				embeds: [
+					await this.container.utils.error(error, {
+						type: 'command',
+						data: {
+							messageOptions: {
+								guildID: payload.message.guildId as string,
+								channelID: payload.message.channel.id,
+								messageID: payload.message.id,
+							},
+						},
+					}),
+				],
+			})
 	}
 }
