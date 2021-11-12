@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces'
-import { Guild } from 'discord.js'
+import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
 import { guildCommandSettings, perms } from '../../types/misc'
-import { GuildDatabase } from '../../types/database'
+import { databaseMember, GuildDatabase } from '../../types/database'
 
 export default class Guilds {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -63,6 +63,141 @@ export default class Guilds {
 		})
 
 		await container.database.guilds.edit(g.guildID, 'commandSettings', allGuildCommands)
+	}
+
+	async editStaffRole(guild: Guild, position: perms, newRole: Snowflake | null) {
+		try {
+			return await container.database.guilds.edit(
+				guild.id,
+				`guildSettings.staffRoles.${position}`,
+				newRole
+			)
+		} catch (error) {
+			container.utils.error(error, {
+				type: 'Database',
+				data: { note: `Failed to edit a guild's ${position} role.` },
+			})
+			return false
+		}
+	}
+
+	async setChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
+		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[
+			perms
+		]
+		if (currentLockedChannels?.includes(channel)) return true
+
+		currentLockedChannels?.push(channel)
+
+		return await container.database.guilds.edit(
+			guild.id,
+			`guildSettings.lockedChannels.${perms}`,
+			currentLockedChannels
+		)
+	}
+
+	async removeChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
+		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[
+			perms
+		]
+		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
+
+		return await container.database.guilds.edit(
+			guild.id,
+			`guildSettings.lockedChannels.${perms}`,
+			newLockedChannels
+		)
+	}
+
+	async setLogChannel(
+		guild: Guild,
+		type: 'message' | 'member' | 'moderation' | 'action',
+		channel: Snowflake
+	) {
+		return await container.database.guilds.edit(
+			guild.id,
+			`guildSettings.loggingChannels.${type}`,
+			channel
+		)
+	}
+
+	async resetLogChannel(guild: Guild, type: 'message' | 'member' | 'moderation' | 'action') {
+		return await container.database.guilds.edit(
+			guild.id,
+			`guildSettings.loggingChannels.${type}`,
+			null
+		)
+	}
+
+	async ban(guild: Guild, user: UserResolvable, options: BanOptions, time?: number) {
+		try {
+			const person = await container.client.users.fetch(user)
+			await guild.bans.create(user, options)
+			await this.database(guild)
+			return await this.editMemberEntry(guild, person.id, 'banned', {
+				expires: time ? time : null,
+			})
+		} catch (err) {
+			await container.utils.error(err, {
+				type: 'database',
+				data: { note: 'Something went wrong while banning a member.' },
+			})
+			return false
+		}
+	}
+
+	async unban(guild: Guild, user: UserResolvable, reason: string) {
+		try {
+			const person = await container.client.users.fetch(user)
+			await guild.bans.remove(user, reason)
+			await this.database(guild)
+			return await this.editMemberEntry(guild, person.id, 'banned', { expires: null })
+		} catch (err) {
+			await container.utils.error(err, {
+				type: 'database',
+				data: { note: 'Something went wrong while unbanning a member.' },
+			})
+			return false
+		}
+	}
+
+    async editMemberEntry(guild: Guild, id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
+		const logs = await this.database(guild, 'members')
+		const memberLogs = logs.find((m: databaseMember) => m.id === id)
+
+		if (memberLogs === undefined) {
+			//@ts-ignore what
+			const newModlogs: databaseMember = { id: id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
+			const edited = await container.database.guilds.edit(guild.id, 'members', (await this.database(guild, 'members')).push(newModlogs))
+			if (edited === false) return edited
+
+			//@ts-ignore stfu
+			newModlogs[query] = newValue
+			const edited2 = await container.database.guilds.edit(guild.id, `members`, logs)
+			return edited2
+		}
+
+		memberLogs[query] = newValue
+		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
+		return edited
+	}
+
+    async hasStaffRoles(guild: Guild) {
+		const db = await this.database(guild, 'guildSettings.staffRoles')
+
+		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
+		else return true
+	}
+
+    async setCommandPermissions(guild: Guild, command: string, perms: perms) {
+		if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
+
+		const commands = await this.database(guild, 'commandSettings')
+		const cmd = commands.find((c: guildCommandSettings) => c.id === command)
+
+		cmd.lockedRoles = perms
+
+		return await container.database.guilds.edit(guild.id, 'commandSettings', commands)
 	}
 }
 
