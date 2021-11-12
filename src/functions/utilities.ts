@@ -63,12 +63,18 @@ export default class Utilities {
 
 		return {
 			title: `A(n) ${details.type} error occured!`,
-			description: `${details.data.note ? `**${details.data.note}**\n` : ''}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
+			description: `${
+				details.data.note ? `**${details.data.note}**\n` : ''
+			}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
 			color: 'RED',
 		}
 	}
 
 	public random(max: number) {
 		return Math.floor(Math.random() * max)
+	}
+
+	public now() {
+		return Math.round(Date.now() / 1000)
 	}
 }

@@ -153,7 +153,7 @@ export default class Users {
 			type: type,
 			modID: moderator,
 			reason: data.reason ? data.reason : 'No Reason Provided',
-			createdTimestamp: Utils.now,
+			createdTimestamp: container.utils.now(),
 		}
 
 		if (data.duration) modlogEntry.duration = data.duration
