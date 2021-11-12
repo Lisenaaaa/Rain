@@ -1,13 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandErrorPayload, Listener, ListenerOptions } from '@sapphire/framework'
-import users from '../functions/objectfunctions/users'
 
 @ApplyOptions<ListenerOptions>({
 	event: 'commandError',
 })
 export class CommandErrorListener extends Listener {
 	public async run(error: Error, payload: CommandErrorPayload) {
-		if (users.isOwner(payload.message.author))
+		if (this.container.users.isOwner(payload.message.author))
 			await payload.message.reply({
 				content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
 			})
