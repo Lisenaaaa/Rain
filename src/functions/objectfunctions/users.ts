@@ -200,6 +200,38 @@ export default class Users {
 			return undefined
 		}
 	}
+
+	async editGuildEntry(
+		user: User,
+		guildID: Snowflake,
+		query: 'modlogs' | 'muted' | 'banned',
+		newValue: unknown
+	): Promise<boolean> {
+		const guild = container.client.guilds.cache.get(guildID) as Guild
+		const logs = await container.guilds.database(guild, 'members')
+		const memberLogs = await this.getModlogs(user, (guild as Guild).id)
+
+		if (memberLogs === undefined) {
+			const newModlogs: databaseMember = {
+				id: user.id,
+				modlogs: [],
+				muted: { status: false, expires: null },
+				banned: { expires: null },
+			}
+			const edited = await container.database.guilds.edit(guild.id, 'members', newModlogs)
+			if (edited === false) return edited
+
+			//@ts-ignore thank you typescript very cool
+			newModlogs[query] = newValue
+			const edited2 = await container.database.guilds.edit(guild.id, `members`, logs)
+			return edited2
+		}
+
+		//@ts-ignore thank you typescript very cool
+		memberLogs[query] = newValue
+		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
+		return edited
+	}
 }
 
 container.users = new Users()
