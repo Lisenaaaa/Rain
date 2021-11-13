@@ -233,5 +233,3 @@ export default class Users {
 		return edited
 	}
 }
-
-container.users = new Users()

@@ -77,4 +77,8 @@ export default class Utilities {
 	public now() {
 		return Math.round(Date.now() / 1000)
 	}
+
+	public getAllCommands() {
+		console.log([...container.stores.get('commands').keys()])
+	}
 }

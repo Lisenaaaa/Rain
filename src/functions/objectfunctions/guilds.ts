@@ -27,7 +27,7 @@ export default class Guilds {
 
 	async registerCommands(guild: Guild) {
 		const g = await this.database(guild)
-		const allCommands = Handler.getAllCommands()
+		const allCommands: string[] = []//Handler.getAllCommands()
 		let allGuildCommands = g.commandSettings
 		const guildCommandsArray: string[] = []
 
@@ -49,7 +49,7 @@ export default class Guilds {
 		allCommands.forEach((c: string) => {
 			if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
 
-			const permissions = Handler.getCommand(c)?.defaultPerms
+			const permissions = ''//Handler.getCommand(c)?.defaultPerms
 
 			const command = {
 				id: c,
@@ -190,7 +190,7 @@ export default class Guilds {
 	}
 
     async setCommandPermissions(guild: Guild, command: string, perms: perms) {
-		if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
+		//if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
 
 		const commands = await this.database(guild, 'commandSettings')
 		const cmd = commands.find((c: guildCommandSettings) => c.id === command)
@@ -200,5 +200,3 @@ export default class Guilds {
 		return await container.database.guilds.edit(guild.id, 'commandSettings', commands)
 	}
 }
-
-container.guilds = new Guilds()
