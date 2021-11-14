@@ -26,43 +26,50 @@ export default class Guilds {
 	}
 
 	async registerCommands(guild: Guild) {
-		const g = await this.database(guild)
-		const allCommands: string[] = []//Handler.getAllCommands()
-		let allGuildCommands = g.commandSettings
-		const guildCommandsArray: string[] = []
+		try {
+			const g = await this.database(guild)
+			const allCommands: string[] = container.utils.getAllCommands()
+			let allGuildCommands = g.commandSettings
+			const guildCommandsArray: string[] = []
 
-		allGuildCommands.forEach((c: guildCommandSettings) => {
-			guildCommandsArray.push(c.id)
-		})
+			allGuildCommands.forEach((c: guildCommandSettings) => {
+				guildCommandsArray.push(c.id)
+			})
 
-		allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
-			if (!allCommands.includes(guildCommand.id)) {
-				allGuildCommands = allGuildCommands.filter(
-					(c: guildCommandSettings) => c.id != guildCommand.id
-				)
-				container.logger.info(
-					`Removed ${guildCommand.id} from ${g.guildID}'s database entry`
-				)
-			}
-		})
+			allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
+				if (!allCommands.includes(guildCommand.id)) {
+					allGuildCommands = allGuildCommands.filter(
+						(c: guildCommandSettings) => c.id != guildCommand.id
+					)
+					container.logger.info(
+						`Removed ${guildCommand.id} from ${g.guildID}'s database entry`
+					)
+				}
+			})
 
-		allCommands.forEach((c: string) => {
-			if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
+			allCommands.forEach((c: string) => {
+				if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
 
-			const permissions = ''//Handler.getCommand(c)?.defaultPerms
+				const permissions = '' //Handler.getCommand(c)?.defaultPerms
 
-			const command = {
-				id: c,
-				enabled: true,
-				lockedRoles: permissions as perms,
-				lockedChannels: [],
-			}
+				const command = {
+					id: c,
+					enabled: true,
+					lockedRoles: permissions as perms,
+					lockedChannels: [],
+				}
 
-			g.commandSettings.push(command)
-			container.logger.info(`Added ${command.id} to ${g.guildID}'s database entry`)
-		})
+				g.commandSettings.push(command)
+				container.logger.info(`Added ${command.id} to ${g.guildID}'s database entry`)
+			})
 
-		await container.database.guilds.edit(g.guildID, 'commandSettings', allGuildCommands)
+			await container.database.guilds.edit(g.guildID, 'commandSettings', allGuildCommands)
+		} catch (err) {
+			await container.utils.error(err, {
+				type: 'database',
+				data: { note: "Failed to register a guild's commands" },
+			})
+		}
 	}
 
 	async editStaffRole(guild: Guild, position: perms, newRole: Snowflake | null) {
@@ -161,14 +168,28 @@ export default class Guilds {
 		}
 	}
 
-    async editMemberEntry(guild: Guild, id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
+	async editMemberEntry(
+		guild: Guild,
+		id: Snowflake,
+		query: 'modlogs' | 'muted' | 'banned',
+		newValue: unknown
+	): Promise<boolean> {
 		const logs = await this.database(guild, 'members')
 		const memberLogs = logs.find((m: databaseMember) => m.id === id)
 
 		if (memberLogs === undefined) {
 			//@ts-ignore what
-			const newModlogs: databaseMember = { id: id, modlogs: [], muted: { status: false, expires: null }, banned: { expires: null } }
-			const edited = await container.database.guilds.edit(guild.id, 'members', (await this.database(guild, 'members')).push(newModlogs))
+			const newModlogs: databaseMember = {
+				id: id,
+				modlogs: [],
+				muted: { status: false, expires: null },
+				banned: { expires: null },
+			}
+			const edited = await container.database.guilds.edit(
+				guild.id,
+				'members',
+				(await this.database(guild, 'members')).push(newModlogs)
+			)
 			if (edited === false) return edited
 
 			//@ts-ignore stfu
@@ -182,14 +203,22 @@ export default class Guilds {
 		return edited
 	}
 
-    async hasStaffRoles(guild: Guild) {
+	async hasStaffRoles(guild: Guild) {
 		const db = await this.database(guild, 'guildSettings.staffRoles')
 
-		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
+		if (
+			db.owner === null &&
+			db.admin === null &&
+			db.srMod === null &&
+			db.moderator === null &&
+			db.helper === null &&
+			db.trialHelper === null
+		)
+			return false
 		else return true
 	}
 
-    async setCommandPermissions(guild: Guild, command: string, perms: perms) {
+	async setCommandPermissions(guild: Guild, command: string, perms: perms) {
 		//if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
 
 		const commands = await this.database(guild, 'commandSettings')

@@ -78,7 +78,23 @@ export default class Utilities {
 		return Math.round(Date.now() / 1000)
 	}
 
-	public getAllCommands() {
-		console.log([...container.stores.get('commands').keys()])
+	public getAllCommands(): string[] {
+		const allCommands = []
+		for (const c of container.stores.get('commands')){
+			allCommands.push(c[1])
+		}
+
+		const notOwnerCommands = allCommands.filter(c => !c.options.preconditions?.includes('ownerOnly'))
+
+		const commands: string[] = []
+		notOwnerCommands.forEach(c => {
+			commands.push(c.name)
+		})
+
+		return commands
+	}
+
+	public getCommand(id: string) {
+
 	}
 }
