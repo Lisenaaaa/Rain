@@ -32,7 +32,7 @@ export class EvalCommand extends Command {
 				guild = message.guild,
 				channel = message.channel
 
-			output = inspect(await eval(codeToEval), undefined, 4)
+			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true
 		} catch (err) {
 			output = err.stack
