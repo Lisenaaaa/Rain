@@ -323,5 +323,3 @@ export default class Database {
 		},
 	}
 }
-
-container.database = new Database()

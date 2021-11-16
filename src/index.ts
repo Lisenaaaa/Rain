@@ -19,8 +19,10 @@ new Database().initDB()
 const client = new RainClient()
 void client.login(config.tokens.main)
 
+container.database = new Database()
 container.config = new Settings()
 container.utils = new Utilities()
+
 container.users = new Users()
 container.guilds = new Guilds()
 container.channels = new Channels()
