@@ -1,10 +1,10 @@
-import { SapphireClient } from "@sapphire/framework";
-import Utilities from "../functions/utilities";
+import { SapphireClient } from '@sapphire/framework'
+import Utilities from '../functions/utilities'
 import Settings from '../config/settings'
-import Database from "../functions/database";
-import Guilds from "../functions/objectfunctions/guilds";
-import Users from "../functions/objectfunctions/users";
-import Channels from "../functions/objectfunctions/channels";
+import Database from '../functions/database'
+import Guilds from '../functions/objectfunctions/guilds'
+import Users from '../functions/objectfunctions/users'
+import Channels from '../functions/objectfunctions/channels'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -12,25 +12,22 @@ export class RainClient extends SapphireClient {
 			caseInsensitiveCommands: true,
 			caseInsensitivePrefixes: true,
 			defaultPrefix: '-',
-			intents: [
-				'GUILDS',
-				'GUILD_MESSAGES'
-			],
+			intents: ['GUILDS', 'GUILD_MESSAGES'],
 			loadDefaultErrorListeners: false,
 			partials: ['CHANNEL'],
-			allowedMentions: {parse: []}
-		});
+			allowedMentions: { parse: [] },
+		})
 	}
 }
 
 declare module '@sapphire/pieces' {
 	interface Container {
-		utils: Utilities,
-		config: Settings,
-		database: Database,
+		utils: Utilities
+		config: Settings
+		database: Database
 
-		guilds: Guilds,
-		users: Users,
+		guilds: Guilds
+		users: Users
 		channels: Channels
 	}
 }
