@@ -8,7 +8,7 @@ I succesfully made a (shitty) bot, which I've since rewritten a few times, over 
 
 I was using a fork of discord.js and akairo for a while, both of them made by a person who's usual method of helping me fix problems with them was "it works on my machine".
 
-So now this exists! Currently my goals with it are to replace [Fire](https://github.com/FireDiscordBot/bot), which is fine at best, for a number of reasons. It's permission system is awful, and... you should just see what the developer does when someone uses the bot's PFP.
+So now this exists, using base discord.js and Sapphire! Currently my goals with it are to replace [Fire](https://github.com/FireDiscordBot/bot), which is fine at best, for a number of reasons. It's permission system is awful, and... you should just see what the developer does when someone uses the bot's PFP.
 
 ![Getting banned from a few unrelated servers](https://cdn.discordapp.com/attachments/887123735914610739/910248733176897617/unknown.png) ![Getting banned from a **completely unrelated** server](https://cdn.discordapp.com/attachments/887123735914610739/910248977646104597/unknown.png)
 
