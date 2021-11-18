@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { MessageEmbedOptions, TextChannel } from 'discord.js'
+import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { errorDetails } from '../types/misc'
 
@@ -80,14 +80,16 @@ export default class Utilities {
 
 	public getAllCommands(): string[] {
 		const allCommands = []
-		for (const c of container.stores.get('commands')){
+		for (const c of container.stores.get('commands')) {
 			allCommands.push(c[1])
 		}
 
-		const notOwnerCommands = allCommands.filter(c => !c.options.preconditions?.includes('ownerOnly'))
+		const notOwnerCommands = allCommands.filter(
+			(c) => !c.options.preconditions?.includes('ownerOnly')
+		)
 
 		const commands: string[] = []
-		notOwnerCommands.forEach(c => {
+		notOwnerCommands.forEach((c) => {
 			commands.push(c.name)
 		})
 
@@ -95,6 +97,130 @@ export default class Utilities {
 	}
 
 	public getCommand(id: string) {
+		const allCommands = []
+		for (const c of container.stores.get('commands')) {
+			allCommands.push(c[1])
+		}
 
+		return allCommands.find((c) => c.name === id)
+	}
+
+	public parseInteractionArgs(interaction: CommandInteraction) {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const options: any = {}
+		interaction.options.data.forEach((option) => {
+			switch (option.type) {
+				case 'STRING':
+					options[option.name] = option.value
+					break
+				case 'INTEGER':
+					options[option.name] = option.value
+					break
+				case 'BOOLEAN':
+					options[option.name] = option.value
+					break
+				case 'NUMBER':
+					options[option.name] = option.value
+					break
+				case 'USER':
+					options[option.name] = { user: option.user, member: option.member }
+					break
+				case 'CHANNEL':
+					options[option.name] = option.channel
+					break
+				case 'ROLE':
+					options[option.name] = option.role
+					break
+				case 'MENTIONABLE':
+					options[option.name] = option.role
+						? option.role
+						: { user: option.user, member: option.member }
+					break
+				case 'SUB_COMMAND':
+					options['subcommand'] = option.name
+					option.options?.forEach((subOption) => {
+						switch (subOption.type) {
+							case 'STRING':
+								options[subOption.name] = subOption.value
+								break
+							case 'INTEGER':
+								options[subOption.name] = subOption.value
+								break
+							case 'BOOLEAN':
+								options[subOption.name] = subOption.value
+								break
+							case 'NUMBER':
+								options[subOption.name] = subOption.value
+								break
+							case 'USER':
+								options[subOption.name] = {
+									user: subOption.user,
+									member: subOption.member,
+								}
+								break
+							case 'CHANNEL':
+								options[subOption.name] = subOption.channel
+								break
+							case 'ROLE':
+								options[subOption.name] = subOption.role
+								break
+							case 'MENTIONABLE':
+								options[subOption.name] = subOption.role
+									? subOption.role
+									: { user: subOption.user, member: subOption.member }
+								break
+						}
+					})
+					break
+				case 'SUB_COMMAND_GROUP': {
+					options['subcommandGroup'] = option.name
+
+					// @ts-ignore
+					const suboptions = option.options[0].options
+
+					options['subcommand'] = (
+						option.options as { name: string; type: string }[]
+					)[0].name
+
+					// @ts-ignore
+					suboptions.forEach((subOption) => {
+						switch (subOption.type) {
+							case 'STRING':
+								options[subOption.name] = subOption.value
+								break
+							case 'INTEGER':
+								options[subOption.name] = subOption.value
+								break
+							case 'BOOLEAN':
+								options[subOption.name] = subOption.value
+								break
+							case 'NUMBER':
+								options[subOption.name] = subOption.value
+								break
+							case 'USER':
+								options[subOption.name] = {
+									user: subOption.user,
+									member: subOption.member,
+								}
+								break
+							case 'CHANNEL':
+								options[subOption.name] = subOption.channel
+								break
+							case 'ROLE':
+								options[subOption.name] = subOption.role
+								break
+							case 'MENTIONABLE':
+								options[subOption.name] = subOption.role
+									? subOption.role
+									: { user: subOption.user, member: subOption.member }
+								break
+						}
+					})
+					break
+				}
+			}
+		})
+
+		return options
 	}
 }
