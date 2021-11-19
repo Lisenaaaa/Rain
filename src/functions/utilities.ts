@@ -151,7 +151,7 @@ export default class Utilities {
 					options[option.name] = option.value
 					break
 				case 'USER':
-					options[option.name] = { user: option.user, member: option.member }
+					options[option.name] = option.user
 					break
 				case 'CHANNEL':
 					options[option.name] = option.channel
@@ -160,9 +160,7 @@ export default class Utilities {
 					options[option.name] = option.role
 					break
 				case 'MENTIONABLE':
-					options[option.name] = option.role
-						? option.role
-						: { user: option.user, member: option.member }
+					options[option.name] = option.role ? option.role : option.user
 					break
 				case 'SUB_COMMAND':
 					options['subcommand'] = option.name
@@ -181,10 +179,7 @@ export default class Utilities {
 								options[subOption.name] = subOption.value
 								break
 							case 'USER':
-								options[subOption.name] = {
-									user: subOption.user,
-									member: subOption.member,
-								}
+								options[subOption.name] = subOption.user
 								break
 							case 'CHANNEL':
 								options[subOption.name] = subOption.channel
@@ -195,7 +190,7 @@ export default class Utilities {
 							case 'MENTIONABLE':
 								options[subOption.name] = subOption.role
 									? subOption.role
-									: { user: subOption.user, member: subOption.member }
+									: subOption.user
 								break
 						}
 					})
@@ -226,10 +221,7 @@ export default class Utilities {
 								options[subOption.name] = subOption.value
 								break
 							case 'USER':
-								options[subOption.name] = {
-									user: subOption.user,
-									member: subOption.member,
-								}
+								options[subOption.name] = subOption.user
 								break
 							case 'CHANNEL':
 								options[subOption.name] = subOption.channel
@@ -240,7 +232,7 @@ export default class Utilities {
 							case 'MENTIONABLE':
 								options[subOption.name] = subOption.role
 									? subOption.role
-									: { user: subOption.user, member: subOption.member }
+									: subOption.user
 								break
 						}
 					})
