@@ -5,6 +5,10 @@ import got from 'got/dist/source'
 import { errorDetails } from '../types/misc'
 
 export default class Utilities {
+	/**
+	 * @param content The object you want to put on a haste server.
+	 * @returns The haste link, or `"Couldn't post."` if it failed to post it.
+	 */
 	public async haste(content: string): Promise<string> {
 		const urls = [
 			'https://h.inv.wtf',
@@ -34,6 +38,11 @@ export default class Utilities {
 		return "Couldn't post."
 	}
 
+	/**
+	 * @param error The `Error` object.
+	 * @param details The details for the error.
+	 * @returns Sends a message in the error channel, and returns a more user-friendly embed.
+	 */
 	public async error(error: Error, details: errorDetails): Promise<MessageEmbedOptions> {
 		const errorChannel = container.client.channels.cache.get(
 			container.config.errorChannel
@@ -71,14 +80,24 @@ export default class Utilities {
 		}
 	}
 
+	/**
+	 * @param max The maximum the random number generator can generate.
+	 * @returns A random number.
+	 */
 	public random(max: number): number {
 		return Math.floor(Math.random() * max)
 	}
 
+	/**
+	 * @returns The current timestamp, in the proper formatting for Discord's <t:timestamp:> formatting
+	 */
 	public now(): number {
 		return Math.round(Date.now() / 1000)
 	}
 
+	/**
+	 * @returns An array of all command IDs
+	 */
 	public getAllCommands(): string[] {
 		const allCommands = []
 		for (const c of container.stores.get('commands')) {
@@ -97,6 +116,10 @@ export default class Utilities {
 		return commands
 	}
 
+	/**
+	 * @param id The ID of the command you want to fetch.
+	 * @returns The command object.
+	 */
 	public getCommand(id: string): Command | undefined {
 		const allCommands = []
 		for (const c of container.stores.get('commands')) {
@@ -106,6 +129,10 @@ export default class Utilities {
 		return allCommands.find((c) => c.name === id)
 	}
 
+	/**
+	 * @param interaction The command interaction you want to parse for options.
+	 * @returns The args from the interaction, in the same formatting as `discord-akairo` has them.
+	 */
 	public parseInteractionArgs(interaction: CommandInteraction) {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const options: any = {}
