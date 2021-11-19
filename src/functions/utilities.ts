@@ -1,10 +1,11 @@
+import { Command } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
 import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { errorDetails } from '../types/misc'
 
 export default class Utilities {
-	public async haste(content: string) {
+	public async haste(content: string): Promise<string> {
 		const urls = [
 			'https://h.inv.wtf',
 			'https://hst.sh',
@@ -70,11 +71,11 @@ export default class Utilities {
 		}
 	}
 
-	public random(max: number) {
+	public random(max: number): number {
 		return Math.floor(Math.random() * max)
 	}
 
-	public now() {
+	public now(): number {
 		return Math.round(Date.now() / 1000)
 	}
 
@@ -96,7 +97,7 @@ export default class Utilities {
 		return commands
 	}
 
-	public getCommand(id: string) {
+	public getCommand(id: string): Command | undefined {
 		const allCommands = []
 		for (const c of container.stores.get('commands')) {
 			allCommands.push(c[1])
