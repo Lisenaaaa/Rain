@@ -34,6 +34,7 @@
     "@sapphire/framework": "^2.1.4",
     "@sapphire/pieces": "^3.1.1",
     "@sapphire/plugin-logger": "^2.0.2",
+    "@sapphire/utilities": "^3.1.0",
     "@types/node": "^16.11.7",
     "discord.js": "^13.3.1",
     "got": "^11.8.2",

@@ -5,6 +5,7 @@ import Database from '../functions/database'
 import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
+import { SlashCommandStore } from './SlashCommandStore'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -17,6 +18,8 @@ export class RainClient extends SapphireClient {
 			partials: ['CHANNEL'],
 			allowedMentions: { parse: [] },
 		})
+
+		this.stores.register(new SlashCommandStore());
 	}
 }
 
@@ -29,5 +32,8 @@ declare module '@sapphire/pieces' {
 		guilds: Guilds
 		users: Users
 		channels: Channels
+	}
+	interface StoreRegistryEntries {
+		slashCommands: SlashCommandStore
 	}
 }
