@@ -10,25 +10,23 @@ import type {
 export abstract class SlashCommand extends Piece {
 	public readonly commandData: Options
 	public readonly guildOnly: boolean
+	public readonly ownerOnly: boolean
 	constructor(context: PieceContext, options: Options) {
 		super(context, options)
 
-		// This is the payload the "deployer" requires to register the commands
-		// at Discord.
 		this.commandData = {
 			name: this.name,
 			description: options.description ?? 'No description provided',
 			options: options.options ?? [],
 			defaultPermission: options.defaultPermission ?? true,
-			guilds: options.guilds
+			guilds: options.guilds,
 		}
 
-		// This line is a juicy one, and only comes into effect if you're loading
-		// both global and guild commands alike, true for guild, false for global.
+		this.ownerOnly = options.ownerOnly ?? false
 		this.guildOnly = options.guildOnly ?? false
 	}
 
-	public abstract run(interaction: CommandInteraction): Awaitable<unknown>
+	public abstract run(interaction: CommandInteraction, args?: unknown): Awaitable<unknown>
 }
 
 export type Options = ApplicationCommandData & {
@@ -37,4 +35,5 @@ export type Options = ApplicationCommandData & {
 	defaultPermission?: boolean
 	guildOnly?: boolean
 	guilds?: Snowflake[]
+	ownerOnly?: boolean
 }

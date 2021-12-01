@@ -6,6 +6,10 @@
  * https://discordjs.guide/interactions/registering-slash-commands.html#guild-commands
  *
  */
+
+/**
+ * This ping command is from https://github.com/YorkAARGH/Sapphire-slashies-example
+ */
 import type { PieceContext } from '@sapphire/framework'
 import type { CommandInteraction, Message } from 'discord.js'
 import { SlashCommand } from '../structures/SlashCommandPiece'
@@ -17,7 +21,7 @@ export class Ping extends SlashCommand {
 			description: 'Pongs when pinged.',
 			options: [],
 			guildOnly: true,
-			guilds: ['880637463838724166']
+			guilds: ['880637463838724166'],
 		})
 	}
 
