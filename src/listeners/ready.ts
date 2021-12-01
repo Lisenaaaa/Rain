@@ -17,9 +17,9 @@ export class ReadyListener extends Listener {
 
 		if (slashCommandsStore) {
 			try {
-				console.log('Started refreshing application (/) commands.')
+				this.container.logger.info('Started reloading slashies.')
 				await slashCommandsStore.registerCommands()
-				console.log('Successfully reloaded application (/) commands.')
+				this.container.logger.info('Successfully reloaded slashies.')
 			} catch (err) {
 				this.container.logger.fatal(err)
 				process.exit()
