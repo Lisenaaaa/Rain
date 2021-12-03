@@ -3,6 +3,9 @@ import { container } from '@sapphire/pieces'
 import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { errorDetails } from '../types/misc'
+import { promisify } from 'util'
+import { exec } from 'child_process'
+const sh = promisify(exec)
 
 export default class Utilities {
 	/**
@@ -242,5 +245,11 @@ export default class Utilities {
 		})
 
 		return options
+	}
+
+	async timeFormatted(format?: string) {
+		return (
+			await sh(`date +'${format ? format : '%A, %b. %d %Y at %I:%M:%S %p'}'`)
+		).stdout.slice(0, -1)
 	}
 }

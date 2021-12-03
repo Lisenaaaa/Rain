@@ -2,7 +2,8 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Args, Command, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
-import util from 'util'
+import util, { promisify } from 'util'
+import { exec } from 'child_process'
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
@@ -30,7 +31,8 @@ export class EvalCommand extends Command {
 				user = message.author,
 				member = message.member,
 				guild = message.guild,
-				channel = message.channel
+				channel = message.channel,
+				sh = promisify(exec)
 
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true

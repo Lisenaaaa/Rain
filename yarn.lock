@@ -161,17 +161,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-logger@npm:^2.0.2":
-  version: 2.0.2
-  resolution: "@sapphire/plugin-logger@npm:2.0.2"
-  dependencies:
-    "@sapphire/time-utilities": ^1.4.7
-    colorette: ^2.0.16
-    tslib: ^2.3.1
-  checksum: 92279abe04788e7e1b7fb76f3bc1ae495f18b100e0ae0066ca19ae48fc8e9964044f3b28018e33c2157c4d29d0390b82f608e4b7cf0a510a13aaa6d11b6a3f5d
-  languageName: node
-  linkType: hard
-
 "@sapphire/ratelimits@npm:^2.1.7":
   version: 2.1.7
   resolution: "@sapphire/ratelimits@npm:2.1.7"
@@ -594,7 +583,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk@npm:^4.0.0":
+"chalk@npm:4, chalk@npm:^4.0.0":
   version: 4.1.2
   resolution: "chalk@npm:4.1.2"
   dependencies:
@@ -626,13 +615,6 @@ __metadata:
   version: 1.1.4
   resolution: "color-name@npm:1.1.4"
   checksum: b0445859521eb4021cd0fb0cc1a75cecf67fceecae89b63f62b201cca8d345baf8b952c966862a9d9a2632987d4f6581f0ec8d957dfacece86f0a7919316f610
-  languageName: node
-  linkType: hard
-
-"colorette@npm:^2.0.16":
-  version: 2.0.16
-  resolution: "colorette@npm:2.0.16"
-  checksum: cd55596a3a2d1071c1a28eee7fd8a5387593ff1bd10a3e8d0a6221499311fe34a9f2b9272d77c391e0e003dcdc8934fb2f8d106e7ef1f7516f8060c901d41a27
   languageName: node
   linkType: hard
 
@@ -1700,7 +1682,6 @@ __metadata:
     "@sapphire/discord.js-utilities": ^4.1.1
     "@sapphire/framework": ^2.1.4
     "@sapphire/pieces": ^3.1.1
-    "@sapphire/plugin-logger": ^2.0.2
     "@sapphire/utilities": ^3.1.0
     "@types/node": ^16.11.7
     "@types/pg": ^8
@@ -1709,6 +1690,7 @@ __metadata:
     "@types/validator": ^13
     "@typescript-eslint/eslint-plugin": ^5.3.1
     "@typescript-eslint/parser": ^5.3.1
+    chalk: 4
     discord.js: ^13.3.1
     eslint: ^8.2.0
     got: ^11.8.2

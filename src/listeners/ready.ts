@@ -7,8 +7,8 @@ import { Listener, ListenerOptions } from '@sapphire/framework'
 })
 export class ReadyListener extends Listener {
 	async run() {
-		this.container.logger.info(`Logged in as ${this.container.client.user?.tag}`)
 		await this.createSlashCommands()
+		this.container.logging.info(`Logged in as ${this.container.client.user?.tag}`, 'magenta')
 	}
 
 	async createSlashCommands() {
@@ -17,9 +17,9 @@ export class ReadyListener extends Listener {
 
 		if (slashCommandsStore) {
 			try {
-				this.container.logger.info('Started reloading slashies.')
+				this.container.logging.info('Started reloading slashies.')
 				await slashCommandsStore.registerCommands()
-				this.container.logger.info('Successfully reloaded slashies.')
+				this.container.logging.info('Successfully reloaded slashies.')
 			} catch (err) {
 				this.container.logger.fatal(err)
 				process.exit()

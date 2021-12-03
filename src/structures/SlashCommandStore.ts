@@ -1,6 +1,9 @@
+/* eslint-disable no-mixed-spaces-and-tabs */ // Prettier triggers this. I hate my life.
 import { SlashCommand } from './SlashCommandPiece'
 import { Store } from '@sapphire/framework'
 import { Constructor } from '@sapphire/utilities'
+import { Guild } from 'discord.js'
+import chalk from 'chalk'
 
 export class SlashCommandStore extends Store<SlashCommand> {
 	constructor() {
@@ -9,45 +12,44 @@ export class SlashCommandStore extends Store<SlashCommand> {
 
 	async registerCommands() {
 		const client = this.container.client
-		if (!client) return
+		if (!client) return console.log(chalk.red('No client found.'))
 
-		// This will split the slash commands between global and guild only.
-		const slashCommands = this.container.stores.get('slashCommands')
+		const [guildCommands, globalCommands] = this.container.stores
+			.get('slashCommands')
+			.partition((c) => c.guilds != undefined)
 
-		// eslint-disable-next-line no-unsafe-optional-chaining
-		const [guildc, globalc] = slashCommands?.partition((c) => c.guildOnly)
-
-		const guildCmds = guildc.map((c) => c.commandData)
-		const globalCmds = globalc.map((c) => c.commandData)
-
-		// iterate to all connected guilds and apply the commands.
-		const guilds = await client?.guilds?.fetch() // retrieves Snowflake & Oauth2Guilds
+		const guilds = await client.guilds.fetch()
 		for (const [id] of guilds) {
-			const guild = await client?.guilds?.fetch(id) // gets the guild instances from the cache (fetched before)
-			await guild.commands.set([])
-			let commands = guildCmds
-			const guildOnlyCommands = []
+			const guild = client.guilds.cache.get(id) as Guild
 
-			for (const cmd of commands) {
-				if (cmd.guilds) {
-					commands = commands.filter((c) => c != cmd)
+			const cmds = guildCommands.filter(
+				(c) => c.guilds === undefined || c.guilds.includes(id)
+			)
 
-					if (cmd.guilds.includes(guild.id)) {
-						guildOnlyCommands.push(cmd)
-					}
-				}
+			const commands = []
+			for (const [, command] of cmds) {
+				commands.push(command.commandData)
 			}
-			const allCommands = [...guildOnlyCommands, ...commands]
 
-			await guild.commands.set(allCommands)
+			await guild.commands.set(commands)
+		}
+
+		const globalCmds = []
+		for (const [, command] of globalCommands) {
+			globalCmds.push(command.commandData)
 		}
 
 		if (this.container.config.env === 'development') {
-			this.container.logger.info("Skipped global commands because we're in development mode")
+			globalCmds.length === 0
+				? ''
+				: console.log(
+						chalk`{red Skipping global commands:} {magenta ${globalCmds.map(
+							(c) => c.name
+						)}}`
+				  )
 			return
 		}
 
-		// This will register global commands.
 		await client.application?.commands.set([])
 		await client.application?.commands.set(globalCmds)
 	}

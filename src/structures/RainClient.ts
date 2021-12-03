@@ -6,6 +6,7 @@ import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
 import { SlashCommandStore } from './SlashCommandStore'
+import Logger from '../functions/logger'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -28,6 +29,7 @@ declare module '@sapphire/pieces' {
 		utils: Utilities
 		config: Settings
 		database: Database
+		logging: Logger
 
 		guilds: Guilds
 		users: Users

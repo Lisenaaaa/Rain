@@ -9,8 +9,8 @@ import type {
 
 export abstract class SlashCommand extends Piece {
 	public readonly commandData: Options
-	public readonly guildOnly: boolean
 	public readonly ownerOnly: boolean
+	public readonly guilds: Snowflake[] | undefined
 	constructor(context: PieceContext, options: Options) {
 		super(context, options)
 
@@ -19,11 +19,10 @@ export abstract class SlashCommand extends Piece {
 			description: options.description ?? 'No description provided',
 			options: options.options ?? [],
 			defaultPermission: options.defaultPermission ?? true,
-			guilds: options.guilds,
 		}
 
 		this.ownerOnly = options.ownerOnly ?? false
-		this.guildOnly = options.guildOnly ?? false
+		this.guilds = options.guilds ?? undefined
 	}
 
 	public abstract run(interaction: CommandInteraction, args?: unknown): Awaitable<unknown>
@@ -33,7 +32,6 @@ export type Options = ApplicationCommandData & {
 	description: string
 	options?: ApplicationCommandOptionData[]
 	defaultPermission?: boolean
-	guildOnly?: boolean
 	guilds?: Snowflake[]
 	ownerOnly?: boolean
 }

@@ -2,7 +2,6 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandDeniedPayload, Listener, ListenerOptions, PreconditionError } from '@sapphire/framework'
 
 @ApplyOptions<ListenerOptions>({
-	once: true,
 	event: 'commandDenied',
 })
 export class CommandDeniedListener extends Listener {
