@@ -1,3 +1,7 @@
 export type SlashPreconditionError = {
-    message: string
+	thingIsError: true
+	message: string
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const SlashConditions: any = {}

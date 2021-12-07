@@ -39,7 +39,7 @@ export class SlashCommandStore extends Store<SlashCommand> {
 			globalCmds.push(command.commandData)
 		}
 
-		if (this.container.config.env === 'development') {
+		if (this.container.settings.env === 'development') {
 			globalCmds.length === 0
 				? ''
 				: console.log(

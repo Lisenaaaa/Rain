@@ -18,9 +18,6 @@ export class CommandInteraction extends Listener {
 
 		try {
 			let runnable = true
-
-			if (cmd.ownerOnly && !(await this.ownerOnly(interaction))) runnable = false
-
 			/*
 				PRECONDITIONS
 				these are an array of strings with the precondition name
@@ -31,8 +28,27 @@ export class CommandInteraction extends Listener {
 				for the first one that returns some sorta error, emit slashDenied with the error and the interaction, and don't run it
 			*/
 
+			if (cmd.preconditions) {
+				for (const c of cmd.preconditions) {
+					const condition = this.container.stores
+						.get('slashConditions')
+						.get(c.toString().split('_')[1])
+
+					const ran = await condition?.run(interaction)
+					if (ran === true) continue
+					else {
+						runnable = false
+						//@ts-ignore
+						return this.container.client.emit('slashDenied', interaction, ran.message)
+					}
+				}
+			}
+
 			if (runnable === true) {
 				await cmd.run(interaction, this.container.utils.parseInteractionArgs(interaction))
+			}
+			else {
+				console.log('command not runnable')
 			}
 			if (process.env.DEV)
 				this.container.logger.info(
@@ -41,19 +57,5 @@ export class CommandInteraction extends Listener {
 		} catch (e: any) {
 			this.container.client.emit('slashError', e, interaction)
 		}
-	}
-
-	async ownerOnly(interaction: Interaction): Promise<boolean> {
-		if (!interaction.isCommand()) return false
-		const canRun = this.container.config.owners.includes(interaction.user.id)
-
-		if (canRun === false) {
-			await interaction.reply({
-				content: 'This command is owner only. You cannot use it.',
-				ephemeral: true,
-			})
-		}
-
-		return canRun
 	}
 }

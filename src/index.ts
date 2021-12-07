@@ -16,10 +16,10 @@ if (process.platform === 'win32') {
 new Database().initDB()
 
 const client = new RainClient()
-void client.login(config.tokens.main)
+void client.login(new config().tokens.main)
 
 container.database = new Database()
-container.config = new Settings()
+container.settings = new Settings()
 container.utils = new Utilities()
 container.logging = new Logger()
 

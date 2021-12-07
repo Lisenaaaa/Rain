@@ -1,9 +1,10 @@
 import { container } from '@sapphire/pieces'
-import config from '../config/config'
+import Config from '../config/config'
 import { GuildDatabase, GuildDatabaseConstructor, UserDatabaseConstructor } from '../types/database'
 import { Snowflake } from 'discord.js'
 import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
 
+const config = new Config()
 const pg = new Sequelize(
 	config.database.pgdbid,
 	config.database.pguser,

@@ -4,6 +4,7 @@ import { Args, Command, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
 import util, { promisify } from 'util'
 import { exec } from 'child_process'
+import config from '../../config/config'
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
@@ -27,7 +28,7 @@ export class EvalCommand extends Command {
 				database = this.container.database,
 				utils = this.container.utils,
 				client = this.container.client,
-				config = this.container.config,
+				settings = this.container.settings,
 				user = message.author,
 				member = message.member,
 				guild = message.guild,
@@ -37,7 +38,7 @@ export class EvalCommand extends Command {
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true
 		} catch (err) {
-			output = err.stack
+			output = err.message
 			success = false
 		}
 
@@ -56,9 +57,25 @@ export class EvalCommand extends Command {
 	}
 
 	async formatOutput(output: string): Promise<string> {
-		if (!output) return `\`\`\`js\n${output}\`\`\``
-		if (output.length >= 1000) {
-			return await this.container.utils.haste(output)
-		} else return `\`\`\`js\n${output}\`\`\``
+		if (!output) return `\`\`\`js\n${this.cleanOutput(output)}\`\`\``
+		if (this.cleanOutput(output).length >= 1000) {
+			return await this.container.utils.haste(this.cleanOutput(output))
+		} else return `\`\`\`js\n${this.cleanOutput(output)}\`\`\``
+	}
+
+	cleanOutput(output: string) {
+		const thingies = new config()
+		const tokens = thingies.tokens
+		const database = thingies.database
+
+		for (const key of Object.keys(tokens)) {
+			output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)
+		}
+
+		for (const key of Object.keys(database)) {
+			output = output.replaceAll(database[key as keyof typeof database], `database.${key}`)
+		}
+
+		return output
 	}
 }

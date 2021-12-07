@@ -7,6 +7,7 @@ import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
 import { SlashCommandStore } from './SlashCommandStore'
 import Logger from '../functions/logger'
+import { SlashConditionStore } from './SlashConditionStore'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -20,14 +21,15 @@ export class RainClient extends SapphireClient {
 			allowedMentions: { parse: [] },
 		})
 
-		this.stores.register(new SlashCommandStore());
+		this.stores.register(new SlashCommandStore())
+		this.stores.register(new SlashConditionStore())
 	}
 }
 
 declare module '@sapphire/pieces' {
 	interface Container {
 		utils: Utilities
-		config: Settings
+		settings: Settings
 		database: Database
 		logging: Logger
 
@@ -37,5 +39,6 @@ declare module '@sapphire/pieces' {
 	}
 	interface StoreRegistryEntries {
 		slashCommands: SlashCommandStore
+		slashConditions: SlashConditionStore
 	}
 }

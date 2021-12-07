@@ -48,7 +48,7 @@ export default class Utilities {
 	 */
 	public async error(error: Error, details: errorDetails): Promise<MessageEmbedOptions> {
 		const errorChannel = container.client.channels.cache.get(
-			container.config.errorChannel
+			container.settings.errorChannel
 		) as TextChannel
 		const id = `${this.random(696969696969)}`
 

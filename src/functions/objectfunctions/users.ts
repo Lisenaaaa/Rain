@@ -7,7 +7,7 @@ import { modlogTypes, modlogs } from '../../types/misc'
 
 export default class Users {
 	isOwner(user: User) {
-		return container.config.owners.includes(user.id)
+		return container.settings.owners.includes(user.id)
 	}
 
 	async getPronouns(

@@ -1,4 +1,4 @@
-import { Piece, PieceContext } from '@sapphire/framework'
+import { Piece, PieceContext, PreconditionEntryResolvable } from '@sapphire/framework'
 import type { Awaitable } from '@sapphire/utilities'
 import type {
 	ApplicationCommandData,
@@ -11,6 +11,7 @@ export abstract class SlashCommand extends Piece {
 	public readonly commandData: Options
 	public readonly ownerOnly: boolean
 	public readonly guilds: Snowflake[] | undefined
+	public readonly preconditions: PreconditionEntryResolvable[] | undefined
 	constructor(context: PieceContext, options: Options) {
 		super(context, options)
 
@@ -23,6 +24,7 @@ export abstract class SlashCommand extends Piece {
 
 		this.ownerOnly = options.ownerOnly ?? false
 		this.guilds = options.guilds ?? undefined
+		this.preconditions = options.preconditions
 	}
 
 	public abstract run(interaction: CommandInteraction, args?: unknown): Awaitable<unknown>
@@ -34,4 +36,5 @@ export type Options = ApplicationCommandData & {
 	defaultPermission?: boolean
 	guilds?: Snowflake[]
 	ownerOnly?: boolean
+	preconditions?: PreconditionEntryResolvable[]
 }

@@ -16,7 +16,7 @@ export class Ping extends SlashCommand {
 	}
 
 	async run(interaction: CommandInteraction) {
-		const reply = await interaction.reply({ content: 'ping', fetchReply: true })
+		const reply = await interaction.reply({ content: 'Ping?', fetchReply: true })
 		await interaction.editReply(
 			`Pong! Latency is ${
 				(reply as Message).createdTimestamp - interaction.createdTimestamp
