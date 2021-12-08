@@ -125,8 +125,8 @@ export default class Utilities {
 	 */
 	public getCommand(id: string): Command | undefined {
 		const allCommands = []
-		for (const c of container.stores.get('commands')) {
-			allCommands.push(c[1])
+		for (const [,c] of container.stores.get('commands')) {
+			allCommands.push(c)
 		}
 
 		return allCommands.find((c) => c.name === id)
