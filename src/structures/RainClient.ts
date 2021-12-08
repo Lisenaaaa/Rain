@@ -1,4 +1,4 @@
-import { SapphireClient } from '@sapphire/framework'
+import { container, SapphireClient } from '@sapphire/framework'
 import Utilities from '../functions/utilities'
 import Settings from '../config/settings'
 import Database from '../functions/database'
@@ -23,6 +23,15 @@ export class RainClient extends SapphireClient {
 
 		this.stores.register(new SlashCommandStore())
 		this.stores.register(new SlashConditionStore())
+
+		container.database = new Database()
+		container.settings = new Settings()
+		container.utils = new Utilities()
+		container.logging = new Logger()
+
+		container.users = new Users()
+		container.guilds = new Guilds()
+		container.channels = new Channels()
 	}
 }
 
