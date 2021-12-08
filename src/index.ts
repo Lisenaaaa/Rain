@@ -7,7 +7,7 @@ import Utilities from './functions/utilities'
 import Users from './functions/objectfunctions/users'
 import Guilds from './functions/objectfunctions/guilds'
 import Channels from './functions/objectfunctions/channels'
-import Logger from './functions/logger'
+import Logger from './functions/logging'
 
 if (process.platform === 'win32') {
 	throw new Error('Please use a good OS.')

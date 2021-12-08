@@ -6,7 +6,7 @@ import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
 import { SlashCommandStore } from './SlashCommandStore'
-import Logger from '../functions/logger'
+import Logger from '../functions/logging'
 import { SlashConditionStore } from './SlashConditionStore'
 
 export class RainClient extends SapphireClient {
