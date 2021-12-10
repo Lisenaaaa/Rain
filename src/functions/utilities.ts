@@ -1,4 +1,4 @@
-import { Command } from '@sapphire/framework'
+import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
 import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
@@ -130,6 +130,15 @@ export default class Utilities {
 		}
 
 		return allCommands.find((c) => c.name === id)
+	}
+
+	public getListener(id: string): Listener | undefined {
+		const allListeners = []
+		for (const [,l] of container.stores.get('listeners')) {
+			allListeners.push(l)
+		}
+
+		return allListeners.find((l) => l.name === id)
 	}
 
 	/**

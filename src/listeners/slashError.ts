@@ -7,7 +7,7 @@ import { BaseCommandInteraction } from 'discord.js'
 })
 export class CommandErrorListener extends Listener {
 	public async run(error: Error, interaction: BaseCommandInteraction) {
-		await interaction.reply(await this.formatOutput(error.stack as string))
+		await interaction.reply(`${await this.formatOutput(error.message)}: ${await this.formatOutput(error.stack as string)}`)
 	}
 
 	async formatOutput(output: string): Promise<string> {

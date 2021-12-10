@@ -38,12 +38,8 @@ export default class Guilds {
 
 			allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
 				if (!allCommands.includes(guildCommand.id)) {
-					allGuildCommands = allGuildCommands.filter(
-						(c: guildCommandSettings) => c.id != guildCommand.id
-					)
-					container.logger.info(
-						`Removed ${guildCommand.id} from ${g.guildID}'s database entry`
-					)
+					allGuildCommands = allGuildCommands.filter((c: guildCommandSettings) => c.id != guildCommand.id)
+					container.logger.info(`Removed ${guildCommand.id} from ${g.guildID}'s database entry`)
 				}
 			})
 
@@ -74,11 +70,7 @@ export default class Guilds {
 
 	async editStaffRole(guild: Guild, position: perms, newRole: Snowflake | null) {
 		try {
-			return await container.database.guilds.edit(
-				guild.id,
-				`guildSettings.staffRoles.${position}`,
-				newRole
-			)
+			return await container.database.guilds.edit(guild.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
 			container.utils.error(error, {
 				type: 'Database',
@@ -89,51 +81,27 @@ export default class Guilds {
 	}
 
 	async setChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
-		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[
-			perms
-		]
+		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
 		if (currentLockedChannels?.includes(channel)) return true
 
 		currentLockedChannels?.push(channel)
 
-		return await container.database.guilds.edit(
-			guild.id,
-			`guildSettings.lockedChannels.${perms}`,
-			currentLockedChannels
-		)
+		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
 	}
 
 	async removeChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
-		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[
-			perms
-		]
+		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
 		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
 
-		return await container.database.guilds.edit(
-			guild.id,
-			`guildSettings.lockedChannels.${perms}`,
-			newLockedChannels
-		)
+		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
 	}
 
-	async setLogChannel(
-		guild: Guild,
-		type: 'message' | 'member' | 'moderation' | 'action',
-		channel: Snowflake
-	) {
-		return await container.database.guilds.edit(
-			guild.id,
-			`guildSettings.loggingChannels.${type}`,
-			channel
-		)
+	async setLogChannel(guild: Guild, type: 'message' | 'member' | 'moderation' | 'action', channel: Snowflake) {
+		return await container.database.guilds.edit(guild.id, `guildSettings.loggingChannels.${type}`, channel)
 	}
 
 	async resetLogChannel(guild: Guild, type: 'message' | 'member' | 'moderation' | 'action') {
-		return await container.database.guilds.edit(
-			guild.id,
-			`guildSettings.loggingChannels.${type}`,
-			null
-		)
+		return await container.database.guilds.edit(guild.id, `guildSettings.loggingChannels.${type}`, null)
 	}
 
 	async ban(guild: Guild, user: UserResolvable, options: BanOptions, time?: number) {
@@ -168,12 +136,7 @@ export default class Guilds {
 		}
 	}
 
-	async editMemberEntry(
-		guild: Guild,
-		id: Snowflake,
-		query: 'modlogs' | 'muted' | 'banned',
-		newValue: unknown
-	): Promise<boolean> {
+	async editMemberEntry(guild: Guild, id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
 		const logs = await this.database(guild, 'members')
 		const memberLogs = logs.find((m: databaseMember) => m.id === id)
 
@@ -185,11 +148,7 @@ export default class Guilds {
 				muted: { status: false, expires: null },
 				banned: { expires: null },
 			}
-			const edited = await container.database.guilds.edit(
-				guild.id,
-				'members',
-				(await this.database(guild, 'members')).push(newModlogs)
-			)
+			const edited = await container.database.guilds.edit(guild.id, 'members', (await this.database(guild, 'members')).push(newModlogs))
 			if (edited === false) return edited
 
 			//@ts-ignore stfu
@@ -206,15 +165,7 @@ export default class Guilds {
 	async hasStaffRoles(guild: Guild) {
 		const db = await this.database(guild, 'guildSettings.staffRoles')
 
-		if (
-			db.owner === null &&
-			db.admin === null &&
-			db.srMod === null &&
-			db.moderator === null &&
-			db.helper === null &&
-			db.trialHelper === null
-		)
-			return false
+		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
 		else return true
 	}
 
@@ -227,5 +178,20 @@ export default class Guilds {
 		cmd.lockedRoles = perms
 
 		return await container.database.guilds.edit(guild.id, 'commandSettings', commands)
+	}
+
+	findChannel(guild: Guild, query: string) {
+		const channels = guild.channels.cache
+
+		let channel
+		channel = channels.get(query)
+
+		if (!channel) {
+			channel = channels.find((c) => c.name.toLowerCase() === query.toLowerCase())
+		}
+
+		
+
+		return channel
 	}
 }
