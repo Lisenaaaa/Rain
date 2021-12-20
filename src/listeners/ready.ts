@@ -8,6 +8,8 @@ import { Listener, ListenerOptions } from '@sapphire/framework'
 export class ReadyListener extends Listener {
 	async run() {
 		await this.createSlashCommands()
+		await this.container.cache.guilds.fetchAll()
+		this.container.logging.info('Database guild entries cached.')
 		this.container.logging.info(`Logged in as ${this.container.client.user?.tag}`, 'magenta')
 	}
 

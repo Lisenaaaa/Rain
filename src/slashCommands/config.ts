@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import type { PieceContext } from '@sapphire/framework'
 import type { BaseCommandInteraction, Guild, Interaction, Message, MessageComponentInteraction } from 'discord.js'
 import { SlashCommand } from '../structures/SlashCommandPiece'
@@ -13,6 +14,9 @@ export class Ping extends SlashCommand {
 	}
 
 	async run(interaction: BaseCommandInteraction) {
+		if (this.container.cache.guilds.get(interaction.guild?.id as string) === undefined) {
+			await this.container.database.guilds.add(interaction.guild?.id as string)
+		}
 		const filter = (i: Interaction) => i.user.id == interaction.user.id
 		const filterMsg = (m: Message) => m.author.id == interaction.user.id
 		const filterRestrictChannels = (i: MessageComponentInteraction) => i.user.id === interaction.user.id && i.customId.startsWith('configRestrictChannels')
@@ -46,7 +50,7 @@ export class Ping extends SlashCommand {
 							customId: 'configWelcomeMessage',
 							type: 'BUTTON',
 							label: 'Welcome Messages',
-                            style: 'PRIMARY'
+							style: 'PRIMARY',
 						},
 					],
 				},
@@ -64,10 +68,10 @@ export class Ping extends SlashCommand {
 				})
 
 				messageCollector?.once('collect', async (m: Message) => {
-                    const channel = this.container.guilds.findChannel(m.guild as Guild, m.content)
+					const channel = this.container.guilds.findChannel(m.guild as Guild, m.content)
 
-                    console.log(channel)
-                })
+					console.log(channel)
+				})
 			}
 		})
 	}

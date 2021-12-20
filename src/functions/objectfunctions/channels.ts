@@ -5,10 +5,11 @@ import { perms } from 'src/types/misc'
 export default class Channels {
 	async isLocked(channel: TextChannel): Promise<boolean> {
 		try {
-			const channels = await container.guilds.database(
-				channel.guild,
-				'guildSettings.lockedChannels'
-			)
+			if (container.cache.guilds.check(channel.guild.id) === undefined) {
+				await container.database.guilds.add(channel.guild.id)
+			}
+
+			const channels = container.cache.guilds.get(channel.guild.id)?.guildSettings.lockedChannels
 
 			if (channels?.owner.includes(channel.id)) return true
 			if (channels?.admin.includes(channel.id)) return true
@@ -29,11 +30,12 @@ export default class Channels {
 
 	async getRestrictedPerms(channel: TextChannel): Promise<perms | boolean> {
 		try {
-			const channels = await container.guilds.database(
-				channel.guild,
-				'guildSettings.lockedChannels'
-			)
+			if (container.cache.guilds.check(channel.guild.id) === undefined) {
+				await container.database.guilds.add(channel.guild.id)
+			}
 
+			const channels = container.cache.guilds.get(channel.guild.id)?.guildSettings.lockedChannels
+			
 			if (channels?.owner.includes(channel.id)) return 'owner'
 			else if (channels?.admin.includes(channel.id)) return 'admin'
 			else if (channels?.srMod.includes(channel.id)) return 'srMod'

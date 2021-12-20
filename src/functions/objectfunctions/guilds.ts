@@ -4,30 +4,13 @@ import { guildCommandSettings, perms } from '../../types/misc'
 import { databaseMember, GuildDatabase } from '../../types/database'
 
 export default class Guilds {
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	async database(guild: Guild, query?: string): Promise<GuildDatabase | any> {
-		let db = await container.database.guilds.fetchOne(guild.id)
-		if (db === undefined) {
-			await container.database.guilds.add(guild.id)
-			await this.registerCommands(guild)
-			db = await container.database.guilds.fetchOne(guild.id)
-		}
-
-		if (query) {
-			const queryArray = query.split('.')
-			let dbObject = db
-			queryArray.forEach((query) => {
-				//@ts-ignore ok typescript
-				dbObject = dbObject?.[query as keyof typeof dbObject]
-			})
-
-			return dbObject
-		} else return db as GuildDatabase
-	}
-
 	async registerCommands(guild: Guild) {
 		try {
-			const g = await this.database(guild)
+			if (container.cache.guilds.check(guild.id) === undefined) {
+				await container.database.guilds.add(guild.id)
+			}
+			const g = container.cache.guilds.get(guild.id) as GuildDatabase
+
 			const allCommands: string[] = container.utils.getAllCommands()
 			let allGuildCommands = g.commandSettings
 			const guildCommandsArray: string[] = []
@@ -81,7 +64,13 @@ export default class Guilds {
 	}
 
 	async setChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
-		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
+		if (container.cache.guilds.check(guild.id) === undefined) {
+			await container.database.guilds.add(guild.id)
+		}
+		//@ts-ignore typescript is dumb and stupid
+		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms]
+
+		// const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
 		if (currentLockedChannels?.includes(channel)) return true
 
 		currentLockedChannels?.push(channel)
@@ -90,7 +79,11 @@ export default class Guilds {
 	}
 
 	async removeChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
-		const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
+		if (container.cache.guilds.check(guild.id) === undefined) {
+			await container.database.guilds.add(guild.id)
+		}
+		//@ts-ignore typescript is dumb and stupid
+		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms]
 		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
 
 		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
@@ -108,7 +101,9 @@ export default class Guilds {
 		try {
 			const person = await container.client.users.fetch(user)
 			await guild.bans.create(user, options)
-			await this.database(guild)
+			if (container.cache.guilds.check(guild.id) === undefined) {
+				await container.database.guilds.add(guild.id)
+			}
 			return await this.editMemberEntry(guild, person.id, 'banned', {
 				expires: time ? time : null,
 			})
@@ -125,7 +120,9 @@ export default class Guilds {
 		try {
 			const person = await container.client.users.fetch(user)
 			await guild.bans.remove(user, reason)
-			await this.database(guild)
+			if (container.cache.guilds.check(guild.id) === undefined) {
+				await container.database.guilds.add(guild.id)
+			}
 			return await this.editMemberEntry(guild, person.id, 'banned', { expires: null })
 		} catch (err) {
 			await container.utils.error(err, {
@@ -137,18 +134,21 @@ export default class Guilds {
 	}
 
 	async editMemberEntry(guild: Guild, id: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
-		const logs = await this.database(guild, 'members')
+		if (container.cache.guilds.check(guild.id) === undefined) {
+			await container.database.guilds.add(guild.id)
+		}
+
+		const logs = container.cache.guilds.get(guild.id)?.members as databaseMember[]
 		const memberLogs = logs.find((m: databaseMember) => m.id === id)
 
 		if (memberLogs === undefined) {
-			//@ts-ignore what
 			const newModlogs: databaseMember = {
 				id: id,
 				modlogs: [],
 				muted: { status: false, expires: null },
 				banned: { expires: null },
 			}
-			const edited = await container.database.guilds.edit(guild.id, 'members', (await this.database(guild, 'members')).push(newModlogs))
+			const edited = await container.database.guilds.edit(guild.id, 'members', logs.push(newModlogs))
 			if (edited === false) return edited
 
 			//@ts-ignore stfu
@@ -157,13 +157,18 @@ export default class Guilds {
 			return edited2
 		}
 
+		//@ts-ignore stfu
 		memberLogs[query] = newValue
 		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
 		return edited
 	}
 
 	async hasStaffRoles(guild: Guild) {
-		const db = await this.database(guild, 'guildSettings.staffRoles')
+		if (container.cache.guilds.check(guild.id) === undefined) {
+			await container.database.guilds.add(guild.id)
+		}
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		const db = container.cache.guilds.get(guild.id)?.guildSettings.staffRoles as any
 
 		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
 		else return true
@@ -172,8 +177,11 @@ export default class Guilds {
 	async setCommandPermissions(guild: Guild, command: string, perms: perms) {
 		//if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
 
-		const commands = await this.database(guild, 'commandSettings')
-		const cmd = commands.find((c: guildCommandSettings) => c.id === command)
+		if (container.cache.guilds.check(guild.id) === undefined) {
+			await container.database.guilds.add(guild.id)
+		}
+		const commands = container.cache.guilds.get(guild.id)?.commandSettings as guildCommandSettings[]
+		const cmd = commands.find((c: guildCommandSettings) => c.id === command) as guildCommandSettings
 
 		cmd.lockedRoles = perms
 
@@ -189,8 +197,6 @@ export default class Guilds {
 		if (!channel) {
 			channel = channels.find((c) => c.name.toLowerCase() === query.toLowerCase())
 		}
-
-		
 
 		return channel
 	}

@@ -8,6 +8,7 @@ import Channels from '../functions/objectfunctions/channels'
 import { SlashCommandStore } from './SlashCommandStore'
 import Logger from '../functions/logging'
 import { SlashConditionStore } from './SlashConditionStore'
+import { Cache } from '../functions/cache'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -32,6 +33,8 @@ export class RainClient extends SapphireClient {
 		container.users = new Users()
 		container.guilds = new Guilds()
 		container.channels = new Channels()
+		
+		container.cache = new Cache()
 	}
 }
 
@@ -45,6 +48,8 @@ declare module '@sapphire/pieces' {
 		guilds: Guilds
 		users: Users
 		channels: Channels
+
+		cache: Cache
 	}
 	interface StoreRegistryEntries {
 		slashCommands: SlashCommandStore

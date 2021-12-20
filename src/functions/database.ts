@@ -5,16 +5,11 @@ import { Snowflake } from 'discord.js'
 import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
 
 const config = new Config()
-const pg = new Sequelize(
-	config.database.pgdbid,
-	config.database.pguser,
-	config.database.pguserpassword,
-	{
-		host: config.database.pghost,
-		dialect: 'postgres',
-		logging: false,
-	}
-)
+const pg = new Sequelize(config.database.pgdbid, config.database.pguser, config.database.pguserpassword, {
+	host: config.database.pghost,
+	dialect: 'postgres',
+	logging: false,
+})
 
 function defaultDBSchema(guildID: Snowflake) {
 	return new GuildDatabaseConstructor({
@@ -47,10 +42,7 @@ function defaultDBSchema(guildID: Snowflake) {
 	})
 }
 
-async function rawDbRequest(
-	string: string,
-	options: QueryOptions | QueryOptionsWithType<QueryTypes.RAW> = {}
-) {
+async function rawDbRequest(string: string, options: QueryOptions | QueryOptionsWithType<QueryTypes.RAW> = {}) {
 	return await pg.query(string, options)
 }
 
@@ -103,9 +95,7 @@ class DatabaseGuilds {
 	public async edit(guildID: Snowflake, query: string, newValue: unknown) {
 		if (query === 'guildID') return false
 		try {
-			const guildDB = (await this.fetchAll()).find(
-				(d: GuildDatabase) => d.guildID == guildID
-			) as GuildDatabase
+			const guildDB = (await this.fetchAll()).find((d: GuildDatabase) => d.guildID == guildID) as GuildDatabase
 			const queryArray = query.split('.')
 			let dbObject: GuildDatabase = guildDB
 			const finalQuery = queryArray.pop()
@@ -121,6 +111,8 @@ class DatabaseGuilds {
 			await rawDbRequest("UPDATE guilds SET data = $1 WHERE data->>'guildID' = $2;", {
 				bind: [guildDB, guildID],
 			})
+
+			await container.cache.guilds.updateOne(guildID)
 
 			return true
 		} catch (err) {
@@ -138,6 +130,7 @@ class DatabaseGuilds {
 			const schema = JSON.stringify(defaultDBSchema(guildID))
 			const string = `INSERT INTO guilds(data) VALUES ($schema);`
 			await rawDbRequest(string, { bind: { schema: schema } })
+			await container.cache.guilds.fetchAll()
 			return true
 		} catch (err) {
 			await container.utils.error(err, {
@@ -253,8 +246,7 @@ class DatabaseUsers {
 
 class DatabaseCommands {
 	public async add(commandID: Snowflake) {
-		if (!commandID)
-			throw new Error('I cannot create a command database entry without an ID')
+		if (!commandID) throw new Error('I cannot create a command database entry without an ID')
 		try {
 			const schema = JSON.stringify({ commandID: commandID, enabled: true })
 			const string = `INSERT INTO commands(data) VALUES ($schema);`

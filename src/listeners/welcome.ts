@@ -1,7 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
 import { GuildMember } from 'discord.js'
-import { GuildDatabase } from '../types/database'
 
 @ApplyOptions<ListenerOptions>({
 	event: 'guildMemberAdd',
@@ -9,9 +8,13 @@ import { GuildDatabase } from '../types/database'
 })
 export class WelcomeListener extends Listener {
 	async run(member: GuildMember) {
-		const database = (await this.container.guilds.database(member.guild)) as GuildDatabase
+		if (this.container.cache.guilds.check(member.guild.id) === undefined) {
+			await this.container.database.guilds.add(member.guild.id)
+		}
 
-		const channelID = database.guildSettings.welcomeChannel
+		const database = this.container.cache.guilds.get(member.guild.id)
+
+		const channelID = database?.guildSettings.welcomeChannel
 		if (!channelID) return
 
 		const welcomeChannel = await member.guild.channels.fetch(channelID)

@@ -10,10 +10,7 @@ export default class Users {
 		return container.settings.owners.includes(user.id)
 	}
 
-	async getPronouns(
-		user: User,
-		context: 'details' | 'ownedBy' | 'singular' | 'talkingAbout' = 'details'
-	) {
+	async getPronouns(user: User, context: 'details' | 'ownedBy' | 'singular' | 'talkingAbout' = 'details') {
 		//all pronouns here are listed in the order they're in on https://pronoundb.org/docs
 		const pronounDetails = [
 			{ id: 'unspecified', pronoun: 'Unspecified' },
@@ -109,9 +106,7 @@ export default class Users {
 		]
 
 		try {
-			const pronoundb = await got.get(
-				`https://pronoundb.org/api/v1/lookup?platform=discord&id=${user.id}`
-			)
+			const pronoundb = await got.get(`https://pronoundb.org/api/v1/lookup?platform=discord&id=${user.id}`)
 			const pronouns = JSON.parse(pronoundb.body).pronouns
 			//what to return, based on what's getting someone's pronouns
 			if (context == 'details') {
@@ -137,13 +132,11 @@ export default class Users {
 		}
 	}
 
-	async addModlogEntry(
-		user: User,
-		guildID: Snowflake,
-		type: modlogTypes,
-		moderator: Snowflake,
-		data: { reason?: string; duration?: string }
-	) {
+	async addModlogEntry(user: User, guildID: Snowflake, type: modlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
+		if (container.cache.guilds.check(guildID) === undefined) {
+			await container.database.guilds.add(guildID)
+		}
+
 		const guild = container.client.guilds.cache.get(guildID)
 		if (guild === undefined) throw new Error("I couldn't find that guild.")
 		if (!type) throw new Error("You can't make a modlog entry without a type!")
@@ -168,31 +161,28 @@ export default class Users {
 				muted: { status: false, expires: null },
 				banned: { expires: null },
 			}
-			const dbLogs = await container.guilds.database(guild as Guild, 'members')
-			dbLogs.push(newModlogs)
+			const dbLogs = container.cache.guilds.get(guildID)?.members
+			dbLogs?.push(newModlogs)
 			const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 			if (edited === false) return edited
 
 			modlogs = await this.getModlogs(user, guild.id)
 			modlogs?.push(modlogEntry)
-			dbLogs.find((m: databaseMember) => m.id === user.id).modlogs.push(modlogEntry)
+			dbLogs?.find((m: databaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
 			const edited2 = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 			return edited2
 		}
 
 		modlogs.push(modlogEntry)
-		const dbLogs = await container.guilds.database(guild as Guild, 'members')
-		dbLogs.find((m: databaseMember) => m.id === user.id).modlogs.push(modlogEntry)
+		const dbLogs = container.cache.guilds.get(guildID)?.members
+		dbLogs?.find((m: databaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
 		const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 		return edited
 	}
 
 	async getModlogs(user: User, guildID: Snowflake): Promise<modlogs[] | undefined> {
 		try {
-			const guild = container.client.guilds.cache.get(guildID)
-			const logs = (await container.guilds.database(guild as Guild, 'members')).find(
-				(m: databaseMember) => m.id === user.id
-			)
+			const logs = container.cache.guilds.get(guildID)?.members.find((m: databaseMember) => m.id === user.id)
 			if (logs === undefined) return undefined
 			else if (logs.modlogs.length === 0) return undefined
 			else return logs.modlogs
@@ -201,14 +191,9 @@ export default class Users {
 		}
 	}
 
-	async editGuildEntry(
-		user: User,
-		guildID: Snowflake,
-		query: 'modlogs' | 'muted' | 'banned',
-		newValue: unknown
-	): Promise<boolean> {
+	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
 		const guild = container.client.guilds.cache.get(guildID) as Guild
-		const logs = await container.guilds.database(guild, 'members')
+		const logs = container.cache.guilds.get(guildID)?.members
 		const memberLogs = await this.getModlogs(user, (guild as Guild).id)
 
 		if (memberLogs === undefined) {
