@@ -5,6 +5,7 @@ import { Message } from 'discord.js'
 import util, { promisify } from 'util'
 import { exec } from 'child_process'
 import config from '../../config/config'
+import { reply } from '@sapphire/plugin-editable-commands'
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
@@ -18,8 +19,7 @@ export class EvalCommand extends Command {
 
 		let codeToEval = `(async () => {${codetoeval}})()`
 		if (!codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = codetoeval
-		if (codetoeval.includes('await') && !codetoeval.includes('return'))
-			codeToEval = `(async () => { return ${codetoeval}})()`
+		if (codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = `(async () => { return ${codetoeval}})()`
 
 		let output
 		let success
@@ -33,7 +33,12 @@ export class EvalCommand extends Command {
 				member = message.member,
 				guild = message.guild,
 				channel = message.channel,
-				sh = promisify(exec)
+				sh = promisify(exec),
+				guilds = {
+					cache: this.container.cache.guilds,
+					client: this.container.client.guilds,
+				},
+				container = this.container
 
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true
@@ -42,7 +47,7 @@ export class EvalCommand extends Command {
 			success = false
 		}
 
-		await message.reply({
+		await reply(message, {
 			embeds: [
 				{
 					title: 'Eval Output',
@@ -64,9 +69,9 @@ export class EvalCommand extends Command {
 	}
 
 	cleanOutput(output: string) {
-		const thingies = new config()
-		const tokens = thingies.tokens
-		const database = thingies.database
+		const credentials = new config()
+		const tokens = credentials.tokens
+		const database = credentials.database
 
 		for (const key of Object.keys(tokens)) {
 			output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)

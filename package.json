@@ -1,85 +1,86 @@
 {
-  "name": "rain-sapphire",
-  "version": "0.0.1",
-  "description": "Katherine (lisenaaaa)'s Rain bot, but in Sapphire instead of discord-akairo!",
-  "main": "dist/index.js",
-  "scripts": {
-    "test": "yarn run lint && yarn run build",
-    "build": "yarn rimraf dist/ && yarn tsc",
-    "lint": "yarn eslint --ext js,jsx,ts,tsx src",
-    "start": "node starting.js && yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
-  },
-  "repository": "https://github.com/Lisenaaaa/Rain/tree/sapphire",
-  "author": "Katherine <69115669+Lisenaaaa@users.noreply.github.com>",
-  "license": "UNLICENSED",
-  "packageManager": "yarn@3.1.0",
-  "devDependencies": {
-    "@types/pg": "^8",
-    "@types/rimraf": "^3",
-    "@types/source-map-support": "^0",
-    "@types/validator": "^13",
-    "@typescript-eslint/eslint-plugin": "^5.3.1",
-    "@typescript-eslint/parser": "^5.3.1",
-    "discord-api-types": "^0.25.2",
-    "eslint": "^8.2.0",
-    "prettier": "^2.4.1",
-    "rimraf": "^3.0.2",
-    "source-map-support": "^0.5.20",
-    "tslib": "^2.3.1",
-    "typescript": "4.4.4",
-    "validator": "^13.7.0"
-  },
-  "dependencies": {
-    "@sapphire/decorators": "^3.1.4",
-    "@sapphire/discord.js-utilities": "^4.1.1",
-    "@sapphire/framework": "^2.1.4",
-    "@sapphire/pieces": "^3.1.1",
-    "@sapphire/utilities": "^3.1.0",
-    "@types/node": "^16.11.7",
-    "chalk": "4",
-    "discord.js": "^13.3.1",
-    "got": "^11.8.2",
-    "nanoid": "^3.1.30",
-    "pg": "^8.7.1",
-    "pg-hstore": "^2.3.4",
-    "sequelize": "^6.9.0"
-  },
-  "prettier": {
-    "printWidth": 200,
-    "tabWidth": 4,
-    "useTabs": true,
-    "semi": false,
-    "singleQuote": true,
-    "quoteProps": "as-needed",
-    "trailingComma": "es5",
-    "bracketSpacing": true,
-    "arrowParens": "always",
-    "embeddedLanguageFormatting": "auto"
-  },
-  "eslintConfig": {
-    "env": {
-      "es2021": true,
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-      "ecmaVersion": 12,
-      "sourceType": "module"
-    },
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "ignorePatterns": [
-      "dist"
-    ],
-    "rules": {
-      "@typescript-eslint/explicit-module-boundary-types": "off",
-      "@typescript-eslint/no-var-requires": "off",
-      "@typescript-eslint/ban-ts-comment": "off"
-    }
-  }
+	"name": "rain-sapphire",
+	"version": "0.0.1",
+	"description": "Alyssa (lisenaaaa)'s Rain bot, but in Sapphire instead of discord-akairo!",
+	"main": "dist/index.js",
+	"scripts": {
+		"test": "yarn run lint && yarn run build",
+		"build": "yarn rimraf dist/ && yarn tsc",
+		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
+		"start": "node starting.js && yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
+	},
+	"repository": "https://github.com/Lisenaaaa/Rain/tree/sapphire",
+	"author": "Alyssa <69115669+Lisenaaaa@users.noreply.github.com>",
+	"license": "UNLICENSED",
+	"packageManager": "yarn@3.1.0",
+	"devDependencies": {
+		"@types/pg": "^8",
+		"@types/rimraf": "^3",
+		"@types/source-map-support": "^0",
+		"@types/validator": "^13",
+		"@typescript-eslint/eslint-plugin": "^5.3.1",
+		"@typescript-eslint/parser": "^5.3.1",
+		"discord-api-types": "^0.25.2",
+		"eslint": "^8.2.0",
+		"prettier": "^2.4.1",
+		"rimraf": "^3.0.2",
+		"source-map-support": "^0.5.20",
+		"tslib": "^2.3.1",
+		"typescript": "4.4.4",
+		"validator": "^13.7.0"
+	},
+	"dependencies": {
+		"@sapphire/decorators": "^3.1.4",
+		"@sapphire/discord.js-utilities": "^4.1.1",
+		"@sapphire/framework": "^2.1.4",
+		"@sapphire/pieces": "^3.1.1",
+		"@sapphire/plugin-editable-commands": "^1.1.2",
+		"@sapphire/utilities": "^3.1.0",
+		"@types/node": "^16.11.7",
+		"chalk": "4",
+		"discord.js": "^13.4.0",
+		"got": "^11.8.2",
+		"nanoid": "^3.1.30",
+		"pg": "^8.7.1",
+		"pg-hstore": "^2.3.4",
+		"sequelize": "^6.9.0"
+	},
+	"prettier": {
+		"printWidth": 200,
+		"tabWidth": 4,
+		"useTabs": true,
+		"semi": false,
+		"singleQuote": true,
+		"quoteProps": "as-needed",
+		"trailingComma": "es5",
+		"bracketSpacing": true,
+		"arrowParens": "always",
+		"embeddedLanguageFormatting": "auto"
+	},
+	"eslintConfig": {
+		"env": {
+			"es2021": true,
+			"node": true
+		},
+		"extends": [
+			"eslint:recommended",
+			"plugin:@typescript-eslint/recommended"
+		],
+		"parser": "@typescript-eslint/parser",
+		"parserOptions": {
+			"ecmaVersion": 12,
+			"sourceType": "module"
+		},
+		"plugins": [
+			"@typescript-eslint"
+		],
+		"ignorePatterns": [
+			"dist"
+		],
+		"rules": {
+			"@typescript-eslint/explicit-module-boundary-types": "off",
+			"@typescript-eslint/no-var-requires": "off",
+			"@typescript-eslint/ban-ts-comment": "off"
+		}
+	}
 }

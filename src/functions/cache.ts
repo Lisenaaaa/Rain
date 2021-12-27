@@ -17,9 +17,7 @@ class GuildCache {
         return this.guilds.find((g) => g.guildID === id) ? true : false
     }
 
-	public async fetch(id: Snowflake) {
-		return await container.database.guilds.fetchOne(id)
-	}
+	public fetch = container.database.guilds.fetch
 
 	public async updateOne(id: Snowflake) {
 		const newGuild = (await container.database.guilds.fetchOne(id)) as GuildDatabase

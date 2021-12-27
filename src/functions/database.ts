@@ -64,6 +64,19 @@ export default class Database {
 }
 
 class DatabaseGuilds {
+	public async fetch(id?: Snowflake) {
+		if (id) {
+			const guild = await this.fetchOne(id)
+			await container.cache.guilds.updateOne(id)
+			return guild
+		} else {
+			const guilds = await this.fetchAll()
+			container.cache.guilds.guilds = guilds
+
+			return guilds
+		}
+	}
+
 	public async fetchOne(guildID: Snowflake) {
 		const guilds = await this.fetchAll()
 		const guildDB = guilds.find((g: GuildDatabase) => g.guildID == guildID)
