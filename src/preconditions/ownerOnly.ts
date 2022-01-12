@@ -1,14 +1,22 @@
 import { Precondition } from '@sapphire/framework'
-import { Message } from 'discord.js'
+import { CommandInteraction, Message, User } from 'discord.js'
 
 export class OwnerOnlyPrecondition extends Precondition {
-	public async run(message: Message) {
-		return this.container.users.isOwner(message.author)
+	public override async messageRun(message: Message) {
+		return this.run(message.author)
+	}
+	public override async chatInputRun(interaction: CommandInteraction) {
+		return this.run(interaction.user)
+	}
+
+	private run(user: User) {
+		return this.container.users.isOwner(user)
 			? this.ok()
 			: this.error({
 					identifier: 'ownerOnly',
 					message: 'This command can only be used by my developers.',
-			})
+					// eslint-disable-next-line no-mixed-spaces-and-tabs
+			  })
 	}
 }
 

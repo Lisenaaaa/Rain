@@ -14,7 +14,7 @@ import { reply } from '@sapphire/plugin-editable-commands'
 	preconditions: ['ownerOnly'],
 })
 export class EvalCommand extends Command {
-	public async messageRun(message: Message, args: Args) {
+	public override async messageRun(message: Message, args: Args) {
 		const codetoeval = await args.rest('string')
 
 		let codeToEval = `(async () => {${codetoeval}})()`

@@ -5,10 +5,9 @@ import Database from '../functions/database'
 import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
-import { SlashCommandStore } from './SlashCommandStore'
 import Logger from '../functions/logging'
-import { SlashConditionStore } from './SlashConditionStore'
 import { Cache } from '../functions/cache'
+import { Members } from '../functions/objectfunctions/members'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -20,10 +19,8 @@ export class RainClient extends SapphireClient {
 			loadDefaultErrorListeners: false,
 			partials: ['CHANNEL'],
 			allowedMentions: { parse: [] },
+			loadMessageCommandListeners: true,
 		})
-
-		this.stores.register(new SlashCommandStore())
-		this.stores.register(new SlashConditionStore())
 
 		container.database = new Database()
 		container.settings = new Settings()
@@ -33,7 +30,8 @@ export class RainClient extends SapphireClient {
 		container.users = new Users()
 		container.guilds = new Guilds()
 		container.channels = new Channels()
-		
+		container.members = new Members()
+
 		container.cache = new Cache()
 	}
 }
@@ -48,11 +46,8 @@ declare module '@sapphire/pieces' {
 		guilds: Guilds
 		users: Users
 		channels: Channels
+		members: Members
 
 		cache: Cache
-	}
-	interface StoreRegistryEntries {
-		slashCommands: SlashCommandStore
-		slashConditions: SlashConditionStore
 	}
 }

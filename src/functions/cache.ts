@@ -6,11 +6,13 @@ class GuildCache {
 	public guilds: GuildDatabase[] = []
 
 	public async fetchAll() {
-		this.guilds = await container.database.guilds.fetchAll()
+		const guilds = await container.database.guilds.fetchAll()
+		this.guilds = guilds
+		return guilds
 	}
 
 	public get(id: Snowflake): GuildDatabase | undefined {
-		return this.guilds.find((g) => g.guildID === id)
+		return this.guilds.find((g) => g.guildID === id) 
 	}
 
     public check(id: Snowflake): boolean {
@@ -29,6 +31,12 @@ class GuildCache {
 				this.guilds[g] = newGuild
 			}
 		}
+	}
+
+	private async fetchOne(guildID: Snowflake) {
+		const guildDB = this.guilds.find((g: GuildDatabase) => g.guildID == guildID)
+
+		return guildDB
 	}
 }
 
