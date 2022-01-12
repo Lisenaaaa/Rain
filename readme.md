@@ -1,6 +1,6 @@
 # Rain
 
-## A small update
+## A ~~small~~ pretty big update
 I've fully cancelled development on this, at least until my mental health is way better than it is now, and until I actually have a reason to keep working on it. Due to several personal incidents that I'd rather not go in detail about, I've fully left the Hypixel community, which is something I've been meaning to do for a long time. It also means, however, that I have left SkyClien't, the Discord server that I was originally making this for.
 
 If I ever find both motivation and a reason to keep making this (such as a community I end up with a high enough position in to make a bot for), I will do it. 
