@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js'
-import { guildCommandSettings, modlogs } from './misc'
+import { guildCommandSettings, Modlogs } from './misc'
 
 export interface GuildDatabase {
 	guildID: Snowflake
@@ -105,7 +105,7 @@ export type CommandDatabase = {
 
 export type databaseMember = {
 	id: Snowflake
-	modlogs: modlogs[]
+	modlogs: Modlogs[]
 	muted: { status: boolean; expires: number | null }
 	banned: { expires: number | null }
 }

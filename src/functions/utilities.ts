@@ -47,9 +47,7 @@ export default class Utilities {
 	 * @returns Sends a message in the error channel, and returns a more user-friendly embed.
 	 */
 	public async error(error: Error, details: errorDetails): Promise<MessageEmbedOptions> {
-		const errorChannel = container.client.channels.cache.get(
-			container.settings.errorChannel
-		) as TextChannel
+		const errorChannel = container.client.channels.cache.get(container.settings.errorChannel) as TextChannel
 		const id = `${this.random(696969696969)}`
 
 		await errorChannel.send({
@@ -59,11 +57,7 @@ export default class Utilities {
 					fields: [
 						{
 							name: 'Details',
-							value: `Type: ${details.type}${
-								details.data.messageOptions
-									? `\n(Message Link)[https://discord.com/${details.data.messageOptions.guildID}/${details.data.messageOptions.channelID}/${details.data.messageOptions.messageID}]`
-									: ''
-							}${details.data.note ? `\nNote: ${details.data.note}` : ''}`,
+							value: `Type: ${details.type}${details.data.link ? `\n${details.data.link}` : ''}${details.data.note ? `\nNote: ${details.data.note}` : ''}`,
 							inline: true,
 						},
 						{ name: 'ID', value: id, inline: true },
@@ -76,9 +70,7 @@ export default class Utilities {
 
 		return {
 			title: `A(n) ${details.type} error occured!`,
-			description: `${
-				details.data.note ? `**${details.data.note}**\n` : ''
-			}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
+			description: `${details.data.note ? `**${details.data.note}**\n` : ''}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
 			color: 'RED',
 		}
 	}
@@ -107,9 +99,7 @@ export default class Utilities {
 			allCommands.push(c[1])
 		}
 
-		const notOwnerCommands = allCommands.filter(
-			(c) => !c.options.preconditions?.includes('ownerOnly')
-		)
+		const notOwnerCommands = allCommands.filter((c) => !c.options.preconditions?.includes('ownerOnly'))
 
 		const commands: string[] = []
 		notOwnerCommands.forEach((c) => {
@@ -125,7 +115,7 @@ export default class Utilities {
 	 */
 	public getCommand(id: string): Command | undefined {
 		const allCommands = []
-		for (const [,c] of container.stores.get('commands')) {
+		for (const [, c] of container.stores.get('commands')) {
 			allCommands.push(c)
 		}
 
@@ -134,7 +124,7 @@ export default class Utilities {
 
 	public getListener(id: string): Listener | undefined {
 		const allListeners = []
-		for (const [,l] of container.stores.get('listeners')) {
+		for (const [, l] of container.stores.get('listeners')) {
 			allListeners.push(l)
 		}
 
@@ -200,9 +190,7 @@ export default class Utilities {
 								options[subOption.name] = subOption.role
 								break
 							case 'MENTIONABLE':
-								options[subOption.name] = subOption.role
-									? subOption.role
-									: subOption.user
+								options[subOption.name] = subOption.role ? subOption.role : subOption.user
 								break
 						}
 					})
@@ -213,9 +201,7 @@ export default class Utilities {
 					// @ts-ignore
 					const suboptions = option.options[0].options
 
-					options['subcommand'] = (
-						option.options as { name: string; type: string }[]
-					)[0].name
+					options['subcommand'] = (option.options as { name: string; type: string }[])[0].name
 
 					// @ts-ignore
 					suboptions.forEach((subOption) => {
@@ -242,9 +228,7 @@ export default class Utilities {
 								options[subOption.name] = subOption.role
 								break
 							case 'MENTIONABLE':
-								options[subOption.name] = subOption.role
-									? subOption.role
-									: subOption.user
+								options[subOption.name] = subOption.role ? subOption.role : subOption.user
 								break
 						}
 					})
@@ -257,8 +241,6 @@ export default class Utilities {
 	}
 
 	async timeFormatted(format?: string) {
-		return (
-			await sh(`date +'${format ? format : '%A, %b. %d %Y at %I:%M:%S %p'}'`)
-		).stdout.slice(0, -1)
+		return (await sh(`date +'${format ? format : '%A, %b. %d %Y at %I:%M:%S %p'}'`)).stdout.slice(0, -1)
 	}
 }

@@ -1,4 +1,4 @@
-import { perms } from '../../types/misc'
+import { Perms } from '../../types/misc'
 import { GuildMember } from 'discord.js'
 import { container } from '@sapphire/framework'
 
@@ -29,14 +29,12 @@ export class Members {
 		return finalArray
 	}
 
-	async hasPermission(member: GuildMember, perm: perms): Promise<boolean> {
-		if (member.user.id === member.guild.ownerId) return true
-
+	async hasPermission(member: GuildMember, perm: Perms): Promise<boolean> {
 		const roleSettings = container.cache.guilds.get(member.guild.id)?.guildSettings.staffRoles
 
 		let found = false
 		let perms = null
-		let permsArray: perms[] = []
+		let permsArray: Perms[] = []
 
 		const owner = roleSettings?.owner
 		const admin = roleSettings?.admin
@@ -97,7 +95,7 @@ export class Members {
 		else return false
 	}
 
-	async getPerms(member: GuildMember): Promise<perms> {
+	async getPerms(member: GuildMember): Promise<Perms> {
 		// if (this.isOwner(member)) return 'owner'
 
 		const roleSettings = container.cache.guilds.get(member.guild.id)?.guildSettings.staffRoles
@@ -134,7 +132,7 @@ export class Members {
 			}
 		})
 
-		return perms as perms
+		return perms as Perms
 	}
 
 	async mute(member: GuildMember, time?: number) {

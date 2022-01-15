@@ -1,6 +1,6 @@
 import { container } from '@sapphire/pieces'
 import { TextChannel } from 'discord.js'
-import { perms } from 'src/types/misc'
+import { Perms } from 'src/types/misc'
 
 export default class Channels {
 	async isLocked(channel: TextChannel): Promise<boolean> {
@@ -28,7 +28,7 @@ export default class Channels {
 		}
 	}
 
-	async getRestrictedPerms(channel: TextChannel): Promise<perms | boolean> {
+	async getRestrictedPerms(channel: TextChannel): Promise<Perms | false> {
 		try {
 			if (container.cache.guilds.check(channel.guild.id) === undefined) {
 				await container.database.guilds.add(channel.guild.id)

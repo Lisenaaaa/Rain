@@ -1,12 +1,12 @@
 import { container } from '@sapphire/pieces'
 import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
-import { guildCommandSettings, perms } from '../../types/misc'
+import { guildCommandSettings, Perms } from '../../types/misc'
 import { databaseMember, GuildDatabase } from '../../types/database'
 
 export default class Guilds {
 	async registerCommands(guild: Guild) {
 		try {
-			if (container.cache.guilds.check(guild.id) === undefined) {
+			if (!container.cache.guilds.check(guild.id)) {
 				await container.database.guilds.add(guild.id)
 			}
 			const g = container.cache.guilds.get(guild.id) as GuildDatabase
@@ -34,7 +34,7 @@ export default class Guilds {
 				const command = {
 					id: c,
 					enabled: true,
-					lockedRoles: permissions as perms,
+					lockedRoles: permissions as Perms,
 					lockedChannels: [],
 				}
 
@@ -51,7 +51,7 @@ export default class Guilds {
 		}
 	}
 
-	async editStaffRole(guild: Guild, position: perms, newRole: Snowflake | null) {
+	async editStaffRole(guild: Guild, position: Perms, newRole: Snowflake | null) {
 		try {
 			return await container.database.guilds.edit(guild.id, `guildSettings.staffRoles.${position}`, newRole)
 		} catch (error) {
@@ -63,7 +63,12 @@ export default class Guilds {
 		}
 	}
 
-	async setChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
+	async setChannelPerms(guild: Guild, channel: Snowflake, perms: Perms) {
+		//@ts-ignore
+		if (channel.id) {
+			throw new Error("yeah thats not how this works dumbass you need the channel's id")
+		}
+
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
@@ -78,7 +83,7 @@ export default class Guilds {
 		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
 	}
 
-	async removeChannelPerms(guild: Guild, channel: Snowflake, perms: perms) {
+	async removeChannelPerms(guild: Guild, channel: Snowflake, perms: Perms) {
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
@@ -174,7 +179,7 @@ export default class Guilds {
 		else return true
 	}
 
-	async setCommandPermissions(guild: Guild, command: string, perms: perms) {
+	async setCommandPermissions(guild: Guild, command: string, perms: Perms) {
 		//if (!Handler.getAllCommands().includes(command)) throw new Error("I can't edit a command that doesn't exist, or isn't valid.")
 
 		if (container.cache.guilds.check(guild.id) === undefined) {

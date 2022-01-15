@@ -3,7 +3,7 @@ import { Guild, Snowflake, User } from 'discord.js'
 import got from 'got/dist/source'
 import { nanoid } from 'nanoid'
 import { databaseMember } from '../../types/database'
-import { modlogTypes, modlogs } from '../../types/misc'
+import { ModlogTypes, Modlogs } from '../../types/misc'
 
 export default class Users {
 	isOwner(user: User) {
@@ -132,7 +132,7 @@ export default class Users {
 		}
 	}
 
-	async addModlogEntry(user: User, guildID: Snowflake, type: modlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
+	async addModlogEntry(user: User, guildID: Snowflake, type: ModlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
 		if (container.cache.guilds.check(guildID) === undefined) {
 			await container.database.guilds.add(guildID)
 		}
@@ -141,7 +141,7 @@ export default class Users {
 		if (guild === undefined) throw new Error("I couldn't find that guild.")
 		if (!type) throw new Error("You can't make a modlog entry without a type!")
 		if (!moderator) moderator = user.client.user?.id as string
-		const modlogEntry: modlogs = {
+		const modlogEntry: Modlogs = {
 			id: nanoid(),
 			type: type,
 			modID: moderator,
@@ -180,7 +180,7 @@ export default class Users {
 		return edited
 	}
 
-	async getModlogs(user: User, guildID: Snowflake): Promise<modlogs[] | undefined> {
+	async getModlogs(user: User, guildID: Snowflake): Promise<Modlogs[] | undefined> {
 		try {
 			const logs = container.cache.guilds.get(guildID)?.members.find((m: databaseMember) => m.id === user.id)
 			if (logs === undefined) return undefined

@@ -51,7 +51,7 @@ export default class Database {
 	async initDB() {
 		try {
 			await pg.authenticate()
-			container.logging.info('Succesfully connected to the database.')
+			container.logger.info('Succesfully connected to the database.')
 		} catch (err) {
 			container.logger.error(err.stack)
 			process.exit()

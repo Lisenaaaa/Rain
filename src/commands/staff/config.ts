@@ -9,7 +9,7 @@ import { CommandInteraction, Message, MessageActionRow, MessageComponentInteract
 	description: 'mess with your guilds settings',
 	preconditions: ['ownerOnly'],
 })
-export class TestCommand extends Command {
+export class ConfigCommand extends Command {
 	public override async messageRun(message: Message) {
 		await Replies.notSlashError(message)
 	}

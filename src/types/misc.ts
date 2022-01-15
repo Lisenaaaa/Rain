@@ -1,10 +1,10 @@
 import { Snowflake } from 'discord.js'
 
-export type perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper' | 'none'
-export type modlogTypes = 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
-export type modlogs = {
+export type Perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper' | 'none'
+export type ModlogTypes = 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
+export type Modlogs = {
 	id: string
-	type: modlogTypes
+	type: ModlogTypes
 	modID: Snowflake
 	reason: string
 	duration?: string
@@ -14,7 +14,7 @@ export type modlogs = {
 export type guildCommandSettings = {
 	id: string
 	enabled: boolean
-	lockedRoles: perms
+	lockedRoles: Perms
 	lockedChannels: Snowflake[]
 	data?: unknown
 }
@@ -22,16 +22,10 @@ export type errorDetails = {
 	type: string
 	data: {
 		note?: string
-		messageOptions?: { guildID: Snowflake; channelID: Snowflake; messageID: Snowflake }
+		link?: string
 	}
 }
 export type chalkColors =
-	| 'bold'
-	| 'dim'
-	| 'italic'
-	| 'underline'
-	| 'inverse'
-	| 'strikethrough'
 	| 'black'
 	| 'red'
 	| 'green'
@@ -40,7 +34,17 @@ export type chalkColors =
 	| 'magenta'
 	| 'cyan'
 	| 'white'
+	| 'blackBright'
 	| 'gray'
+	| 'grey'
+	| 'redBright'
+	| 'greenBright'
+	| 'yellowBright'
+	| 'blueBright'
+	| 'magentaBright'
+	| 'cyanBright'
+	| 'whiteBright'
+	/* --- */
 	| 'bgBlack'
 	| 'bgRed'
 	| 'bgGreen'
@@ -49,6 +53,27 @@ export type chalkColors =
 	| 'bgMagenta'
 	| 'bgCyan'
 	| 'bgWhite'
+	| 'bgBlackBright'
+	| 'bgGray'
+	| 'bgGrey'
+	| 'bgRedBright'
+	| 'bgGreenBright'
+	| 'bgYellowBright'
+	| 'bgBlueBright'
+	| 'bgMagentaBright'
+	| 'bgCyanBright'
+	| 'bgWhiteBright'
+	/* --- */
+	| 'bold'
+	| 'dim'
+	| 'italic'
+	| 'underline'
+	| 'overline'
+	| 'inverse'
+	| 'hidden'
+	| 'strikethrough'
+	| 'visible'
+
 export type codeblockLangs =
 	| '1c'
 	| 'abnf'

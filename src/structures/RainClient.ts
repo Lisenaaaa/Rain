@@ -1,13 +1,15 @@
-import { container, SapphireClient } from '@sapphire/framework'
+import { container, LogLevel, SapphireClient } from '@sapphire/framework'
 import Utilities from '../functions/utilities'
 import Settings from '../config/settings'
 import Database from '../functions/database'
 import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
-import Logger from '../functions/logging'
+import RainLogger from '../functions/logging'
 import { Cache } from '../functions/cache'
 import { Members } from '../functions/objectfunctions/members'
+import { Perms } from '../types/misc'
+import { RainTaskStore } from './RainTaskStore'
 
 export class RainClient extends SapphireClient {
 	public constructor() {
@@ -20,12 +22,14 @@ export class RainClient extends SapphireClient {
 			partials: ['CHANNEL'],
 			allowedMentions: { parse: [] },
 			loadMessageCommandListeners: true,
+			logger: {
+				instance: new RainLogger(LogLevel.Info)
+			}
 		})
 
 		container.database = new Database()
 		container.settings = new Settings()
 		container.utils = new Utilities()
-		container.logging = new Logger()
 
 		container.users = new Users()
 		container.guilds = new Guilds()
@@ -33,6 +37,8 @@ export class RainClient extends SapphireClient {
 		container.members = new Members()
 
 		container.cache = new Cache()
+
+		this.stores.register(new RainTaskStore())
 	}
 }
 
@@ -41,7 +47,6 @@ declare module '@sapphire/pieces' {
 		utils: Utilities
 		settings: Settings
 		database: Database
-		logging: Logger
 
 		guilds: Guilds
 		users: Users
@@ -49,5 +54,15 @@ declare module '@sapphire/pieces' {
 		members: Members
 
 		cache: Cache
+	}
+}
+
+declare module '@sapphire/framework' {
+	interface CommandOptions {
+		defaultPermissions?: Perms
+	}
+
+	interface StoreRegistryEntries {
+		tasks: RainTaskStore
 	}
 }

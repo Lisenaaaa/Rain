@@ -16,11 +16,12 @@ export class CommandErrorListener extends Listener {
 					await this.container.utils.error(error, {
 						type: 'command',
 						data: {
-							messageOptions: {
-								guildID: payload.message.guildId as string,
-								channelID: payload.message.channel.id,
-								messageID: payload.message.id,
-							},
+							link: ''
+							// messageOptions: {
+							// 	guildID: payload.message.guildId as string,
+							// 	channelID: payload.message.channel.id,
+							// 	messageID: payload.message.id,
+							// },
 						},
 					}),
 				],
