@@ -1,4 +1,4 @@
-import { ILogger, LogLevel } from '@sapphire/framework'
+import { container, ILogger, LogLevel } from '@sapphire/framework'
 import chalk from 'chalk'
 import { chalkColors } from '../types/misc'
 
@@ -77,7 +77,7 @@ export default class RainLogger implements ILogger {
 	public write(level: LogLevel, ...values: readonly unknown[]): void {
 		if (!this.has(level)) return
 		const method = RainLogger.levels.get(level)
-		if (typeof method === 'string') console[method](chalk`{${this.colors.get(method)} [${method.toUpperCase()}]}`, ...values)
+		if (typeof method === 'string') console[method](chalk`{${this.colors.get(method)} [${method.toUpperCase()}]} {${this.colors.get(method)}Bright ${container.utils.timeFormatted()}}:`, ...values)
 	}
 
 	protected static readonly levels = new Map<LogLevel, LogMethods>([
@@ -94,7 +94,7 @@ export default class RainLogger implements ILogger {
 		['error', 'red'],
 		['debug', 'magenta'],
 		['warn', 'red'],
-		['trace', 'gray']
+		['trace', 'black']
 	])
 }
 

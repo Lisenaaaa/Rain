@@ -8,6 +8,7 @@ import { CommandInteraction, Message, MessageActionRow, MessageComponentInteract
 	aliases: ['config'],
 	description: 'mess with your guilds settings',
 	preconditions: ['ownerOnly'],
+	defaultPermissions: 'srMod'
 })
 export class ConfigCommand extends Command {
 	public override async messageRun(message: Message) {

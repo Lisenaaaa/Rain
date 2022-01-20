@@ -2,10 +2,8 @@ import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
 import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
-import { errorDetails } from '../types/misc'
-import { promisify } from 'util'
-import { exec } from 'child_process'
-const sh = promisify(exec)
+import { errorDetails, Perms } from '../types/misc'
+import moment from 'moment'
 
 export default class Utilities {
 	/**
@@ -114,12 +112,7 @@ export default class Utilities {
 	 * @returns The command object.
 	 */
 	public getCommand(id: string): Command | undefined {
-		const allCommands = []
-		for (const [, c] of container.stores.get('commands')) {
-			allCommands.push(c)
-		}
-
-		return allCommands.find((c) => c.name === id)
+		return container.stores.get('commands').get(id)
 	}
 
 	public getListener(id: string): Listener | undefined {
@@ -240,7 +233,29 @@ export default class Utilities {
 		return options
 	}
 
-	async timeFormatted(format?: string) {
-		return (await sh(`date +'${format ? format : '%A, %b. %d %Y at %I:%M:%S %p'}'`)).stdout.slice(0, -1)
+	timeFormatted(format?: string) {
+		return moment().format(format ?? 'YYYY-MM-DD hh:mm:ss A')
+	}
+
+	/**
+	 * @param perms1 The first perms value.
+	 * @param perms2 The second perms value.
+	 * @returns If the first perms value is higher than the second perms value.
+	 */
+	checkPermHeirarchy(perms1: Perms, perms2: Perms) {
+		const permsMap = {
+			owner: 6,
+			admin: 5,
+			srMod: 4,
+			moderator: 3,
+			helper: 2,
+			trialHelper: 1,
+			none: 0,
+		}
+
+		const p1 = permsMap[perms1]
+		const p2 = permsMap[perms2]
+
+		return p1 >= p2
 	}
 }

@@ -5,16 +5,16 @@ __metadata:
   version: 5
   cacheKey: 8
 
-"@discordjs/builders@npm:^0.10.0":
-  version: 0.10.0
-  resolution: "@discordjs/builders@npm:0.10.0"
+"@discordjs/builders@npm:^0.11.0":
+  version: 0.11.0
+  resolution: "@discordjs/builders@npm:0.11.0"
   dependencies:
     "@sindresorhus/is": ^4.2.0
-    discord-api-types: ^0.25.2
+    discord-api-types: ^0.26.0
     ts-mixer: ^6.0.0
     tslib: ^2.3.1
     zod: ^3.11.6
-  checksum: 8195f519f28587dee05d9b975c19357c40623d17dc4ced01db11d24faab16969743c40d7cfb959ccb78ffb525c6d03f4f9c821dd712fef57bdd609b53add8727
+  checksum: 7a25b59bb52d2e3695bca27946a99cf2de95b7edd5be424ea9f4707a465524be21263e25e532e12438e99f9f55fb98b033885c760aeb96424b8c12f663f50760
   languageName: node
   linkType: hard
 
@@ -167,31 +167,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/plugin-scheduled-tasks@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@sapphire/plugin-scheduled-tasks@npm:2.1.0"
-  dependencies:
-    "@sapphire/time-utilities": ^1.5.1
-    tslib: ^2.3.1
-  checksum: 72625b9310efdae312ec605b091404d8b7834156c88a071b28bfd318ef471af2f3e3ade3bdafd547caecf567ea8ae954e9b65912cd3c90a72306f0219c7472e3
-  languageName: node
-  linkType: hard
-
 "@sapphire/ratelimits@npm:^2.1.10":
   version: 2.1.10
   resolution: "@sapphire/ratelimits@npm:2.1.10"
   dependencies:
     "@sapphire/time-utilities": ^1.5.0
   checksum: 6f4bc917ba549ab11ef63f4aea3a2356962d556352257d0fdef7a5e2a8bda4ca00ce80752dee4660f716bfd49de3e2e527c03783dc74b13d0f155ef1356a976b
-  languageName: node
-  linkType: hard
-
-"@sapphire/stopwatch@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "@sapphire/stopwatch@npm:1.2.5"
-  dependencies:
-    tslib: ^2.3.1
-  checksum: 53be6d4c554d0535dfc093f0bdb4dbbc120517e398f6da98bc530791877c97f3f77b95c6229d4e61c38e0e8e2f8a28bc95a46d97665fb66bd11af4bde8883040
   languageName: node
   linkType: hard
 
@@ -204,26 +185,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sapphire/time-utilities@npm:^1.5.1":
-  version: 1.5.1
-  resolution: "@sapphire/time-utilities@npm:1.5.1"
-  dependencies:
-    "@sapphire/utilities": ^3.2.0
-  checksum: 16ebe166ef237c583cbe57bb27b1ca38ebfefe273ce165967b0e4db3303aeaf19e2f34e1a0840c3cb6e57e2921176524046bb365e8e4fc9dcb8bac4c338df0e6
-  languageName: node
-  linkType: hard
-
 "@sapphire/utilities@npm:^3.1.0":
   version: 3.1.0
   resolution: "@sapphire/utilities@npm:3.1.0"
   checksum: aa0628352faf8c52774740c53a26ca7154b133ffbe86efaf9684de67c9d8d913732f99108d15babf4e4f9c2bc6e71070466bc8585be9a7add1659533aa2b5716
-  languageName: node
-  linkType: hard
-
-"@sapphire/utilities@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@sapphire/utilities@npm:3.2.0"
-  checksum: cdecc49994a906eebbbe3bb23d61375aa6704ef7f74aee2a3bb348a68eafd54b3785fc5c3853a3951393ddf5d7a205f0a52bbb1a595546e69b82e00061be24fc
   languageName: node
   linkType: hard
 
@@ -760,20 +725,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"discord.js@npm:^13.4.0":
-  version: 13.4.0
-  resolution: "discord.js@npm:13.4.0"
+"discord-api-types@npm:^0.26.0":
+  version: 0.26.1
+  resolution: "discord-api-types@npm:0.26.1"
+  checksum: e53bfa7589b24108e6b403dbe213da34c4592f72e2b8fde6800dcb6c703065887ecbd644e1cdf694e4c7796954bc51462ced868f26ec45dc1e0dc4fa8d3c723c
+  languageName: node
+  linkType: hard
+
+"discord.js@npm:^13.6.0":
+  version: 13.6.0
+  resolution: "discord.js@npm:13.6.0"
   dependencies:
-    "@discordjs/builders": ^0.10.0
+    "@discordjs/builders": ^0.11.0
     "@discordjs/collection": ^0.4.0
     "@sapphire/async-queue": ^1.1.9
     "@types/node-fetch": ^2.5.12
     "@types/ws": ^8.2.2
-    discord-api-types: ^0.25.2
+    discord-api-types: ^0.26.0
     form-data: ^4.0.0
     node-fetch: ^2.6.1
     ws: ^8.4.0
-  checksum: 7063fd11cf2da009bb7430c5978c04a4685a4a1adf3098a396597afaf55b8cf36a9c15c303063f95cbf3a8fc13ad2362520b2e2cfcf1f0bd482ebbf20219c8d5
+  checksum: 59c1297fbebf9b25c90ea125808bc9177c134fd7c481f82ace636ab88cfdc90bc6ec777c844d375d26231fc1664a67e80a1aad2aed484b808e4cd7d55cc1d9e3
   languageName: node
   linkType: hard
 
@@ -1713,8 +1685,6 @@ __metadata:
     "@sapphire/discord.js-utilities": ^4.1.1
     "@sapphire/framework": pr-293
     "@sapphire/plugin-editable-commands": ^1.1.3
-    "@sapphire/plugin-scheduled-tasks": ^2.1.0
-    "@sapphire/stopwatch": ^1.2.5
     "@sapphire/utilities": ^3.1.0
     "@types/node": ^16.11.7
     "@types/pg": ^8
@@ -1725,9 +1695,10 @@ __metadata:
     "@typescript-eslint/parser": ^5.3.1
     chalk: 4
     discord-api-types: ^0.25.2
-    discord.js: ^13.4.0
+    discord.js: ^13.6.0
     eslint: ^8.2.0
     got: ^11.8.2
+    moment: ^2.29.1
     nanoid: ^3.1.30
     pg: ^8.7.1
     pg-hstore: ^2.3.4

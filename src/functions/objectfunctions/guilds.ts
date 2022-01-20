@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { BanOptions, Guild, Snowflake, UserResolvable } from 'discord.js'
+import { BanOptions, Guild, Snowflake, TextChannel, UserResolvable } from 'discord.js'
 import { guildCommandSettings, Perms } from '../../types/misc'
 import { databaseMember, GuildDatabase } from '../../types/database'
 
@@ -22,27 +22,29 @@ export default class Guilds {
 			allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
 				if (!allCommands.includes(guildCommand.id)) {
 					allGuildCommands = allGuildCommands.filter((c: guildCommandSettings) => c.id != guildCommand.id)
-					container.logger.info(`Removed ${guildCommand.id} from ${g.guildID}'s database entry`)
+					container.logger.debug(`Removed ${guildCommand.id} from ${g.guildID}'s database entry`)
 				}
 			})
 
 			allCommands.forEach((c: string) => {
 				if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
 
-				const permissions = '' //Handler.getCommand(c)?.defaultPerms
+				const permissions = container.stores.get('commands').get(c)?.options.defaultPermissions
 
 				const command = {
 					id: c,
 					enabled: true,
-					lockedRoles: permissions as Perms,
+					requiredPerms: permissions as Perms,
 					lockedChannels: [],
 				}
 
 				g.commandSettings.push(command)
-				container.logger.info(`Added ${command.id} to ${g.guildID}'s database entry`)
+				container.logger.debug(`Added ${command.id} to ${g.guildID}'s database entry`)
 			})
 
 			await container.database.guilds.edit(g.guildID, 'commandSettings', allGuildCommands)
+
+			return true
 		} catch (err) {
 			await container.utils.error(err, {
 				type: 'database',
@@ -92,6 +94,17 @@ export default class Guilds {
 		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
 
 		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
+	}
+
+	async clearChannelPerms(channel: TextChannel) {
+		const currentPerms = await container.channels.getRestrictedPerms(channel)
+		if (!currentPerms) {
+			return false                  
+		}
+
+		if (currentPerms === 'none') return true
+
+		return await this.removeChannelPerms(channel.guild, channel.id, currentPerms)
 	}
 
 	async setLogChannel(guild: Guild, type: 'message' | 'member' | 'moderation' | 'action', channel: Snowflake) {
@@ -188,7 +201,7 @@ export default class Guilds {
 		const commands = container.cache.guilds.get(guild.id)?.commandSettings as guildCommandSettings[]
 		const cmd = commands.find((c: guildCommandSettings) => c.id === command) as guildCommandSettings
 
-		cmd.lockedRoles = perms
+		cmd.requiredPerms = perms
 
 		return await container.database.guilds.edit(guild.id, 'commandSettings', commands)
 	}
@@ -204,5 +217,13 @@ export default class Guilds {
 		}
 
 		return channel
+	}
+
+	async getAllCommands(guild: Guild) {
+		if (!container.cache.guilds.check(guild.id)) {
+			await container.database.guilds.add(guild.id)
+		}
+
+		return container.cache.guilds.get(guild.id)?.commandSettings
 	}
 }

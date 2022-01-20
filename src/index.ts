@@ -9,5 +9,20 @@ if (process.platform === 'win32') {
 
 new Database().initDB()
 
-const client = new RainClient()
+const args = process.argv
+args.shift()
+args.shift()
+
+const levels = {
+	Trace: 10,
+	Debug: 20,
+	Info: 30,
+	Warn: 40,
+	Error: 50,
+	Fatal: 60,
+	None: 100,
+}
+
+const level = levels[args[0] as keyof typeof levels] ?? levels['Info']
+const client = new RainClient(level)
 void client.login(new config().tokens.main)

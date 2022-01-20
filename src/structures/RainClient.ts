@@ -1,4 +1,4 @@
-import { container, LogLevel, SapphireClient } from '@sapphire/framework'
+import { container, SapphireClient } from '@sapphire/framework'
 import Utilities from '../functions/utilities'
 import Settings from '../config/settings'
 import Database from '../functions/database'
@@ -10,9 +10,10 @@ import { Cache } from '../functions/cache'
 import { Members } from '../functions/objectfunctions/members'
 import { Perms } from '../types/misc'
 import { RainTaskStore } from './RainTaskStore'
+import { ApplicationCommandOptionData, Snowflake } from 'discord.js'
 
 export class RainClient extends SapphireClient {
-	public constructor() {
+	public constructor(level: number) {
 		super({
 			caseInsensitiveCommands: true,
 			caseInsensitivePrefixes: true,
@@ -23,8 +24,8 @@ export class RainClient extends SapphireClient {
 			allowedMentions: { parse: [] },
 			loadMessageCommandListeners: true,
 			logger: {
-				instance: new RainLogger(LogLevel.Info)
-			}
+				instance: new RainLogger(level),
+			},
 		})
 
 		container.database = new Database()
@@ -59,7 +60,22 @@ declare module '@sapphire/pieces' {
 
 declare module '@sapphire/framework' {
 	interface CommandOptions {
-		defaultPermissions?: Perms
+		defaultPermissions: Perms
+		slashOptions?: {
+			options?: ApplicationCommandOptionData[]
+			idHints?: Snowflake[]
+			description?: string
+			guildIDs?: Snowflake[]
+		}
+	}
+	interface Command {
+		defaultPermissions: Perms
+		slashOptions?: {
+			options?: ApplicationCommandOptionData[]
+			idHints?: Snowflake[]
+			description?: string
+			guildIDs?: Snowflake[]
+		}
 	}
 
 	interface StoreRegistryEntries {

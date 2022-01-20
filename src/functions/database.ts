@@ -1,6 +1,6 @@
 import { container } from '@sapphire/pieces'
 import Config from '../config/config'
-import { GuildDatabase, GuildDatabaseConstructor, UserDatabaseConstructor } from '../types/database'
+import { CommandDatabase, GuildDatabase, GuildDatabaseConstructor, UserDatabaseConstructor } from '../types/database'
 import { Snowflake } from 'discord.js'
 import { QueryOptions, QueryOptionsWithType, QueryTypes, Sequelize } from 'sequelize'
 
@@ -118,6 +118,8 @@ class DatabaseGuilds {
 				dbObject = dbObject?.[query as keyof typeof dbObject]
 			})
 
+			// debug(dbObject, finalQuery, newValue)
+
 			//@ts-ignore ok typescript
 			dbObject[finalQuery] = newValue
 
@@ -159,6 +161,7 @@ class DatabaseGuilds {
 			await rawDbRequest("DELETE FROM guilds WHERE data->>'guildID' = $1;", {
 				bind: [guildID],
 			})
+			await container.cache.guilds.fetchAll()
 			return true
 		} catch (err) {
 			await container.utils.error(err, {
@@ -277,7 +280,7 @@ class DatabaseCommands {
 	public async fetchAll() {
 		try {
 			const commandsdb = await rawDbRequest('SELECT * from commands;')
-			const alldbs: { commandID: string; enabled: boolean }[] = []
+			const alldbs: CommandDatabase[] = []
 
 			/* typescript is stupid and i want eslint to not be yell */
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -297,19 +300,16 @@ class DatabaseCommands {
 
 	public async fetchOne(commandID: string) {
 		const commandsDB = await this.fetchAll()
-		return commandsDB.find((cmd) => cmd.commandID === commandID)
+		return commandsDB.find((cmd) => cmd.id === commandID)
 	}
 
 	public async edit(commandID: string, query: 'enabled', newValue: unknown) {
 		try {
-			const commandsDB = (await this.fetchOne(commandID)) as {
-				commandID: string
-				enabled: true
-			}
+			const commandsDB = (await this.fetchOne(commandID)) as CommandDatabase
 
 			const queryArray = query.split('.')
 
-			let dbObject: { commandID: string; enabled: true } = commandsDB
+			let dbObject: CommandDatabase = commandsDB
 
 			const finalQuery = queryArray.pop()
 

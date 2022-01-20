@@ -1,19 +1,21 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplyOptions } from '@sapphire/decorators'
-import { Args, Command, CommandOptions } from '@sapphire/framework'
+import { Args, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
 import util, { promisify } from 'util'
 import { exec } from 'child_process'
 import config from '../../config/config'
 import { reply } from '@sapphire/plugin-editable-commands'
+import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
 	name: 'eval',
 	aliases: ['ev'],
 	description: 'run code',
 	preconditions: ['ownerOnly'],
+	defaultPermissions: 'none',
 })
-export class EvalCommand extends Command {
+export class EvalCommand extends RainCommand {
 	public override async messageRun(message: Message, args: Args) {
 		const codetoeval = await args.rest('string')
 
@@ -38,7 +40,8 @@ export class EvalCommand extends Command {
 					cache: this.container.cache.guilds,
 					client: this.container.client.guilds,
 				},
-				container = this.container
+				container = this.container,
+				db = this.container.cache.guilds.get(message.guild?.id as string)
 
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true

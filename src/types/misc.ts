@@ -14,7 +14,7 @@ export type Modlogs = {
 export type guildCommandSettings = {
 	id: string
 	enabled: boolean
-	lockedRoles: Perms
+	requiredPerms: Perms
 	lockedChannels: Snowflake[]
 	data?: unknown
 }

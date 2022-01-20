@@ -1,5 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
+// import { initDB } from '../functions/newDatabase'
 
 @ApplyOptions<ListenerOptions>({
 	once: true,
@@ -11,6 +12,8 @@ export class ReadyListener extends Listener {
 		this.container.logger.info('Database guild entries cached.')
 		await this.loadTasks()
 		this.container.logger.info(`Logged in as ${this.container.client.user?.tag}`)
+
+		// await initDB()
 	}
 
 	async loadTasks() {
@@ -18,5 +21,15 @@ export class ReadyListener extends Listener {
 
 		await taskStore.registerTasks()
 		this.container.logger.info('Loaded tasks.')
+	}
+
+	async loadCommands() {
+		for (const [id, guild] of this.container.client.guilds.cache) {
+			try {
+				await this.container.guilds.registerCommands(guild)
+			} catch (err) {
+				this.container.logger.warn(`Failed to load commands for the guild ${id}`)
+			}
+		}
 	}
 }
