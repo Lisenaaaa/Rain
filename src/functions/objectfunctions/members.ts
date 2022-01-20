@@ -151,8 +151,10 @@ export class Members {
 
 	async unmute(member: GuildMember) {
 		try {
-			if (!container.cache.guilds.get(member.guild.id)?.guildSettings.muteRole) throw new Error("I can't unmute people without knowing what role to remove from them.")
-			await member.roles.remove(container.cache.guilds.get(member.guild.id)?.guildSettings.muteRole as string)
+			if (!container.cache.guilds.get(member.guild.id)?.guildSettings.muteRole) throw new Error("I can't unmute people without having a role set to mute them with.")
+			const muteRole = await member.guild.roles.fetch(container.cache.guilds.get(member.guild.id)?.guildSettings.muteRole as string)
+			if (!muteRole) throw new Error("I can't unmute people without having a role set to mute them with.")
+			await member.roles.remove(muteRole)
 			await container.users.editGuildEntry(member.user,member.guild.id, 'muted', { status: false, expires: null })
 			return true
 		} catch (err) {

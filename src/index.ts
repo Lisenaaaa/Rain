@@ -23,6 +23,6 @@ const levels = {
 	None: 100,
 }
 
-const level = levels[args[0] as keyof typeof levels] ?? levels['Info']
+const level = levels[args[0] as keyof typeof levels] ?? levels['Debug']
 const client = new RainClient(level)
 void client.login(new config().tokens.main)

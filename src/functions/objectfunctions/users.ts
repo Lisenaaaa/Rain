@@ -2,7 +2,7 @@ import { container } from '@sapphire/pieces'
 import { Guild, Snowflake, User } from 'discord.js'
 import got from 'got/dist/source'
 import { nanoid } from 'nanoid'
-import { databaseMember } from '../../types/database'
+import { DatabaseMember } from '../../types/database'
 import { ModlogTypes, Modlogs } from '../../types/misc'
 
 export default class Users {
@@ -151,11 +151,11 @@ export default class Users {
 
 		if (data.duration) modlogEntry.duration = data.duration
 
-		let modlogs = await this.getModlogs(user, guild.id)
+		// let modlogs = await this.getModlogs(user, guild.id)
+		let modlogs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)?.modlogs
 
 		if (modlogs === undefined) {
-			//@ts-ignore what
-			const newModlogs: databaseMember = {
+			const newModlogs: DatabaseMember = {
 				id: user.id,
 				modlogs: [],
 				muted: { status: false, expires: null },
@@ -166,23 +166,23 @@ export default class Users {
 			const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 			if (edited === false) return edited
 
-			modlogs = await this.getModlogs(user, guild.id)
-			modlogs?.push(modlogEntry)
-			dbLogs?.find((m: databaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
+			modlogs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)?.modlogs
+			// modlogs?.push(modlogEntry)
+			dbLogs?.find((m: DatabaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
 			const edited2 = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 			return edited2
 		}
 
-		modlogs.push(modlogEntry)
+		// modlogs.push(modlogEntry)
 		const dbLogs = container.cache.guilds.get(guildID)?.members
-		dbLogs?.find((m: databaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
+		dbLogs?.find((m: DatabaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
 		const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
 		return edited
 	}
 
 	async getModlogs(user: User, guildID: Snowflake): Promise<Modlogs[] | undefined> {
 		try {
-			const logs = container.cache.guilds.get(guildID)?.members.find((m: databaseMember) => m.id === user.id)
+			const logs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)
 			if (logs === undefined) return undefined
 			else if (logs.modlogs.length === 0) return undefined
 			else return logs.modlogs
@@ -191,30 +191,9 @@ export default class Users {
 		}
 	}
 
-	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown): Promise<boolean> {
+	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown) {
 		const guild = container.client.guilds.cache.get(guildID) as Guild
-		const logs = container.cache.guilds.get(guildID)?.members
-		const memberLogs = await this.getModlogs(user, (guild as Guild).id)
-
-		if (memberLogs === undefined) {
-			const newModlogs: databaseMember = {
-				id: user.id,
-				modlogs: [],
-				muted: { status: false, expires: null },
-				banned: { expires: null },
-			}
-			const edited = await container.database.guilds.edit(guild.id, 'members', newModlogs)
-			if (edited === false) return edited
-
-			//@ts-ignore thank you typescript very cool
-			newModlogs[query] = newValue
-			const edited2 = await container.database.guilds.edit(guild.id, `members`, logs)
-			return edited2
-		}
-
-		//@ts-ignore thank you typescript very cool
-		memberLogs[query] = newValue
-		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
-		return edited
+		
+		return await container.guilds.editMemberEntry(guild, user.id, query, newValue)
 	}
 }

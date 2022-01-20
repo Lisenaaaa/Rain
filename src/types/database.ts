@@ -1,5 +1,5 @@
 import { Snowflake } from 'discord.js'
-import { guildCommandSettings, Modlogs } from './misc'
+import { GuildCommandSettings, Modlogs } from './misc'
 
 export interface GuildDatabase {
 	guildID: Snowflake
@@ -30,8 +30,8 @@ export interface GuildDatabase {
 			trialHelper: Snowflake[]
 		}
 	}
-	members: databaseMember[]
-	commandSettings: guildCommandSettings[]
+	members: DatabaseMember[]
+	commandSettings: GuildCommandSettings[]
 	features: { id: string; enabled: boolean }[]
 }
 
@@ -72,8 +72,8 @@ export class GuildDatabaseConstructor {
 			trialHelper: Snowflake[]
 		}
 	}
-	members: databaseMember[]
-	public commandSettings: guildCommandSettings[]
+	members: DatabaseMember[]
+	public commandSettings: GuildCommandSettings[]
 	public features: { id: string; enabled: boolean }[]
 }
 
@@ -103,7 +103,7 @@ export type CommandDatabase = {
 	enabled: boolean
 }
 
-export type databaseMember = {
+export type DatabaseMember = {
 	id: Snowflake
 	modlogs: Modlogs[]
 	muted: { status: boolean; expires: number | null }

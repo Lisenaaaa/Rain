@@ -11,10 +11,14 @@ export class RainTaskStore extends Store<RainTask> {
 		const tasks = this.container.stores.get('tasks')
 
 		for (const [, task] of tasks) {
-			if (task.runOnStart) {
-				await task.run()
+			try {
+				if (task.runOnStart) {
+					await task.run()
+				}
+				setInterval(task.run, task.delay)
+			} catch (err) {
+				this.container.client.emit('taskError', err, task.name)
 			}
-			setInterval(task.run, task.delay)
 		}
 	}
 }

@@ -11,21 +11,21 @@ export type Modlogs = {
 	createdTimestamp: number
 	evidence?: string
 }
-export type guildCommandSettings = {
+export type GuildCommandSettings = {
 	id: string
 	enabled: boolean
 	requiredPerms: Perms
 	lockedChannels: Snowflake[]
 	data?: unknown
 }
-export type errorDetails = {
+export type ErrorDetails = {
 	type: string
 	data: {
 		note?: string
 		link?: string
 	}
 }
-export type chalkColors =
+export type ChalkColors =
 	| 'black'
 	| 'red'
 	| 'green'
@@ -74,7 +74,7 @@ export type chalkColors =
 	| 'strikethrough'
 	| 'visible'
 
-export type codeblockLangs =
+export type CodeblockLangs =
 	| '1c'
 	| 'abnf'
 	| 'accesslog'

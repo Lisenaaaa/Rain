@@ -1,7 +1,7 @@
 import { container } from '@sapphire/pieces'
 import { BanOptions, Guild, Snowflake, TextChannel, UserResolvable } from 'discord.js'
-import { guildCommandSettings, Perms } from '../../types/misc'
-import { databaseMember, GuildDatabase } from '../../types/database'
+import { GuildCommandSettings, Perms } from '../../types/misc'
+import { DatabaseMember, GuildDatabase } from '../../types/database'
 
 export default class Guilds {
 	async registerCommands(guild: Guild) {
@@ -15,19 +15,19 @@ export default class Guilds {
 			let allGuildCommands = g.commandSettings
 			const guildCommandsArray: string[] = []
 
-			allGuildCommands.forEach((c: guildCommandSettings) => {
+			allGuildCommands.forEach((c: GuildCommandSettings) => {
 				guildCommandsArray.push(c.id)
 			})
 
-			allGuildCommands.forEach((guildCommand: guildCommandSettings) => {
+			allGuildCommands.forEach((guildCommand: GuildCommandSettings) => {
 				if (!allCommands.includes(guildCommand.id)) {
-					allGuildCommands = allGuildCommands.filter((c: guildCommandSettings) => c.id != guildCommand.id)
+					allGuildCommands = allGuildCommands.filter((c: GuildCommandSettings) => c.id != guildCommand.id)
 					container.logger.debug(`Removed ${guildCommand.id} from ${g.guildID}'s database entry`)
 				}
 			})
 
 			allCommands.forEach((c: string) => {
-				if (allGuildCommands.find((cmd: guildCommandSettings) => cmd.id === c)) return
+				if (allGuildCommands.find((cmd: GuildCommandSettings) => cmd.id === c)) return
 
 				const permissions = container.stores.get('commands').get(c)?.options.defaultPermissions
 
@@ -99,7 +99,7 @@ export default class Guilds {
 	async clearChannelPerms(channel: TextChannel) {
 		const currentPerms = await container.channels.getRestrictedPerms(channel)
 		if (!currentPerms) {
-			return false                  
+			return false
 		}
 
 		if (currentPerms === 'none') return true
@@ -156,17 +156,18 @@ export default class Guilds {
 			await container.database.guilds.add(guild.id)
 		}
 
-		const logs = container.cache.guilds.get(guild.id)?.members as databaseMember[]
-		const memberLogs = logs.find((m: databaseMember) => m.id === id)
+		const logs = container.cache.guilds.get(guild.id)?.members as DatabaseMember[]
+		const memberLogs = logs.find((m: DatabaseMember) => m.id === id)
 
 		if (memberLogs === undefined) {
-			const newModlogs: databaseMember = {
+			const newModlogs: DatabaseMember = {
 				id: id,
 				modlogs: [],
 				muted: { status: false, expires: null },
 				banned: { expires: null },
 			}
-			const edited = await container.database.guilds.edit(guild.id, 'members', logs.push(newModlogs))
+			logs.push(newModlogs)
+			const edited = await container.database.guilds.edit(guild.id, 'members', logs)
 			if (edited === false) return edited
 
 			//@ts-ignore stfu
@@ -198,8 +199,8 @@ export default class Guilds {
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
-		const commands = container.cache.guilds.get(guild.id)?.commandSettings as guildCommandSettings[]
-		const cmd = commands.find((c: guildCommandSettings) => c.id === command) as guildCommandSettings
+		const commands = container.cache.guilds.get(guild.id)?.commandSettings as GuildCommandSettings[]
+		const cmd = commands.find((c: GuildCommandSettings) => c.id === command) as GuildCommandSettings
 
 		cmd.requiredPerms = perms
 

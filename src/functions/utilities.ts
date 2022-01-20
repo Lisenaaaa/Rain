@@ -2,7 +2,7 @@ import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
 import { CommandInteraction, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
-import { errorDetails, Perms } from '../types/misc'
+import { ErrorDetails, Perms } from '../types/misc'
 import moment from 'moment'
 
 export default class Utilities {
@@ -44,7 +44,7 @@ export default class Utilities {
 	 * @param details The details for the error.
 	 * @returns Sends a message in the error channel, and returns a more user-friendly embed.
 	 */
-	public async error(error: Error, details: errorDetails): Promise<MessageEmbedOptions> {
+	public async error(error: Error, details: ErrorDetails): Promise<MessageEmbedOptions> {
 		const errorChannel = container.client.channels.cache.get(container.settings.errorChannel) as TextChannel
 		const id = `${this.random(696969696969)}`
 

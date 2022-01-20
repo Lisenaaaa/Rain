@@ -1,6 +1,6 @@
 import { container, ILogger, LogLevel } from '@sapphire/framework'
 import chalk from 'chalk'
-import { chalkColors } from '../types/misc'
+import { ChalkColors } from '../types/misc'
 
 // class OldRainLogger implements ILogger {
 // 	public has(level: LogLevel): boolean {
@@ -89,7 +89,7 @@ export default class RainLogger implements ILogger {
 		[LogLevel.Fatal, 'error'],
 	])
 
-	protected readonly colors = new Map<LogMethods, chalkColors>([
+	protected readonly colors = new Map<LogMethods, ChalkColors>([
 		['info', 'blue'],
 		['error', 'red'],
 		['debug', 'magenta'],
