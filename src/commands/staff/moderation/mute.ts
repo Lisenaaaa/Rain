@@ -24,7 +24,8 @@ import { ArgsUser } from '../../../types/misc'
 export class MuteCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string } = this.parseArgs(interaction)
-		const time = args.time ? ms(args.time) : undefined
+		const time = args.time ? (ms(args.time) / 1000) + this.container.utils.now() : undefined
+		this.container.logger.debug({ time, now: this.container.utils.now() })
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
 
@@ -46,10 +47,16 @@ export class MuteCommand extends RainCommand {
 		time ? (muted = await this.container.members.mute(target, time)) : (muted = await this.container.members.mute(target))
 
 		if (muted) {
-			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'MUTE', moderator.user.id, { reason: args.reason, duration: time?.toString() })
-			await args.member.user.send(`You have been muted in **${interaction.guild?.name}**${time ? `until <t:${time}:F>` : 'forever.'}`)
+			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'MUTE', moderator.user.id, {
+				reason: args.reason,
+				duration: time ? (time).toString() : undefined,
+			})
+			await args.member.user.send(`You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${time}:F>` : ' forever.'}`)
 			await interaction.deleteReply()
-			await interaction.reply({ content: `I've muted ${target.user.tag} ${time ? `until <t:${time}:F>` : 'forever'}, ${args.reason ? `for ${args.reason}` : 'without a reason.'}` })
+			await interaction.reply({
+				content: `I've muted ${target.user.tag} ${time ? ` until <t:${time}:F>` : ' forever'}, ${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				ephemeral: true,
+			})
 
 			this.container.client.emit('memberMuted', { member: target, moderator: moderator, reason: args.reason, time })
 		} else {
