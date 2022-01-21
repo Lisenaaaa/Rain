@@ -21,4 +21,6 @@ export default class RainCommand extends Command {
 			})
 		}
 	}
+
+	parseArgs = this.container.utils.parseInteractionArgs
 }

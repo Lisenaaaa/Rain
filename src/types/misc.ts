@@ -1,4 +1,4 @@
-import { Snowflake } from 'discord.js'
+import { GuildMember, Snowflake, User } from 'discord.js'
 
 export type Perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper' | 'none'
 export type ModlogTypes = 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
@@ -25,6 +25,7 @@ export type ErrorDetails = {
 		link?: string
 	}
 }
+export type ArgsUser = { user: User; member: GuildMember | undefined }
 export type ChalkColors =
 	| 'black'
 	| 'red'

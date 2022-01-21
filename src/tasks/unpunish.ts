@@ -23,12 +23,8 @@ export class UnpunishTask extends RainTask {
 			const { muteRole } = guildSettings
 
 			for (const member of members) {
-				const { muted } = member
-
-				console.log(muted.status && muted.expires && muted.expires <= container.utils.now())
 				/* unmute */
-
-				if (muted.status && muted.expires && muted.expires <= container.utils.now()) {
+				if (member.muted.status && member.muted.expires && member.muted.expires <= container.utils.now()) {
 					let person: GuildMember | undefined
 
 					try {
@@ -54,6 +50,19 @@ export class UnpunishTask extends RainTask {
 						} catch (err) {
 							/* do nothing */
 						}
+					}
+				}
+
+				/* unban */
+				if (member.banned.expires != null && member.banned.expires <= container.utils.now()) {
+					const person = await container.client.users.fetch(member.id)
+					if (!(await guild.bans.fetch()).has(person.id)) return
+					await guild.bans.remove(person, 'Punishment expired.')
+					await container.users.addModlogEntry(person, id, 'UNBAN', container.client.user?.id as string, { reason: 'Punishment expired.' })
+					try {
+						await person.send(`You have been automatically unbanned in **${guild.name}**`)
+					} catch (err) {
+						/* do nothing lol */
 					}
 				}
 			}
