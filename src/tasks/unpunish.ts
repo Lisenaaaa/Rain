@@ -16,7 +16,7 @@ export class UnpunishTask extends RainTask {
 		for (const [id, guild] of container.client.guilds.cache) {
 			if (!container.cache.guilds.check(id)) {
 				await container.database.guilds.add(id)
-				container.logger.debug(`Created database entry for ${guild.name} : ${id}`)
+				// container.logger.debug(`Created database entry for ${guild.name} : ${id}`)
 			}
 
 			const { members, guildSettings } = container.cache.guilds.get(id) as GuildDatabase
@@ -41,7 +41,7 @@ export class UnpunishTask extends RainTask {
 							})
 						}
 
-						container.logger.debug(`unmuting ${person.id} on ${id}`)
+						// container.logger.debug(`unmuting ${person.id} on ${id}`)
 						await container.members.unmute(person)
 						await container.users.addModlogEntry(person.user, id, 'UNMUTE', container.client.user?.id as string, { reason: 'Automatically unmuted.' })
 

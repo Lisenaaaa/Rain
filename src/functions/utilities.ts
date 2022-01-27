@@ -260,7 +260,7 @@ export default class Utilities {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param array The array you'd like to split.
 	 * @param number The number of objects in each array it outputs.
 	 * @returns An array of arrays, where each array is part of the input array.
@@ -347,5 +347,18 @@ export default class Utilities {
 			const reply = await interaction.fetchReply()
 			await interaction.editReply({ embeds: reply.embeds, components: [buttonRowDisabled] })
 		})
+	}
+
+	/**
+	 * @param array1 The master array, with all the objects.
+	 * @param array2 The array you would like to check if everything in it is also in `array1`
+	 * @returns boolean
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	arrayIncludesAllArray(array1: any[], array2: any[]) {
+		for (const e of array2) {
+			if (!array1.includes(e)) return false
+		}
+		return true
 	}
 }

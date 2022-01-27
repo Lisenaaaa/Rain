@@ -40,7 +40,20 @@ export class PermissionsPrecondition extends Precondition {
 
 		const runCommand = { label: 'Does the user have permission to run this command?', commandPerms, memberPerms, value: userHasCommandPerms }
 
-		container.logger.debug(`${member.user.tag} ran ${commandId}\n`, commandEnabled, runCommandsInChannel, runCommand, '\n\n')
+		const botPerms = channel.permissionsFor(guild.me as GuildMember).toArray()
+
+		if (!botPerms) {
+			return await this.error({ identifier: this.name, message: "Somehow I don't have any perms." })
+		}
+
+		const iHavePerms = {
+			label: 'Do I have permissions to run this command?',
+			botPerms,
+			commandPerms: command.sapphire?.options.botPerms,
+			value: container.utils.arrayIncludesAllArray(botPerms, command.sapphire?.options.botPerms ?? []),
+		}
+
+		container.logger.debug(`${member.user.tag} ran ${commandId}\n`, commandEnabled, runCommandsInChannel, runCommand, iHavePerms, '\n')
 
 		if (!commandEnabled.value) {
 			return await this.error({ identifier: 'permissions', message: 'This command is currently disabled.' })
@@ -52,7 +65,8 @@ export class PermissionsPrecondition extends Precondition {
 				message: `This channel requires you to have ${runCommandsInChannel.channelRequirements} perms to run commands in it, but you ${
 					runCommandsInChannel.memberPerms === 'none' ? "don't have any priveliged permissions." : `only have ${runCommandsInChannel.memberPerms}.`
 				}`,
-			})		}
+			})
+		}
 
 		if (!runCommand.value) {
 			return await this.error({
@@ -60,6 +74,13 @@ export class PermissionsPrecondition extends Precondition {
 				message: `This command requires you to have ${commandPerms} perms, but you ${
 					runCommand.memberPerms === 'none' ? "don't have any priveliged permissions." : `only have ${runCommand.memberPerms}.`
 				}`,
+			})
+		}
+
+		if (!iHavePerms.value) {
+			return await this.error({
+				identifier: this.name,
+				message: `I'm missing one or more of these permissions, which are required for me to run this command: ${iHavePerms.commandPerms}`,
 			})
 		}
 

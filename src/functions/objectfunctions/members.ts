@@ -144,7 +144,7 @@ export class Members {
 			await container.users.editGuildEntry(member.user, member.guild.id, 'muted', { status: true, expires: time ? time : null })
 			return true
 		} catch (err) {
-			await container.utils.error(err, {type: 'muting a member', data: {}})
+			await container.utils.error(err, { type: 'muting a member', data: {} })
 			return false
 		}
 	}
@@ -155,12 +155,16 @@ export class Members {
 			const muteRole = await member.guild.roles.fetch(container.cache.guilds.get(member.guild.id)?.guildSettings.muteRole as string)
 			if (!muteRole) throw new Error("I can't unmute people without having a role set to mute them with.")
 			await member.roles.remove(muteRole)
-			await container.users.editGuildEntry(member.user,member.guild.id, 'muted', { status: false, expires: null })
+			await container.users.editGuildEntry(member.user, member.guild.id, 'muted', { status: false, expires: null })
 			return true
 		} catch (err) {
-			await container.utils.error(err, {type: 'unmuting a member', data: {}})
+			await container.utils.error(err, { type: 'unmuting a member', data: {} })
 			return false
 		}
+	}
+
+	isMuted(member: GuildMember): boolean {
+		return !!container.cache.guilds.get(member.guild.id)?.members.find((m) => m.id === member.user.id)?.muted
 	}
 
 	hasRolePriority(member: GuildMember, otherMember: GuildMember) {

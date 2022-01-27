@@ -25,9 +25,9 @@ export class ModlogsCommand extends RainCommand {
 
 		const allModlogs = []
 		for (const modlog of modlogs) {
-			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modID)} (${await (
-				await this.container.client.users.fetch(modlog.modID)
-			).tag})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : ``}\nCreated at <t:${modlog.createdTimestamp}>`
+			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modID)} (${
+				(await this.container.client.users.fetch(modlog.modID)).tag
+			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : ``}\nCreated at <t:${modlog.createdTimestamp}>`
 
 			allModlogs.push(formattedModlog)
 		}

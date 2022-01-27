@@ -10,7 +10,7 @@ import { Cache } from '../functions/cache'
 import { Members } from '../functions/objectfunctions/members'
 import { Perms } from '../types/misc'
 import { RainTaskStore } from './RainTaskStore'
-import { ApplicationCommandOptionData, Snowflake } from 'discord.js'
+import { ApplicationCommandOptionData, PermissionResolvable, Snowflake } from 'discord.js'
 
 export class RainClient extends SapphireClient {
 	public constructor(level: number) {
@@ -61,6 +61,7 @@ declare module '@sapphire/pieces' {
 declare module '@sapphire/framework' {
 	interface CommandOptions {
 		defaultPermissions: Perms
+		botPerms?: PermissionResolvable[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]
@@ -70,6 +71,7 @@ declare module '@sapphire/framework' {
 	}
 	interface Command {
 		defaultPermissions: Perms
+		botPerms?: PermissionResolvable[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]

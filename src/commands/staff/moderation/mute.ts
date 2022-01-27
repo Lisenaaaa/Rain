@@ -11,6 +11,7 @@ import { ArgsUser } from '../../../types/misc'
 	description: 'mute a member',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'helper',
+	botPerms: ['MANAGE_ROLES'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933872679654674442'],
@@ -25,18 +26,14 @@ export class MuteCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string } = this.parseArgs(interaction)
 		const time = args.time ? (ms(args.time) / 1000) + this.container.utils.now() : undefined
-		this.container.logger.debug({ time, now: this.container.utils.now() })
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
-
-		await interaction.deferReply()
 
 		if (!target) {
 			return await interaction.reply({ content: "I can't mute someone who isn't on the server.", ephemeral: true })
 		}
 
 		if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-			await interaction.deleteReply()
 			await interaction.reply({ content: `You can't mute someone with higher or equal permissions to you.`, ephemeral: true })
 		}
 		if (!this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.muteRole) throw new Error("I can't mute people without having a role set to mute them with.")
@@ -52,15 +49,13 @@ export class MuteCommand extends RainCommand {
 				duration: time ? (time).toString() : undefined,
 			})
 			await args.member.user.send(`You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${time}:F>` : ' forever.'}`)
-			await interaction.deleteReply()
 			await interaction.reply({
-				content: `I've muted ${target.user.tag} ${time ? ` until <t:${time}:F>` : ' forever'}, ${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				content: `I've muted ${target.user.tag}${time ? ` until <t:${time}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,
 			})
 
 			this.container.client.emit('memberMuted', { member: target, moderator: moderator, reason: args.reason, time })
 		} else {
-			await interaction.deleteReply()
 			await interaction.reply({ content: `Something went wrong while muting ${target.user.tag}.` })
 		}
 	}
