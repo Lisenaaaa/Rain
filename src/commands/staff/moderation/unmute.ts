@@ -48,9 +48,9 @@ export class UnmuteCommand extends RainCommand {
 			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'UNMUTE', moderator.user.id, {
 				reason: args.reason,
 			})
-			await args.member.user.send(`You have been unmuted in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : ' without a reason.'}`)
+			await args.member.user.send(`You have been unmuted in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : '.'}`)
 			await interaction.reply({
-				content: `I've unmuted ${target.user.tag}${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				content: `I've unmuted ${target.user.tag}${args.reason ? ` for ${args.reason}` : '.'}`,
 				ephemeral: true,
 			})
 

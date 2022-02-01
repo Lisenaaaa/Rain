@@ -34,7 +34,7 @@ export class MuteCommand extends RainCommand {
 		}
 
 		if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-			await interaction.reply({ content: `You can't mute someone with higher or equal permissions to you.`, ephemeral: true })
+			return await interaction.reply({ content: `You can't mute someone with higher or equal permissions to you.`, ephemeral: true })
 		}
 		if (!this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.muteRole) throw new Error("I can't mute people without having a role set to mute them with.")
 		const muteRole = await interaction.guild?.roles.fetch(this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.muteRole as string)
@@ -48,7 +48,7 @@ export class MuteCommand extends RainCommand {
 				reason: args.reason,
 				duration: time ? (time).toString() : undefined,
 			})
-			await args.member.user.send(`You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${time}:F>` : ' forever.'}`)
+			await args.member.user.send(`You have been muted in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
 			await interaction.reply({
 				content: `I've muted ${target.user.tag}${time ? ` until <t:${time}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,

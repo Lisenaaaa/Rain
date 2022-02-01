@@ -2,6 +2,7 @@ import { GuildMember, Snowflake, User } from 'discord.js'
 
 export type Perms = 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper' | 'none'
 export type ModlogTypes = 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
+export type ModlogDurationTypes = 'BAN' | 'MUTE'
 export type Modlogs = {
 	id: string
 	type: ModlogTypes

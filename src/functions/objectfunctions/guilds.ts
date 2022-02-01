@@ -134,7 +134,7 @@ export default class Guilds {
 		}
 	}
 
-	async unban(guild: Guild, user: UserResolvable, reason: string) {
+	async unban(guild: Guild, user: UserResolvable, reason?: string) {
 		try {
 			const person = await container.client.users.fetch(user)
 			await guild.bans.remove(user, reason)

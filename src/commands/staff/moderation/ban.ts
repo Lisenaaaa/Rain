@@ -14,7 +14,7 @@ import { ArgsUser } from '../../../types/misc'
 	botPerms: ['BAN_MEMBERS'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
-		idHints: ['936396772606111824'],
+		idHints: ['938210475534061599'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to ban', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to ban them for' },
@@ -36,7 +36,7 @@ import { ArgsUser } from '../../../types/misc'
 		],
 	},
 })
-export class banCommand extends RainCommand {
+export class BanCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string; days?: 1 | 2 | 3 | 4 | 5 | 6 | 7 } = this.parseArgs(interaction)
 		const time = args.time ? ms(args.time) / 1000 + this.container.utils.now() : undefined
@@ -45,7 +45,7 @@ export class banCommand extends RainCommand {
 
 		if (target) {
 			if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-				await interaction.reply({ content: `You can't ban someone with higher or equal permissions to you.`, ephemeral: true })
+				return await interaction.reply({ content: `You can't ban someone with higher or equal permissions to you.`, ephemeral: true })
 			}
 		}
 
@@ -57,7 +57,7 @@ export class banCommand extends RainCommand {
 		// if (!banRole) throw new Error("I can't ban people without having a role set to ban them with.")
 
 		try {
-			await args.member.user.send(`You have been banned in **${interaction.guild?.name}**${time ? ` until <t:${time}:F>` : ' forever.'}`)
+			await args.member.user.send(`You have been banned in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
 		} catch (err) {
 			/* do nothing lol */
 		}
@@ -80,7 +80,7 @@ export class banCommand extends RainCommand {
 
 			this.container.client.emit('memberBanned', { member: target, moderator: moderator, reason: args.reason, time, days: args.days })
 		} else {
-			await interaction.reply({ content: `Something went wrong while muting ${args.member.user.tag}.` })
+			await interaction.reply({ content: `Something went wrong while banning ${args.member.user.tag}.` })
 		}
 	}
 }

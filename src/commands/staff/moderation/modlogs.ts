@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, MessageEmbedOptions } from 'discord.js'
 import RainCommand from '../../../structures/RainCommand'
-import { ArgsUser } from '../../../types/misc'
+import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 
 @ApplyOptions<CommandOptions>({
 	name: 'modlogs',
@@ -27,7 +27,7 @@ export class ModlogsCommand extends RainCommand {
 		for (const modlog of modlogs) {
 			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modID)} (${
 				(await this.container.client.users.fetch(modlog.modID)).tag
-			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : ``}\nCreated at <t:${modlog.createdTimestamp}>`
+			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : `${this.typeIsPunishment(modlog.type) ? '\nExpires: when hell freezes over' : ''}`}\nCreated at <t:${modlog.createdTimestamp}>`
 
 			allModlogs.push(formattedModlog)
 		}
@@ -46,5 +46,10 @@ export class ModlogsCommand extends RainCommand {
 		}
 
 		await this.container.utils.paginate(interaction, embedsArray)
+	}
+
+	typeIsPunishment(type: ModlogTypes): type is ModlogDurationTypes {
+		const types = ['BAN', 'MUTE']
+		return types.includes(type)
 	}
 }
