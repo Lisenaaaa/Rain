@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { BanOptions, Guild, Snowflake, TextChannel, UserResolvable } from 'discord.js'
+import { BanOptions, Channel, Guild, Snowflake, TextChannel, UserResolvable } from 'discord.js'
 import { GuildCommandSettings, Perms } from '../../types/misc'
 import { DatabaseMember, GuildDatabase } from '../../types/database'
 
@@ -207,11 +207,11 @@ export default class Guilds {
 		return await container.database.guilds.edit(guild.id, 'commandSettings', commands)
 	}
 
-	findChannel(guild: Guild, query: string) {
+	findChannel(guild: Guild, query: string): Channel | undefined {
 		const channels = guild.channels.cache
 
 		let channel
-		channel = channels.get(query)
+		channel = channels.get(query.replace('<', '').replace('#', '').replace('>', ''))
 
 		if (!channel) {
 			channel = channels.find((c) => c.name.toLowerCase() === query.toLowerCase())

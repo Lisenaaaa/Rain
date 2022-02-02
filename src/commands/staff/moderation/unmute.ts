@@ -61,9 +61,8 @@ export class UnmuteCommand extends RainCommand {
 	}
 }
 
-export type MemberMuteData = {
+export type MemberUnmuteData = {
 	member: GuildMember
 	moderator: GuildMember
 	reason?: string
-	time?: number
 }

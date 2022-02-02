@@ -50,9 +50,8 @@ export class UnbanCommand extends RainCommand {
 	}
 }
 
-export type MemberBanData = {
+export type MemberUnbanData = {
 	member: GuildMember
 	moderator: GuildMember
 	reason?: string
-	time?: number
 }

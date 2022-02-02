@@ -1,4 +1,5 @@
 import { ChatInputCommand, container, MessageCommand, Precondition, PreconditionResult } from '@sapphire/framework'
+import chalk from 'chalk'
 import { CommandInteraction, Guild, GuildMember, Message, TextChannel } from 'discord.js'
 import { Perms } from '../types/misc'
 
@@ -48,12 +49,12 @@ export class PermissionsPrecondition extends Precondition {
 
 		const iHavePerms = {
 			label: 'Do I have permissions to run this command?',
-			botPerms,
+			botPerms: '[potentially massive array]',
 			commandPerms: command.sapphire?.options.botPerms,
 			value: container.utils.arrayIncludesAllArray(botPerms, command.sapphire?.options.botPerms ?? []),
 		}
 
-		container.logger.debug(`${member.user.tag} ran ${commandId}\n`, commandEnabled, runCommandsInChannel, runCommand, iHavePerms, '\n')
+		container.logger.debug(`${member.user.tag} ran ${chalk.red(commandId)}\n`, commandEnabled, runCommandsInChannel, runCommand, iHavePerms, '\n')
 
 		if (!commandEnabled.value) {
 			return await this.error({ identifier: 'permissions', message: 'This command is currently disabled.' })
