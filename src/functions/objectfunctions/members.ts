@@ -30,60 +30,30 @@ export class Members {
 	}
 
 	async hasPermission(member: GuildMember, perm: Perms): Promise<boolean> {
-		const roleSettings = container.cache.guilds.get(member.guild.id)?.guildSettings.staffRoles
-
-		let found = false
-		let perms = null
+		let perms = 'none'
 		let permsArray: Perms[] = []
 
-		const owner = roleSettings?.owner
-		const admin = roleSettings?.admin
-		const srMod = roleSettings?.srMod
-		const moderator = roleSettings?.moderator
-		const helper = roleSettings?.helper
-		const trialHelper = roleSettings?.trialHelper
+		perms = await this.getPerms(member)
 
-		member.roles.cache.forEach((role) => {
-			if (role.id == owner && found == false) {
-				found = true
-				return (perms = 'owner')
-			} else if (role.id == admin && found == false) {
-				found = true
-				return (perms = 'admin')
-			} else if (role.id == srMod && found == false) {
-				found = true
-				return (perms = 'srMod')
-			} else if (role.id == moderator && found == false) {
-				found = true
-				return (perms = 'moderator')
-			} else if (role.id == helper && found == false) {
-				found = true
-				return (perms = 'helper')
-			} else if (role.id == trialHelper && found == false) {
-				found = true
-				return (perms = 'trialHelper')
-			}
-		})
-
-		if (perms == null) {
+		if (perms === 'none') {
 			return false
 		}
-		if (perms == 'trialHelper') {
+		if (perms === 'trialHelper') {
 			permsArray = ['none', 'trialHelper']
 		}
-		if (perms == 'helper') {
+		if (perms === 'helper') {
 			permsArray = ['none', 'trialHelper', 'helper']
 		}
-		if (perms == 'moderator') {
+		if (perms === 'moderator') {
 			permsArray = ['none', 'trialHelper', 'helper', 'moderator']
 		}
-		if (perms == 'srMod') {
+		if (perms === 'srMod') {
 			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod']
 		}
-		if (perms == 'admin') {
+		if (perms === 'admin') {
 			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin']
 		}
-		if (perms == 'owner') {
+		if (perms === 'owner') {
 			permsArray = ['none', 'trialHelper', 'helper', 'moderator', 'srMod', 'admin', 'owner']
 		}
 
@@ -96,7 +66,7 @@ export class Members {
 	}
 
 	async getPerms(member: GuildMember): Promise<Perms> {
-		// if (this.isOwner(member)) return 'owner'
+		if (this.isOwner(member)) return 'owner'
 
 		const roleSettings = container.cache.guilds.get(member.guild.id)?.guildSettings.staffRoles
 
@@ -110,27 +80,27 @@ export class Members {
 		const helper = roleSettings?.helper
 		const trialHelper = roleSettings?.trialHelper
 
-		member.roles.cache.forEach((role) => {
-			if (role.id == owner && found == false) {
+		for (const [id] of member.roles.cache) {
+			if (id == owner && found == false) {
 				found = true
 				return (perms = 'owner')
-			} else if (role.id == admin && found == false) {
+			} else if (id == admin && found == false) {
 				found = true
 				return (perms = 'admin')
-			} else if (role.id == srMod && found == false) {
+			} else if (id == srMod && found == false) {
 				found = true
 				return (perms = 'srMod')
-			} else if (role.id == moderator && found == false) {
+			} else if (id == moderator && found == false) {
 				found = true
 				return (perms = 'moderator')
-			} else if (role.id == helper && found == false) {
+			} else if (id == helper && found == false) {
 				found = true
 				return (perms = 'helper')
-			} else if (role.id == trialHelper && found == false) {
+			} else if (id == trialHelper && found == false) {
 				found = true
 				return (perms = 'trialHelper')
 			}
-		})
+		}
 
 		return perms as Perms
 	}

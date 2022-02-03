@@ -18,7 +18,7 @@ export class RainClient extends SapphireClient {
 			caseInsensitiveCommands: true,
 			caseInsensitivePrefixes: true,
 			defaultPrefix: '-',
-			intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS'],
+			intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS', 'GUILD_PRESENCES'],
 			loadDefaultErrorListeners: false,
 			partials: ['CHANNEL'],
 			allowedMentions: { parse: [] },

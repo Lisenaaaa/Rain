@@ -41,8 +41,9 @@ export class EvalCommand extends RainCommand {
 					client: this.container.client.guilds,
 				},
 				container = this.container,
-				db = this.container.cache.guilds.get(message.guild?.id as string),
-				output = inspect(await eval(codeToEval), { depth: 0 })
+				db = this.container.cache.guilds.get(message.guild?.id as string)
+
+			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true
 		} catch (err) {
 			output = err.message

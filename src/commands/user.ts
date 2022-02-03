@@ -24,7 +24,7 @@ import { ArgsUser } from '../types/misc'
 		],
 	},
 })
-export class AvatarCommand extends RainCommand {
+export class UserCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply()
 		const args: { user?: ArgsUser } = this.container.utils.parseInteractionArgs(interaction)
