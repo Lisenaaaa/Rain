@@ -7,41 +7,36 @@ import { GuildMember } from 'discord.js'
 	event: 'guildMemberAdd',
 })
 export class MemberAddListener extends Listener {
-	//@ts-ignore
-	private member: GuildMember
-
 	async run(member: GuildMember) {
 		if (this.container.cache.guilds.check(member.guild.id) === undefined) {
 			await this.container.database.guilds.add(member.guild.id)
 		}
 
-		this.member = member
-
-		await this.addAltRole()
-		await this.welcomeMember()
+		await this.addAltRole(member)
+		await this.welcomeMember(member)
 	}
 
-	async addAltRole() {
-		if (this.member.guild.id != '880637463838724166') return
-		if (this.member.user.id != '545277690303741962') return
+	async addAltRole(member: GuildMember) {
+		if (member.guild.id != '880637463838724166') return
+		if (member.user.id != '545277690303741962') return
 
-		await this.member.roles.add('880705826627649566')
+		await member.roles.add('880705826627649566')
 	}
 
-	async welcomeMember() {
-		const database = this.container.cache.guilds.get(this.member.guild.id)
+	async welcomeMember(member: GuildMember) {
+		const database = this.container.cache.guilds.get(member.guild.id)
 
 		const channelID = database?.guildSettings.welcomeChannel
 		if (!channelID) return
 
-		const welcomeChannel = await this.member.guild.channels.fetch(channelID)
+		const welcomeChannel = await member.guild.channels.fetch(channelID)
 		if (!welcomeChannel) return
 		if (welcomeChannel.type != 'GUILD_TEXT') return
 
 		const welcomeMessage = database.guildSettings.welcomeMessage
 		if (!welcomeMessage) return
 
-		await welcomeChannel.send(this.formatString(welcomeMessage, this.member))
+		await welcomeChannel.send(this.formatString(welcomeMessage, member))
 	}
 
 	private formatString(string: string, member: GuildMember) {
