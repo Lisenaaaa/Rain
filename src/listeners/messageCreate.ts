@@ -8,7 +8,6 @@ import { Message } from 'discord.js'
 })
 export class MemberAddListener extends Listener {
 	async run(message: Message) {
-
 		await this.yellAtDiscord(message)
 	}
 
