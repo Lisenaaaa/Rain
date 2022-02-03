@@ -25,7 +25,7 @@ import { ArgsUser } from '../../../types/misc'
 export class MuteCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string } = this.parseArgs(interaction)
-		const time = args.time ? (ms(args.time) / 1000) + this.container.utils.now() : undefined
+		const time = args.time ? ms(args.time) / 1000 + this.container.utils.now() : undefined
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
 
@@ -46,7 +46,7 @@ export class MuteCommand extends RainCommand {
 		if (muted) {
 			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'MUTE', moderator.user.id, {
 				reason: args.reason,
-				duration: time ? (time).toString() : undefined,
+				duration: time ? time.toString() : undefined,
 			})
 			await args.member.user.send(`You have been muted in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
 			await interaction.reply({

@@ -12,12 +12,12 @@ class GuildCache {
 	}
 
 	public get(id: Snowflake): GuildDatabase | undefined {
-		return this.guilds.find((g) => g.guildID === id) 
+		return this.guilds.find((g) => g.guildID === id)
 	}
 
-    public check(id: Snowflake): boolean {
-        return this.guilds.find((g) => g.guildID === id) ? true : false
-    }
+	public check(id: Snowflake): boolean {
+		return this.guilds.find((g) => g.guildID === id) ? true : false
+	}
 
 	public fetch = container.database.guilds.fetch
 

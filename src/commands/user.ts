@@ -27,7 +27,7 @@ import { ArgsUser } from '../types/misc'
 })
 export class AvatarCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-        await interaction.deferReply()
+		await interaction.deferReply()
 		const args: { user?: ArgsUser } = this.container.utils.parseInteractionArgs(interaction)
 		const user = args.user?.user ?? interaction.user
 		let member: GuildMember | undefined

@@ -4,13 +4,7 @@
 		"target": "ESNext",
 		"moduleResolution": "Node",
 		"outDir": "dist",
-		"lib": [
-			"esnext",
-			"esnext.array",
-			"esnext.asyncIterable",
-			"esnext.intl",
-			"esnext.symbol"
-		],
+		"lib": ["esnext", "esnext.array", "esnext.asyncIterable", "esnext.intl", "esnext.symbol"],
 		"inlineSourceMap": true,
 		"inlineSources": true,
 		"incremental": true,

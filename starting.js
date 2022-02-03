@@ -1,4 +1,4 @@
-(async () => {
+;(async () => {
 	console.log(require('chalk')`{blue [INFO]} {blueBright ${await timeFormatted('%F %r')}}: {white Transpiling TypeScript. This may take some time.}`)
 })()
 
