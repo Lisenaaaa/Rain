@@ -40,7 +40,7 @@ export class AvatarCommand extends RainCommand {
 				{
 					title: `${user.tag}`,
 					thumbnail: { url: `${member ? member.displayAvatarURL({ dynamic: true, format: 'png', size: 128 }) : user.displayAvatarURL({ dynamic: true, format: 'png', size: 128 })}` },
-					description: `**Mention**: ${user}${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
+					description: `**Mention**: ${user} (\`${user.id}\`)${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
                     **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
                     ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}
 					${
@@ -50,8 +50,13 @@ export class AvatarCommand extends RainCommand {
 					**Roles**: ${member.roles.cache
 						.filter((r) => r.id != r.guild.id)
 						.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
-						.map((r) => r.toString())}
-					**Discord Perms**: ${this.container.members.importantPerms(member).toString()}
+						.map((r) => r.toString())
+						.join(', ')}
+					**Discord Perms**: ${this.formatPermsArray(this.container.members.importantPerms(member)).join(', ')}${
+									(await this.container.guilds.hasStaffRoles(member.guild)) ? `\n**Rain Perms**: ${await this.container.members.getPerms(member)}` : ''
+									// this is prettier's fault.
+									// eslint-disable-next-line no-mixed-spaces-and-tabs
+							  }
 					`
 							: ''
 					}
@@ -59,5 +64,17 @@ export class AvatarCommand extends RainCommand {
 				},
 			],
 		})
+	}
+
+	formatPermsArray(permsToFormat: string[]) {
+		for (const perm in permsToFormat) {
+			const newPerm = permsToFormat[perm].split('_')
+			for (const nP in newPerm) {
+				newPerm[nP] = this.container.utils.nameFormat(newPerm[nP])
+			}
+			permsToFormat[perm] = newPerm.join(' ').replace('Tts', 'TTS')
+		}
+
+		return permsToFormat
 	}
 }

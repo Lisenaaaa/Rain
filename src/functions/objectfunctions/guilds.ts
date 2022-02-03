@@ -165,11 +165,13 @@ export default class Guilds {
 			const edited = await container.database.guilds.edit(guild.id, 'members', logs)
 			if (edited === false) return edited
 
+			//@ts-ignore
 			newModlogs[query] = newValue
 			const edited2 = await container.database.guilds.edit(guild.id, `members`, logs)
 			return edited2
 		}
 
+		//@ts-ignore
 		memberLogs[query] = newValue
 		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
 		return edited
@@ -179,8 +181,7 @@ export default class Guilds {
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const db = container.cache.guilds.get(guild.id)?.guildSettings.staffRoles as any
+		const db = (container.cache.guilds.get(guild.id) as GuildDatabase).guildSettings.staffRoles
 
 		if (db.owner === null && db.admin === null && db.srMod === null && db.moderator === null && db.helper === null && db.trialHelper === null) return false
 		else return true
