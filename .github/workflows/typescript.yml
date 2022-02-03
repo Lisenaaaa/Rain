@@ -70,7 +70,7 @@ jobs:
       - name: Format and commit code if needed
         if: ${{ github.event_name == 'push' }}
         run: |
-          yarn prettier --format .
+          yarn prettier --write .
           git commit -am "refactor: Automatically formatted code" || true
       - name: Check formatting
         if: ${{ github.event_name == 'pull_request' }}
