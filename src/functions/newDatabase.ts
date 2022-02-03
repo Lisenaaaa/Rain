@@ -9,7 +9,6 @@ This is me trying to rewrite the database to not just use JSON formatting for ev
 // import Config from '../config/config'
 // const config = new Config()
 
-
 // const sequelize = new Sequelize('testingdb', config.database.pguser, config.database.pguserpassword, {
 // 	host: config.database.pghost,
 // 	dialect: 'postgres',
