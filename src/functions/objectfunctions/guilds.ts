@@ -1,6 +1,6 @@
 import { container } from '@sapphire/pieces'
 import { BanOptions, Channel, Guild, Snowflake, TextChannel, UserResolvable } from 'discord.js'
-import { GuildCommandSettings, Perms } from '../../types/misc'
+import { GuildCommandSettings, Perms, StaffPerms } from '../../types/misc'
 import { DatabaseMember, GuildDatabase } from '../../types/database'
 
 export default class Guilds {
@@ -65,22 +65,18 @@ export default class Guilds {
 		}
 	}
 
-	async setChannelPerms(guild: Guild, channel: Snowflake, perms: Perms) {
-		//@ts-ignore
-		if (channel.id) {
-			throw new Error("yeah thats not how this works dumbass you need the channel's id")
-		}
+	async setChannelPerms(guild: Guild, channel: Snowflake | Channel, perms: Perms) {
+		const id = channel instanceof Channel ? channel.id : channel
 
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
-		//@ts-ignore typescript is dumb and stupid
-		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms]
+		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms as StaffPerms]
 
 		// const currentLockedChannels = (await this.database(guild))?.guildSettings.lockedChannels[perms]
-		if (currentLockedChannels?.includes(channel)) return true
+		if (currentLockedChannels?.includes(id)) return true
 
-		currentLockedChannels?.push(channel)
+		currentLockedChannels?.push(id)
 
 		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, currentLockedChannels)
 	}
@@ -89,8 +85,7 @@ export default class Guilds {
 		if (container.cache.guilds.check(guild.id) === undefined) {
 			await container.database.guilds.add(guild.id)
 		}
-		//@ts-ignore typescript is dumb and stupid
-		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms]
+		const currentLockedChannels = container.cache.guilds.get(guild.id)?.guildSettings.lockedChannels[perms as StaffPerms]
 		const newLockedChannels = currentLockedChannels?.filter((c: Snowflake) => c != channel)
 
 		return await container.database.guilds.edit(guild.id, `guildSettings.lockedChannels.${perms}`, newLockedChannels)
@@ -170,13 +165,11 @@ export default class Guilds {
 			const edited = await container.database.guilds.edit(guild.id, 'members', logs)
 			if (edited === false) return edited
 
-			//@ts-ignore stfu
 			newModlogs[query] = newValue
 			const edited2 = await container.database.guilds.edit(guild.id, `members`, logs)
 			return edited2
 		}
 
-		//@ts-ignore stfu
 		memberLogs[query] = newValue
 		const edited = await container.database.guilds.edit(guild.id, `members`, logs)
 		return edited

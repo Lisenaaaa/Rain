@@ -43,7 +43,7 @@ export class UnbanCommand extends RainCommand {
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberUnbanned', { member: args.member.user, moderator: moderator, reason: args.reason})
+			this.container.client.emit('memberUnbanned', { member: args.member.user, moderator: moderator, reason: args.reason })
 		} else {
 			await interaction.reply({ content: `Something went wrong while unbanning ${args.member.user.tag}.` })
 		}

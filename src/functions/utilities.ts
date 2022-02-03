@@ -1,6 +1,6 @@
 import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
-import { BaseCommandInteraction, CommandInteraction, MessageActionRow, MessageButton, MessageEmbedOptions, TextChannel } from 'discord.js'
+import { BaseCommandInteraction, CacheType, CommandInteraction, CommandInteractionOption, MessageActionRow, MessageButton, MessageEmbedOptions, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { ErrorDetails, Perms } from '../types/misc'
 import moment from 'moment'
@@ -191,40 +191,39 @@ export default class Utilities {
 				case 'SUB_COMMAND_GROUP': {
 					options['subcommandGroup'] = option.name
 
-					// @ts-ignore
-					const suboptions = option.options[0].options
+					const suboptions = (option.options as CommandInteractionOption<CacheType>[])[0].options
 
 					options['subcommand'] = (option.options as { name: string; type: string }[])[0].name
-
-					// @ts-ignore
-					suboptions.forEach((subOption) => {
-						switch (subOption.type) {
-							case 'STRING':
-								options[subOption.name] = subOption.value
-								break
-							case 'INTEGER':
-								options[subOption.name] = subOption.value
-								break
-							case 'BOOLEAN':
-								options[subOption.name] = subOption.value
-								break
-							case 'NUMBER':
-								options[subOption.name] = subOption.value
-								break
-							case 'USER':
-								options[subOption.name] = subOption.user
-								break
-							case 'CHANNEL':
-								options[subOption.name] = subOption.channel
-								break
-							case 'ROLE':
-								options[subOption.name] = subOption.role
-								break
-							case 'MENTIONABLE':
-								options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user, member: subOption.member }
-								break
+					;(suboptions as CommandInteractionOption<CacheType>[]).forEach(
+						(subOption: { type: string; name: string; value?: unknown; user?: unknown; channel?: unknown; role?: unknown; member?: unknown }) => {
+							switch (subOption.type) {
+								case 'STRING':
+									options[subOption.name] = subOption.value
+									break
+								case 'INTEGER':
+									options[subOption.name] = subOption.value
+									break
+								case 'BOOLEAN':
+									options[subOption.name] = subOption.value
+									break
+								case 'NUMBER':
+									options[subOption.name] = subOption.value
+									break
+								case 'USER':
+									options[subOption.name] = subOption.user
+									break
+								case 'CHANNEL':
+									options[subOption.name] = subOption.channel
+									break
+								case 'ROLE':
+									options[subOption.name] = subOption.role
+									break
+								case 'MENTIONABLE':
+									options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user, member: subOption.member }
+									break
+							}
 						}
-					})
+					)
 					break
 				}
 			}
@@ -360,5 +359,17 @@ export default class Utilities {
 			if (!array1.includes(e)) return false
 		}
 		return true
+	}
+
+	/**
+	 * @param string A string, in any capitalization format.
+	 * @returns That same string, but with the first character capitalized and the rest in lowercase.
+	 */
+	nameFormat(string: string): string {
+		string = string.toLowerCase()
+		const newString = string.split('')
+		newString[0] = newString[0].toLocaleUpperCase()
+		string = newString.join('')
+		return string
 	}
 }

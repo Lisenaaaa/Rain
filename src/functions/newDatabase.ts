@@ -9,58 +9,6 @@ This is me trying to rewrite the database to not just use JSON formatting for ev
 // import Config from '../config/config'
 // const config = new Config()
 
-// // type GuildDatabase = {
-// // 	guildID: string
-// // 	guildSettings: {
-// // 		muteRole: string | undefined
-// // 		welcomeChannel: string | undefined
-// // 		welcomeMessage: string | undefined
-// // 		loggingChannels: {
-// // 			message: string | undefined
-// // 			member: string | undefined
-// // 			moderation: string | undefined
-// // 			action: string | undefined
-// // 		}
-// // 		staffRoles: {
-// // 			owner: string | undefined
-// // 			admin: string | undefined
-// // 			srMod: string | undefined
-// // 			moderator: string | undefined
-// // 			helper: string | undefined
-// // 			trialHelper: string | undefined
-// // 		}
-// // 		lockedChannels: {
-// // 			owner: string[]
-// // 			admin: string[]
-// // 			srMod: string[]
-// // 			moderator: string[]
-// // 			helper: string[]
-// // 			trialHelper: string[]
-// // 		}
-// // 	}
-// // 	members: {
-// // 		id: string
-// // 		modlogs: {
-// // 			id: string
-// // 			type: 'BAN' | 'UNBAN' | 'KICK' | 'MUTE' | 'UNMUTE' | 'WARN' | 'UNKNOWN'
-// // 			modID: string
-// // 			reason: string
-// // 			duration?: string
-// // 			createdTimestamp: number
-// // 			evidence?: string
-// // 		}[]
-// // 		muted: { status: boolean; expires: number | undefined }
-// // 		banned: { expires: number | undefined }
-// // 	}[]
-// // 	commandSettings: {
-// // 		id: string
-// // 		enabled: boolean
-// // 		requiredPerms: 'owner' | 'admin' | 'srMod' | 'moderator' | 'helper' | 'trialHelper' | 'none'
-// // 		lockedChannels: string[]
-// // 		data?: unknown
-// // 	}[]
-// // 	features: { id: string; enabled: boolean }[]
-// // }
 
 // const sequelize = new Sequelize('testingdb', config.database.pguser, config.database.pguserpassword, {
 // 	host: config.database.pghost,
@@ -83,7 +31,7 @@ This is me trying to rewrite the database to not just use JSON formatting for ev
 // 	TestGuildDatabase.init(
 // 		{
 // 			guildID: DataTypes.STRING,
-// 			staffRoles: DataTypes.ENUM('owner', 'admin', 'srMod', 'moderator', 'helper', 'trialHelper'),
+// 			guildSettings: { staffRoles: DataTypes.ENUM('owner', 'admin', 'srMod', 'moderator', 'helper', 'trialHelper') },
 // 		},
 // 		{ sequelize, modelName: 'guild' }
 // 	)

@@ -27,7 +27,9 @@ export class ModlogsCommand extends RainCommand {
 		for (const modlog of modlogs) {
 			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modID)} (${
 				(await this.container.client.users.fetch(modlog.modID)).tag
-			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : `${this.typeIsPunishment(modlog.type) ? '\nExpires: when hell freezes over' : ''}`}\nCreated at <t:${modlog.createdTimestamp}>`
+			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : `${this.typeIsPunishment(modlog.type) ? '\nExpires: when hell freezes over' : ''}`}\nCreated at <t:${
+				modlog.createdTimestamp
+			}>`
 
 			allModlogs.push(formattedModlog)
 		}

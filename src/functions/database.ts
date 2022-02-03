@@ -110,17 +110,15 @@ class DatabaseGuilds {
 		try {
 			const guildDB = (await this.fetchAll()).find((d: GuildDatabase) => d.guildID == guildID) as GuildDatabase
 			const queryArray = query.split('.')
-			let dbObject: GuildDatabase = guildDB
-			const finalQuery = queryArray.pop()
+			let dbObject = guildDB
+			const finalQuery = queryArray.pop() as string
 
 			queryArray.forEach((query) => {
-				//@ts-ignore ok typescript
-				dbObject = dbObject?.[query as keyof typeof dbObject]
+				//@ts-ignore
+				dbObject = dbObject?.[query as keyof GuildDatabase]
 			})
 
-			// debug(dbObject, finalQuery, newValue)
-
-			//@ts-ignore ok typescript
+			//@ts-ignore
 			dbObject[finalQuery] = newValue
 
 			await rawDbRequest("UPDATE guilds SET data = $1 WHERE data->>'guildID' = $2;", {

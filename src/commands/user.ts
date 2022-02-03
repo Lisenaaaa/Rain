@@ -43,6 +43,18 @@ export class AvatarCommand extends RainCommand {
 					description: `**Mention**: ${user}${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
                     **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
                     ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}
+					${
+						member
+							? `
+					
+					**Roles**: ${member.roles.cache
+						.filter((r) => r.id != r.guild.id)
+						.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
+						.map((r) => r.toString())}
+					**Discord Perms**: ${this.container.members.importantPerms(member).toString()}
+					`
+							: ''
+					}
                     `,
 				},
 			],
