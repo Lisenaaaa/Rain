@@ -1,7 +1,6 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, Guild, GuildMember, Message } from 'discord.js'
+import { CommandInteraction, GuildMember } from 'discord.js'
 import RainCommand from '../structures/RainCommand'
 import { ArgsUser } from '../types/misc'
 
@@ -27,7 +26,7 @@ import { ArgsUser } from '../types/misc'
 })
 export class AvatarCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-        await interaction.deferReply()
+		await interaction.deferReply()
 		const args: { user?: ArgsUser } = this.container.utils.parseInteractionArgs(interaction)
 		const user = args.user?.user ?? interaction.user
 		let member: GuildMember | undefined
@@ -36,15 +35,14 @@ export class AvatarCommand extends RainCommand {
 		let pronouns = await this.container.users.getPronouns(user)
 		if (pronouns === 'Unspecified') pronouns = undefined
 
-		await interaction.reply({
+		await interaction.editReply({
 			embeds: [
 				{
 					title: `${user.tag}`,
 					thumbnail: { url: `${member ? member.displayAvatarURL({ dynamic: true, format: 'png', size: 128 }) : user.displayAvatarURL({ dynamic: true, format: 'png', size: 128 })}` },
-					description: `**ID**: \`${user.id}\`${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
+					description: `**Mention**: ${user}${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
                     **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
                     ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}
-                    
                     `,
 				},
 			],

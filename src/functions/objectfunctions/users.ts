@@ -10,7 +10,10 @@ export default class Users {
 		return container.settings.owners.includes(user.id)
 	}
 
-	async getPronouns(user: User, context: 'details' | 'ownedBy' | 'singular' | 'talkingAbout' = 'details') {
+	async getPronouns(user: User, context: 'details' | 'ownedBy' | 'singular' | 'talkingAbout' = 'details'): Promise<string | undefined> {
+		if (process.argv.includes('--noPronounDB')) {
+			return undefined
+		}
 		//all pronouns here are listed in the order they're in on https://pronoundb.org/docs
 		const pronounDetails = [
 			{ id: 'unspecified', pronoun: 'Unspecified' },
@@ -193,7 +196,7 @@ export default class Users {
 
 	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown) {
 		const guild = container.client.guilds.cache.get(guildID) as Guild
-		
+
 		return await container.guilds.editMemberEntry(guild, user.id, query, newValue)
 	}
 }

@@ -26,3 +26,6 @@ const levels = {
 const level = levels[args[0] as keyof typeof levels] ?? levels['Debug']
 const client = new RainClient(level)
 void client.login(new config().tokens.main)
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const validArgs = ['--noPronounDB']

@@ -1,4 +1,3 @@
-// /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction } from 'discord.js'
