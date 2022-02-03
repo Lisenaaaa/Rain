@@ -193,7 +193,7 @@ export default class Users {
 
 	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown) {
 		const guild = container.client.guilds.cache.get(guildID) as Guild
-		
+
 		return await container.guilds.editMemberEntry(guild, user.id, query, newValue)
 	}
 }

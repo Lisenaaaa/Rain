@@ -94,7 +94,7 @@ export default class RainLogger implements ILogger {
 		['error', 'red'],
 		['debug', 'magenta'],
 		['warn', 'red'],
-		['trace', 'black']
+		['trace', 'black'],
 	])
 }
 

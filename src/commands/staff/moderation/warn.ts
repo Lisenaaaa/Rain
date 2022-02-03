@@ -54,7 +54,7 @@ export class WarnCommand extends RainCommand {
 			this.container.logger.debug('adding to modlogs')
 			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as Snowflake, 'WARN', interaction.user.id, { reason: args.reason })
 
-            await this.container.client.emit('memberWarn', target, interaction.member, args.reason)
+			await this.container.client.emit('memberWarn', target, interaction.member, args.reason)
 		}
 
 		await interaction.reply({ content: `You can't warn someone who isn't on the server.` })

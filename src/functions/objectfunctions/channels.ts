@@ -35,7 +35,7 @@ export default class Channels {
 			}
 
 			const channels = container.cache.guilds.get(channel.guild.id)?.guildSettings.lockedChannels
-			
+
 			if (channels?.owner.includes(channel.id)) return 'owner'
 			else if (channels?.admin.includes(channel.id)) return 'admin'
 			else if (channels?.srMod.includes(channel.id)) return 'srMod'
