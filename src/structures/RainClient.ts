@@ -62,6 +62,7 @@ declare module '@sapphire/framework' {
 	interface CommandOptions {
 		defaultPermissions: Perms
 		botPerms?: PermissionResolvable[]
+		userDiscordPerms?: PermissionResolvable[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]
@@ -72,6 +73,7 @@ declare module '@sapphire/framework' {
 	interface Command {
 		defaultPermissions: Perms
 		botPerms?: PermissionResolvable[]
+		userDiscordPerms?: PermissionResolvable[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]

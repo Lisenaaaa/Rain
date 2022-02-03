@@ -10,6 +10,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	description: "see someone's modlogs",
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'trialHelper',
+	userDiscordPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933929396945952779'],

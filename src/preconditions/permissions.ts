@@ -54,7 +54,15 @@ export class PermissionsPrecondition extends Precondition {
 			value: container.utils.arrayIncludesAllArray(botPerms, command.sapphire?.options.botPerms ?? []),
 		}
 
-		container.logger.debug(`${member.user.tag} ran ${chalk.red(commandId)}\n`, commandEnabled, runCommandsInChannel, runCommand, iHavePerms, '\n')
+		const userHasDiscordPerms = {
+			label: "If the guild doesn't have staff roles, does the user have permissions to run the command?",
+			guildHasStaffRoles: await container.guilds.hasStaffRoles(guild),
+			requiredPerms: command.sapphire?.userDiscordPerms ?? [],
+			userPerms: '[potentially massive array]',
+			value: container.utils.arrayIncludesAllArray(channel.permissionsFor(member).toArray(), command.sapphire?.userDiscordPerms ?? []),
+		}
+
+		container.logger.debug(`${member.user.tag} ran ${chalk.red(commandId)}\n`, commandEnabled, runCommandsInChannel, runCommand, iHavePerms, userHasDiscordPerms, '\n')
 
 		if (!commandEnabled.value) {
 			return await this.error({ identifier: 'permissions', message: 'This command is currently disabled.' })
@@ -81,11 +89,32 @@ export class PermissionsPrecondition extends Precondition {
 		if (!iHavePerms.value) {
 			return await this.error({
 				identifier: this.name,
-				message: `I'm missing one or more of these permissions, which are required for me to run this command: ${iHavePerms.commandPerms}`,
+				message: `I'm missing one or more of these permissions, which are required for me to run this command: ${this.formatPermsArray(iHavePerms.commandPerms as string[]).join(', ')}`,
+			})
+		}
+
+		if (!userHasDiscordPerms.guildHasStaffRoles && !userHasDiscordPerms.value) {
+			return await this.error({
+				identifier: this.name,
+				message: `You're missing one or more of these permissions, which are required for you to run this command: ${this.formatPermsArray(userHasDiscordPerms.requiredPerms as string[]).join(
+					', '
+				)}`,
 			})
 		}
 
 		return this.ok()
+	}
+
+	formatPermsArray(permsToFormat: string[]) {
+		for (const perm in permsToFormat) {
+			const newPerm = permsToFormat[perm].split('_')
+			for (const nP in newPerm) {
+				newPerm[nP] = this.container.utils.nameFormat(newPerm[nP])
+			}
+			permsToFormat[perm] = newPerm.join(' ').replace('Tts', 'TTS')
+		}
+
+		return permsToFormat
 	}
 }
 

@@ -42,8 +42,6 @@ export class EvalCommand extends RainCommand {
 				},
 				container = this.container,
 				db = this.container.cache.guilds.get(message.guild?.id as string),
-				// eslint-disable-next-line no-useless-escape
-				testString = '\u200b "I AQHTEW YOU IU HATE YOU DISCOR D YOU SUCK EW I HATE OYU YOU SUCK DISCORD"'
 
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true

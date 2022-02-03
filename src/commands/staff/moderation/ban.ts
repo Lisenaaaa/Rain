@@ -12,6 +12,7 @@ import { ArgsUser } from '../../../types/misc'
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'moderator',
 	botPerms: ['BAN_MEMBERS'],
+	userDiscordPerms: ['BAN_MEMBERS'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['938210475534061599'],
