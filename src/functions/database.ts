@@ -117,7 +117,7 @@ class DatabaseGuilds {
 				//@ts-ignore ok typescript
 				dbObject = dbObject?.[query as keyof typeof dbObject]
 			})
-			
+
 			//@ts-ignore ok typescript
 			dbObject[finalQuery] = newValue
 
