@@ -7,7 +7,7 @@
 		"test": "yarn run lint && yarn run build",
 		"build": "yarn rimraf dist/ && yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
-		"start": "node starting.js && yarn build && node --trace-warnings -r source-map-support/register dist/index.js"
+		"start": "node starting.js && yarn build && node --trace-warnings --enable-source-maps dist/index.js"
 	},
 	"repository": "https://github.com/Lisenaaaa/Rain/tree/sapphire",
 	"author": "Alyssa <69115669+Lisenaaaa@users.noreply.github.com>",
@@ -16,7 +16,6 @@
 	"devDependencies": {
 		"@types/pg": "^8",
 		"@types/rimraf": "^3",
-		"@types/source-map-support": "^0",
 		"@types/validator": "^13",
 		"@typescript-eslint/eslint-plugin": "^5.3.1",
 		"@typescript-eslint/parser": "^5.3.1",
@@ -24,7 +23,6 @@
 		"eslint": "^8.2.0",
 		"prettier": "^2.4.1",
 		"rimraf": "^3.0.2",
-		"source-map-support": "^0.5.20",
 		"tslib": "^2.3.1",
 		"typescript": "^4.5.4",
 		"validator": "^13.7.0"
