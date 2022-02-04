@@ -28,6 +28,7 @@ export type ErrorDetails = {
 	}
 }
 export type ArgsUser = { user: User; member: GuildMember | undefined }
+export type ArgsSnowflake = { snowflake: Snowflake | undefined }
 export type ChalkColors =
 	| 'black'
 	| 'red'
