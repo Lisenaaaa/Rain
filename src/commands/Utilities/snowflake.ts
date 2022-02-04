@@ -1,3 +1,7 @@
+/** 
+Commented out until I finish it.
+
+
 import { ApplyOptions } from '@sapphire/decorators'
 import { SnowflakeRegex } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
@@ -32,3 +36,5 @@ export class SnowflakeCommand extends RainCommand {
         // idk do something here, get the user data
     }
 }
+
+**/
