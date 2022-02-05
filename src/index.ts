@@ -1,13 +1,19 @@
 import config from './config/config'
 import { RainClient } from './structures/RainClient'
-import Database from './functions/database'
+import { Database } from './functions/database'
 import '@sapphire/plugin-editable-commands/register'
+import { Interaction } from 'discord.js'
 
 if (process.platform === 'win32') {
 	throw new Error('Please use a good OS.')
 }
 
-new Database().initDB()
+// prettier adds the semicolon, eslint hates it.
+// eslint-disable-next-line @typescript-eslint/no-extra-semi
+;(async () => {
+	await Database.init()
+	await Database.connect()
+})()
 
 const args = process.argv
 args.shift()

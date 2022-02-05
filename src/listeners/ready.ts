@@ -8,8 +8,6 @@ import { Listener, ListenerOptions } from '@sapphire/framework'
 })
 export class ReadyListener extends Listener {
 	async run() {
-		await this.container.cache.guilds.fetchAll()
-		this.container.logger.info('Database guild entries cached.')
 		await this.loadTasks()
 		this.container.logger.info(`Logged in as ${this.container.client.user?.tag}`)
 

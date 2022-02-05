@@ -21,16 +21,14 @@ export class ModlogsCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser } = this.parseArgs(interaction)
 
-		const modlogs = await this.container.users.getModlogs(args.member.user, interaction.guild?.id as string)
-		if (modlogs === undefined) return await interaction.reply('That user has no modlogs!')
+		const modlogs = await this.container.database.modlogs.findAll({ where: { userId: args.member.user.id, guildId: interaction.guild?.id as string } })
+		if (modlogs === null) return await interaction.reply('That user has no modlogs!')
 
 		const allModlogs = []
 		for (const modlog of modlogs) {
-			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modID)} (${
-				(await this.container.client.users.fetch(modlog.modID)).tag
-			})${modlog.duration ? `\nExpires: <t:${modlog.duration}:R>` : `${this.typeIsPunishment(modlog.type) ? '\nExpires: when hell freezes over' : ''}`}\nCreated at <t:${
-				modlog.createdTimestamp
-			}>`
+			const formattedModlog = `ID: \`${modlog.id}\`\nType: ${modlog.type.toLowerCase()}\nReason: ${modlog.reason}\nModerator: ${await this.container.client.users.fetch(modlog.modId)} (${
+				(await this.container.client.users.fetch(modlog.modId)).tag
+			})${modlog.expires ? `\nExpires: <t:${modlog.expires}:R>` : `${this.typeIsPunishment(modlog.type) ? '\nExpires: when hell freezes over' : ''}`}\nCreated at <t:${modlog.createdAt}>`
 
 			allModlogs.push(formattedModlog)
 		}

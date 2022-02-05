@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-extra-semi
 ;(async () => {
 	console.log(require('chalk')`{blue [INFO]} {blueBright ${await timeFormatted('%F %r')}}: {white Transpiling TypeScript. This may take some time.}`)
 })()

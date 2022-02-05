@@ -8,8 +8,8 @@ import { GuildMember } from 'discord.js'
 })
 export class MemberAddListener extends Listener {
 	async run(member: GuildMember) {
-		if (this.container.cache.guilds.check(member.guild.id) === undefined) {
-			await this.container.database.guilds.add(member.guild.id)
+		if (!(await this.container.database.guilds.findByPk(member.guild.id))) {
+			await this.container.database.guilds.create({ id: member.guild.id })
 		}
 
 		await this.addAltRole(member)
@@ -24,16 +24,16 @@ export class MemberAddListener extends Listener {
 	}
 
 	async welcomeMember(member: GuildMember) {
-		const database = this.container.cache.guilds.get(member.guild.id)
+		const database = await this.container.database.guilds.findByPk(member.guild.id)
 
-		const channelID = database?.guildSettings.welcomeChannel
+		const channelID = database?.welcomeChannel
 		if (!channelID) return
 
 		const welcomeChannel = await member.guild.channels.fetch(channelID)
 		if (!welcomeChannel) return
 		if (welcomeChannel.type != 'GUILD_TEXT') return
 
-		const welcomeMessage = database.guildSettings.welcomeMessage
+		const welcomeMessage = database.welcomeMessage
 		if (!welcomeMessage) return
 
 		await welcomeChannel.send(this.formatString(welcomeMessage, member))

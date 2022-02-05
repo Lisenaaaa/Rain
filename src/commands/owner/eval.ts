@@ -27,7 +27,6 @@ export class EvalCommand extends RainCommand {
 		let success
 		try {
 			const inspect = util.inspect,
-				database = this.container.database,
 				utils = this.container.utils,
 				client = this.container.client,
 				settings = this.container.settings,
@@ -36,12 +35,21 @@ export class EvalCommand extends RainCommand {
 				guild = message.guild,
 				channel = message.channel,
 				sh = promisify(exec),
-				guilds = {
-					cache: this.container.cache.guilds,
-					client: this.container.client.guilds,
-				},
 				container = this.container,
-				db = this.container.cache.guilds.get(message.guild?.id as string)
+				db = this.container.database.guilds.findByPk(message.guildId as string),
+				dbInfo = `\`\`\`js
+				// add //
+				await GuildDatabase.create({ id: 'id' })
+				// fetch //
+				await GuildDatabase.findByPk('id') // the database, or \`null\` if it isn't there
+				await ModlogDatabase.findOne({ where: { memberId: 'member id', guildId: 'guild id' } }) // use this for most things, as there are two ids and not just one (like, when finding a specific member's modlogs)
+				// fetch all //
+				await GuildDatabase.findAll() // remove the map if you want to, say, run something on all of them
+				// edit //
+				await GuildDatabase.update({ welcomeMessage: 'hi {user} you suck xfbvndskjhfgbndsfkjh,gbndskjjgbfhn' }, { where: { id: 'id' } })
+				// delete //
+				await GuildDatabase.destroy({ where: { id: 'id' } })\`\`\`
+				`
 
 			output = inspect(await eval(codeToEval), { depth: 0 })
 			success = true

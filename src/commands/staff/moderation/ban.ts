@@ -2,6 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, Guild, GuildMember } from 'discord.js'
 import ms from 'ms'
+import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
 
@@ -65,13 +66,17 @@ export class BanCommand extends RainCommand {
 
 		let banned: boolean
 		time
-			? (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }, time))
+			? (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }, BigInt(time)))
 			: (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }))
 
 		if (banned) {
-			await this.container.users.addModlogEntry(args.member.user, interaction.guild?.id as string, 'BAN', moderator.user.id, {
-				reason: args.reason,
-				duration: time ? time.toString() : undefined,
+			await this.container.database.modlogs.create({
+				id: nanoid(),
+				userId: args.member.user.id,
+				guildId: interaction.guildId as string,
+				modId: interaction.user.id,
+				type: 'MUTE',
+				reason: args.reason ?? null,
 			})
 
 			await interaction.reply({

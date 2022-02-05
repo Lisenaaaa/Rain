@@ -2,6 +2,8 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, GuildMember } from 'discord.js'
 import ms from 'ms'
+import { nanoid } from 'nanoid'
+import { GuildDatabase } from '../../../functions/databases/guild'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
 
@@ -35,21 +37,34 @@ export class MuteCommand extends RainCommand {
 		}
 
 		if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-			return await interaction.reply({ content: `You can't mute someone with higher or equal permissions to you.`, ephemeral: true })
+			return await interaction.reply({ content: "You can't mute someone with higher or equal permissions to you.", ephemeral: true })
 		}
-		if (!this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.muteRole) throw new Error("I can't mute people without having a role set to mute them with.")
-		const muteRole = await interaction.guild?.roles.fetch(this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.muteRole as string)
-		if (!muteRole) throw new Error("I can't mute people without having a role set to mute them with.")
+
+		const muteRoleId = (await GuildDatabase.findByPk(interaction.guild?.id as string))?.muteRole
+		if (!muteRoleId) return await interaction.reply("I can't mute people without having a role set to mute them with.")
+		const muteRole = (await GuildDatabase.findByPk(interaction.guildId as string))?.muteRole
+		if (!muteRole) return await interaction.reply("I can't mute people without having a role set to mute them with.")
 
 		let muted: boolean
-		time ? (muted = await this.container.members.mute(target, time)) : (muted = await this.container.members.mute(target))
+		time ? (muted = await this.container.members.mute(target, BigInt(time))) : (muted = await this.container.members.mute(target))
 
 		if (muted) {
-			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'MUTE', moderator.user.id, {
-				reason: args.reason,
-				duration: time ? time.toString() : undefined,
+			await this.container.database.modlogs.create({
+				id: nanoid(),
+				userId: target.id,
+				guildId: interaction.guildId as string,
+				modId: interaction.user.id,
+				type: 'MUTE',
+				reason: args.reason ?? null,
+				expires: `${time}`
 			})
-			await args.member.user.send(`You have been muted in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
+
+			try {
+				await args.member.user.send(`You have been muted in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
+			} catch (err) {
+				/* do nothing */
+			}
+
 			await interaction.reply({
 				content: `I've muted ${target.user.tag}${time ? ` until <t:${time}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,

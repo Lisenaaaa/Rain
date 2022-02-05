@@ -1,16 +1,27 @@
 import { container, SapphireClient } from '@sapphire/framework'
 import Utilities from '../functions/utilities'
 import Settings from '../config/settings'
-import Database from '../functions/database'
 import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
 import RainLogger from '../functions/logging'
-import { Cache } from '../functions/cache'
 import { Members } from '../functions/objectfunctions/members'
 import { Perms } from '../types/misc'
 import { RainTaskStore } from './RainTaskStore'
 import { ApplicationCommandOptionData, PermissionResolvable, Snowflake } from 'discord.js'
+import { CommandDatabase } from '../functions/databases/commands'
+import { GuildDatabase } from '../functions/databases/guild'
+import { GuildCommandDatabase } from '../functions/databases/guildCommands'
+import { MemberDatabase } from '../functions/databases/members'
+import { ModlogDatabase } from '../functions/databases/modlogs'
+
+class Db {
+	commands = CommandDatabase // = new CommandDatabase()
+	guilds = GuildDatabase // = new GuildDatabase()
+	guildCommands = GuildCommandDatabase // = new GuildCommandDatabase()
+	members = MemberDatabase // = new MemberDatabase()
+	modlogs = ModlogDatabase // = new ModlogDatabase()
+}
 
 export class RainClient extends SapphireClient {
 	public constructor(level: number) {
@@ -28,16 +39,14 @@ export class RainClient extends SapphireClient {
 			},
 		})
 
-		container.database = new Database()
 		container.settings = new Settings()
 		container.utils = new Utilities()
+		container.database = new Db()
 
 		container.users = new Users()
 		container.guilds = new Guilds()
 		container.channels = new Channels()
 		container.members = new Members()
-
-		container.cache = new Cache()
 
 		this.stores.register(new RainTaskStore())
 	}
@@ -47,14 +56,12 @@ declare module '@sapphire/pieces' {
 	interface Container {
 		utils: Utilities
 		settings: Settings
-		database: Database
+		database: Db
 
 		guilds: Guilds
 		users: Users
 		channels: Channels
 		members: Members
-
-		cache: Cache
 	}
 }
 

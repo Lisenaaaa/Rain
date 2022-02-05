@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, GuildMember, Snowflake } from 'discord.js'
+import { CommandInteraction, GuildMember } from 'discord.js'
+import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
 
@@ -53,8 +54,14 @@ export class WarnCommand extends RainCommand {
 			}
 
 			this.container.logger.debug('adding to modlogs')
-			await this.container.users.addModlogEntry(target.user, interaction.guild?.id as Snowflake, 'WARN', interaction.user.id, { reason: args.reason })
-
+			await this.container.database.modlogs.create({
+				id: nanoid(),
+				userId: target.id,
+				guildId: interaction.guildId as string,
+				modId: interaction.user.id,
+				type: 'WARN',
+				reason: args.reason ?? null,
+			})
 			await this.container.client.emit('memberWarn', target, interaction.member, args.reason)
 		}
 

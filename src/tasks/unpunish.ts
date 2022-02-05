@@ -1,8 +1,9 @@
 import { PieceContext } from '@sapphire/framework'
 import { RainTask } from '../structures/RainTaskPiece'
 import { container } from '@sapphire/pieces'
-import { GuildDatabase } from '../types/database'
-import { GuildMember } from 'discord.js'
+import { GuildMember, Snowflake } from 'discord.js'
+import { GuildAttributes } from '../functions/databases/guild'
+import { nanoid } from 'nanoid'
 
 export class UnpunishTask extends RainTask {
 	constructor(context: PieceContext) {
@@ -14,21 +15,21 @@ export class UnpunishTask extends RainTask {
 
 	async run() {
 		for (const [id, guild] of container.client.guilds.cache) {
-			if (!container.cache.guilds.check(id)) {
-				await container.database.guilds.add(id)
-				// container.logger.debug(`Created database entry for ${guild.name} : ${id}`)
+			if (!(await container.database.guilds.findByPk(guild.id))) {
+				await container.database.guilds.create({ id: guild.id })
 			}
 
-			const { members, guildSettings } = container.cache.guilds.get(id) as GuildDatabase
-			const { muteRole } = guildSettings
+			const gDb = (await container.database.guilds.findByPk(guild.id)) as GuildAttributes
+			const members = await container.database.members.findAll({ where: { guildId: id } })
+			const { muteRole } = gDb
 
 			for (const member of members) {
 				/* unmute */
-				if (member.muted.status && member.muted.expires && member.muted.expires <= container.utils.now()) {
+				if (member.muteStatus && member.muteExpires && member.muteExpires <= BigInt(container.utils.now())) {
 					let person: GuildMember | undefined
 
 					try {
-						person = await guild.members.fetch(member.id)
+						person = await guild.members.fetch(member.memberId)
 					} catch (err) {
 						/*do nothing*/
 					}
@@ -43,8 +44,14 @@ export class UnpunishTask extends RainTask {
 
 						// container.logger.debug(`unmuting ${person.id} on ${id}`)
 						await container.members.unmute(person)
-						await container.users.addModlogEntry(person.user, id, 'UNMUTE', container.client.user?.id as string, { reason: 'Automatically unmuted.' })
-
+						await this.container.database.modlogs.create({
+							id: nanoid(),
+							userId: member.memberId,
+							guildId: id,
+							modId: container.client.user?.id as Snowflake,
+							type: 'UNMUTE',
+							reason: "Automatically unmuted."
+						})
 						try {
 							await person.send(`You have been automatically unmuted in **${guild.name}**`)
 						} catch (err) {
@@ -54,11 +61,18 @@ export class UnpunishTask extends RainTask {
 				}
 
 				/* unban */
-				if (member.banned.expires != null && member.banned.expires <= container.utils.now()) {
-					const person = await container.client.users.fetch(member.id)
+				if (member.banExpires != null && member.banExpires <= BigInt(container.utils.now())) {
+					const person = await container.client.users.fetch(member.memberId)
 					if (!(await guild.bans.fetch()).has(person.id)) return
 					await guild.bans.remove(person, 'Punishment expired.')
-					await container.users.addModlogEntry(person, id, 'UNBAN', container.client.user?.id as string, { reason: 'Punishment expired.' })
+					await this.container.database.modlogs.create({
+						id: nanoid(),
+						userId: member.memberId,
+						guildId: id,
+						modId: container.client.user?.id as Snowflake,
+						type: 'UNBAN',
+						reason: "Automatically unbanned."
+					})
 					try {
 						await person.send(`You have been automatically unbanned in **${guild.name}**`)
 					} catch (err) {

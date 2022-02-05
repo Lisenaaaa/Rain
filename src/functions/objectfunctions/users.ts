@@ -1,9 +1,6 @@
 import { container } from '@sapphire/pieces'
-import { Guild, Snowflake, User } from 'discord.js'
+import { User } from 'discord.js'
 import got from 'got/dist/source'
-import { nanoid } from 'nanoid'
-import { DatabaseMember } from '../../types/database'
-import { ModlogTypes, Modlogs } from '../../types/misc'
 
 export default class Users {
 	isOwner(user: User) {
@@ -133,70 +130,5 @@ export default class Users {
 				return undefined
 			}
 		}
-	}
-
-	async addModlogEntry(user: User, guildID: Snowflake, type: ModlogTypes, moderator: Snowflake, data: { reason?: string; duration?: string }) {
-		if (container.cache.guilds.check(guildID) === undefined) {
-			await container.database.guilds.add(guildID)
-		}
-
-		const guild = container.client.guilds.cache.get(guildID)
-		if (guild === undefined) throw new Error("I couldn't find that guild.")
-		if (!type) throw new Error("You can't make a modlog entry without a type!")
-		if (!moderator) moderator = user.client.user?.id as string
-		const modlogEntry: Modlogs = {
-			id: nanoid(),
-			type: type,
-			modID: moderator,
-			reason: data.reason ? data.reason : 'No Reason Provided',
-			createdTimestamp: container.utils.now(),
-		}
-
-		if (data.duration) modlogEntry.duration = data.duration
-
-		// let modlogs = await this.getModlogs(user, guild.id)
-		let modlogs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)?.modlogs
-
-		if (modlogs === undefined) {
-			const newModlogs: DatabaseMember = {
-				id: user.id,
-				modlogs: [],
-				muted: { status: false, expires: null },
-				banned: { expires: null },
-			}
-			const dbLogs = container.cache.guilds.get(guildID)?.members
-			dbLogs?.push(newModlogs)
-			const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
-			if (edited === false) return edited
-
-			modlogs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)?.modlogs
-			// modlogs?.push(modlogEntry)
-			dbLogs?.find((m: DatabaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
-			const edited2 = await container.database.guilds.edit(guild.id, 'members', dbLogs)
-			return edited2
-		}
-
-		// modlogs.push(modlogEntry)
-		const dbLogs = container.cache.guilds.get(guildID)?.members
-		dbLogs?.find((m: DatabaseMember) => m.id === user.id)?.modlogs.push(modlogEntry)
-		const edited = await container.database.guilds.edit(guild.id, 'members', dbLogs)
-		return edited
-	}
-
-	async getModlogs(user: User, guildID: Snowflake): Promise<Modlogs[] | undefined> {
-		try {
-			const logs = container.cache.guilds.get(guildID)?.members.find((m: DatabaseMember) => m.id === user.id)
-			if (logs === undefined) return undefined
-			else if (logs.modlogs.length === 0) return undefined
-			else return logs.modlogs
-		} catch (err) {
-			return undefined
-		}
-	}
-
-	async editGuildEntry(user: User, guildID: Snowflake, query: 'modlogs' | 'muted' | 'banned', newValue: unknown) {
-		const guild = container.client.guilds.cache.get(guildID) as Guild
-
-		return await container.guilds.editMemberEntry(guild, user.id, query, newValue)
 	}
 }

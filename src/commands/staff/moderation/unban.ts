@@ -1,6 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, Guild, GuildMember } from 'discord.js'
+import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
 
@@ -35,8 +36,13 @@ export class UnbanCommand extends RainCommand {
 		const banned = await this.container.guilds.unban(interaction.guild as Guild, args.member.user, args.reason)
 
 		if (banned) {
-			await this.container.users.addModlogEntry(args.member.user, interaction.guild?.id as string, 'UNBAN', moderator.user.id, {
-				reason: args.reason,
+			await this.container.database.modlogs.create({
+				id: nanoid(),
+				userId: args.member.user.id,
+				guildId: interaction.guildId as string,
+				modId: interaction.user.id,
+				type: 'UNBAN',
+				reason: args.reason ?? null,
 			})
 
 			await interaction.reply({

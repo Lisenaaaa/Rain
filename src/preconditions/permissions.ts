@@ -21,16 +21,16 @@ export class PermissionsPrecondition extends Precondition {
 	}
 
 	private async run(guild: Guild, channel: TextChannel, member: GuildMember, commandId: string): Promise<PreconditionResult> {
-		const db = this.container.cache.guilds.get(guild.id)
-		const command = { sapphire: this.container.utils.getCommand(commandId), db: db?.commandSettings.find((c) => c.id === commandId) }
+		const command = { sapphire: this.container.utils.getCommand(commandId), db: await this.container.database.guildCommands.findOne({ where: { guildId: guild.id, commandId: commandId } }) }
 		const channelRequirements = await this.container.channels.getRestrictedPerms(channel) // the permissions the channel needs ('none' if none, `perms` type if some)
 		if (channelRequirements === false) {
-			throw new Error('Failed to get if a channel is locked to a specific role')
+			return await this.error({ identifier: 'permissions', message: '[ERROR] Failed to get if a channel is locked to a specific role' })
 		}
 
 		const commandEnabled = { label: 'Is the command enabled?', value: command.db?.enabled }
 
 		const memberPerms = await this.container.members.getPerms(member) // the member's permissions ('none' if none, `perms` type if some)
+
 		const memberHasPermissionToUseChannel = this.container.utils.checkPermHeirarchy(memberPerms, channelRequirements)
 
 		const runCommandsInChannel = { label: 'Can the member run any commands in this channel?', channelRequirements, memberPerms, value: memberHasPermissionToUseChannel }
