@@ -31,23 +31,4 @@ export class Database {
 
 		await sequelize.sync({ alter: true })
 	}
-
-	async run() {
-		// add //
-		// await GuildDatabase.create({ id: 'id' })
-		// fetch //
-		// console.log(await GuildDatabase.findByPk('id')) // the database, or `null` if it isn't there
-		// fetch all //
-		// await GuildDatabase.findAll() // remove the map if you want to, say, run something on all of them
-		// edit //
-		// await GuildDatabase.update({ welcomeMessage: 'hi {user} you suck xfbvndskjhfgbndsfkjh,gbndskjjgbfhn' }, { where: { id: 'id' } })
-		// delete //
-		// await GuildDatabase.destroy({ where: { id: 'id' } })
-	}
 }
-
-// // eslint-disable-next-line @typescript-eslint/no-extra-semi
-// ;(async () => {
-// 	await Database.connect()
-// 	await Database.init()
-// })()
