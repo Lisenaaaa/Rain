@@ -56,7 +56,7 @@ export class MuteCommand extends RainCommand {
 				modId: interaction.user.id,
 				type: 'MUTE',
 				reason: args.reason ?? null,
-				expires: `${time}`
+				expires: `${time}`,
 			})
 
 			try {

@@ -86,7 +86,7 @@ export default class Guilds {
 			await container.database.guilds.create({ id: guild.id })
 		}
 
-		const db = await container.database.guilds.findByPk(guild.id) as GuildAttributes
+		const db = (await container.database.guilds.findByPk(guild.id)) as GuildAttributes
 
 		if (db.ownerRole === null && db.adminRole === null && db.srModRole === null && db.modRole === null && db.helperRole === null && db.trialHelperRole === null) return false
 		else return true

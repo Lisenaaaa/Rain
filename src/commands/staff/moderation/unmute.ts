@@ -36,7 +36,7 @@ export class UnmuteCommand extends RainCommand {
 			return await interaction.reply({ content: `You can't unmute someone with higher or equal permissions to you.`, ephemeral: true })
 		}
 
-		if (!await this.container.members.isMuted(target)) {
+		if (!(await this.container.members.isMuted(target))) {
 			return await interaction.reply({ content: "You can't unmute someone who isn't muted.", ephemeral: true })
 		}
 

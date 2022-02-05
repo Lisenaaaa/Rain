@@ -60,11 +60,11 @@ export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttrib
 				},
 				reason: {
 					type: DataTypes.STRING,
-                    defaultValue: null
+					defaultValue: null,
 				},
 				expires: {
 					type: DataTypes.STRING,
-                    defaultValue: null
+					defaultValue: null,
 				},
 			},
 			{ sequelize, modelName: 'Modlogs' }

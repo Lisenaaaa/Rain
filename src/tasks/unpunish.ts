@@ -50,7 +50,7 @@ export class UnpunishTask extends RainTask {
 							guildId: id,
 							modId: container.client.user?.id as Snowflake,
 							type: 'UNMUTE',
-							reason: "Automatically unmuted."
+							reason: 'Automatically unmuted.',
 						})
 						try {
 							await person.send(`You have been automatically unmuted in **${guild.name}**`)
@@ -71,7 +71,7 @@ export class UnpunishTask extends RainTask {
 						guildId: id,
 						modId: container.client.user?.id as Snowflake,
 						type: 'UNBAN',
-						reason: "Automatically unbanned."
+						reason: 'Automatically unbanned.',
 					})
 					try {
 						await person.send(`You have been automatically unbanned in **${guild.name}**`)
