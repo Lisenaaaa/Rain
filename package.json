@@ -7,7 +7,9 @@
 		"test": "yarn run lint && yarn run build",
 		"build": "yarn rimraf dist/ && yarn tsc",
 		"lint": "yarn eslint --ext js,jsx,ts,tsx src",
-		"start": "node starting.js && yarn build && node --trace-warnings --enable-source-maps dist/index.js"
+		"start": "node starting.js && yarn build && node --trace-warnings --enable-source-maps dist/index.js",
+		"format": "yarn prettier --write .",
+		"format:check": "yarn prettier --check ."
 	},
 	"repository": "https://github.com/Lisenaaaa/Rain/tree/sapphire",
 	"author": "Alyssa <69115669+Lisenaaaa@users.noreply.github.com>",

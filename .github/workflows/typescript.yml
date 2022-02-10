@@ -70,12 +70,12 @@ jobs:
             - name: Format and commit code if needed
               if: ${{ github.event_name == 'push' }}
               run: |
-                  yarn prettier --write .
+                  yarn format
                   git commit -am "refactor: Automatically formatted code" || true
             - name: Check formatting
               if: ${{ github.event_name == 'pull_request' }}
               run: |
-                  yarn prettier --check .
+                  yarn format:check
             - name: Push changes
               if: ${{ github.event_name == 'push' }}
               uses: ad-m/github-push-action@master
