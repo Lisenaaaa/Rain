@@ -28,7 +28,7 @@ export class UnbanCommand extends RainCommand {
 		const moderator = interaction.member as GuildMember
 
 		try {
-			await args.member.user.send(`You have been unbanned in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
+			await args.member.user.send(`You have been unbanned in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : '.'}`)
 		} catch (err) {
 			/* do nothing lol */
 		}
@@ -42,7 +42,7 @@ export class UnbanCommand extends RainCommand {
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
 				type: 'UNBAN',
-				reason: args.reason ?? null,
+				reason: args.reason,
 			})
 
 			await interaction.reply({

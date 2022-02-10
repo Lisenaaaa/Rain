@@ -41,7 +41,7 @@ import { ArgsUser } from '../../../types/misc'
 export class BanCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string; days?: 1 | 2 | 3 | 4 | 5 | 6 | 7 } = this.parseArgs(interaction)
-		const time = args.time ? ms(args.time) / 1000 + this.container.utils.now() : undefined
+		const time = args.time ? ms(args.time) + this.container.utils.now('milliseconds') : undefined
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
 
@@ -59,14 +59,14 @@ export class BanCommand extends RainCommand {
 		// if (!banRole) throw new Error("I can't ban people without having a role set to ban them with.")
 
 		try {
-			await args.member.user.send(`You have been banned in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
+			await args.member.user.send(`You have been banned in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : '.'}`)
 		} catch (err) {
 			/* do nothing lol */
 		}
 
 		let banned: boolean
 		time
-			? (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }, BigInt(time)))
+			? (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }, new Date(time)))
 			: (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }))
 
 		if (banned) {
@@ -75,12 +75,13 @@ export class BanCommand extends RainCommand {
 				userId: args.member.user.id,
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
-				type: 'MUTE',
-				reason: args.reason ?? null,
+				type: 'BAN',
+				reason: args.reason,
+				expires: time ? new Date(time) : undefined,
 			})
 
 			await interaction.reply({
-				content: `I've banned ${args.member.user.tag}${time ? ` until <t:${time}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				content: `I've banned ${args.member.user.tag}${time ? ` until <t:${Math.floor(time / 1000)}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,
 			})
 

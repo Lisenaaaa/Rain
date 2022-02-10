@@ -25,7 +25,7 @@ export class UnpunishTask extends RainTask {
 
 			for (const member of members) {
 				/* unmute */
-				if (member.muteStatus && member.muteExpires && member.muteExpires <= BigInt(container.utils.now())) {
+				if (member.muteStatus && member.muteExpires && member.muteExpires.getTime() <= container.utils.now('milliseconds')) {
 					let person: GuildMember | undefined
 
 					try {
@@ -42,9 +42,9 @@ export class UnpunishTask extends RainTask {
 							})
 						}
 
-						// container.logger.debug(`unmuting ${person.id} on ${id}`)
+						container.logger.debug(`unmuting ${person.id} on ${id}`)
 						await container.members.unmute(person)
-						await this.container.database.modlogs.create({
+						await container.database.modlogs.create({
 							id: nanoid(),
 							userId: member.memberId,
 							guildId: id,
@@ -61,11 +61,11 @@ export class UnpunishTask extends RainTask {
 				}
 
 				/* unban */
-				if (member.banExpires != null && member.banExpires <= BigInt(container.utils.now())) {
+				if (member.banExpires != null && member.banExpires.getTime() <= container.utils.now('milliseconds')) {
 					const person = await container.client.users.fetch(member.memberId)
 					if (!(await guild.bans.fetch()).has(person.id)) return
 					await guild.bans.remove(person, 'Punishment expired.')
-					await this.container.database.modlogs.create({
+					await container.database.modlogs.create({
 						id: nanoid(),
 						userId: member.memberId,
 						guildId: id,

@@ -57,7 +57,7 @@ export class UnmuteCommand extends RainCommand {
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
 				type: 'UNMUTE',
-				reason: args.reason ?? null,
+				reason: args.reason,
 			})
 			try {
 				await args.member.user.send(`You have been unmuted in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : '.'}`)

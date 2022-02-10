@@ -7,27 +7,27 @@ export interface MemberAttributes {
 	guildId: string
 
 	muteStatus: boolean
-	muteExpires: BigInt | null
+	muteExpires: Date | null
 
-	banExpires: BigInt | null
+	banExpires: Date | null
 }
 type MemberCreationAttributes = {
 	memberId: string
 	guildId: string
 
 	muteStatus?: boolean
-	muteExpires?: BigInt | null
+	muteExpires?: Date
 
-	banExpires?: BigInt | null
+	banExpires?: Date
 }
 export class MemberDatabase extends Model<MemberAttributes, MemberCreationAttributes> implements MemberAttributes {
 	declare memberId: string
 	declare guildId: string
 
 	declare muteStatus: boolean
-	declare muteExpires: BigInt | null
+	declare muteExpires: Date | null
 
-	declare banExpires: BigInt | null
+	declare banExpires: Date | null
 
 	static initModel() {
 		MemberDatabase.init(
@@ -36,9 +36,9 @@ export class MemberDatabase extends Model<MemberAttributes, MemberCreationAttrib
 				guildId: { type: DataTypes.STRING, allowNull: false, references: { model: GuildDatabase } },
 
 				muteStatus: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-				muteExpires: { type: DataTypes.BIGINT, allowNull: true, defaultValue: null },
+				muteExpires: { type: DataTypes.DATE, allowNull: true, defaultValue: null },
 
-				banExpires: { type: DataTypes.BIGINT, allowNull: true, defaultValue: null },
+				banExpires: { type: DataTypes.DATE, allowNull: true, defaultValue: null },
 			},
 			{ sequelize, modelName: 'Members' }
 		)

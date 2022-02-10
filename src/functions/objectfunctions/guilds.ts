@@ -43,7 +43,7 @@ export default class Guilds {
 		}
 	}
 
-	async ban(guild: Guild, user: UserResolvable, options: BanOptions, time?: BigInt) {
+	async ban(guild: Guild, user: UserResolvable, options: BanOptions, time?: Date) {
 		try {
 			const person = await container.client.users.fetch(user)
 			await guild.bans.create(user, options)
@@ -51,7 +51,7 @@ export default class Guilds {
 				await container.database.guilds.create({ id: guild.id })
 			}
 
-			await container.database.members.update({ banExpires: time ?? null }, { where: { guildId: guild.id, memberId: person.id } })
+			await container.database.members.update({ banExpires: time }, { where: { guildId: guild.id, memberId: person.id } })
 			return true
 		} catch (err) {
 			await container.utils.error(err, {

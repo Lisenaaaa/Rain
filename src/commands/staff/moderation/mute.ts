@@ -28,7 +28,7 @@ import { ArgsUser } from '../../../types/misc'
 export class MuteCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string } = this.parseArgs(interaction)
-		const time = args.time ? ms(args.time) / 1000 + this.container.utils.now() : undefined
+		const time = args.time ? new Date(ms(args.time) + this.container.utils.now('milliseconds')) : undefined
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
 
@@ -46,7 +46,7 @@ export class MuteCommand extends RainCommand {
 		if (!muteRole) return await interaction.reply("I can't mute people without having a role set to mute them with.")
 
 		let muted: boolean
-		time ? (muted = await this.container.members.mute(target, BigInt(time))) : (muted = await this.container.members.mute(target))
+		time ? (muted = await this.container.members.mute(target, time)) : (muted = await this.container.members.mute(target))
 
 		if (muted) {
 			await this.container.database.modlogs.create({
@@ -55,18 +55,20 @@ export class MuteCommand extends RainCommand {
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
 				type: 'MUTE',
-				reason: args.reason ?? null,
-				expires: `${time}`,
+				reason: args.reason,
+				expires: time,
 			})
 
 			try {
-				await args.member.user.send(`You have been muted in **${interaction.guild?.name}${args.reason ? ` for ${args.reason}` : '.'}`)
+				await args.member.user.send(
+					`You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:f>` : ''}${args.reason ? ` for ${args.reason}` : '.'}`
+				)
 			} catch (err) {
 				/* do nothing */
 			}
 
 			await interaction.reply({
-				content: `I've muted ${target.user.tag}${time ? ` until <t:${time}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				content: `I've muted ${target.user.tag}${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,
 			})
 

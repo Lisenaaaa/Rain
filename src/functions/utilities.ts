@@ -84,8 +84,8 @@ export default class Utilities {
 	/**
 	 * @returns The current timestamp, in the proper formatting for Discord's <t:timestamp:> formatting
 	 */
-	public now(): number {
-		return Math.round(Date.now() / 1000)
+	public now(type: 'seconds' | 'milliseconds'): number {
+		return type === 'seconds' ? Math.floor(Date.now() / 1000) : Date.now()
 	}
 
 	/**
@@ -174,7 +174,7 @@ export default class Utilities {
 								options[subOption.name] = subOption.value
 								break
 							case 'USER':
-								options[subOption.name] = subOption.user
+								options[subOption.name] = { user: subOption.user, member: subOption.member }
 								break
 							case 'CHANNEL':
 								options[subOption.name] = subOption.channel
@@ -210,7 +210,7 @@ export default class Utilities {
 									options[subOption.name] = subOption.value
 									break
 								case 'USER':
-									options[subOption.name] = subOption.user
+									options[subOption.name] = { user: subOption.user, member: subOption.member }
 									break
 								case 'CHANNEL':
 									options[subOption.name] = subOption.channel
@@ -296,7 +296,7 @@ export default class Utilities {
 			new MessageButton().setEmoji('<:paginate3:903780978940596295>').setCustomId('pageForwardsOne').setStyle('PRIMARY'),
 			new MessageButton().setEmoji('<:paginate4:903781017544953966>').setCustomId('pageForwardsAll').setStyle('PRIMARY'),
 		])
-		await interaction.reply({ embeds: [newEmbeds[0]], components: [buttonRow] })
+		const msg = await interaction.reply({ embeds: [newEmbeds[0]], components: [buttonRow], fetchReply: true })
 
 		const interactionCollector = interaction.channel?.createMessageComponentCollector({ time: 60000 })
 
@@ -305,13 +305,13 @@ export default class Utilities {
 			if (button.user.id != interaction.user.id) return await button.deferUpdate()
 
 			switch (button.customId) {
-				case 'pageBackAll': {
+				case `pageBackAll|${msg.id}`: {
 					currentPage = 1
 					await button.deferUpdate()
 					await interaction.editReply({ embeds: [newEmbeds[0]] })
 					break
 				}
-				case 'pageBackOne': {
+				case `pageBackOne|${msg.id}`: {
 					if (currentPage === 1) {
 						await button.deferUpdate()
 						break
@@ -321,14 +321,14 @@ export default class Utilities {
 					await interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
 					break
 				}
-				case 'pageForwardsOne': {
+				case `pageForwardsOne|${msg.id}`: {
 					if (currentPage === pages) currentPage = pages
 					else currentPage += 1
 					await button.deferUpdate()
 					await interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
 					break
 				}
-				case 'pageForwardsAll': {
+				case `pageForwardsAll|${msg.id}`: {
 					currentPage = pages - 1
 					await button.deferUpdate()
 					await interaction.editReply({ embeds: [newEmbeds[pages - 1]] })

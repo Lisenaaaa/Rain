@@ -93,14 +93,18 @@ export class Members {
 		return 'none'
 	}
 
-	async mute(member: GuildMember, time?: BigInt): Promise<boolean> {
+	async mute(member: GuildMember, time?: Date): Promise<boolean> {
 		try {
 			const muteRoleId = (await container.database.guilds.findByPk(member.guild.id))?.muteRole
 			if (!muteRoleId) throw new Error("I can't mute people without having a role set to mute them with.")
 			const muteRole = await member.guild.roles.fetch(muteRoleId)
 			if (!muteRole) throw new Error("I can't mute people without having a role set to mute them with.")
+
 			await member.roles.add(muteRole)
 			// await container.users.editGuildEntry(member.user, member.guild.id, 'muted', { status: true, expires: time ? time : null })
+			if (!(await container.database.members.findOne({ where: { memberId: member.id, guildId: member.guild.id } }))) {
+				await container.database.members.create({ memberId: member.id, guildId: member.guild.id })
+			}
 			await container.database.members.update({ muteStatus: true, muteExpires: time ?? null }, { where: { memberId: member.id, guildId: member.guild.id } })
 			return true
 		} catch (err) {

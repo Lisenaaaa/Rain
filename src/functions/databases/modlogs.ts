@@ -10,7 +10,7 @@ export interface ModlogAttributes {
 	modId: string
 	type: ModlogTypes
 	reason: string | null
-	expires: string | null
+	expires: Date | null
 }
 type ModlogCreationAttributes = {
 	id: string
@@ -18,8 +18,8 @@ type ModlogCreationAttributes = {
 	guildId: string
 	modId: string
 	type: string
-	reason?: string | null
-	expires?: string | null
+	reason?: string
+	expires?: Date 
 }
 export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttributes> implements ModlogAttributes {
 	declare id: string
@@ -28,7 +28,7 @@ export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttrib
 	declare modId: string
 	declare type: ModlogTypes
 	declare reason: string | null
-	declare expires: string | null
+	declare expires: Date | null
 	declare readonly createdAt: Date
 
 	static initModel() {
@@ -63,7 +63,7 @@ export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttrib
 					defaultValue: null,
 				},
 				expires: {
-					type: DataTypes.STRING,
+					type: DataTypes.DATE,
 					defaultValue: null,
 				},
 			},
