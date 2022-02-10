@@ -22,7 +22,7 @@
 		"@types/validator": "^13.7.1",
 		"@typescript-eslint/eslint-plugin": "^5.11.0",
 		"@typescript-eslint/parser": "^5.11.0",
-		"discord-api-types": "^0.27.0",
+		"discord-api-types": "^0.26.1",
 		"eslint": "^8.8.0",
 		"eslint-config-prettier": "^8.3.0",
 		"prettier": "^2.5.1",
@@ -85,8 +85,7 @@
 		],
 		"rules": {
 			"@typescript-eslint/explicit-module-boundary-types": "off",
-			"@typescript-eslint/no-var-requires": "off",
-			"@typescript-eslint/ban-ts-comment": "off"
+			"@typescript-eslint/no-non-null-assertion": "off"
 		}
 	}
 }
