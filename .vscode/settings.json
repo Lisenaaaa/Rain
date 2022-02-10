@@ -14,7 +14,6 @@
 		"**/.hg": true,
 		"**/CVS": true,
 		"**/.DS_Store": true,
-		"**/Thumbs.db": true,
-		"src/config/config.ts": true
+		"**/Thumbs.db": true
 	}
 }

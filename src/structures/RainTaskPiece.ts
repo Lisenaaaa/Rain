@@ -1,6 +1,6 @@
 import { Awaitable, Piece, PieceContext, PieceOptions } from '@sapphire/framework'
 
-export abstract class RainTask extends Piece {
+export class RainTask extends Piece {
 	constructor(context: PieceContext, options: RainTaskOptions) {
 		super(context, options)
 
@@ -11,7 +11,7 @@ export abstract class RainTask extends Piece {
 	public delay: number
 	public runOnStart: boolean
 
-	public abstract run(): Awaitable<unknown>
+	public run?(): Awaitable<unknown>
 }
 
 export type RainTaskOptions = PieceOptions & {

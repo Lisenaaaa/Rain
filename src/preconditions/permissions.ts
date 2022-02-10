@@ -66,7 +66,7 @@ export class PermissionsPrecondition extends Precondition {
 			label: 'Do I have permissions to run this command?',
 			botPerms: '[potentially massive array]',
 			commandPerms: command.sapphire?.options.botPerms,
-			value: container.utils.arrayIncludesAllArray(botPerms, command.sapphire?.options.botPerms ?? []),
+			value: botPerms.every((e) => (command.sapphire?.options.botPerms ?? []).includes(e)),
 		}
 
 		this.container.logger.debug('making userHasDiscordPerms object')
@@ -75,7 +75,10 @@ export class PermissionsPrecondition extends Precondition {
 			guildHasStaffRoles: await container.guilds.hasStaffRoles(guild),
 			requiredPerms: command.sapphire?.userDiscordPerms ?? [],
 			userPerms: '[potentially massive array]',
-			value: container.utils.arrayIncludesAllArray(channel.permissionsFor(member).toArray(), command.sapphire?.userDiscordPerms ?? []),
+			value: channel
+				.permissionsFor(member)
+				.toArray()
+				.every((e) => (command.sapphire?.userDiscordPerms ?? []).includes(e)),
 		}
 
 		this.container.logger.debug('logging all of those objects')

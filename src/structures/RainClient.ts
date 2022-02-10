@@ -1,6 +1,6 @@
 import { container, SapphireClient } from '@sapphire/framework'
 import Utilities from '../functions/utilities'
-import Settings from '../config/settings'
+import * as config from '../config/config'
 import Guilds from '../functions/objectfunctions/guilds'
 import Users from '../functions/objectfunctions/users'
 import Channels from '../functions/objectfunctions/channels'
@@ -39,7 +39,7 @@ export class RainClient extends SapphireClient {
 			},
 		})
 
-		container.settings = new Settings()
+		container.settings = config
 		container.utils = new Utilities()
 		container.database = new Db()
 
@@ -55,7 +55,7 @@ export class RainClient extends SapphireClient {
 declare module '@sapphire/pieces' {
 	interface Container {
 		utils: Utilities
-		settings: Settings
+		settings: typeof config
 		database: Db
 
 		guilds: Guilds

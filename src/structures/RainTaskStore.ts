@@ -3,14 +3,17 @@ import { RainTask } from './RainTaskPiece'
 
 export class RainTaskStore extends Store<RainTask> {
 	constructor() {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		super(RainTask as any, { name: 'tasks' })
+		super(RainTask, { name: 'tasks' })
 	}
 
 	async registerTasks() {
 		const tasks = this.container.stores.get('tasks')
 
 		for (const [, task] of tasks) {
+			if (!task.run) {
+				console.error(new Error(`Task ${task.constructor.name} does not have a run method, so it will not be loaded.`))
+				continue
+			}
 			try {
 				if (task.runOnStart) {
 					await task.run()
