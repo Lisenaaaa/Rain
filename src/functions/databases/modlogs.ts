@@ -19,7 +19,7 @@ type ModlogCreationAttributes = {
 	modId: string
 	type: string
 	reason?: string
-	expires?: Date 
+	expires?: Date
 }
 export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttributes> implements ModlogAttributes {
 	declare id: string

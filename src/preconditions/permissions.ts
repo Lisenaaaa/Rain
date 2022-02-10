@@ -33,7 +33,7 @@ export class PermissionsPrecondition extends Precondition {
 
 		if (command.sapphire?.options.preconditions?.includes('ownerOnly') && this.container.members.isOwner(member)) {
 			return await this.ok()
-		} 
+		}
 
 		const commandEnabled = { label: 'Is the command enabled?', value: command.db?.enabled }
 
