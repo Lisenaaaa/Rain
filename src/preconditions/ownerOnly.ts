@@ -15,7 +15,6 @@ export class OwnerOnlyPrecondition extends Precondition {
 			: this.error({
 					identifier: 'ownerOnly',
 					message: 'This command can only be used by my developers.',
-					// eslint-disable-next-line no-mixed-spaces-and-tabs
 			  })
 	}
 }

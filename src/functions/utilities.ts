@@ -129,8 +129,7 @@ export default class Utilities {
 	 * @returns The args from the interaction, in the same formatting as `discord-akairo` has them.
 	 */
 	public parseInteractionArgs(interaction: CommandInteraction) {
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const options: any = {}
+		const options: Record<string, unknown> = {}
 		interaction.options.data.forEach((option) => {
 			switch (option.type) {
 				case 'STRING':
@@ -346,19 +345,6 @@ export default class Utilities {
 			const reply = await interaction.fetchReply()
 			await interaction.editReply({ embeds: reply.embeds, components: [buttonRowDisabled] })
 		})
-	}
-
-	/**
-	 * @param array1 The master array, with all the objects.
-	 * @param array2 The array you would like to check if everything in it is also in `array1`
-	 * @returns boolean
-	 */
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	arrayIncludesAllArray(array1: any[], array2: any[]) {
-		for (const e of array2) {
-			if (!array1.includes(e)) return false
-		}
-		return true
 	}
 
 	/**

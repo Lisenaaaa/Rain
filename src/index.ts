@@ -1,15 +1,13 @@
-import config from './config/config'
+import * as config from './config/config'
 import { RainClient } from './structures/RainClient'
 import { Database } from './functions/database'
 import '@sapphire/plugin-editable-commands/register'
-import { Interaction } from 'discord.js'
 
 if (process.platform === 'win32') {
 	throw new Error('Please use a good OS.')
 }
 
 // prettier adds the semicolon, eslint hates it.
-// eslint-disable-next-line @typescript-eslint/no-extra-semi
 ;(async () => {
 	await Database.init()
 	await Database.connect()
@@ -31,7 +29,6 @@ const levels = {
 
 const level = levels[args[0] as keyof typeof levels] ?? levels['Debug']
 const client = new RainClient(level)
-void client.login(new config().tokens.main)
+void client.login(config.tokens.main)
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const validArgs = ['--noPronounDB']
+// const validArgs = ['--noPronounDB']

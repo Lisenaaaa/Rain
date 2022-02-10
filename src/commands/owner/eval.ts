@@ -4,7 +4,7 @@ import { Args, CommandOptions } from '@sapphire/framework'
 import { Message } from 'discord.js'
 import util, { promisify } from 'util'
 import { exec } from 'child_process'
-import config from '../../config/config'
+import { tokens, database } from '../../config/config'
 import { reply } from '@sapphire/plugin-editable-commands'
 import RainCommand from '../../structures/RainCommand'
 
@@ -80,10 +80,6 @@ export class EvalCommand extends RainCommand {
 	}
 
 	cleanOutput(output: string) {
-		const credentials = new config()
-		const tokens = credentials.tokens
-		const database = credentials.database
-
 		for (const key of Object.keys(tokens)) {
 			output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)
 		}

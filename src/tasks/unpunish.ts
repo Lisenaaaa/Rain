@@ -13,7 +13,7 @@ export class UnpunishTask extends RainTask {
 		})
 	}
 
-	async run() {
+	override async run() {
 		for (const [id, guild] of container.client.guilds.cache) {
 			if (!(await container.database.guilds.findByPk(guild.id))) {
 				await container.database.guilds.create({ id: guild.id })

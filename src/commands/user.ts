@@ -54,8 +54,6 @@ export class UserCommand extends RainCommand {
 						.join(', ')}
 					**Discord Perms**: ${this.formatPermsArray(this.container.members.importantPerms(member)).join(', ')}${
 									(await this.container.guilds.hasStaffRoles(member.guild)) ? `\n**Rain Perms**: ${await this.container.members.getPerms(member)}` : ''
-									// this is prettier's fault.
-									// eslint-disable-next-line no-mixed-spaces-and-tabs
 							  }
 					`
 							: ''
