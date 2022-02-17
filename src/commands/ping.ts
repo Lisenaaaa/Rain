@@ -17,7 +17,7 @@ import RainCommand from '../structures/RainCommand'
 })
 export class PingCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const msg = await interaction.reply({content: 'Pinging...', fetchReply: true}) as Message
-        await msg.edit(`Pinging... ${msg.createdTimestamp - interaction.createdTimestamp} ms!`)
+		const msg = (await interaction.reply({ content: 'Pinging...', fetchReply: true })) as Message
+		await msg.edit(`Pinging... ${msg.createdTimestamp - interaction.createdTimestamp} ms!`)
 	}
 }
