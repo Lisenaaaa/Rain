@@ -14,7 +14,7 @@ export class OwnerOnlyPrecondition extends Precondition {
 			? this.ok()
 			: this.error({
 					identifier: 'ownerOnly',
-					message: 'This command can only be used by my developers.',
+					message: `This command can only be used by my developer${this.container.settings.owners.length > 1 ? 's' : ''}.`,
 			  })
 	}
 }

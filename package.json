@@ -1,7 +1,7 @@
 {
 	"name": "rain-sapphire",
 	"version": "0.0.1",
-	"description": "Alyssa (lisenaaaa)'s Rain bot, but in Sapphire instead of discord-akairo!",
+	"description": "Skye (lisenaaaa)'s Rain bot, but in Sapphire instead of discord-akairo!",
 	"main": "dist/index.js",
 	"scripts": {
 		"test": "yarn run lint && yarn run build",

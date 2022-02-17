@@ -8,7 +8,7 @@ import RainLogger from '../functions/logging'
 import { Members } from '../functions/objectfunctions/members'
 import { Perms } from '../types/misc'
 import { RainTaskStore } from './RainTaskStore'
-import { ApplicationCommandOptionData, PermissionResolvable, Snowflake } from 'discord.js'
+import { ApplicationCommandOptionData, PermissionString, Snowflake } from 'discord.js'
 import { CommandDatabase } from '../functions/databases/commands'
 import { GuildDatabase } from '../functions/databases/guild'
 import { GuildCommandDatabase } from '../functions/databases/guildCommands'
@@ -68,8 +68,8 @@ declare module '@sapphire/pieces' {
 declare module '@sapphire/framework' {
 	interface CommandOptions {
 		defaultPermissions: Perms
-		botPerms?: PermissionResolvable[]
-		userDiscordPerms?: PermissionResolvable[]
+		botPerms?: PermissionString[]
+		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]
@@ -79,8 +79,8 @@ declare module '@sapphire/framework' {
 	}
 	interface Command {
 		defaultPermissions: Perms
-		botPerms?: PermissionResolvable[]
-		userDiscordPerms?: PermissionResolvable[]
+		botPerms?: PermissionString[]
+		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]

@@ -28,7 +28,7 @@ export default class Guilds {
 			allCommands.forEach(async (c: string) => {
 				if (allGuildCommands.find((cmd: GuildCommandAttributes) => cmd.commandId === c)) return
 
-				const permissions = container.stores.get('commands').get(c)?.options.defaultPermissions
+				const permissions = container.utils.getCommand(c)?.options.defaultPermissions
 
 				await container.database.guildCommands.create({ commandId: c, guildId: guild.id, enabled: true, requiredPerms: permissions ?? 'none' })
 				container.logger.debug(`Added ${c} to ${guild.id}'s database entry`)

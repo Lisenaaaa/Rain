@@ -57,6 +57,9 @@ export class PermissionsPrecondition extends Precondition {
 		this.container.logger.debug('getting channel perms for the bot')
 		const botPerms = channel.permissionsFor(guild.me as GuildMember).toArray()
 
+		const sCommandPerms = command.sapphire?.options.botPerms
+		console.log(sCommandPerms)
+
 		if (!botPerms) {
 			return await this.error({ identifier: this.name, message: "Somehow I don't have any perms." })
 		}
@@ -64,9 +67,9 @@ export class PermissionsPrecondition extends Precondition {
 		this.container.logger.debug('making iHavePerms object')
 		const iHavePerms = {
 			label: 'Do I have permissions to run this command?',
-			botPerms: '[potentially massive array]',
-			commandPerms: command.sapphire?.options.botPerms,
-			value: botPerms.every((e) => (command.sapphire?.options.botPerms ?? []).includes(e)),
+			botPerms: botPerms,
+			commandPerms: sCommandPerms,
+			value: sCommandPerms?.every((e) => (botPerms ?? []).includes(e)),
 		}
 
 		this.container.logger.debug('making userHasDiscordPerms object')
@@ -75,10 +78,11 @@ export class PermissionsPrecondition extends Precondition {
 			guildHasStaffRoles: await container.guilds.hasStaffRoles(guild),
 			requiredPerms: command.sapphire?.userDiscordPerms ?? [],
 			userPerms: '[potentially massive array]',
-			value: channel
-				.permissionsFor(member)
-				.toArray()
-				.every((e) => (command.sapphire?.userDiscordPerms ?? []).includes(e)),
+			value: (command.sapphire?.options.userDiscordPerms ?? []).every((p) => channel.permissionsFor(member).toArray().includes(p)),
+			// value: channel
+			// 	.permissionsFor(member)
+			// 	.toArray()
+			// 	.every((e) => (command.sapphire?.userDiscordPerms ?? []).includes(e)),
 		}
 
 		this.container.logger.debug('logging all of those objects')
@@ -127,7 +131,7 @@ export class PermissionsPrecondition extends Precondition {
 			})
 		}
 
-		this.container.logger.debug('ok')
+		this.container.logger.debug('running command')
 		return await this.ok()
 	}
 
