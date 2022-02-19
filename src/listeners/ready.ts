@@ -1,6 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-// import { initDB } from '../functions/newDatabase'
 
 @ApplyOptions<ListenerOptions>({
 	once: true,
@@ -9,9 +8,8 @@ import { Listener, ListenerOptions } from '@sapphire/framework'
 export class ReadyListener extends Listener {
 	async run() {
 		await this.loadTasks()
+		await this.loadCommands()
 		this.container.logger.info(`Logged in as ${this.container.client.user?.tag}`)
-
-		// await initDB()
 	}
 
 	async loadTasks() {

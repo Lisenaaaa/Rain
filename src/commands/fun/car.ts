@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction } from 'discord.js'
 import got from 'got/dist/source'
-import RainCommand from '../structures/RainCommand'
+import RainCommand from '../../structures/RainCommand'
 
 // this command's name is completely intentional
 

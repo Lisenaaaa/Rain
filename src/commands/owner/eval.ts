@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { ApplyOptions } from '@sapphire/decorators'
-import { Args, CommandOptions } from '@sapphire/framework'
+import { Args, CommandOptions, container as iContainer } from '@sapphire/framework'
 import { Message } from 'discord.js'
 import util, { promisify } from 'util'
 import { exec } from 'child_process'
@@ -23,40 +23,7 @@ export class EvalCommand extends RainCommand {
 		if (!codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = codetoeval
 		if (codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = `(async () => { return ${codetoeval}})()`
 
-		let output
-		let success
-		try {
-			const inspect = util.inspect,
-				utils = this.container.utils,
-				client = this.container.client,
-				settings = this.container.settings,
-				user = message.author,
-				member = message.member,
-				guild = message.guild,
-				channel = message.channel,
-				sh = promisify(exec),
-				container = this.container,
-				db = this.container.database.guilds.findByPk(message.guildId as string),
-				dbInfo = `\`\`\`js
-				// add //
-				await GuildDatabase.create({ id: 'id' })
-				// fetch //
-				await GuildDatabase.findByPk('id') // the database, or \`null\` if it isn't there
-				await ModlogDatabase.findOne({ where: { memberId: 'member id', guildId: 'guild id' } }) // use this for most things, as there are two ids and not just one (like, when finding a specific member's modlogs)
-				// fetch all //
-				await GuildDatabase.findAll() // remove the map if you want to, say, run something on all of them
-				// edit //
-				await GuildDatabase.update({ welcomeMessage: 'hi {user} you suck xfbvndskjhfgbndsfkjh,gbndskjjgbfhn' }, { where: { id: 'id' } })
-				// delete //
-				await GuildDatabase.destroy({ where: { id: 'id' } })\`\`\`
-				`
-
-			output = inspect(await eval(codeToEval), { depth: 0 })
-			success = true
-		} catch (err) {
-			output = err.message
-			success = false
-		}
+		const { output, success } = await EvalCommand.runCode(codeToEval, message)
 
 		await reply(message, {
 			embeds: [
@@ -73,13 +40,13 @@ export class EvalCommand extends RainCommand {
 	}
 
 	async formatOutput(output: string): Promise<string> {
-		if (!output) return `\`\`\`js\n${this.cleanOutput(output)}\`\`\``
-		if (this.cleanOutput(output).length >= 1000) {
-			return await this.container.utils.haste(this.cleanOutput(output))
-		} else return `\`\`\`js\n${this.cleanOutput(output)}\`\`\``
+		if (!output) return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
+		if (EvalCommand.cleanOutput(output).length >= 1000) {
+			return await this.container.utils.haste(EvalCommand.cleanOutput(output))
+		} else return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
 	}
 
-	cleanOutput(output: string) {
+	static cleanOutput(output: string) {
 		for (const key of Object.keys(tokens)) {
 			output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)
 		}
@@ -89,5 +56,48 @@ export class EvalCommand extends RainCommand {
 		}
 
 		return output
+	}
+
+	static async runCode(code: string, message?: Message) {
+		let output
+		let success
+		try {
+			const container = iContainer
+			
+			const inspect = util.inspect,
+				utils = container.utils,
+				client = container.client,
+				settings = container.settings,
+				user = message?.author,
+				member = message?.member,
+				guild = message?.guild,
+				channel = message?.channel,
+				sh = promisify(exec),
+				db = container.database.guilds.findByPk(message?.guildId as string),
+				dbInfo = `\`\`\`js
+				// add //
+				await GuildDatabase.create({ id: 'id' })
+				// fetch //
+				await GuildDatabase.findByPk('id') // the database, or \`null\` if it isn't there
+				await ModlogDatabase.findOne({ where: { memberId: 'member id', guildId: 'guild id' } }) // use this for most things, as there are two ids and not just one (like, when finding a specific member's modlogs)
+				// fetch all //
+				await GuildDatabase.findAll() // remove the map if you want to, say, run something on all of them
+				// edit //
+				await GuildDatabase.update({ welcomeMessage: 'hi {user} you suck xfbvndskjhfgbndsfkjh,gbndskjjgbfhn' }, { where: { id: 'id' } })
+				// delete //
+				await GuildDatabase.destroy({ where: { id: 'id' } })\`\`\`
+				`
+
+			output = inspect(await eval(code), { depth: 0 })
+			success = true
+		} catch (err) {
+			output = err.message
+			success = false
+		}
+
+		return {
+			output,
+			success,
+		}
 	}
 }

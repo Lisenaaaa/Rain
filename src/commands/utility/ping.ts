@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, Message } from 'discord.js'
-import RainCommand from '../structures/RainCommand'
+import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
 	name: 'ping',

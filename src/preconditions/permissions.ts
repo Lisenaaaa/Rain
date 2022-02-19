@@ -58,7 +58,6 @@ export class PermissionsPrecondition extends Precondition {
 		const botPerms = channel.permissionsFor(guild.me as GuildMember).toArray()
 
 		const sCommandPerms = command.sapphire?.options.botPerms
-		console.log(sCommandPerms)
 
 		if (!botPerms) {
 			return await this.error({ identifier: this.name, message: "Somehow I don't have any perms." })
