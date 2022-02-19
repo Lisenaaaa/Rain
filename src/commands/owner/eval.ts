@@ -63,7 +63,7 @@ export class EvalCommand extends RainCommand {
 		let success
 		try {
 			const container = iContainer
-			
+
 			const inspect = util.inspect,
 				utils = container.utils,
 				client = container.client,
