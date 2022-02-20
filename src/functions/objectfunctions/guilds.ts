@@ -11,16 +11,16 @@ export default class Guilds {
 			}
 
 			const allCommands: string[] = container.utils.getAllCommands()
-			let allGuildCommands = await container.database.guildCommands.findAll({ where: { guildId: guild.id } })
+			const allGuildCommands = await container.database.guildCommands.findAll({ where: { guildId: guild.id } })
 			const guildCommandsArray: string[] = []
 
 			allGuildCommands.forEach((c: GuildCommandAttributes) => {
 				guildCommandsArray.push(c.commandId)
 			})
 
-			allGuildCommands.forEach((guildCommand: GuildCommandAttributes) => {
+			allGuildCommands.forEach(async (guildCommand: GuildCommandAttributes) => {
 				if (!allCommands.includes(guildCommand.commandId)) {
-					allGuildCommands = allGuildCommands.filter((c: GuildCommandAttributes) => c.commandId != guildCommand.commandId)
+					await container.database.guildCommands.destroy({ where: { guildId: guild.id, commandId: guildCommand.commandId } })
 					container.logger.debug(`Removed ${guildCommand.commandId} from ${guild.id}'s database entry`)
 				}
 			})
