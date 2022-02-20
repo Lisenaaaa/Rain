@@ -11,7 +11,5 @@ export class MemberUpdateListener extends Listener {
 		if (!(await this.container.database.guilds.findByPk(newMember.guild.id))) {
 			await this.container.database.guilds.create({ id: newMember.guild.id })
 		}
-
-		
 	}
 }
