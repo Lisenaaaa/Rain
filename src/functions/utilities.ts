@@ -373,4 +373,17 @@ export default class Utilities {
 		string = newString.join('')
 		return string
 	}
+
+	getObjectDifferences(object1: Record<string, unknown>, object2: Record<string, unknown>) {
+		const finalObject: Record<string, unknown> = {}
+		for (const key of Object.keys(object1)) {
+			if (Object.keys(object2).includes(key)) {
+				if (object1[key] != object2[key]) {
+					finalObject[key] = [object1[key], object2[key]]
+				}
+			}
+		}
+
+		return finalObject
+	}
 }
