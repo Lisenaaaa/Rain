@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { GuildMember } from 'discord.js'
+import { GuildMember, MessageEmbed } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -14,8 +14,10 @@ export class MemberAddListener extends Listener {
 
 		await this.addAltRole(member)
 		await this.welcomeMember(member)
+		await this.log(member)
 	}
 
+	//this just exists for testing stuff so that i don't have to give my alt the role that lets it access my testing channel every time i ban it
 	async addAltRole(member: GuildMember) {
 		if (member.guild.id != '880637463838724166') return
 		if (member.user.id != '545277690303741962') return
@@ -37,6 +39,19 @@ export class MemberAddListener extends Listener {
 		if (!welcomeMessage) return
 
 		await welcomeChannel.send(this.formatString(welcomeMessage, member))
+	}
+
+	async log(member: GuildMember) {
+		await this.container.guilds.log(
+			member.guild,
+			'member',
+			new MessageEmbed({
+				title: member.user.tag,
+				description: `Member joined.\nCreated: <t:${member.user.createdTimestamp / 1000}:F>`,
+				footer: { text: member.id },
+				timestamp: this.container.utils.now('milliseconds'),
+			})
+		)
 	}
 
 	private formatString(string: string, member: GuildMember) {

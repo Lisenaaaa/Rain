@@ -44,12 +44,13 @@ export class MemberUpdateListener extends Listener {
 			new MessageEmbed({
 				title: newMember.user.tag,
 				description: `
-		${removedRoles.length != 0 ? `Roles removed: ${removedRoles.map((r) => `<@&${r}>`).join(', ')}\n` : ''}
-		${addedRoles.length != 0 ? `Roles added: ${addedRoles.map((r) => `<@&${r}>`).join(', ')}\n` : ''}
-		${removedNick ? `Nickname \`${oldMember.nickname}\` was removed.\n` : ''}
-		${hasNewNick ? (oldMember.nickname ? `Nickname changed from ${oldMember.nickname} to ${newMember.nickname}` : `Set their nickname to \`${newMember.nickname}\``) : ''}
+		${removedRoles.length != 0 ? `Removed roles: ${removedRoles.map((r) => `<@&${r}>`).join(', ')}` : ''}
+		${addedRoles.length != 0 ? `\nAdded roles: ${addedRoles.map((r) => `<@&${r}>`).join(', ')}` : ''}
+		${removedNick ? `\nNickname \`${oldMember.nickname}\` was removed.` : ''}
+		${hasNewNick ? (oldMember.nickname ? `\nNickname changed from ${oldMember.nickname} to ${newMember.nickname}` : `Set their nickname to \`${newMember.nickname}\``) : ''}
 		`,
 				footer: { text: newMember.id },
+				timestamp: this.container.utils.now('milliseconds'),
 			})
 		)
 	}
