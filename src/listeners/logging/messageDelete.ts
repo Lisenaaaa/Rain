@@ -17,7 +17,7 @@ export class MessageDeleteListener extends Listener {
 			url: message.url,
 			fields: [
 				{ name: 'Author', value: `${message.author.tag} (\`${message.author.id}\`)` },
-                { name: 'Channel', value: message.channel.toString()}
+				{ name: 'Channel', value: message.channel.toString() },
 				// { name: 'Content', value: message.content },
 				// { name: 'Attachments', value: message.attachments.map((a) => a.proxyURL).join(', ') },
 			],
