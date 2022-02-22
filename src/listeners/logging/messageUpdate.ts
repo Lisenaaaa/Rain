@@ -12,7 +12,7 @@ export class MessageUpdateListener extends Listener {
 			return
 		}
 
-		if (oldMessage.content != newMessage.content) {
+		if (oldMessage.content != newMessage.content && oldMessage.content && newMessage.content) {
 			await this.container.guilds.log(
 				newMessage.guild,
 				'message',

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { Collection, Guild, Message, MessageEmbed, Snowflake } from 'discord.js'
+import { Collection, Message, MessageEmbed, Snowflake } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -8,6 +8,25 @@ import { Collection, Guild, Message, MessageEmbed, Snowflake } from 'discord.js'
 })
 export class MessageDeleteListener extends Listener {
 	async run(messages: Collection<Snowflake, Message>) {
-		await this.container.guilds.log(messages.first()?.guild as Guild, 'message', new MessageEmbed({ description: "a bunch of messages were deleted but i didn't finish logging for that yet" }))
+		if (!messages.first()) return
+		const guild = messages.first()?.guild
+		if (!guild) return
+
+		const msgs = messages.map((msg) => {
+			return {
+				content: msg.content,
+				attachments: msg.attachments.toJSON(),
+				embeds: msg.embeds,
+				timestamp: `${msg.createdTimestamp} (<t:${msg.createdTimestamp}:F>)`,
+				author: {
+					tag: msg.author.tag,
+					id: msg.author.id,
+				},
+			}
+		})
+
+		const haste = await this.container.utils.haste(JSON.stringify(msgs, null, 4))
+
+		await this.container.guilds.log(guild, 'message', new MessageEmbed({ title: 'Bulk Message Deletion', description: haste }))
 	}
 }
