@@ -51,8 +51,9 @@ export class UnmuteCommand extends RainCommand {
 			// await this.container.users.addModlogEntry(target.user, interaction.guild?.id as string, 'UNMUTE', moderator.user.id, {
 			// 	reason: args.reason,
 			// })
+			const id = nanoid()
 			await this.container.database.modlogs.create({
-				id: nanoid(),
+				id,
 				userId: target.id,
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
@@ -69,7 +70,7 @@ export class UnmuteCommand extends RainCommand {
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberUnmuted', { member: target, moderator: moderator, reason: args.reason })
+			this.container.client.emit('memberUnmuted', { member: target, moderator: moderator, reason: args.reason, id })
 		} else {
 			await interaction.reply({ content: `Something went wrong while unmuting ${target.user.tag}.` })
 		}
@@ -80,4 +81,5 @@ export type MemberUnmuteData = {
 	member: GuildMember
 	moderator: GuildMember
 	reason?: string
+	id: string
 }

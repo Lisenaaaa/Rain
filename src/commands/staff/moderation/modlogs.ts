@@ -13,6 +13,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'trialHelper',
 	userDiscordPerms: ['MANAGE_MESSAGES'],
+	botPerms: [],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933929396945952779'],

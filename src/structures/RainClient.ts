@@ -68,7 +68,7 @@ declare module '@sapphire/pieces' {
 declare module '@sapphire/framework' {
 	interface CommandOptions {
 		defaultPermissions: Perms
-		botPerms?: PermissionString[]
+		botPerms: PermissionString[]
 		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
@@ -79,7 +79,7 @@ declare module '@sapphire/framework' {
 	}
 	interface Command {
 		defaultPermissions: Perms
-		botPerms?: PermissionString[]
+		botPerms: PermissionString[]
 		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]

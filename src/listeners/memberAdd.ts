@@ -47,7 +47,7 @@ export class MemberAddListener extends Listener {
 			'member',
 			new MessageEmbed({
 				title: member.user.tag,
-				description: `Member joined.\nCreated: <t:${member.user.createdTimestamp / 1000}:F>`,
+				description: `Member joined.\nCreated: <t:${Math.floor(member.user.createdTimestamp / 1000)}:F>`,
 				footer: { text: member.id },
 				timestamp: this.container.utils.now('milliseconds'),
 			})

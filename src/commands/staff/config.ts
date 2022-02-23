@@ -10,6 +10,7 @@ import RainCommand from '../../structures/RainCommand'
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'srMod',
 	userDiscordPerms: ['MANAGE_GUILD'],
+	botPerms: [],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['928065482647535687'],

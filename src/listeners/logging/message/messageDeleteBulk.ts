@@ -17,7 +17,7 @@ export class MessageDeleteListener extends Listener {
 				content: msg.content,
 				attachments: msg.attachments.toJSON(),
 				embeds: msg.embeds,
-				timestamp: `${msg.createdTimestamp} (<t:${msg.createdTimestamp}:F>)`,
+				timestamp: `${msg.createdTimestamp} (<t:${Math.floor(msg.createdTimestamp / 1000)}:F>)`,
 				author: {
 					tag: msg.author.tag,
 					id: msg.author.id,
@@ -27,6 +27,6 @@ export class MessageDeleteListener extends Listener {
 
 		const haste = await this.container.utils.haste(JSON.stringify(msgs, null, 4))
 
-		await this.container.guilds.log(guild, 'message', new MessageEmbed({ title: 'Bulk Message Deletion', description: haste }))
+		await this.container.guilds.log(guild, 'message', new MessageEmbed({ title: 'Bulk Message Deletion', description: `<#${messages.first()?.channelId}>: ${haste}` }))
 	}
 }

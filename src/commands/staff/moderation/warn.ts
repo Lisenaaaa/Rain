@@ -30,47 +30,48 @@ export class WarnCommand extends RainCommand {
 
 		this.container.logger.debug('command ran and things parsed')
 
-		if (target) {
-			if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-				return await interaction.reply({ content: `You can't warn someone with higher or equal permissions to you.`, ephemeral: true })
-			}
-
-			this.container.logger.debug('trying to send message')
-
-			let sent
-			try {
-				await target.user.send(`You have been warned in **${interaction.guild?.name}** for ${args.reason}`)
-				sent = true
-			} catch (err) {
-				sent = false
-			}
-
-			if (!sent) {
-				this.container.logger.debug("couldn't send message, erroring and adding to modlogs")
-				await interaction.reply({ content: `I couldn't DM **${target.user.tag}**, but this has been added to their modlogs.` })
-			} else {
-				this.container.logger.debug('sent message, telling user and adding to modlogs')
-				await interaction.reply({ content: `I've warned **${target.user.tag}** for ${args.reason}` })
-			}
-
-			this.container.logger.debug('adding to modlogs')
-			await this.container.database.modlogs.create({
-				id: nanoid(),
-				userId: target.id,
-				guildId: interaction.guildId as string,
-				modId: interaction.user.id,
-				type: 'WARN',
-				reason: args.reason ?? null,
-			})
-			await this.container.client.emit('memberWarn', target, interaction.member, args.reason)
+		if (!target) {
+			return await interaction.reply({ content: `You can't warn someone who isn't on the server.` })
+		}
+		if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
+			return await interaction.reply({ content: `You can't warn someone with higher or equal permissions to you.`, ephemeral: true })
 		}
 
-		await interaction.reply({ content: `You can't warn someone who isn't on the server.` })
+		this.container.logger.debug('trying to send message')
+
+		let sent
+		try {
+			await target.user.send(`You have been warned in **${interaction.guild?.name}** for ${args.reason}`)
+			sent = true
+		} catch (err) {
+			sent = false
+		}
+
+		if (!sent) {
+			this.container.logger.debug("couldn't send message, erroring and adding to modlogs")
+			await interaction.reply({ content: `I couldn't DM **${target.user.tag}**, but this has been added to their modlogs.` })
+		} else {
+			this.container.logger.debug('sent message, telling user and adding to modlogs')
+			await interaction.reply({ content: `I've warned **${target.user.tag}** for ${args.reason}` })
+		}
+
+		this.container.logger.debug('adding to modlogs')
+		const id = nanoid()
+		await this.container.database.modlogs.create({
+			id,
+			userId: target.id,
+			guildId: interaction.guildId as string,
+			modId: interaction.user.id,
+			type: 'WARN',
+			reason: args.reason ?? null,
+		})
+		this.container.client.emit('memberWarned', { member: target, moderator: interaction.member, reason: args.reason, id })
 	}
 }
 
 export type MemberWarnData = {
 	member: GuildMember
 	moderator: GuildMember
-	reason?: string
+	reason: string
+	id: string
 }

@@ -41,7 +41,7 @@ import { ArgsUser } from '../../../types/misc'
 export class BanCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string; days?: 1 | 2 | 3 | 4 | 5 | 6 | 7 } = this.parseArgs(interaction)
-		const time = args.time ? ms(args.time) + this.container.utils.now('milliseconds') : undefined
+		const time = args.time ? new Date(ms(args.time) + this.container.utils.now('milliseconds')) : undefined
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
 
@@ -70,22 +70,23 @@ export class BanCommand extends RainCommand {
 			: (banned = await this.container.guilds.ban(interaction.guild as Guild, args.member.user, { reason: args.reason }))
 
 		if (banned) {
+			const id = nanoid()
 			await this.container.database.modlogs.create({
-				id: nanoid(),
+				id,
 				userId: args.member.user.id,
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
 				type: 'BAN',
 				reason: args.reason,
-				expires: time ? new Date(time) : undefined,
+				expires: time,
 			})
 
 			await interaction.reply({
-				content: `I've banned ${args.member.user.tag}${time ? ` until <t:${Math.floor(time / 1000)}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
+				content: `I've banned ${args.member.user.tag}${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:F>` : ' forever'},${args.reason ? ` for ${args.reason}` : ' without a reason.'}`,
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberBanned', { member: target, moderator: moderator, reason: args.reason, time, days: args.days })
+			this.container.client.emit('memberBanned', { member: target, moderator: moderator, reason: args.reason, time, days: args.days, id })
 		} else {
 			await interaction.reply({ content: `Something went wrong while banning ${args.member.user.tag}.` })
 		}
@@ -95,6 +96,8 @@ export class BanCommand extends RainCommand {
 export type MemberBanData = {
 	member: GuildMember
 	moderator: GuildMember
+	id: string
 	reason?: string
-	time?: number
+	time?: Date
+	days?: 1 | 2 | 3 | 4 | 5 | 6 | 7
 }

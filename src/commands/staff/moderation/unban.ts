@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, Guild, GuildMember } from 'discord.js'
+import { CommandInteraction, Guild, GuildMember, User } from 'discord.js'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
@@ -36,8 +36,9 @@ export class UnbanCommand extends RainCommand {
 		const banned = await this.container.guilds.unban(interaction.guild as Guild, args.member.user, args.reason)
 
 		if (banned) {
+			const id = nanoid()
 			await this.container.database.modlogs.create({
-				id: nanoid(),
+				id,
 				userId: args.member.user.id,
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
@@ -50,7 +51,7 @@ export class UnbanCommand extends RainCommand {
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberUnbanned', { member: args.member.user, moderator: moderator, reason: args.reason })
+			this.container.client.emit('memberUnbanned', { member: args.member.user, moderator: moderator, reason: args.reason, id })
 		} else {
 			await interaction.reply({ content: `Something went wrong while unbanning ${args.member.user.tag}.` })
 		}
@@ -58,7 +59,8 @@ export class UnbanCommand extends RainCommand {
 }
 
 export type MemberUnbanData = {
-	member: GuildMember
+	member: User
 	moderator: GuildMember
 	reason?: string
+	id: string
 }

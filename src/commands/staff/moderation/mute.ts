@@ -49,8 +49,9 @@ export class MuteCommand extends RainCommand {
 		time ? (muted = await this.container.members.mute(target, time)) : (muted = await this.container.members.mute(target))
 
 		if (muted) {
+			const id = nanoid()
 			await this.container.database.modlogs.create({
-				id: nanoid(),
+				id,
 				userId: target.id,
 				guildId: interaction.guildId as string,
 				modId: interaction.user.id,
@@ -72,7 +73,7 @@ export class MuteCommand extends RainCommand {
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberMuted', { member: target, moderator: moderator, reason: args.reason, time })
+			this.container.client.emit('memberMuted', { member: target, moderator: moderator, reason: args.reason, time, id })
 		} else {
 			await interaction.reply({ content: `Something went wrong while muting ${target.user.tag}.` })
 		}
@@ -83,5 +84,6 @@ export type MemberMuteData = {
 	member: GuildMember
 	moderator: GuildMember
 	reason?: string
-	time?: number
+	time?: Date
+	id: string
 }

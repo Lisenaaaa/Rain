@@ -44,14 +44,16 @@ export class UnpunishTask extends RainTask {
 
 						container.logger.debug(`unmuting ${person.id} on ${id}`)
 						await container.members.unmute(person)
+						const modlogId = nanoid()
 						await container.database.modlogs.create({
-							id: nanoid(),
+							id: modlogId,
 							userId: member.memberId,
 							guildId: id,
 							modId: container.client.user?.id as Snowflake,
 							type: 'UNMUTE',
 							reason: 'Automatically unmuted.',
 						})
+						container.client.emit('memberUnmuted', { member: person, moderator: guild.me, reason: 'Automatically unmuted.', id: modlogId })
 						try {
 							await person.send(`You have been automatically unmuted in **${guild.name}**`)
 						} catch (err) {
@@ -65,14 +67,16 @@ export class UnpunishTask extends RainTask {
 					const person = await container.client.users.fetch(member.memberId)
 					if (!(await guild.bans.fetch()).has(person.id)) return
 					await guild.bans.remove(person, 'Punishment expired.')
+					const modlogId = nanoid()
 					await container.database.modlogs.create({
-						id: nanoid(),
+						id: modlogId,
 						userId: member.memberId,
 						guildId: id,
 						modId: container.client.user?.id as Snowflake,
 						type: 'UNBAN',
 						reason: 'Automatically unbanned.',
 					})
+					container.client.emit('memberUnbanned', { member: await container.client.users.fetch(member.memberId), moderator: guild.me, reason: 'Automatically unbanned.', id: modlogId })
 					try {
 						await person.send(`You have been automatically unbanned in **${guild.name}**`)
 					} catch (err) {

@@ -14,6 +14,7 @@ import RainCommand from '../../structures/RainCommand'
 	description: 'run code',
 	preconditions: ['ownerOnly'],
 	defaultPermissions: 'none',
+	botPerms: [],
 })
 export class EvalCommand extends RainCommand {
 	public override async messageRun(message: Message, args: Args) {

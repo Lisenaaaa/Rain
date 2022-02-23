@@ -21,7 +21,7 @@ export class MessageDeleteListener extends Listener {
 				// { name: 'Content', value: message.content },
 				// { name: 'Attachments', value: message.attachments.map((a) => a.proxyURL).join(', ') },
 			],
-			footer: { text: message.id },
+			timestamp: this.container.utils.now('milliseconds'),
 		})
 		if (message.content) {
 			embed.addField('Content', message.content)
