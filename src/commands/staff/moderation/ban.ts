@@ -104,6 +104,6 @@ export type MemberBanData = {
 	id: string
 	reason?: string
 	time?: Date
-	days?: 1 | 2 | 3 | 4 | 5 | 6 | 7,
+	days?: 1 | 2 | 3 | 4 | 5 | 6 | 7
 	guild: Guild
 }
