@@ -5,6 +5,7 @@ export interface GuildAttributes {
 	id: string
 
 	welcomeMessage: string | null
+	leaveMessage: string | null
 	welcomeChannel: string | null
 	muteRole: string | null
 
@@ -32,6 +33,7 @@ type GuildCreationAttributes = {
 	id: string
 
 	welcomeMessage?: string | null
+	leaveMessage?: string | null
 	welcomeChannel?: string | null
 	muteRole?: string | null
 
@@ -60,6 +62,7 @@ export class GuildDatabase extends Model<GuildAttributes, GuildCreationAttribute
 
 	declare muteRole: string | null
 	declare welcomeMessage: string | null
+	declare leaveMessage: string | null
 	declare welcomeChannel: string | null
 
 	declare messageLoggingChannel: string | null
@@ -95,6 +98,10 @@ export class GuildDatabase extends Model<GuildAttributes, GuildCreationAttribute
 					defaultValue: null,
 				},
 				welcomeMessage: {
+					type: DataTypes.STRING,
+					defaultValue: null,
+				},
+				leaveMessage: {
 					type: DataTypes.STRING,
 					defaultValue: null,
 				},

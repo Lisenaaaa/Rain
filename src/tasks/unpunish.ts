@@ -66,7 +66,7 @@ export class UnpunishTask extends RainTask {
 				if (member.banExpires != null && member.banExpires.getTime() <= container.utils.now('milliseconds')) {
 					const person = await container.client.users.fetch(member.memberId)
 					if (!(await guild.bans.fetch()).has(person.id)) return
-					await guild.bans.remove(person, 'Punishment expired.')
+					await container.guilds.unban(guild, person, 'Punishment expired.')
 					const modlogId = nanoid()
 					await container.database.modlogs.create({
 						id: modlogId,
@@ -74,7 +74,7 @@ export class UnpunishTask extends RainTask {
 						guildId: id,
 						modId: container.client.user?.id as Snowflake,
 						type: 'UNBAN',
-						reason: 'Automatically unbanned.',
+						reason: 'Punishment expired.',
 					})
 					container.client.emit('memberUnbanned', { member: await container.client.users.fetch(member.memberId), moderator: guild.me, reason: 'Automatically unbanned.', id: modlogId })
 					try {

@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, Guild, GuildMember } from 'discord.js'
+import { CommandInteraction, Guild, GuildMember, User } from 'discord.js'
 import ms from 'ms'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
@@ -41,6 +41,9 @@ import { ArgsUser } from '../../../types/misc'
 export class BanCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		const args: { member: ArgsUser; reason?: string; time?: string; days?: 1 | 2 | 3 | 4 | 5 | 6 | 7 } = this.parseArgs(interaction)
+		if (args.time && ms(args.time) === undefined) {
+			return await interaction.reply({ content: "That's not a valid time.", ephemeral: true })
+		}
 		const time = args.time ? new Date(ms(args.time) + this.container.utils.now('milliseconds')) : undefined
 		const target = args.member.member
 		const moderator = interaction.member as GuildMember
@@ -59,7 +62,9 @@ export class BanCommand extends RainCommand {
 		// if (!banRole) throw new Error("I can't ban people without having a role set to ban them with.")
 
 		try {
-			await args.member.user.send(`You have been banned in **${interaction.guild?.name}**${args.reason ? ` for ${args.reason}` : '.'}`)
+			await args.member.user.send(
+				`You have been banned in **${interaction.guild?.name}**${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:f>` : ''}${args.reason ? ` for ${args.reason}` : '.'}`
+			)
 		} catch (err) {
 			/* do nothing lol */
 		}
@@ -86,7 +91,7 @@ export class BanCommand extends RainCommand {
 				ephemeral: true,
 			})
 
-			this.container.client.emit('memberBanned', { member: target, moderator: moderator, reason: args.reason, time, days: args.days, id })
+			this.container.client.emit('memberBanned', { member: args.member.user, moderator: moderator, reason: args.reason, time, days: args.days, id, guild: interaction.guild })
 		} else {
 			await interaction.reply({ content: `Something went wrong while banning ${args.member.user.tag}.` })
 		}
@@ -94,10 +99,11 @@ export class BanCommand extends RainCommand {
 }
 
 export type MemberBanData = {
-	member: GuildMember
+	member: User
 	moderator: GuildMember
 	id: string
 	reason?: string
 	time?: Date
-	days?: 1 | 2 | 3 | 4 | 5 | 6 | 7
+	days?: 1 | 2 | 3 | 4 | 5 | 6 | 7,
+	guild: Guild
 }

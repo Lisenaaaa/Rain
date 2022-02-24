@@ -12,7 +12,7 @@ export class MemberBannedListener extends Listener {
 		const embed = new MessageEmbed({
 			title: 'Member Banned',
 			fields: [
-				{ name: 'User', value: `${ban.member.user.tag} (\`${ban.member.user.id}\`)` },
+				{ name: 'User', value: `${ban.member.tag} (\`${ban.member.id}\`)` },
 				{ name: 'Moderator', value: `${ban.moderator.user.tag} (\`${ban.moderator.user.id}\`)` },
 				{ name: 'Reason', value: ban.reason ?? 'No reason given.', inline: true },
 				{ name: 'Modlog ID', value: `\`${ban.id}\``, inline: true },
@@ -24,6 +24,6 @@ export class MemberBannedListener extends Listener {
 			embed.addField('Expires', `<t:${Math.floor(ban.time.getTime() / 1000)}:F>`)
 		}
 
-		await this.container.guilds.log(ban.member.guild, 'moderation', embed)
+		await this.container.guilds.log(ban.guild, 'moderation', embed)
 	}
 }
