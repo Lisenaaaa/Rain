@@ -12,9 +12,9 @@ export class MemberAddListener extends Listener {
 			await this.container.database.guilds.create({ id: member.guild.id })
 		}
 
+		await this.log(member)
 		await this.addAltRole(member)
 		await this.welcomeMember(member)
-		await this.log(member)
 	}
 
 	//this just exists for testing stuff so that i don't have to give my alt the role that lets it access my testing channel every time i ban it
