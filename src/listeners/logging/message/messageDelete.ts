@@ -27,7 +27,7 @@ export class MessageDeleteListener extends Listener {
 			embed.addField('Content', message.content)
 		}
 		if (message.attachments.size != 0) {
-			embed.addField('Attachments', message.attachments.map((a) => a.proxyURL).join(', '))
+			embed.addField('Attachments', message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', '))
 		}
 		await this.container.guilds.log(message.guild, 'message', embed)
 	}
