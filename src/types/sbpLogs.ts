@@ -95,6 +95,10 @@ export class SBPMessage {
 			id: message.id,
 		})
 	}
+
+	formatMention(name: string, type?: string) {
+		return `<discord-mention${type ? `type=${type}` : ''}>${name}</discord-mention.`
+	}
 }
 
 export class SBPEmbed {
