@@ -24,7 +24,7 @@ export default class Utilities {
 	 * @param content The object you want to put on a haste server.
 	 * @returns The haste link, or `"Couldn't post."` if it failed to post it.
 	 */
-	public async haste(content: string): Promise<string> {
+	public async haste(content: string, raw = false): Promise<string> {
 		const urls = [
 			'https://h.inv.wtf',
 			'https://hst.sh',
@@ -45,7 +45,7 @@ export default class Utilities {
 					})
 					.json()
 
-				return `${url}/${body['key']}`
+				return `${url}/${raw ? 'raw/' : ''}${body['key']}`
 			} catch (err) {
 				continue
 			}

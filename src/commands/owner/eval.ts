@@ -87,7 +87,9 @@ export class EvalCommand extends RainCommand {
 				await GuildDatabase.update({ welcomeMessage: 'hi {user} you suck xfbvndskjhfgbndsfkjh,gbndskjjgbfhn' }, { where: { id: 'id' } })
 				// delete //
 				await GuildDatabase.destroy({ where: { id: 'id' } })\`\`\`
-				`
+				`,
+				inviteRegex = /((https?:\/\/)?(discord\.gg|discord\.com\/invite)\/)(?<code>([a-zA-Z0-9]{2,}))/g,
+				emojiRegex = /(?:<:|<a:)\w{1,64}:(?<id>\d{17,18})>/g
 
 			output = inspect(await eval(code), { depth: 0 })
 			success = true

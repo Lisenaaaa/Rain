@@ -39,16 +39,21 @@ export class SBPMessage {
 		this.user = data.user
 	}
 
-	async formatInvite(invite: InviteResolvable) {
-		//<discord-invite name=\"discord.js - Imagine a bot\" icon=\"https://cdn.discordapp.com/icons/222078108977594368/881b843eb1d5c3bdb21928079d25549f.png\" url=\"https://discord.gg/djs\" online=\"16237\" members=\"59652\" verified=\"true\"></discord-invite>
-		const guild = (await container.client.fetchInvite(invite)).guild ?? (await container.client.guilds.fetch('880637463838724166'))
+	static async formatInvite(inv: InviteResolvable) {
+		try {
+			const invite = await container.client.fetchInvite(inv)
 
-		return `<discord-invite name="${guild.name}" icon="${guild.iconURL()}" url="${this.getInviteCode(invite)}" online="${
-			(await (await guild.fetch()).members.fetch()).filter((m) => m.presence?.status !== 'offline').size
-		}" members="${(await guild.fetch()).approximateMemberCount}" ${guild.partnered ? 'partnered="true"' : guild.verified ? 'verified="true"' : ''}></discord-invite>`
+			return invite.guild
+				? `<discord-invite name="${invite.guild?.name}" icon="${invite.guild.iconURL()}" url="${`https://discord.gg/${invite.code}`}" online="${invite.presenceCount}" members="${
+						invite.memberCount
+				  }" ${invite.guild.partnered ? 'partnered="true"' : invite.guild.verified ? 'verified="true"' : ''}></discord-invite>`
+				: ''
+		} catch (err) {
+			return ''
+		}
 	}
 
-	getInviteCode(invite: InviteResolvable) {
+	static getInviteCode(invite: InviteResolvable) {
 		if (invite.startsWith('discord.gg')) {
 			return `https://${invite}`
 		} else if (invite.startsWith('https')) {
@@ -59,34 +64,51 @@ export class SBPMessage {
 	}
 
 	static async formatMessage(message: Message): Promise<SBPMessage> {
-		let content = message.content
-		// let invites = ''
+		let content = message.content ?? ''
+		const invites: string[] = []
 
 		if (message.mentions) {
 			if (message.mentions.members) {
 				for (const [, member] of message.mentions.members) {
-					content = content.replace(member.toString(), `<discord-mention>${member.user.tag}</discord-mention>`)
+					content = content.replace(member.toString(), SBPMessage.formatMention(member.user.tag))
 				}
 			}
 
 			if (message.mentions.users) {
 				for (const [, user] of message.mentions.users) {
-					content = content.replace(user.toString(), `<discord-mention>${user.tag}</discord-mention>`)
+					content = content.replace(user.toString(), SBPMessage.formatMention(user.tag))
 				}
 			}
 
 			if (message.mentions.channels) {
 				for (const [, channel] of message.mentions.channels) {
-					if (channel instanceof GuildChannel) content = content.replace(channel.toString(), `<discord-mention type="channel">${channel.name}</discord-mention>`)
+					if (channel instanceof GuildChannel) content = content.replace(channel.toString(), SBPMessage.formatMention(channel.name, 'channel'))
 				}
 			}
 
 			if (message.mentions.roles) {
 				for (const [, role] of message.mentions.roles) {
-					content = content.replace(role.toString(), `<discord-mention type="role" color="${role.hexColor}">${role.name}</discord-mention>`)
+					content = content.replace(role.toString(), SBPMessage.formatMention(role.name, 'role', role.hexColor))
 				}
 			}
 		}
+
+		const inviteRegex = /((https?:\/\/)?(discord\.gg|discord\.com\/invite)\/)(?<code>([a-zA-Z0-9]{2,}))/g,
+			emojiRegex = /(?:<:|<a:)\w{1,64}:(?<id>\d{17,18})>/g
+
+		for (const invite of message.content.matchAll(inviteRegex)) {
+			invites.push(await SBPMessage.formatInvite(invite[0]))
+		}
+
+		for (const emoji of message.content.matchAll(emojiRegex)) {
+			if (!emoji.groups) continue
+
+			const image = `https://cdn.discordapp.com/emojis/${emoji.groups.id}.png`
+
+			content = content.replaceAll(emoji[0], `<img src="${image}" width="16" height="16">`)
+		}
+
+		content = content + invites.join(' ')
 
 		return new SBPMessage({
 			user: await SBPUser.convert(message.author),
@@ -96,8 +118,14 @@ export class SBPMessage {
 		})
 	}
 
-	formatMention(name: string, type?: string) {
-		return `<discord-mention${type ? `type=${type}` : ''}>${name}</discord-mention.`
+	static formatMention(name: string, type?: string, color?: string): string {
+		return `<discord-mention${type ? ` type=${type}` : ''}${color ? ` color=${color}` : ''}>${name}</discord-mention.`
+	}
+
+	static async generateUrl(messages: SBPMessage[]): Promise<string> {
+		const haste = await container.utils.haste(JSON.stringify(messages), true)
+
+		return `https://skyblock-plus-logs.vercel.app/logs?url=${haste}`
 	}
 }
 
@@ -171,5 +199,3 @@ export class SBPUser {
 		})
 	}
 }
-
-//<discord-invite name=\"discord.js - Imagine a bot\" icon=\"https://cdn.discordapp.com/icons/222078108977594368/881b843eb1d5c3bdb21928079d25549f.png\" url=\"https://discord.gg/djs\" online=\"16237\" members=\"59652\" verified=\"true\"></discord-invite>
