@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 import { ArgsUser } from '../../types/misc'
 
@@ -9,7 +9,7 @@ import { ArgsUser } from '../../types/misc'
 	aliases: ['avatar'],
 	description: 'see someones pfp',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EMBED_LINKS'],
+	botPerms: ['EmbedLinks'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -18,7 +18,7 @@ import { ArgsUser } from '../../types/misc'
 			{
 				name: 'user',
 				description: 'The user you want to get the pfp from',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: true,
 			},
 		],
@@ -29,18 +29,18 @@ export class AvatarCommand extends RainCommand {
 		const args: { user: ArgsUser } = this.container.utils.parseInteractionArgs(interaction)
 		const user = args.user.user
 
-		if (args.user.member && args.user.member.avatarURL({ dynamic: true, format: 'png', size: 512 })) {
+		if (args.user.member && args.user.member.avatarURL({ extension: 'png', size: 512 })) {
 			return await interaction.reply({
 				embeds: [
 					{
 						title: `${user.tag}'s Avatars`,
-						image: { url: args.user.member.avatarURL({ dynamic: true, format: 'png', size: 512 }) as string },
-						thumbnail: { url: user.displayAvatarURL({ dynamic: true, format: 'png', size: 512 }) },
+						image: { url: args.user.member.avatarURL({ extension: 'png', size: 512 }) as string },
+						thumbnail: { url: user.displayAvatarURL({ extension: 'png', size: 512 }) },
 					},
 				],
 			})
 		}
 
-		await interaction.reply({ embeds: [{ title: `${user.tag}'s Avatar`, image: { url: user.displayAvatarURL({ dynamic: true, format: 'png', size: 512 }) } }] })
+		await interaction.reply({ embeds: [{ title: `${user.tag}'s Avatar`, image: { url: user.displayAvatarURL({ extension: 'png', size: 512 }) } }] })
 	}
 }

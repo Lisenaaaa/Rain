@@ -1,6 +1,6 @@
+import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { MessageEmbed } from 'discord.js'
 import { MemberBanData } from '../../../../commands/staff/moderation/ban'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,7 +9,7 @@ import { MemberBanData } from '../../../../commands/staff/moderation/ban'
 })
 export class MemberBannedListener extends Listener {
 	async run(ban: MemberBanData) {
-		const embed = new MessageEmbed({
+		const embed = new Embed({
 			title: 'Member Banned',
 			fields: [
 				{ name: 'User', value: `${ban.member.tag} (\`${ban.member.id}\`)` },
@@ -17,11 +17,11 @@ export class MemberBannedListener extends Listener {
 				{ name: 'Reason', value: ban.reason ?? 'No reason given.', inline: true },
 				{ name: 'Modlog ID', value: `\`${ban.id}\``, inline: true },
 			],
-			timestamp: this.container.utils.now('milliseconds'),
+			timestamp: `${this.container.utils.now('milliseconds')}`,
 		})
 
 		if (ban.time) {
-			embed.addField('Expires', `<t:${Math.floor(ban.time.getTime() / 1000)}:F>`)
+			embed.addField({ name: 'Expires', value: `<t:${Math.floor(ban.time.getTime() / 1000)}:F>` })
 		}
 
 		await this.container.guilds.log(ban.guild, 'moderation', embed)

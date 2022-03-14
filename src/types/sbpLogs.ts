@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { EmbedFieldData, GuildChannel, InviteResolvable, Message, MessageEmbed, UserResolvable } from 'discord.js'
+import { Embed, EmbedFieldData, GuildChannel, InviteResolvable, Message, UserResolvable } from 'discord.js'
 
 export type SBPEmbedData = {
 	title: string
@@ -119,7 +119,7 @@ export class SBPMessage {
 	}
 
 	static formatMention(name: string, type?: string, color?: string): string {
-		return `<discord-mention${type ? ` type=${type}` : ''}${color ? ` color=${color}` : ''}>${name}</discord-mention.`
+		return `<discord-mention${type ? ` type=${type}` : ''}${color ? ` color=${color}` : ''}>${name}</discord-mention>`
 	}
 
 	static async generateUrl(messages: SBPMessage[]): Promise<string> {
@@ -149,13 +149,13 @@ export class SBPEmbed {
 		this.thumbnail = data.thumbnail
 	}
 
-	static convert(embed: MessageEmbed): SBPEmbed {
+	static convert(embed: Embed): SBPEmbed {
 		return new SBPEmbed({
 			title: embed.title ?? '',
 			url: embed.url ?? '',
 			description: embed.description ?? '',
 			fields: embed.fields ?? [],
-			footer: embed.footer?.text ?? '',
+			footer: embed.data.footer?.text ?? '',
 			color: embed.color?.toString(16) ? `#${embed.color.toString(16)}` : '',
 			thumbnail: embed.thumbnail?.proxyURL ?? '',
 			timestamp: '',
@@ -194,7 +194,7 @@ export class SBPUser {
 			name: user.tag,
 			avatar: user.displayAvatarURL(),
 			isBot: user.bot,
-			isVerified: user.flags?.toArray().includes('VERIFIED_BOT') ?? false,
+			isVerified: user.flags?.toArray().includes('VerifiedBot') ?? false,
 			color: color ?? '#FFFFFF',
 		})
 	}

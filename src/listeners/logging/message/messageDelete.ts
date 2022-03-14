@@ -1,6 +1,7 @@
+import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { Message, MessageEmbed } from 'discord.js'
+import { Message } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -12,7 +13,7 @@ export class MessageDeleteListener extends Listener {
 			return
 		}
 
-		const embed = new MessageEmbed({
+		const embed = new Embed({
 			title: 'Message Deleted',
 			url: message.url,
 			fields: [
@@ -21,13 +22,13 @@ export class MessageDeleteListener extends Listener {
 				// { name: 'Content', value: message.content },
 				// { name: 'Attachments', value: message.attachments.map((a) => a.proxyURL).join(', ') },
 			],
-			timestamp: this.container.utils.now('milliseconds'),
+			timestamp: `${this.container.utils.now('milliseconds')}`,
 		})
 		if (message.content) {
-			embed.addField('Content', message.content)
+			embed.addFields({name: 'Content', value: message.content})
 		}
 		if (message.attachments.size != 0) {
-			embed.addField('Attachments', message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', '))
+			embed.addField({name: 'Attachments', value: message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', ')})
 		}
 		await this.container.guilds.log(message.guild, 'message', embed)
 	}

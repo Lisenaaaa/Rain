@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { PaginatedMessage, runsOnInteraction } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIMessage } from 'discord-api-types'
-import { CommandInteraction, Constants, Message, MessageEmbed, MessageEmbedOptions } from 'discord.js'
+import { ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Message } from 'discord.js'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 
@@ -12,45 +12,45 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	description: "see someone's modlogs",
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'trialHelper',
-	userDiscordPerms: ['MANAGE_MESSAGES'],
+	userDiscordPerms: ['ManageMessages'],
 	botPerms: [],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933929396945952779'],
 		options: [
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'view',
 				description: "view a specfic modlog, based on it's id",
 				options: [
 					{
 						name: 'modlog',
 						description: 'the id of the modlog you want to see',
-						type: 'STRING',
+						type: ApplicationCommandOptionType.String,
 						required: true,
 					},
 				],
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'user',
 				description: "view a specific user's modlogs",
 				options: [
 					{
 						name: 'member',
 						description: 'the person you want the modlogs of',
-						type: 'USER',
+						type: ApplicationCommandOptionType.User,
 						required: true,
 					},
 				],
 			},
 			{
-				type: 'SUB_COMMAND',
+				type: ApplicationCommandOptionType.Subcommand,
 				name: 'edit-description',
 				description: 'edit the description of a specific modlog',
 				options: [
-					{ name: 'modlog', type: 'STRING', description: 'the ID of the modlog you want to edit', required: true },
-					{ name: 'reason', type: 'STRING', description: 'the new reason for the modlog', required: true },
+					{ name: 'modlog', type: ApplicationCommandOptionType.String, description: 'the ID of the modlog you want to edit', required: true },
+					{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the new reason for the modlog', required: true },
 				],
 			},
 		],
@@ -58,7 +58,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 })
 export class ModlogsCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const subCmd = interaction.options.getSubcommand(true)
+		const subCmd = interaction.options.get("Subcommand", true).name
 		switch (subCmd) {
 			case 'user':
 				await this.user(interaction)
@@ -90,7 +90,7 @@ export class ModlogsCommand extends RainCommand {
 		}
 
 		const newModlogArray = this.container.utils.splitArrayIntoMultiple(allModlogs, 5)
-		const embedsArray: MessageEmbedOptions[] = []
+		const embedsArray = []
 
 		for (const modlogs of newModlogArray) {
 			let modlogString = ''
@@ -108,14 +108,14 @@ export class ModlogsCommand extends RainCommand {
 				customId: '@sapphire/paginated-messages.firstPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate1:903780818755915796>',
-				type: Constants.MessageComponentTypes.BUTTON,
+				type: ComponentType.Button,
 				run: ({ handler }) => (handler.index = 0),
 			},
 			{
 				customId: '@sapphire/paginated-messages.previousPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate2:903780882203160656>',
-				type: Constants.MessageComponentTypes.BUTTON,
+				type: ComponentType.Button,
 				run: ({ handler }) => {
 					if (handler.index === 0) {
 						handler.index = handler.pages.length - 1
@@ -126,9 +126,9 @@ export class ModlogsCommand extends RainCommand {
 			},
 			{
 				customId: '@sapphire/paginated-messages.stop',
-				style: 'DANGER',
+				style: ButtonStyle.Danger,
 				emoji: '<:paginate_stop:940750448544063559>',
-				type: Constants.MessageComponentTypes.BUTTON,
+				type: ComponentType.Button,
 				run: async ({ collector, response }) => {
 					collector.stop()
 					if (runsOnInteraction(response)) {
@@ -148,7 +148,7 @@ export class ModlogsCommand extends RainCommand {
 				customId: '@sapphire/paginated-messages.nextPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate3:903780978940596295>',
-				type: Constants.MessageComponentTypes.BUTTON,
+				type: ComponentType.Button,
 				run: ({ handler }) => {
 					if (handler.index === handler.pages.length - 1) {
 						handler.index = 0
@@ -161,12 +161,12 @@ export class ModlogsCommand extends RainCommand {
 				customId: '@sapphire/paginated-messages.goToLastPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate4:903781017544953966>',
-				type: Constants.MessageComponentTypes.BUTTON,
+				type: ComponentType.Button,
 				run: ({ handler }) => (handler.index = handler.pages.length - 1),
 			},
 		])
 		for (const embed of embedsArray) {
-			paginatedMsg.addPageEmbed(embed as MessageEmbed)
+			paginatedMsg.addPageEmbed(embed)
 		}
 		await paginatedMsg.run(interaction)
 	}

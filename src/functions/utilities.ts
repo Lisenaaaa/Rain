@@ -1,23 +1,11 @@
 import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
-import {
-	BaseCommandInteraction,
-	CacheType,
-	CommandInteraction,
-	CommandInteractionOption,
-	GuildBasedChannel,
-	GuildMember,
-	MessageActionRow,
-	MessageButton,
-	MessageEmbedOptions,
-	Role,
-	TextChannel,
-	User,
-} from 'discord.js'
+import { CacheType, CommandInteraction, CommandInteractionOption, EmbedData, TextChannel, ComponentType, ButtonStyle, Message, ApplicationCommandOptionType } from 'discord.js'
 import got from 'got/dist/source'
 import { ErrorDetails, Perms } from '../types/misc'
 import moment from 'moment'
-import { APIInteractionDataResolvedChannel, APIInteractionDataResolvedGuildMember, APIRole } from 'discord-api-types'
+import { APIMessage } from 'discord-api-types'
+import { PaginatedMessage, runsOnInteraction } from '@sapphire/discord.js-utilities'
 
 export default class Utilities {
 	/**
@@ -58,7 +46,7 @@ export default class Utilities {
 	 * @param details The details for the error.
 	 * @returns Sends a message in the error channel, and returns a more user-friendly embed.
 	 */
-	public async error(error: Error, details: ErrorDetails): Promise<MessageEmbedOptions> {
+	public async error(error: Error, details: ErrorDetails) {
 		const errorChannel = container.client.channels.cache.get(container.settings.errorChannel) as TextChannel
 		const id = `${this.random(696969696969)}`
 
@@ -75,7 +63,7 @@ export default class Utilities {
 						{ name: 'ID', value: id, inline: true },
 					],
 					description: `\`\`\`js\n${error.stack}\`\`\``,
-					color: 'RED',
+					color: 0xff0000,
 				},
 			],
 		})
@@ -83,7 +71,7 @@ export default class Utilities {
 		return {
 			title: `A(n) ${details.type} error occured!`,
 			description: `${details.data.note ? `**${details.data.note}**\n` : ''}This error has been automatically reported to my developer. Please give her this ID: \`${id}\``,
-			color: 'RED',
+			color: 0xff0000,
 		}
 	}
 
@@ -143,101 +131,100 @@ export default class Utilities {
 	 * @returns The args from the interaction, in the same formatting as `discord-akairo` has them.
 	 */
 	public parseInteractionArgs<T>(interaction: CommandInteraction): T {
-		const options: Record<
-			string,
-			string | number | boolean | { user: User; member: GuildMember | APIInteractionDataResolvedGuildMember } | GuildBasedChannel | APIInteractionDataResolvedChannel | Role | APIRole
-		> = {}
+		const options: Record<string, unknown> = {}
 		interaction.options.data.forEach((option) => {
 			switch (option.type) {
-				case 'STRING':
+				case ApplicationCommandOptionType.String:
 					options[option.name] = option.value!
 					break
-				case 'INTEGER':
+				case ApplicationCommandOptionType.Integer:
 					options[option.name] = option.value!
 					break
-				case 'BOOLEAN':
+				case ApplicationCommandOptionType.Boolean:
 					options[option.name] = option.value!
 					break
-				case 'NUMBER':
+				case ApplicationCommandOptionType.Number:
 					options[option.name] = option.value!
 					break
-				case 'USER':
+				case ApplicationCommandOptionType.User:
 					options[option.name] = { user: option.user!, member: option.member! }
 					break
-				case 'CHANNEL':
+				case ApplicationCommandOptionType.Channel:
 					options[option.name] = option.channel!
 					break
-				case 'ROLE':
+				case ApplicationCommandOptionType.Role:
 					options[option.name] = option.role!
 					break
-				case 'MENTIONABLE':
+				case ApplicationCommandOptionType.Mentionable:
 					options[option.name] = option.role ? option.role : { user: option.user!, member: option.member! }
 					break
-				case 'SUB_COMMAND':
+				case ApplicationCommandOptionType.Subcommand:
 					options['subcommand'] = option.name
 					option.options?.forEach((subOption) => {
 						switch (subOption.type) {
-							case 'STRING':
+							case ApplicationCommandOptionType.String:
 								options[subOption.name] = subOption.value!
 								break
-							case 'INTEGER':
+							case ApplicationCommandOptionType.Integer:
 								options[subOption.name] = subOption.value!
 								break
-							case 'BOOLEAN':
+							case ApplicationCommandOptionType.Boolean:
 								options[subOption.name] = subOption.value!
 								break
-							case 'NUMBER':
+							case ApplicationCommandOptionType.Number:
 								options[subOption.name] = subOption.value!
 								break
-							case 'USER':
+							case ApplicationCommandOptionType.User:
 								options[subOption.name] = { user: subOption.user!, member: subOption.member! }
 								break
-							case 'CHANNEL':
+							case ApplicationCommandOptionType.Channel:
 								options[subOption.name] = subOption.channel!
 								break
-							case 'ROLE':
+							case ApplicationCommandOptionType.Role:
 								options[subOption.name] = subOption.role!
 								break
-							case 'MENTIONABLE':
+							case ApplicationCommandOptionType.Mentionable:
 								options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user!, member: subOption.member! }
 								break
 						}
 					})
 					break
-				case 'SUB_COMMAND_GROUP': {
+				case ApplicationCommandOptionType.SubcommandGroup: {
 					options['subcommandGroup'] = option.name
 
 					const suboptions = (option.options as CommandInteractionOption<CacheType>[])[0].options
 
-					options['subcommand'] = (option.options as { name: string; type: string }[])[0].name
-					;(suboptions as CommandInteractionOption<CacheType>[]).forEach((subOption) => {
-						switch (subOption.type) {
-							case 'STRING':
-								options[subOption.name] = subOption.value!
-								break
-							case 'INTEGER':
-								options[subOption.name] = subOption.value!
-								break
-							case 'BOOLEAN':
-								options[subOption.name] = subOption.value!
-								break
-							case 'NUMBER':
-								options[subOption.name] = subOption.value!
-								break
-							case 'USER':
-								options[subOption.name] = { user: subOption.user!, member: subOption.member! }
-								break
-							case 'CHANNEL':
-								options[subOption.name] = subOption.channel!
-								break
-							case 'ROLE':
-								options[subOption.name] = subOption.role!
-								break
-							case 'MENTIONABLE':
-								options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user!, member: subOption.member! }
-								break
-						}
-					})
+					if (option.options) {
+						options['subcommand'] = option.options[0].name
+						;(suboptions as CommandInteractionOption<CacheType>[]).forEach((subOption) => {
+							switch (subOption.type) {
+								case ApplicationCommandOptionType.String:
+									options[subOption.name] = subOption.value!
+									break
+								case ApplicationCommandOptionType.Integer:
+									options[subOption.name] = subOption.value!
+									break
+								case ApplicationCommandOptionType.Boolean:
+									options[subOption.name] = subOption.value!
+									break
+								case ApplicationCommandOptionType.Number:
+									options[subOption.name] = subOption.value!
+									break
+								case ApplicationCommandOptionType.User:
+									options[subOption.name] = { user: subOption.user!, member: subOption.member! }
+									break
+								case ApplicationCommandOptionType.Channel:
+									options[subOption.name] = subOption.channel!
+									break
+								case ApplicationCommandOptionType.Role:
+									options[subOption.name] = subOption.role!
+									break
+								case ApplicationCommandOptionType.Mentionable:
+									options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user!, member: subOption.member! }
+									break
+							}
+						})
+					}
 					break
 				}
 			}
@@ -292,74 +279,77 @@ export default class Utilities {
 	 * @param interaction The interaction you want to reply to
 	 * @param embeds An array of embeds, to use for the pages. This will overwrite whatever was set as the `footer` for each embed.
 	 */
-	async paginate(interaction: BaseCommandInteraction, embeds: MessageEmbedOptions[]) {
-		const length = embeds.length
-		let currentPage = 1
-		const newEmbeds: MessageEmbedOptions[] = []
-
-		let pages = 0
-		for (const embed of embeds) {
-			pages += 1
-			embed.footer = { text: `Page ${pages} of ${length}` }
-			newEmbeds.push(embed)
-		}
-
-		const buttonRow = new MessageActionRow().addComponents([
-			new MessageButton().setEmoji('<:paginate1:903780818755915796>').setCustomId('pageBackAll').setStyle('PRIMARY'),
-			new MessageButton().setEmoji('<:paginate2:903780882203160656>').setCustomId('pageBackOne').setStyle('PRIMARY'),
-			new MessageButton().setEmoji('<:paginate3:903780978940596295>').setCustomId('pageForwardsOne').setStyle('PRIMARY'),
-			new MessageButton().setEmoji('<:paginate4:903781017544953966>').setCustomId('pageForwardsAll').setStyle('PRIMARY'),
-		])
-		const msg = await interaction.reply({ embeds: [newEmbeds[0]], components: [buttonRow], fetchReply: true })
-
-		const interactionCollector = interaction.channel?.createMessageComponentCollector({ time: 60000 })
-
-		interactionCollector?.on('collect', async (button) => {
-			if (!button.isButton()) return
-			if (button.user.id != interaction.user.id) return await button.deferUpdate()
-
-			switch (button.customId) {
-				case `pageBackAll|${msg.id}`: {
-					currentPage = 1
-					await button.deferUpdate()
-					await interaction.editReply({ embeds: [newEmbeds[0]] })
-					break
-				}
-				case `pageBackOne|${msg.id}`: {
-					if (currentPage === 1) {
-						await button.deferUpdate()
-						break
+	async paginate(interaction: CommandInteraction, embeds: EmbedData[]) {
+		const paginatedMsg = new PaginatedMessage().setActions([
+			{
+				customId: '@sapphire/paginated-messages.firstPage',
+				style: 'PRIMARY',
+				emoji: '<:paginate1:903780818755915796>',
+				type: ComponentType.Button,
+				run: ({ handler }) => (handler.index = 0),
+			},
+			{
+				customId: '@sapphire/paginated-messages.previousPage',
+				style: 'PRIMARY',
+				emoji: '<:paginate2:903780882203160656>',
+				type: ComponentType.Button,
+				run: ({ handler }) => {
+					if (handler.index === 0) {
+						handler.index = handler.pages.length - 1
+					} else {
+						--handler.index
 					}
-					currentPage -= 1
-					await button.deferUpdate()
-					await interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
-					break
-				}
-				case `pageForwardsOne|${msg.id}`: {
-					if (currentPage === pages) currentPage = pages
-					else currentPage += 1
-					await button.deferUpdate()
-					await interaction.editReply({ embeds: [newEmbeds[currentPage - 1]] })
-					break
-				}
-				case `pageForwardsAll|${msg.id}`: {
-					currentPage = pages - 1
-					await button.deferUpdate()
-					await interaction.editReply({ embeds: [newEmbeds[pages - 1]] })
-					break
-				}
-			}
-		})
-		interactionCollector?.once('end', async () => {
-			const buttonRowDisabled = new MessageActionRow().addComponents([
-				new MessageButton().setEmoji('<:paginate1:903780818755915796>').setCustomId('pageBackAll').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setEmoji('<:paginate2:903780882203160656>').setCustomId('pageBackOne').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setEmoji('<:paginate3:903780978940596295>').setCustomId('pageForwardsOne').setStyle('PRIMARY').setDisabled(true),
-				new MessageButton().setEmoji('<:paginate4:903781017544953966>').setCustomId('pageForwardsAll').setStyle('PRIMARY').setDisabled(true),
-			])
-			const reply = await interaction.fetchReply()
-			await interaction.editReply({ embeds: reply.embeds, components: [buttonRowDisabled] })
-		})
+				},
+			},
+			{
+				customId: '@sapphire/paginated-messages.stop',
+				style: ButtonStyle.Danger,
+				emoji: '<:paginate_stop:940750448544063559>',
+				type: ComponentType.Button,
+				run: async ({ collector, response }) => {
+					collector.stop()
+					if (runsOnInteraction(response)) {
+						if (response.replied || response.deferred) {
+							await response.editReply({ components: [] })
+						} else if (response.isMessageComponent()) {
+							await response.update({ components: [] })
+						} else {
+							await response.reply({ content: "This maze wasn't meant for you...what did you do.", ephemeral: true })
+						}
+					} else if (this.isMessageInstance(response)) {
+						await response.edit({ components: [] })
+					}
+				},
+			},
+			{
+				customId: '@sapphire/paginated-messages.nextPage',
+				style: 'PRIMARY',
+				emoji: '<:paginate3:903780978940596295>',
+				type: ComponentType.Button,
+				run: ({ handler }) => {
+					if (handler.index === handler.pages.length - 1) {
+						handler.index = 0
+					} else {
+						++handler.index
+					}
+				},
+			},
+			{
+				customId: '@sapphire/paginated-messages.goToLastPage',
+				style: 'PRIMARY',
+				emoji: '<:paginate4:903781017544953966>',
+				type: ComponentType.Button,
+				run: ({ handler }) => (handler.index = handler.pages.length - 1),
+			},
+		])
+		for (const embed of embeds) {
+			paginatedMsg.addPageEmbed(embed)
+		}
+		await paginatedMsg.run(interaction)
+	}
+
+	isMessageInstance(message: APIMessage | Message): message is Message {
+		return message instanceof Message
 	}
 
 	/**

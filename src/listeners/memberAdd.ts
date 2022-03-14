@@ -1,6 +1,7 @@
+import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { GuildMember, MessageEmbed } from 'discord.js'
+import { ChannelType, GuildMember } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -33,7 +34,7 @@ export class MemberAddListener extends Listener {
 
 		const welcomeChannel = await member.guild.channels.fetch(channelID)
 		if (!welcomeChannel) return
-		if (welcomeChannel.type != 'GUILD_TEXT') return
+		if (welcomeChannel.type !== ChannelType.GuildText) return
 
 		const welcomeMessage = database.welcomeMessage
 		if (!welcomeMessage) return
@@ -45,11 +46,11 @@ export class MemberAddListener extends Listener {
 		await this.container.guilds.log(
 			member.guild,
 			'member',
-			new MessageEmbed({
+			new Embed({
 				title: member.user.tag,
 				description: `Member joined.\nCreated: <t:${Math.floor(member.user.createdTimestamp / 1000)}:F>`,
 				footer: { text: member.id },
-				timestamp: this.container.utils.now('milliseconds'),
+				timestamp: `${this.container.utils.now('milliseconds')}`,
 			})
 		)
 	}

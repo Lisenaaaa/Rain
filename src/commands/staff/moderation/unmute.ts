@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, GuildMember } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
@@ -11,14 +11,14 @@ import { ArgsUser } from '../../../types/misc'
 	description: 'unmute a member',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'helper',
-	botPerms: ['MANAGE_ROLES'],
-	userDiscordPerms: ['MANAGE_MESSAGES'],
+	botPerms: ['ManageRoles'],
+	userDiscordPerms: ['ManageMessages'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['935677351960928266'],
 		options: [
-			{ name: 'member', type: 'USER', description: 'the member you want to unmute', required: true },
-			{ name: 'reason', type: 'STRING', description: 'the reason to unmute them for' },
+			{ name: 'member', type: ApplicationCommandOptionType.User, description: 'the member you want to unmute', required: true },
+			{ name: 'reason', type: ApplicationCommandOptionType.User, description: 'the reason to unmute them for' },
 		],
 	},
 })

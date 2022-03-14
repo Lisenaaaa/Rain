@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 import { ArgsUser } from '../../types/misc'
 
@@ -9,7 +9,7 @@ import { ArgsUser } from '../../types/misc'
 	aliases: ['pronouns'],
 	description: 'see someones pronouns',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EMBED_LINKS'],
+	botPerms: ['EmbedLinks'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -18,7 +18,7 @@ import { ArgsUser } from '../../types/misc'
 			{
 				name: 'user',
 				description: 'The user you want to know the pronouns of',
-				type: 'USER',
+				type: ApplicationCommandOptionType.String,
 				required: true,
 			},
 		],

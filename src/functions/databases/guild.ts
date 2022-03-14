@@ -7,6 +7,7 @@ export interface GuildAttributes {
 	welcomeMessage: string | null
 	leaveMessage: string | null
 	welcomeChannel: string | null
+
 	muteRole: string | null
 
 	messageLoggingChannel: string | null
@@ -35,6 +36,7 @@ type GuildCreationAttributes = {
 	welcomeMessage?: string | null
 	leaveMessage?: string | null
 	welcomeChannel?: string | null
+	
 	muteRole?: string | null
 
 	messageLoggingChanne?: string | null

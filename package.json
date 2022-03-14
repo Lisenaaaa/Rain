@@ -41,7 +41,7 @@
 		"@sapphire/utilities": "^3.3.0",
 		"@types/node": "^17.0.17",
 		"chalk": "4.0.0",
-		"discord.js": "^13.6.0",
+		"discord.js": "dev",
 		"got": "11.8.3",
 		"moment": "^2.29.1",
 		"ms": "^2.1.3",

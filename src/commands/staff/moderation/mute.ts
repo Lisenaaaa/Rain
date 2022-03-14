@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, GuildMember } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js'
 import ms from 'ms'
 import { nanoid } from 'nanoid'
 import { GuildDatabase } from '../../../functions/databases/guild'
@@ -13,15 +13,15 @@ import { ArgsUser } from '../../../types/misc'
 	description: 'mute a member',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'helper',
-	botPerms: ['MANAGE_ROLES'],
-	userDiscordPerms: ['MANAGE_MESSAGES'],
+	botPerms: ['ManageRoles'],
+	userDiscordPerms: ['ManageMessages'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933872679654674442'],
 		options: [
-			{ name: 'member', type: 'USER', description: 'the member you want to mute', required: true },
-			{ name: 'reason', type: 'STRING', description: 'the reason to mute them for' },
-			{ name: 'time', type: 'STRING', description: 'the time to mute them for' },
+			{ name: 'member', type: ApplicationCommandOptionType.User, description: 'the member you want to mute', required: true },
+			{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the reason to mute them for' },
+			{ name: 'time', type: ApplicationCommandOptionType.String, description: 'the time to mute them for' },
 		],
 	},
 })

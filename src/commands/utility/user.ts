@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, GuildMember } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 import { ArgsUser } from '../../types/misc'
 
@@ -9,7 +9,7 @@ import { ArgsUser } from '../../types/misc'
 	aliases: ['user'],
 	description: 'see info about someone',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EMBED_LINKS'],
+	botPerms: ['EmbedLinks'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -18,7 +18,7 @@ import { ArgsUser } from '../../types/misc'
 			{
 				name: 'user',
 				description: 'The user you want to get info about',
-				type: 'USER',
+				type: ApplicationCommandOptionType.User,
 				required: false,
 			},
 		],
@@ -39,7 +39,7 @@ export class UserCommand extends RainCommand {
 			embeds: [
 				{
 					title: `${user.tag}`,
-					thumbnail: { url: `${member ? member.displayAvatarURL({ dynamic: true, format: 'png', size: 128 }) : user.displayAvatarURL({ dynamic: true, format: 'png', size: 128 })}` },
+					thumbnail: { url: `${member ? member.displayAvatarURL({ extension: 'png', size: 128 }) : user.displayAvatarURL({ extension: 'png', size: 128 })}` },
 					description: `**Mention**: ${user} (\`${user.id}\`)${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
                     **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
                     ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}

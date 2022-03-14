@@ -13,7 +13,7 @@ export class CommandErrorListener extends Listener {
 		else
 			await payload.message.reply({
 				embeds: [
-					await this.container.utils.error(error, {
+					(await this.container.utils.error(error, {
 						type: 'command',
 						data: {
 							link: '',
@@ -23,7 +23,7 @@ export class CommandErrorListener extends Listener {
 							// 	messageID: payload.message.id,
 							// },
 						},
-					}),
+					})),
 				],
 			})
 	}

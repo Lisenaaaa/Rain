@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { CommandInteraction, Guild, GuildMember, User } from 'discord.js'
+import { ApplicationCommandOptionType, CommandInteraction, Guild, GuildMember, User } from 'discord.js'
 import ms from 'ms'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
@@ -12,18 +12,18 @@ import { ArgsUser } from '../../../types/misc'
 	description: 'ban a member',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'moderator',
-	botPerms: ['BAN_MEMBERS'],
-	userDiscordPerms: ['BAN_MEMBERS'],
+	botPerms: ['BanMembers'],
+	userDiscordPerms: ['BanMembers'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['938210475534061599'],
 		options: [
-			{ name: 'member', type: 'USER', description: 'the member you want to ban', required: true },
-			{ name: 'reason', type: 'STRING', description: 'the reason to ban them for' },
-			{ name: 'time', type: 'STRING', description: 'how long you want them to be banned for' },
+			{ name: 'member', type: ApplicationCommandOptionType.User, description: 'the member you want to ban', required: true },
+			{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the reason to ban them for' },
+			{ name: 'time', type: ApplicationCommandOptionType.String, description: 'how long you want them to be banned for' },
 			{
 				name: 'days',
-				type: 'INTEGER',
+				type: ApplicationCommandOptionType.Integer,
 				description: 'how many days back you want their messages to be deleted for',
 				choices: [
 					{ name: '1', value: 1 },

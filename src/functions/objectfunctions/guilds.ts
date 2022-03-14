@@ -1,5 +1,6 @@
+import { Embed } from '@discordjs/builders'
 import { container } from '@sapphire/pieces'
-import { BanOptions, Channel, Guild, GuildChannel, GuildEmoji, GuildMember, GuildResolvable, Invite, MessageEmbed, Role, UserResolvable } from 'discord.js'
+import { BanOptions, Channel, Guild, GuildChannel, GuildEmoji, GuildMember, GuildResolvable, Invite, Role, UserResolvable } from 'discord.js'
 import { GuildAttributes } from '../databases/guild'
 import { GuildCommandAttributes } from '../databases/guildCommands'
 
@@ -136,7 +137,7 @@ export default class Guilds {
 		return resolvable
 	}
 
-	async log(guild: GuildResolvable, type: 'message' | 'member' | 'moderation' | 'action', embed: MessageEmbed): Promise<boolean> {
+	async log(guild: GuildResolvable, type: 'message' | 'member' | 'moderation' | 'action', embed: Embed): Promise<boolean> {
 		guild = await container.client.guilds.fetch(this.getId(guild))
 
 		let channelId: string | null | undefined

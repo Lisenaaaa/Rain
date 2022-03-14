@@ -1,7 +1,7 @@
 import { ChatInputCommand, container, MessageCommand, Precondition, PreconditionResult } from '@sapphire/framework'
 import chalk from 'chalk'
 import { CommandInteraction, Guild, GuildMember, Message, TextChannel } from 'discord.js'
-import { Perms } from '../types/misc'
+import { PermNames, Perms } from '../types/misc'
 
 export class PermissionsPrecondition extends Precondition {
 	public override async chatInputRun(interaction: CommandInteraction, command: ChatInputCommand) {
@@ -21,42 +21,44 @@ export class PermissionsPrecondition extends Precondition {
 	}
 
 	private async run(guild: Guild, channel: TextChannel, member: GuildMember, commandId: string): Promise<PreconditionResult> {
-		this.container.logger.debug('precondition ran')
+		// makes an object with the sapphire command object and the command's entry from the guild's database
 		const command = { sapphire: this.container.utils.getCommand(commandId), db: await this.container.database.guildCommands.findOne({ where: { guildId: guild.id, commandId: commandId } }) }
-		this.container.logger.debug('got the command db entry')
+
+		// gets the permissions members need to run commands in the current channel
 		const channelRequirements = await this.container.channels.getRestrictedPerms(channel) // the permissions the channel needs ('none' if none, `perms` type if some)
-		this.container.logger.debug('got restricted perms')
+
 		if (channelRequirements === false) {
 			this.container.logger.debug('"erroring"')
 			return await this.error({ identifier: 'permissions', message: '[ERROR] Failed to get if a channel is locked to a specific role' })
 		}
 
+		// checks if the command is owner only, if so bypasses permission checks
 		if (command.sapphire?.options.preconditions?.includes('ownerOnly') && this.container.members.isOwner(member)) {
 			return await this.ok()
 		}
 
 		const commandEnabled = { label: 'Is the command enabled?', value: command.db?.enabled }
 
-		this.container.logger.debug('getting member perms')
+		// gets the member's permissions
 		const memberPerms = await this.container.members.getPerms(member) // the member's permissions ('none' if none, `perms` type if some)
 
-		this.container.logger.debug('checking perm heirarchy')
+		// checks if the member can run commands in the current channel
 		const memberHasPermissionToUseChannel = this.container.utils.checkPermHeirarchy(memberPerms, channelRequirements)
 
-		this.container.logger.debug('making runCommandsInChannel object')
 		const runCommandsInChannel = { label: 'Can the member run any commands in this channel?', channelRequirements, memberPerms, value: memberHasPermissionToUseChannel }
 
+		// gets the permissions the command needs to be ran in the current guild
 		const commandPerms = command.db?.requiredPerms
 
-		this.container.logger.debug('checking perm heirarchy again')
+		// checks if the user has permission to run the specific command in the specific guild
 		const userHasCommandPerms = this.container.utils.checkPermHeirarchy(memberPerms, commandPerms as Perms)
 
-		this.container.logger.debug('making runCommand object')
 		const runCommand = { label: 'Does the user have permission to run this command?', commandPerms, memberPerms, value: userHasCommandPerms }
 
-		this.container.logger.debug('getting channel perms for the bot')
+		// gets the d.js permissions the bot has in the channel
 		const botPerms = channel.permissionsFor(guild.me as GuildMember).toArray()
 
+		// gets the permissions the bot needs to run the command
 		const sCommandPerms = command.sapphire?.options.botPerms
 
 		if (!botPerms) {
@@ -106,7 +108,7 @@ export class PermissionsPrecondition extends Precondition {
 		if (!runCommand.value) {
 			return await this.error({
 				identifier: 'permissions',
-				message: `This command requires you to have ${commandPerms} perms, but you ${
+				message: `This command requires you to have **${PermNames[commandPerms ?? 'none']}** perms, but you ${
 					runCommand.memberPerms === 'none' ? "don't have any priveliged permissions." : `only have ${runCommand.memberPerms}.`
 				}`,
 			})
