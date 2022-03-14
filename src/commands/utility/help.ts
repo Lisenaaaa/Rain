@@ -30,7 +30,7 @@ export class HelpCommand extends RainCommand {
 
 		for (const key of Object.keys(commandsByCategory)) {
 			const commands = commandsByCategory[key].map((c) => `\`${c.name}\``).join(', ')
-			embed.addFields({name: key, value: commands})
+			embed.addFields({ name: key, value: commands })
 		}
 
 		await interaction.reply({ embeds: [embed] })
