@@ -281,7 +281,7 @@ export default class Utilities {
 	 */
 	async paginate(interaction: CommandInteraction, embeds: MessageEmbedOptions[]) {
 		await interaction.deferReply()
-		
+
 		const paginatedMsg = new PaginatedMessage().setActions([
 			{
 				customId: '@sapphire/paginated-messages.firstPage',
