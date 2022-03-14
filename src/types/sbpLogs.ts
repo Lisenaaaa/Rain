@@ -1,5 +1,5 @@
 import { container } from '@sapphire/pieces'
-import { Embed, EmbedFieldData, GuildChannel, InviteResolvable, Message, UserResolvable } from 'discord.js'
+import { MessageEmbed, EmbedFieldData, GuildChannel, InviteResolvable, Message, UserResolvable } from 'discord.js'
 
 export type SBPEmbedData = {
 	title: string
@@ -149,13 +149,13 @@ export class SBPEmbed {
 		this.thumbnail = data.thumbnail
 	}
 
-	static convert(embed: Embed): SBPEmbed {
+	static convert(embed: MessageEmbed): SBPEmbed {
 		return new SBPEmbed({
 			title: embed.title ?? '',
 			url: embed.url ?? '',
 			description: embed.description ?? '',
 			fields: embed.fields ?? [],
-			footer: embed.data.footer?.text ?? '',
+			footer: embed.footer?.text ?? '',
 			color: embed.color?.toString(16) ? `#${embed.color.toString(16)}` : '',
 			thumbnail: embed.thumbnail?.proxyURL ?? '',
 			timestamp: '',
@@ -194,7 +194,7 @@ export class SBPUser {
 			name: user.tag,
 			avatar: user.displayAvatarURL(),
 			isBot: user.bot,
-			isVerified: user.flags?.toArray().includes('VerifiedBot') ?? false,
+			isVerified: user.flags?.toArray().includes('VERIFIED_BOT') ?? false,
 			color: color ?? '#FFFFFF',
 		})
 	}

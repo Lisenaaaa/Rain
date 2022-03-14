@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js'
+import { CommandInteraction, GuildMember } from 'discord.js'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
@@ -12,13 +12,13 @@ import { ArgsUser } from '../../../types/misc'
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'helper',
 	botPerms: [],
-	userDiscordPerms: ['ManageNicknames'],
+	userDiscordPerms: ['MANAGE_NICKNAMES'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['938214905469870140'],
 		options: [
-			{ name: 'member', type: ApplicationCommandOptionType.User, description: 'the member you want to warn', required: true },
-			{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the reason to warn them for', required: true },
+			{ name: 'member', type: 'USER', description: 'the member you want to warn', required: true },
+			{ name: 'reason', type: 'STRING', description: 'the reason to warn them for', required: true },
 		],
 	},
 })

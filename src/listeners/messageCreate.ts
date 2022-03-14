@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { ChannelType, Message } from 'discord.js'
+import { Message } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -12,7 +12,7 @@ export class MemberAddListener extends Listener {
 	}
 
 	async yellAtDiscord(message: Message) {
-		if (message.author.discriminator === '0000' && message.channel.type !== ChannelType.DM && !message.webhookId) {
+		if (message.author.discriminator === '0000' && message.channel.type !== 'DM' && !message.webhookId) {
 			if (this.container.utils.random(10) != 10) return
 
 			try {

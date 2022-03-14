@@ -1,6 +1,6 @@
 import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
-import { CacheType, CommandInteraction, CommandInteractionOption, EmbedData, TextChannel, ComponentType, ButtonStyle, Message, ApplicationCommandOptionType } from 'discord.js'
+import { CacheType, CommandInteraction, CommandInteractionOption, MessageEmbedOptions, TextChannel, Message, MessageEmbed } from 'discord.js'
 import got from 'got/dist/source'
 import { ErrorDetails, Perms } from '../types/misc'
 import moment from 'moment'
@@ -134,62 +134,62 @@ export default class Utilities {
 		const options: Record<string, unknown> = {}
 		interaction.options.data.forEach((option) => {
 			switch (option.type) {
-				case ApplicationCommandOptionType.String:
+				case 'STRING':
 					options[option.name] = option.value!
 					break
-				case ApplicationCommandOptionType.Integer:
+				case 'INTEGER':
 					options[option.name] = option.value!
 					break
-				case ApplicationCommandOptionType.Boolean:
+				case 'BOOLEAN':
 					options[option.name] = option.value!
 					break
-				case ApplicationCommandOptionType.Number:
+				case 'NUMBER':
 					options[option.name] = option.value!
 					break
-				case ApplicationCommandOptionType.User:
+				case 'USER':
 					options[option.name] = { user: option.user!, member: option.member! }
 					break
-				case ApplicationCommandOptionType.Channel:
+				case 'CHANNEL':
 					options[option.name] = option.channel!
 					break
-				case ApplicationCommandOptionType.Role:
+				case 'ROLE':
 					options[option.name] = option.role!
 					break
-				case ApplicationCommandOptionType.Mentionable:
+				case 'MENTIONABLE':
 					options[option.name] = option.role ? option.role : { user: option.user!, member: option.member! }
 					break
-				case ApplicationCommandOptionType.Subcommand:
+				case 'SUB_COMMAND':
 					options['subcommand'] = option.name
 					option.options?.forEach((subOption) => {
 						switch (subOption.type) {
-							case ApplicationCommandOptionType.String:
+							case 'STRING':
 								options[subOption.name] = subOption.value!
 								break
-							case ApplicationCommandOptionType.Integer:
+							case 'INTEGER':
 								options[subOption.name] = subOption.value!
 								break
-							case ApplicationCommandOptionType.Boolean:
+							case 'BOOLEAN':
 								options[subOption.name] = subOption.value!
 								break
-							case ApplicationCommandOptionType.Number:
+							case 'NUMBER':
 								options[subOption.name] = subOption.value!
 								break
-							case ApplicationCommandOptionType.User:
+							case 'USER':
 								options[subOption.name] = { user: subOption.user!, member: subOption.member! }
 								break
-							case ApplicationCommandOptionType.Channel:
+							case 'CHANNEL':
 								options[subOption.name] = subOption.channel!
 								break
-							case ApplicationCommandOptionType.Role:
+							case 'ROLE':
 								options[subOption.name] = subOption.role!
 								break
-							case ApplicationCommandOptionType.Mentionable:
+							case 'MENTIONABLE':
 								options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user!, member: subOption.member! }
 								break
 						}
 					})
 					break
-				case ApplicationCommandOptionType.SubcommandGroup: {
+				case 'SUB_COMMAND_GROUP': {
 					options['subcommandGroup'] = option.name
 
 					const suboptions = (option.options as CommandInteractionOption<CacheType>[])[0].options
@@ -198,28 +198,28 @@ export default class Utilities {
 						options['subcommand'] = option.options[0].name
 						;(suboptions as CommandInteractionOption<CacheType>[]).forEach((subOption) => {
 							switch (subOption.type) {
-								case ApplicationCommandOptionType.String:
+								case 'STRING':
 									options[subOption.name] = subOption.value!
 									break
-								case ApplicationCommandOptionType.Integer:
+								case 'INTEGER':
 									options[subOption.name] = subOption.value!
 									break
-								case ApplicationCommandOptionType.Boolean:
+								case 'BOOLEAN':
 									options[subOption.name] = subOption.value!
 									break
-								case ApplicationCommandOptionType.Number:
+								case 'NUMBER':
 									options[subOption.name] = subOption.value!
 									break
-								case ApplicationCommandOptionType.User:
+								case 'USER':
 									options[subOption.name] = { user: subOption.user!, member: subOption.member! }
 									break
-								case ApplicationCommandOptionType.Channel:
+								case 'CHANNEL':
 									options[subOption.name] = subOption.channel!
 									break
-								case ApplicationCommandOptionType.Role:
+								case 'ROLE':
 									options[subOption.name] = subOption.role!
 									break
-								case ApplicationCommandOptionType.Mentionable:
+								case 'MENTIONABLE':
 									options[subOption.name] = subOption.role ? subOption.role : { user: subOption.user!, member: subOption.member! }
 									break
 							}
@@ -279,20 +279,22 @@ export default class Utilities {
 	 * @param interaction The interaction you want to reply to
 	 * @param embeds An array of embeds, to use for the pages. This will overwrite whatever was set as the `footer` for each embed.
 	 */
-	async paginate(interaction: CommandInteraction, embeds: EmbedData[]) {
+	async paginate(interaction: CommandInteraction, embeds: MessageEmbedOptions[]) {
+		await interaction.deferReply()
+		
 		const paginatedMsg = new PaginatedMessage().setActions([
 			{
 				customId: '@sapphire/paginated-messages.firstPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate1:903780818755915796>',
-				type: ComponentType.Button,
+				type: 'BUTTON',
 				run: ({ handler }) => (handler.index = 0),
 			},
 			{
 				customId: '@sapphire/paginated-messages.previousPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate2:903780882203160656>',
-				type: ComponentType.Button,
+				type: 'BUTTON',
 				run: ({ handler }) => {
 					if (handler.index === 0) {
 						handler.index = handler.pages.length - 1
@@ -303,9 +305,9 @@ export default class Utilities {
 			},
 			{
 				customId: '@sapphire/paginated-messages.stop',
-				style: ButtonStyle.Danger,
+				style: 'DANGER',
 				emoji: '<:paginate_stop:940750448544063559>',
-				type: ComponentType.Button,
+				type: 'BUTTON',
 				run: async ({ collector, response }) => {
 					collector.stop()
 					if (runsOnInteraction(response)) {
@@ -325,7 +327,7 @@ export default class Utilities {
 				customId: '@sapphire/paginated-messages.nextPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate3:903780978940596295>',
-				type: ComponentType.Button,
+				type: 'BUTTON',
 				run: ({ handler }) => {
 					if (handler.index === handler.pages.length - 1) {
 						handler.index = 0
@@ -338,12 +340,12 @@ export default class Utilities {
 				customId: '@sapphire/paginated-messages.goToLastPage',
 				style: 'PRIMARY',
 				emoji: '<:paginate4:903781017544953966>',
-				type: ComponentType.Button,
+				type: 'BUTTON',
 				run: ({ handler }) => (handler.index = handler.pages.length - 1),
 			},
 		])
 		for (const embed of embeds) {
-			paginatedMsg.addPageEmbed(embed)
+			paginatedMsg.addPageEmbed(new MessageEmbed(embed))
 		}
 		await paginatedMsg.run(interaction)
 	}

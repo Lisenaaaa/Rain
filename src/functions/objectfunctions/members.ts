@@ -6,7 +6,7 @@ export class Members {
 	public importantPerms(member: GuildMember) {
 		const permsArray = member.permissions.toArray()
 		const importantPerms = [
-			'BanMembers',
+			'BAN_MEMBERS',
 			'KICK_MEMBERS',
 			'MANAGE_CHANNELS',
 			'MANAGE_GUILD',
@@ -24,7 +24,7 @@ export class Members {
 		]
 		let finalArray = permsArray.filter((perm) => importantPerms.includes(perm))
 
-		if (permsArray.includes('Administrator')) finalArray = ['Administrator']
+		if (permsArray.includes('ADMINISTRATOR')) finalArray = ['ADMINISTRATOR']
 
 		return finalArray
 	}

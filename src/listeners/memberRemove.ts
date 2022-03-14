@@ -1,7 +1,7 @@
 import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { ChannelType, GuildMember } from 'discord.js'
+import { GuildMember } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -25,7 +25,7 @@ export class MemberRemoveListener extends Listener {
 
 		const welcomeChannel = await member.guild.channels.fetch(channelID)
 		if (!welcomeChannel) return
-		if (welcomeChannel.type !== ChannelType.GuildText) return
+		if (welcomeChannel.type !== 'GUILD_TEXT') return
 
 		const leaveMessage = database.leaveMessage
 		if (!leaveMessage) return

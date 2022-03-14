@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { ApplicationCommandOptionType, CommandInteraction, Guild, GuildMember, User } from 'discord.js'
+import { CommandInteraction, Guild, GuildMember, User } from 'discord.js'
 import { nanoid } from 'nanoid'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser } from '../../../types/misc'
@@ -11,14 +11,14 @@ import { ArgsUser } from '../../../types/misc'
 	description: 'unban a member',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'moderator',
-	botPerms: ['BanMembers'],
-	userDiscordPerms: ['BanMembers'],
+	botPerms: ['BAN_MEMBERS'],
+	userDiscordPerms: ['BAN_MEMBERS'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['936396772606111824'],
 		options: [
-			{ name: 'member', type: ApplicationCommandOptionType.User, description: 'the member you want to unban', required: true },
-			{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the reason to unban them for' },
+			{ name: 'member', type: 'USER', description: 'the member you want to unban', required: true },
+			{ name: 'reason', type: 'STRING', description: 'the reason to unban them for' },
 		],
 	},
 })

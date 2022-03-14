@@ -11,7 +11,7 @@ import RainCommand from '../../structures/RainCommand'
 	aliases: ['car'],
 	description: 'sends a cat picture',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],

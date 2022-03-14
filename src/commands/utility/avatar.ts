@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { ApplicationCommandOptionType, CommandInteraction } from 'discord.js'
+import { CommandInteraction } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 import { ArgsUser } from '../../types/misc'
 
@@ -9,7 +9,7 @@ import { ArgsUser } from '../../types/misc'
 	aliases: ['avatar'],
 	description: 'see someones pfp',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -18,7 +18,7 @@ import { ArgsUser } from '../../types/misc'
 			{
 				name: 'user',
 				description: 'The user you want to get the pfp from',
-				type: ApplicationCommandOptionType.User,
+				type: 'USER',
 				required: true,
 			},
 		],
@@ -29,18 +29,18 @@ export class AvatarCommand extends RainCommand {
 		const args: { user: ArgsUser } = this.container.utils.parseInteractionArgs(interaction)
 		const user = args.user.user
 
-		if (args.user.member && args.user.member.avatarURL({ extension: 'png', size: 512 })) {
+		if (args.user.member && args.user.member.avatarURL({ format: 'png', size: 512, dynamic: true })) {
 			return await interaction.reply({
 				embeds: [
 					{
 						title: `${user.tag}'s Avatars`,
-						image: { url: args.user.member.avatarURL({ extension: 'png', size: 512 }) as string },
-						thumbnail: { url: user.displayAvatarURL({ extension: 'png', size: 512 }) },
+						image: { url: args.user.member.avatarURL({ format: 'png', size: 512, dynamic: true }) as string },
+						thumbnail: { url: user.displayAvatarURL({ format: 'png', size: 512, dynamic: true }) },
 					},
 				],
 			})
 		}
 
-		await interaction.reply({ embeds: [{ title: `${user.tag}'s Avatar`, image: { url: user.displayAvatarURL({ extension: 'png', size: 512 }) } }] })
+		await interaction.reply({ embeds: [{ title: `${user.tag}'s Avatar`, image: { url: user.displayAvatarURL({ format: 'png', size: 512, dynamic: true }) } }] })
 	}
 }

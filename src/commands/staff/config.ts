@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
-import { ButtonInteraction, ButtonStyle, CommandInteraction, ComponentType, Guild, InteractionReplyOptions, Message, Snowflake, TextChannel } from 'discord.js'
+import { ButtonInteraction, CommandInteraction, Guild, InteractionReplyOptions, Message, Snowflake, TextChannel } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -11,8 +11,8 @@ import RainCommand from '../../structures/RainCommand'
 	description: 'configure the guild',
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'srMod',
-	userDiscordPerms: ['ManageGuild'],
-	botPerms: ['ManageMessages'],
+	userDiscordPerms: ['MANAGE_GUILD'],
+	botPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['928065482647535687'],
@@ -31,12 +31,12 @@ export class ConfigCommand extends RainCommand {
 			content: 'config',
 			components: [
 				{
-					type: ComponentType.ActionRow,
+					type: 'ACTION_ROW',
 					components: [
 						{
-							type: ComponentType.Button,
+							type: 'BUTTON',
 							label: 'welcome',
-							style: ButtonStyle.Primary,
+							style: 'PRIMARY',
 							customId: 'configWelcome',
 						},
 					],
@@ -55,24 +55,24 @@ export class ConfigCommand extends RainCommand {
 				content: 'What would you like to do with the welcoming system?',
 				components: [
 					{
-						type: ComponentType.ActionRow,
+						type: 'ACTION_ROW',
 						components: [
-							{ type: ComponentType.Button, label: 'Set Welcome/Leave Channel', style: ButtonStyle.Success, customId: 'configSetWelcomeChannel' },
-							{ type: ComponentType.Button, label: 'Remove Welcome/Leave Channel', style: ButtonStyle.Danger, customId: 'configRemoveWelcomeChannel' },
+							{ type: 'BUTTON', label: 'Set Welcome/Leave Channel', style: 'SUCCESS', customId: 'configSetWelcomeChannel' },
+							{ type: 'BUTTON', label: 'Remove Welcome/Leave Channel', style: 'DANGER', customId: 'configRemoveWelcomeChannel' },
 						],
 					},
 					{
-						type: ComponentType.ActionRow,
+						type: 'ACTION_ROW',
 						components: [
-							{ type: ComponentType.Button, label: 'Set Welcome Message', style: ButtonStyle.Success, customId: 'configSetWelcomeMessage' },
-							{ type: ComponentType.Button, label: 'Remove Welcome Message', style: ButtonStyle.Danger, customId: 'configRemoveWelcomeMessage' },
+							{ type: 'BUTTON', label: 'Set Welcome Message', style: 'SUCCESS', customId: 'configSetWelcomeMessage' },
+							{ type: 'BUTTON', label: 'Remove Welcome Message', style: 'DANGER', customId: 'configRemoveWelcomeMessage' },
 						],
 					},
 					{
-						type: ComponentType.ActionRow,
+						type: 'ACTION_ROW',
 						components: [
-							{ type: ComponentType.Button, label: 'Set Leave Message', style: ButtonStyle.Success, customId: 'configSetLeaveMessage' },
-							{ type: ComponentType.Button, label: 'Remove Leave Message', style: ButtonStyle.Danger, customId: 'configRemoveLeaveMessage' },
+							{ type: 'BUTTON', label: 'Set Leave Message', style: 'SUCCESS', customId: 'configSetLeaveMessage' },
+							{ type: 'BUTTON', label: 'Remove Leave Message', style: 'DANGER', customId: 'configRemoveLeaveMessage' },
 						],
 					},
 				],
@@ -100,10 +100,10 @@ export class ConfigCommand extends RainCommand {
 						content: `Are you sure you want to set the welcome channel to **${channel.toString()}**?`,
 						components: [
 							{
-								type: ComponentType.ActionRow,
+								type: 'ACTION_ROW',
 								components: [
-									{ type: ComponentType.Button, style: ButtonStyle.Success, label: 'Yes', customId: 'configSetWelcomeChannelYes' },
-									{ type: ComponentType.Button, style: ButtonStyle.Danger, label: 'No', customId: 'configSetWelcomeChannelNo' },
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: 'configSetWelcomeChannelYes' },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: 'configSetWelcomeChannelNo' },
 								],
 							},
 						],
@@ -127,10 +127,10 @@ export class ConfigCommand extends RainCommand {
 						content: `Are you sure you want to remove this guild's welcome channel, disabling both the join and leave messages?`,
 						components: [
 							{
-								type: ComponentType.ActionRow,
+								type: 'ACTION_ROW',
 								components: [
-									{ type: ComponentType.Button, style: ButtonStyle.Success, label: 'Yes', customId: 'configRemoveWelcomeChannelYes' },
-									{ type: ComponentType.Button, style: ButtonStyle.Danger, label: 'No', customId: 'configRemoveWelcomeChannelNo' },
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: 'configRemoveWelcomeChannelYes' },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: 'configRemoveWelcomeChannelNo' },
 								],
 							},
 						],
@@ -158,10 +158,10 @@ export class ConfigCommand extends RainCommand {
 						content: `Are you sure you want to remove this guild's welcome message, disabling the join messages?`,
 						components: [
 							{
-								type: ComponentType.ActionRow,
+								type: 'ACTION_ROW',
 								components: [
-									{ type: ComponentType.Button, style: ButtonStyle.Success, label: 'Yes', customId: 'configRemoveWelcomeMessageYes' },
-									{ type: ComponentType.Button, style: ButtonStyle.Danger, label: 'No', customId: 'configRemoveWelcomeMessageNo' },
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: 'configRemoveWelcomeMessageYes' },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: 'configRemoveWelcomeMessageNo' },
 								],
 							},
 						],
@@ -189,10 +189,10 @@ export class ConfigCommand extends RainCommand {
 						content: `Are you sure you want to remove this guild's leave message, disabling the leave messages?`,
 						components: [
 							{
-								type: ComponentType.ActionRow,
+								type: 'ACTION_ROW',
 								components: [
-									{ type: ComponentType.Button, style: ButtonStyle.Success, label: 'Yes', customId: 'configRemoveLeaveMessageYes' },
-									{ type: ComponentType.Button, style: ButtonStyle.Danger, label: 'No', customId: 'configRemoveLeaveMessageNo' },
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: 'configRemoveLeaveMessageYes' },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: 'configRemoveLeaveMessageNo' },
 								],
 							},
 						],
@@ -232,7 +232,7 @@ export class ConfigCommand extends RainCommand {
 
 	private async awaitButton(userId: Snowflake, messageId: Snowflake, channel: GuildTextBasedChannelTypes): Promise<ButtonInteraction | undefined> {
 		return await channel.awaitMessageComponent({
-			componentType: ComponentType.Button,
+			componentType: 'BUTTON',
 			filter: (b: ButtonInteraction<'cached'>) => b.user.id === userId && b.message.id === messageId,
 			time: this.getTimeInSeconds(60),
 		})

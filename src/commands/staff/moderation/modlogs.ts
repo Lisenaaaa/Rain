@@ -1,8 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { PaginatedMessage, runsOnInteraction } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIMessage } from 'discord-api-types'
-import { ApplicationCommandOptionType, ButtonStyle, CommandInteraction, ComponentType, Message } from 'discord.js'
+import { CommandInteraction, Message } from 'discord.js'
 import RainCommand from '../../../structures/RainCommand'
 import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 
@@ -12,45 +11,45 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	description: "see someone's modlogs",
 	preconditions: ['slashOnly', 'permissions', 'GuildOnly'],
 	defaultPermissions: 'trialHelper',
-	userDiscordPerms: ['ManageMessages'],
+	userDiscordPerms: ['MANAGE_MESSAGES'],
 	botPerms: [],
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['933929396945952779'],
 		options: [
 			{
-				type: ApplicationCommandOptionType.Subcommand,
+				type: 'SUB_COMMAND',
 				name: 'view',
 				description: "view a specfic modlog, based on it's id",
 				options: [
 					{
 						name: 'modlog',
 						description: 'the id of the modlog you want to see',
-						type: ApplicationCommandOptionType.String,
+						type: 'STRING',
 						required: true,
 					},
 				],
 			},
 			{
-				type: ApplicationCommandOptionType.Subcommand,
+				type: 'SUB_COMMAND',
 				name: 'user',
 				description: "view a specific user's modlogs",
 				options: [
 					{
 						name: 'member',
 						description: 'the person you want the modlogs of',
-						type: ApplicationCommandOptionType.User,
+						type: 'USER',
 						required: true,
 					},
 				],
 			},
 			{
-				type: ApplicationCommandOptionType.Subcommand,
+				type: 'SUB_COMMAND',
 				name: 'edit-description',
 				description: 'edit the description of a specific modlog',
 				options: [
-					{ name: 'modlog', type: ApplicationCommandOptionType.String, description: 'the ID of the modlog you want to edit', required: true },
-					{ name: 'reason', type: ApplicationCommandOptionType.String, description: 'the new reason for the modlog', required: true },
+					{ name: 'modlog', type: 'STRING', description: 'the ID of the modlog you want to edit', required: true },
+					{ name: 'reason', type: 'STRING', description: 'the new reason for the modlog', required: true },
 				],
 			},
 		],
@@ -58,7 +57,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 })
 export class ModlogsCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const subCmd = interaction.options.get("Subcommand", true).name
+		const subCmd = interaction.options.getSubcommand(true)
 		switch (subCmd) {
 			case 'user':
 				await this.user(interaction)
@@ -102,73 +101,7 @@ export class ModlogsCommand extends RainCommand {
 			embedsArray.push({ title: `${args.member.user.tag}'s modlogs`, description: modlogString, footer: { text: `${args.member.user.id}` } })
 		}
 
-		// await this.container.utils.paginate(interaction, embedsArray)
-		const paginatedMsg = new PaginatedMessage().setActions([
-			{
-				customId: '@sapphire/paginated-messages.firstPage',
-				style: 'PRIMARY',
-				emoji: '<:paginate1:903780818755915796>',
-				type: ComponentType.Button,
-				run: ({ handler }) => (handler.index = 0),
-			},
-			{
-				customId: '@sapphire/paginated-messages.previousPage',
-				style: 'PRIMARY',
-				emoji: '<:paginate2:903780882203160656>',
-				type: ComponentType.Button,
-				run: ({ handler }) => {
-					if (handler.index === 0) {
-						handler.index = handler.pages.length - 1
-					} else {
-						--handler.index
-					}
-				},
-			},
-			{
-				customId: '@sapphire/paginated-messages.stop',
-				style: ButtonStyle.Danger,
-				emoji: '<:paginate_stop:940750448544063559>',
-				type: ComponentType.Button,
-				run: async ({ collector, response }) => {
-					collector.stop()
-					if (runsOnInteraction(response)) {
-						if (response.replied || response.deferred) {
-							await response.editReply({ components: [] })
-						} else if (response.isMessageComponent()) {
-							await response.update({ components: [] })
-						} else {
-							await response.reply({ content: "This maze wasn't meant for you...what did you do.", ephemeral: true })
-						}
-					} else if (this.isMessageInstance(response)) {
-						await response.edit({ components: [] })
-					}
-				},
-			},
-			{
-				customId: '@sapphire/paginated-messages.nextPage',
-				style: 'PRIMARY',
-				emoji: '<:paginate3:903780978940596295>',
-				type: ComponentType.Button,
-				run: ({ handler }) => {
-					if (handler.index === handler.pages.length - 1) {
-						handler.index = 0
-					} else {
-						++handler.index
-					}
-				},
-			},
-			{
-				customId: '@sapphire/paginated-messages.goToLastPage',
-				style: 'PRIMARY',
-				emoji: '<:paginate4:903781017544953966>',
-				type: ComponentType.Button,
-				run: ({ handler }) => (handler.index = handler.pages.length - 1),
-			},
-		])
-		for (const embed of embedsArray) {
-			paginatedMsg.addPageEmbed(embed)
-		}
-		await paginatedMsg.run(interaction)
+		await this.container.utils.paginate(interaction, embedsArray)
 	}
 	async editDescription(interaction: CommandInteraction) {
 		const args: { modlog: string; reason: string } = this.parseArgs(interaction)

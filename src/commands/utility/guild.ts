@@ -8,7 +8,7 @@ import RainCommand from '../../structures/RainCommand'
 	aliases: ['guild'],
 	description: 'see info about the current guild',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166', '883512410449772574'],
@@ -26,7 +26,7 @@ export class GuildCommand extends RainCommand {
 			embeds: [
 				{
 					title: guild.name,
-					thumbnail: { url: guild.iconURL({ extension: 'png', size: 128 }) ?? '' },
+					thumbnail: { url: guild.iconURL({ format: 'png', size: 128, dynamic: true }) ?? '' },
 					description: `
                     **ID**: \`${guild.id}\`
                     **Created at** <t:${Math.floor(guild.createdTimestamp / 1000)}:f>

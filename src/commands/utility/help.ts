@@ -1,7 +1,7 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions, container } from '@sapphire/framework'
 import { APIInteractionGuildMember } from 'discord-api-types'
-import { CommandInteraction, GuildMember, EmbedBuilder } from 'discord.js'
+import { CommandInteraction, GuildMember, MessageEmbed } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -9,7 +9,7 @@ import RainCommand from '../../structures/RainCommand'
 	aliases: ['help'],
 	description: 'info about my commands',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -26,7 +26,7 @@ export class HelpCommand extends RainCommand {
 			commandsByCategory[type] = allCommands.filter((c) => c.category === type)
 		}
 
-		const embed = new EmbedBuilder({ title: 'Rain Help', color: this.getColor(interaction) })
+		const embed = new MessageEmbed({ title: 'Rain Help', color: this.getColor(interaction) })
 
 		for (const key of Object.keys(commandsByCategory)) {
 			const commands = commandsByCategory[key].map((c) => `\`${c.name}\``).join(', ')

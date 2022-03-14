@@ -9,7 +9,7 @@ import { ArgsUser } from '../../types/misc'
 	aliases: ['user'],
 	description: 'see info about someone',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
@@ -18,7 +18,7 @@ import { ArgsUser } from '../../types/misc'
 			{
 				name: 'user',
 				description: 'The user you want to get info about',
-				type: ApplicationCommandOptionType.User,
+				type: 'USER',
 				required: false,
 			},
 		],
@@ -39,7 +39,7 @@ export class UserCommand extends RainCommand {
 			embeds: [
 				{
 					title: `${user.tag}`,
-					thumbnail: { url: `${member ? member.displayAvatarURL({ extension: 'png', size: 128 }) : user.displayAvatarURL({ extension: 'png', size: 128 })}` },
+					thumbnail: { url: `${member ? member.displayAvatarURL({ format: 'png', size: 128, dynamic: true }) : user.displayAvatarURL({ format: 'png', size: 128, dynamic: true })}` },
 					description: `**Mention**: ${user} (\`${user.id}\`)${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
                     **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
                     ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}

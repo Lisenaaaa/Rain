@@ -8,7 +8,7 @@ import RainLogger from '../functions/logging'
 import { Members } from '../functions/objectfunctions/members'
 import { Perms } from '../types/misc'
 import { RainTaskStore } from './RainTaskStore'
-import { ApplicationCommandOptionData, Partials, PermissionsString, Snowflake } from 'discord.js'
+import { ApplicationCommandOptionData, PermissionString, Snowflake } from 'discord.js'
 import { CommandDatabase } from '../functions/databases/commands'
 import { GuildDatabase } from '../functions/databases/guild'
 import { GuildCommandDatabase } from '../functions/databases/guildCommands'
@@ -29,9 +29,9 @@ export class RainClient extends SapphireClient {
 			caseInsensitiveCommands: true,
 			caseInsensitivePrefixes: true,
 			defaultPrefix: '-',
-			intents: ['Guilds', 'GuildMessages', 'GuildMembers', 'GuildPresences', 'GuildBans'],
+			intents: ['GUILDS', 'GUILD_MESSAGES', 'GUILD_MEMBERS', 'GUILD_PRESENCES', 'GUILD_BANS'],
 			loadDefaultErrorListeners: false,
-			partials: [Partials.Channel],
+			partials: ['CHANNEL'],
 			allowedMentions: { parse: [] },
 			loadMessageCommandListeners: true,
 			logger: {
@@ -68,8 +68,8 @@ declare module '@sapphire/pieces' {
 declare module '@sapphire/framework' {
 	interface CommandOptions {
 		defaultPermissions: Perms
-		botPerms: PermissionsString[]
-		userDiscordPerms?: PermissionsString[]
+		botPerms: PermissionString[]
+		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]
@@ -79,8 +79,8 @@ declare module '@sapphire/framework' {
 	}
 	interface Command {
 		defaultPermissions: Perms
-		botPerms: PermissionsString[]
-		userDiscordPerms?: PermissionsString[]
+		botPerms: PermissionString[]
+		userDiscordPerms?: PermissionString[]
 		slashOptions?: {
 			options?: ApplicationCommandOptionData[]
 			idHints?: Snowflake[]

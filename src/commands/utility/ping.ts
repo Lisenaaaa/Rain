@@ -8,7 +8,7 @@ import RainCommand from '../../structures/RainCommand'
 	aliases: ['ping'],
 	description: 'shows you my current ping',
 	preconditions: ['slashOnly', 'permissions'],
-	botPerms: ['EmbedLinks'],
+	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
