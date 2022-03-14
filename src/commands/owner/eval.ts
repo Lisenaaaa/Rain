@@ -30,7 +30,7 @@ export class EvalCommand extends RainCommand {
 			embeds: [
 				{
 					title: 'Eval Output',
-					color: success ? 0x00FF00 : 0xFF0000,
+					color: success ? 0x00ff00 : 0xff0000,
 					fields: [
 						{ name: 'Input', value: `\`\`\`js\n${codetoeval}\`\`\`` },
 						{ name: 'Output', value: await this.formatOutput(output) },

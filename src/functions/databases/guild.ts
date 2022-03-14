@@ -36,7 +36,7 @@ type GuildCreationAttributes = {
 	welcomeMessage?: string | null
 	leaveMessage?: string | null
 	welcomeChannel?: string | null
-	
+
 	muteRole?: string | null
 
 	messageLoggingChanne?: string | null

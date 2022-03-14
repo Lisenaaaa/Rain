@@ -58,7 +58,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 })
 export class ModlogsCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
-		const subCmd = interaction.options.get("Subcommand", true).name
+		const subCmd = interaction.options.get('Subcommand', true).name
 		switch (subCmd) {
 			case 'user':
 				await this.user(interaction)

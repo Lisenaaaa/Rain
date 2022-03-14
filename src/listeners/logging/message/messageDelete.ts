@@ -25,10 +25,10 @@ export class MessageDeleteListener extends Listener {
 			timestamp: `${this.container.utils.now('milliseconds')}`,
 		})
 		if (message.content) {
-			embed.addFields({name: 'Content', value: message.content})
+			embed.addFields({ name: 'Content', value: message.content })
 		}
 		if (message.attachments.size != 0) {
-			embed.addField({name: 'Attachments', value: message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', ')})
+			embed.addField({ name: 'Attachments', value: message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', ') })
 		}
 		await this.container.guilds.log(message.guild, 'message', embed)
 	}
