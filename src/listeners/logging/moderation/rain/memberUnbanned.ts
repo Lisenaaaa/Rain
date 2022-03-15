@@ -1,6 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
+import { MessageEmbed } from 'discord.js'
 import { MemberUnbanData } from '../../../../commands/staff/moderation/unban'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,7 +9,7 @@ import { MemberUnbanData } from '../../../../commands/staff/moderation/unban'
 })
 export class MemberUnbannedListener extends Listener {
 	async run(ban: MemberUnbanData) {
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Member Unbanned',
 			fields: [
 				{ name: 'User', value: `${ban.member.tag} (\`${ban.member.id}\`)` },

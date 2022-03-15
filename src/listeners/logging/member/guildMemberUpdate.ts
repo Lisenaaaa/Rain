@@ -1,7 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { GuildMember } from 'discord.js'
+import { GuildMember, MessageEmbed } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -42,7 +41,7 @@ export class MemberUpdateListener extends Listener {
 		await this.container.guilds.log(
 			newMember.guild,
 			'member',
-			new Embed({
+			new MessageEmbed({
 				title: newMember.user.tag,
 				description: `
 		${removedRoles.length != 0 ? `Removed roles: ${removedRoles.map((r) => `<@&${r}>`).join(', ')}` : ''}
@@ -51,7 +50,7 @@ export class MemberUpdateListener extends Listener {
 		${hasNewNick ? (oldMember.nickname ? `\nNickname changed from ${oldMember.nickname} to ${newMember.nickname}` : `Set their nickname to \`${newMember.nickname}\``) : ''}
 		`,
 				footer: { text: newMember.id },
-				timestamp: `${this.container.utils.now('milliseconds')}`,
+				timestamp: Date.now(),
 			})
 		)
 	}

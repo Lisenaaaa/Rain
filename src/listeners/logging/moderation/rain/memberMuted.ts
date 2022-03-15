@@ -1,6 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
+import { MessageEmbed } from 'discord.js'
 import { MemberMuteData } from '../../../../commands/staff/moderation/mute'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,7 +9,7 @@ import { MemberMuteData } from '../../../../commands/staff/moderation/mute'
 })
 export class MemberMutedListener extends Listener {
 	async run(mute: MemberMuteData) {
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Member Muted',
 			fields: [
 				{ name: 'User', value: `${mute.member.user.tag} (\`${mute.member.user.id}\`)` },
@@ -21,7 +21,7 @@ export class MemberMutedListener extends Listener {
 		})
 
 		if (mute.time) {
-			embed.addField({ name: 'Expires', value: `<t:${Math.floor(mute.time.getTime() / 1000)}:F>` })
+			embed.addFields({ name: 'Expires', value: `<t:${Math.floor(mute.time.getTime() / 1000)}:F>` })
 		}
 
 		await this.container.guilds.log(mute.member.guild, 'moderation', embed)

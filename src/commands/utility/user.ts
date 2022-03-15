@@ -1,6 +1,6 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
-import { ApplicationCommandOptionType, CommandInteraction, GuildMember } from 'discord.js'
+import { CommandInteraction, GuildMember } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 import { ArgsUser } from '../../types/misc'
 

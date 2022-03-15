@@ -1,7 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { GuildMember } from 'discord.js'
+import { GuildMember, MessageEmbed } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -37,7 +36,7 @@ export class MemberRemoveListener extends Listener {
 		await this.container.guilds.log(
 			member.guild,
 			'member',
-			new Embed({
+			new MessageEmbed({
 				title: member.user.tag,
 				description: `Member left.\nCreated: <t:${Math.floor(member.user.createdTimestamp / 1000)}:F>\nJoined: <t:${Math.floor((member.joinedAt?.getTime() as number) / 1000)}:F>`,
 				footer: { text: member.id },

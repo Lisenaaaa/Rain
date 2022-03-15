@@ -1,6 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
+import { MessageEmbed } from 'discord.js'
 import { MemberUnmuteData } from '../../../../commands/staff/moderation/unmute'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,7 +9,7 @@ import { MemberUnmuteData } from '../../../../commands/staff/moderation/unmute'
 })
 export class MemberUnmutedListener extends Listener {
 	async run(mute: MemberUnmuteData) {
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Member Unmuted',
 			fields: [
 				{ name: 'User', value: `${mute.member.user.tag} (\`${mute.member.id}\`)` },

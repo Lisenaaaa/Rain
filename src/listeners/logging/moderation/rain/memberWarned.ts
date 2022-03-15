@@ -1,6 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
+import { MessageEmbed } from 'discord.js'
 import { MemberWarnData } from '../../../../commands/staff/moderation/warn'
 
 @ApplyOptions<ListenerOptions>({
@@ -9,7 +9,7 @@ import { MemberWarnData } from '../../../../commands/staff/moderation/warn'
 })
 export class MemberWarnedListener extends Listener {
 	async run(warn: MemberWarnData) {
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Member Warned',
 			fields: [
 				{ name: 'User', value: `${warn.member.user.tag} (\`${warn.member.id}\`)` },

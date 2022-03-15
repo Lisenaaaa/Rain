@@ -1,7 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { GuildBan } from 'discord.js'
+import { GuildBan, MessageEmbed } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -9,7 +8,7 @@ import { GuildBan } from 'discord.js'
 })
 export class GuildBanRemoveListener extends Listener {
 	async run(ban: GuildBan) {
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Guild Member Unbanned',
 			fields: [
 				{ name: 'User', value: `${ban.user.tag} (\`${ban.user.id}\`)` },

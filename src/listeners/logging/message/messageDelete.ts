@@ -1,7 +1,6 @@
-import { Embed } from '@discordjs/builders'
 import { ApplyOptions } from '@sapphire/decorators'
 import { Listener, ListenerOptions } from '@sapphire/framework'
-import { Message } from 'discord.js'
+import { Message, MessageEmbed } from 'discord.js'
 
 @ApplyOptions<ListenerOptions>({
 	once: false,
@@ -13,7 +12,7 @@ export class MessageDeleteListener extends Listener {
 			return
 		}
 
-		const embed = new Embed({
+		const embed = new MessageEmbed({
 			title: 'Message Deleted',
 			url: message.url,
 			fields: [
@@ -28,7 +27,7 @@ export class MessageDeleteListener extends Listener {
 			embed.addFields({ name: 'Content', value: message.content })
 		}
 		if (message.attachments.size != 0) {
-			embed.addField({ name: 'Attachments', value: message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', ') })
+			embed.addFields([{ name: 'Attachments', value: message.attachments.map((a) => `[${a.name}](${a.proxyURL})`).join(', ') }])
 		}
 		await this.container.guilds.log(message.guild, 'message', embed)
 	}
