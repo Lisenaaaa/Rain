@@ -134,8 +134,7 @@ export class ModlogsCommand extends RainCommand {
 	}
 
 	typeIsPunishment(type: ModlogTypes): type is ModlogDurationTypes {
-		const types = ['BAN', 'MUTE']
-		return types.includes(type)
+		return ['BAN', 'MUTE'].includes(type)
 	}
 	isMessageInstance(message: APIMessage | Message): message is Message {
 		return message instanceof Message
