@@ -43,8 +43,8 @@ export class ConfigCommand extends RainCommand {
 							type: 'BUTTON',
 							label: 'logging',
 							style: 'PRIMARY',
-							customId: 'configLogging'
-						}
+							customId: 'configLogging',
+						},
 					],
 				},
 			],
@@ -348,7 +348,7 @@ export class ConfigCommand extends RainCommand {
 				case 'configRemoveMessageLogChannel': {
 					const channelType = 'message logging'
 					const buttonChannelType = 'MessageLogging'
-					
+
 					await interaction.editReply({
 						content: `Are you sure you want to remove this guild's ${channelType} channel?`,
 						components: [
@@ -374,7 +374,6 @@ export class ConfigCommand extends RainCommand {
 					}
 					break
 				}
-
 
 				case 'configSetMemberLogChannel': {
 					const channelType = 'member logging'
@@ -420,7 +419,7 @@ export class ConfigCommand extends RainCommand {
 				case 'configRemoveMemberLogChannel': {
 					const channelType = 'member logging'
 					const buttonChannelType = 'MemberLogging'
-					
+
 					await interaction.editReply({
 						content: `Are you sure you want to remove this guild's ${channelType} channel?`,
 						components: [
@@ -491,7 +490,7 @@ export class ConfigCommand extends RainCommand {
 				case 'configRemoveActionLogChannel': {
 					const channelType = 'action logging'
 					const buttonChannelType = 'ActionLogging'
-					
+
 					await interaction.editReply({
 						content: `Are you sure you want to remove this guild's ${channelType} channel?`,
 						components: [
@@ -562,7 +561,7 @@ export class ConfigCommand extends RainCommand {
 				case 'configRemoveModerationLogChannel': {
 					const channelType = 'moderation logging'
 					const buttonChannelType = 'ModerationLogging'
-					
+
 					await interaction.editReply({
 						content: `Are you sure you want to remove this guild's ${channelType} channel?`,
 						components: [
