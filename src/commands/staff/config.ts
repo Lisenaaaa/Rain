@@ -1139,7 +1139,6 @@ export class ConfigCommand extends RainCommand {
 					break
 				}
 				case 'configRemoveMuteRole': {
-
 					await interaction.editReply({
 						content: `Are you sure you want to remove this guild's mute role?`,
 						components: [
