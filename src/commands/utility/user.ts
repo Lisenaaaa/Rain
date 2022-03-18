@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { CommandOptions } from '@sapphire/framework'
 import { CommandInteraction, GuildMember } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
-import { ArgsUser } from '../../types/misc'
+import { ArgsUser, PermNames } from '../../types/misc'
 
 @ApplyOptions<CommandOptions>({
 	name: 'user',
@@ -40,25 +40,22 @@ export class UserCommand extends RainCommand {
 				{
 					title: `${user.tag}`,
 					thumbnail: { url: `${member ? member.displayAvatarURL({ format: 'png', size: 128, dynamic: true }) : user.displayAvatarURL({ format: 'png', size: 128, dynamic: true })}` },
-					description: `**Mention**: ${user} (\`${user.id}\`)${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}
-                    **Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>
-                    ${member ? `**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}
-					${
-						member
-							? `
-					
-					**Roles**: ${member.roles.cache
-						.filter((r) => r.id != r.guild.id)
-						.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
-						.map((r) => r.toString())
-						.join(', ')}
-					**Discord Perms**: ${this.formatPermsArray(this.container.members.importantPerms(member)).join(', ')}${
-									(await this.container.guilds.hasStaffRoles(member.guild)) ? `\n**Rain Perms**: ${await this.container.members.getPerms(member)}` : ''
-							  }
-					`
-							: ''
-					}
-                    `,
+					description:
+						`**Mention**: ${user} (\`${user.id}\`)${pronouns ? `\n**Pronouns**: ${pronouns}` : ''}` +
+						`\n**Created at** <t:${Math.floor(user.createdTimestamp / 1000)}:F>` +
+						`${member ? `\n**Joined at** <t:${Math.floor((member.joinedTimestamp ?? member.guild.createdTimestamp) / 1000)}:F>` : ''}` +
+						'\n' +
+						`${
+							member
+								? `\n**Roles**: ${member.roles.cache
+										.filter((r) => r.id !== r.guild.id)
+										.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
+										.map((r) => r.toString())
+										.join(', ')}\n**Discord Perms**: ${this.formatPermsArray(this.container.members.importantPerms(member)).join(', ')}${
+										(await this.container.guilds.hasStaffRoles(member.guild)) ? `\n**Rain Perms**: ${PermNames[await this.container.members.getPerms(member)]}` : ''
+								  }`
+								: ''
+						}`,
 				},
 			],
 		})
