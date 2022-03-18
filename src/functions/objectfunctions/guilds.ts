@@ -105,6 +105,19 @@ export default class Guilds {
 		return channel
 	}
 
+	findRole(guild: Guild, query: string): Role | undefined {
+		const roles = guild.roles.cache
+
+		let role
+		role = roles.get(query.replace('<', '').replace('@', '').replace('&', '').replace('>', ''))
+
+		if (!role) {
+			role = roles.find((r) => r.name.toLowerCase() === query.toLowerCase())
+		}
+
+		return role
+	}
+
 	async getAllCommands(guild: GuildResolvable) {
 		if (!(await container.database.guilds.findByPk(this.getId(guild)))) {
 			await container.database.guilds.create({ id: this.getId(guild) })

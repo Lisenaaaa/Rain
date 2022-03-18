@@ -9,6 +9,7 @@ export class CommandErrorListener extends Listener {
 		if (this.container.users.isOwner(payload.message.author))
 			await payload.message.reply({
 				content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
+				components: [],
 			})
 		else
 			await payload.message.reply({
@@ -16,12 +17,7 @@ export class CommandErrorListener extends Listener {
 					await this.container.utils.error(error, {
 						type: 'command',
 						data: {
-							link: '',
-							// messageOptions: {
-							// 	guildID: payload.message.guildId as string,
-							// 	channelID: payload.message.channel.id,
-							// 	messageID: payload.message.id,
-							// },
+							link: `https://discord.com/channels/${payload.message.guildId}/${payload.message.channelId}/${payload.message.id}`,
 						},
 					}),
 				],

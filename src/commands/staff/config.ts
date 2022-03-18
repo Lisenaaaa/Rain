@@ -2,7 +2,8 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
-import { ButtonInteraction, CommandInteraction, Guild, InteractionReplyOptions, Message, Snowflake, TextChannel } from 'discord.js'
+import { APIInteractionGuildMember } from 'discord-api-types'
+import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, Snowflake, TextChannel } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -21,14 +22,25 @@ import RainCommand from '../../structures/RainCommand'
 export class ConfigCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		if (interaction.channel === null) {
-			return await interaction.reply('how did you even manage to run this not in a channel lol')
+			return await interaction.reply({
+				content: 'how did you even manage to run this not in a channel, and could you please tell my dev about this? discord.gg/jWUNaGgxnB',
+			})
 		}
+
+		if (interaction.guild === null) {
+			return await interaction.reply({ content: 'This must be ran in a text channel on a server.', ephemeral: true })
+		}
+
+		if (!this.isMember(interaction.member)) {
+			return await interaction.reply({ content: 'ok HOW did you manage to run this on a guild without being a member of that guild?????' })
+		}
+
 		if (!isGuildBasedChannel(interaction.channel)) {
-			return await interaction.reply({ content: 'This must be ran in a text channel.', ephemeral: true })
+			return await interaction.reply({ content: 'This must be ran in a text channel on a server.', ephemeral: true })
 		}
 
 		await interaction.reply({
-			content: 'config',
+			content: 'Select an option from the menu below:',
 			components: [
 				{
 					type: 'ACTION_ROW',
@@ -44,6 +56,12 @@ export class ConfigCommand extends RainCommand {
 							label: 'logging',
 							style: 'PRIMARY',
 							customId: 'configLogging',
+						},
+						{
+							type: 'BUTTON',
+							label: 'staff roles',
+							style: 'PRIMARY',
+							customId: 'configStaffRoles',
 						},
 					],
 				},
@@ -589,6 +607,469 @@ export class ConfigCommand extends RainCommand {
 				}
 			}
 		}
+
+		if (button?.customId === 'configStaffRoles') {
+			await button.deferUpdate()
+
+			await interaction.editReply({
+				content:
+					'What would you like to do with the staff roles?\nYou can only set staff roles that are below your current permissions level. For example, sr. mods can only set moderator and below, but admins can only set sr. mod and below.\nIf you want to change the owner role, use `/set-owner-role`.',
+				components: [
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Admin Role', customId: 'configSetAdminRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Admin Role', customId: 'configRemoveAdminRole' },
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Sr. Mod Role', customId: 'configSetSrModRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Sr. Mod Role', customId: 'configRemoveSrModRole' },
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Moderator Role', customId: 'configSetModeratorRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Moderator Role', customId: 'configRemoveModeratorRole' },
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Helper Role', customId: 'configSetHelperRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Helper Role', customId: 'configRemoveHelperRole' },
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Trial Helper Role', customId: 'configSetTrialHelperRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Trial Helper Role', customId: 'configRemoveTrialHelperRole' },
+						],
+					},
+				],
+			})
+
+			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+			await actionButton?.deferUpdate()
+
+			switch (actionButton?.customId) {
+				case 'configSetAdminRole': {
+					const roleType = 'admin'
+					const buttonRoleType = 'Admin'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'owner'))) {
+						return await interaction.editReply({ content: 'You need owner permissions to manage this role!', components: [] })
+					}
+
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the ${roleType} role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSet${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSet${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ adminRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveAdminRole': {
+					const roleType = 'admin'
+					const buttonRoleType = 'Admin'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'owner'))) {
+						return await interaction.editReply({ content: 'You need owner permissions to manage this role!', components: [] })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's ${roleType} role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemove${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemove${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ adminRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+
+				case 'configSetSrModRole': {
+					const roleType = 'sr. mod'
+					const buttonRoleType = 'SrMod'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'admin'))) {
+						return await interaction.editReply({ content: 'You need admin permissions to manage this role!', components: [] })
+					}
+
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the ${roleType} role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSet${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSet${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ srModRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveSrModRole': {
+					const roleType = 'sr. mod'
+					const buttonRoleType = 'SrMod'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'admin'))) {
+						return await interaction.editReply({ content: 'You need admin permissions to manage this role!', components: [] })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's ${roleType} role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemove${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemove${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ srModRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+
+				case 'configSetModeratorRole': {
+					const roleType = 'moderator'
+					const buttonRoleType = 'Moderator'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'srMod'))) {
+						return await interaction.editReply({ content: 'You need sr. mod permissions to manage this role!', components: [] })
+					}
+
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the ${roleType} role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSet${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSet${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ modRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveModeratorRole': {
+					const roleType = 'moderator'
+					const buttonRoleType = 'Moderator'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'srMod'))) {
+						return await interaction.editReply({ content: 'You need sr. mod permissions to manage this role!', components: [] })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's ${roleType} role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemove${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemove${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ modRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+
+				case 'configSetHelperRole': {
+					const roleType = 'helper'
+					const buttonRoleType = 'Helper'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'moderator'))) {
+						return await interaction.editReply({ content: 'You need moderator permissions to manage this role!', components: [] })
+					}
+
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the ${roleType} role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSet${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSet${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ helperRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveHelperRole': {
+					const roleType = 'helper'
+					const buttonRoleType = 'Helper'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'moderator'))) {
+						return await interaction.editReply({ content: 'You need moderator permissions to manage this role!', components: [] })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's ${roleType} role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemove${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemove${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ helperRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+
+				case 'configSetTrialHelperRole': {
+					const roleType = 'trial helper'
+					const buttonRoleType = 'TrialHelper'
+
+					if (!(await this.container.members.hasPermission(interaction.member, 'helper'))) {
+						return await interaction.editReply({ content: 'You need helper permissions to manage this role!', components: [] })
+					}
+
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the ${roleType} role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSet${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSet${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ trialHelperRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveTrialHelperRole': {
+					const roleType = 'admin'
+					const buttonRoleType = 'Admin'
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's ${roleType} role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemove${buttonRoleType}RoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemove${buttonRoleType}RoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
+						await this.container.database.guilds.update({ trialHelperRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+			}
+		}
 	}
 
 	private getTimeInSeconds(t: number) {
@@ -613,5 +1094,9 @@ export class ConfigCommand extends RainCommand {
 			filter: (b: ButtonInteraction<'cached'>) => b.user.id === userId && b.message.id === messageId,
 			time: this.getTimeInSeconds(60),
 		})
+	}
+
+	isMember(member: GuildMember | APIInteractionGuildMember | null): member is GuildMember {
+		return member instanceof GuildMember
 	}
 }

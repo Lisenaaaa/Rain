@@ -1,11 +1,11 @@
 import { Perms } from '../../types/misc'
-import { GuildMember } from 'discord.js'
+import { GuildMember, PermissionString } from 'discord.js'
 import { container } from '@sapphire/framework'
 
 export class Members {
 	public importantPerms(member: GuildMember) {
 		const permsArray = member.permissions.toArray()
-		const importantPerms = [
+		const importantPerms: PermissionString[] = [
 			'BAN_MEMBERS',
 			'KICK_MEMBERS',
 			'MANAGE_CHANNELS',
@@ -21,6 +21,7 @@ export class Members {
 			'MANAGE_WEBHOOKS',
 			'MANAGE_EMOJIS_AND_STICKERS',
 			'MANAGE_THREADS',
+			'MODERATE_MEMBERS'
 		]
 		let finalArray = permsArray.filter((perm) => importantPerms.includes(perm))
 

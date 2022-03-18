@@ -14,6 +14,7 @@ export class SlashCommandErrorListener extends Listener {
 			} catch (err) {
 				await payload.interaction.editReply({
 					content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
+					components: []
 				})
 			}
 		else
@@ -22,12 +23,7 @@ export class SlashCommandErrorListener extends Listener {
 					await this.container.utils.error(error, {
 						type: 'command',
 						data: {
-							link: '',
-							// messageOptions: {
-							// 	guildID: payload.message.guildId as string,
-							// 	channelID: payload.message.channel.id,
-							// 	messageID: payload.message.id,
-							// },
+							link: `https://discord.com/channels/${payload.interaction.guildId}/${payload.interaction.channelId}/${payload.interaction.id}`,
 						},
 					}),
 				],
