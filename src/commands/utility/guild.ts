@@ -27,19 +27,17 @@ export class GuildCommand extends RainCommand {
 				{
 					title: guild.name,
 					thumbnail: { url: guild.iconURL({ format: 'png', size: 128, dynamic: true }) ?? '' },
-					description: `
-                    **ID**: \`${guild.id}\`
-                    **Created at** <t:${Math.floor(guild.createdTimestamp / 1000)}:f>
-                    **Owned by** ${(await guild.fetchOwner()).user.tag} (\`${(await guild.fetchOwner()).user.id}\`)
-
-                    **${guild.approximateMemberCount} Members**, ${guild.approximatePresenceCount} of which are online.
-                    **${(await guild.channels.fetch()).size} Channels**, with ${(await guild.channels.fetchActiveThreads()).threads.size} active threads.
-                    ${guild.roles.cache.size - 1 > 1 ? `**${guild.roles.cache.size - 1} Roles**: ` : `**1 Role**: `}${guild.roles.cache
-						.filter((r) => r.id != r.guild.id)
-						.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
-						.map((r) => r.toString())
-						.join(', ')}
-                    `,
+					description:
+						`**ID**: \`${guild.id}\`` +
+						`\n**Created at** <t:${Math.floor(guild.createdTimestamp / 1000)}:f>` +
+						`\n**Owned by** ${(await guild.fetchOwner()).user.tag} (\`${(await guild.fetchOwner()).user.id}\`)` +
+						`\n\n**${guild.approximateMemberCount} Members**, ${guild.approximatePresenceCount} of which are online.` +
+						`\n**${(await guild.channels.fetch()).size} Channels**, with ${(await guild.channels.fetchActiveThreads()).threads.size} active threads.` +
+						`\n${guild.roles.cache.size - 1 > 1 ? `**${guild.roles.cache.size - 1} Roles**: ` : `**1 Role**: `}${guild.roles.cache
+							.filter((r) => r.id != r.guild.id)
+							.sort((r1, r2) => r2.rawPosition - r1.rawPosition)
+							.map((r) => r.toString())
+							.join(', ')}`,
 				},
 			],
 		})
