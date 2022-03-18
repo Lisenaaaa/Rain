@@ -18,7 +18,7 @@ import { ArgsUser } from '../../../types/misc'
 		idHints: ['935677351960928266'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to unmute', required: true },
-			{ name: 'reason', type: 'USER', description: 'the reason to unmute them for' },
+			{ name: 'reason', type: 'STRING', description: 'the reason to unmute them for' },
 		],
 	},
 })

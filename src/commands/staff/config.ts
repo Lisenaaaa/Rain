@@ -63,6 +63,12 @@ export class ConfigCommand extends RainCommand {
 							style: 'PRIMARY',
 							customId: 'configStaffRoles',
 						},
+						{
+							type: 'BUTTON',
+							label: 'mute role',
+							style: 'PRIMARY',
+							customId: 'configMuteRole',
+						},
 					],
 				},
 			],
@@ -1064,6 +1070,99 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+					break
+				}
+			}
+		}
+
+		if (button?.customId === 'configMuteRole') {
+			await button.deferUpdate()
+
+			await interaction.editReply({
+				content: 'What would you like to do to the mute role?',
+				components: [
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', label: 'Set', style: 'SUCCESS', customId: 'configSetMuteRole' },
+							{ type: 'BUTTON', label: 'Remove', style: 'DANGER', customId: 'configRemoveMuteRole' },
+						],
+					},
+				],
+			})
+
+			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+			switch (actionButton?.customId) {
+				case 'configSetMuteRole': {
+					const msg = await this.promptMessage(interaction, {
+						content: `Please mention, or send the ID or name of the role that you would like to change the muted role to.`,
+						components: [],
+					})
+					if (!msg) {
+						return await interaction.editReply("I can't get a role from nothing!")
+					}
+
+					await msg.delete()
+
+					const role = this.container.guilds.findRole(interaction.guild, msg.content)
+					if (!role) {
+						return await interaction.editReply({ content: "I couldn't find that role." })
+					}
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the muted role to **${role.toString()}**?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configSetMuteRoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configSetMuteRoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === `configSetMuteRoleYes`) {
+						await this.container.database.guilds.update({ muteRole: role.id }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's muted role to **${role.toString()}**.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configSetMuteRoleNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
+					break
+				}
+				case 'configRemoveMuteRole': {
+
+					await interaction.editReply({
+						content: `Are you sure you want to remove this guild's mute role?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: `configRemoveMuteRoleYes` },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: `configRemoveMuteRoleNo` },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					await confirmationButton?.deferUpdate()
+
+					if (confirmationButton?.customId === `configRemoveMuteRoleYes`) {
+						await this.container.database.guilds.update({ muteRole: null }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully removed this guild's muted role.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configRemoveMuteRoleNo`) {
 						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
 					}
 					break
