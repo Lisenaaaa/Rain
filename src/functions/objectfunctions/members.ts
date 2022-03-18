@@ -21,7 +21,7 @@ export class Members {
 			'MANAGE_WEBHOOKS',
 			'MANAGE_EMOJIS_AND_STICKERS',
 			'MANAGE_THREADS',
-			'MODERATE_MEMBERS'
+			'MODERATE_MEMBERS',
 		]
 		let finalArray = permsArray.filter((perm) => importantPerms.includes(perm))
 
