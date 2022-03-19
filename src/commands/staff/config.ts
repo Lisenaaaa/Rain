@@ -3,7 +3,18 @@ import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIInteractionGuildMember } from 'discord-api-types'
-import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, Snowflake, TextChannel } from 'discord.js'
+import {
+	ButtonInteraction,
+	CommandInteraction,
+	Guild,
+	GuildMember,
+	InteractionReplyOptions,
+	Message,
+	MessageActionRow,
+	MessageButton,
+	Snowflake,
+	TextChannel,
+} from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -68,6 +79,12 @@ export class ConfigCommand extends RainCommand {
 							label: 'mute role',
 							style: 'PRIMARY',
 							customId: 'configMuteRole',
+						},
+						{
+							type: 'BUTTON',
+							label: 'restricted channels',
+							style: 'PRIMARY',
+							customId: 'configRestrictedChannels',
 						},
 					],
 				},
@@ -617,46 +634,67 @@ export class ConfigCommand extends RainCommand {
 		if (button?.customId === 'configStaffRoles') {
 			await button.deferUpdate()
 
+			const components: MessageActionRow[] = []
+
+			if (await this.container.members.hasPermission(interaction.member, 'owner')) {
+				components.push(
+					new MessageActionRow({
+						components: [
+							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Admin Role', customId: 'configSetAdminRole' }),
+							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Admin Role', customId: 'configRemoveAdminRole' }),
+						],
+					})
+				)
+			}
+
+			if (await this.container.members.hasPermission(interaction.member, 'admin')) {
+				components.push(
+					new MessageActionRow({
+						components: [
+							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Sr. Mod Role', customId: 'configSetSrModRole' }),
+							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Sr. Mod Role', customId: 'configRemoveSrModRole' }),
+						],
+					})
+				)
+			}
+
+			if (await this.container.members.hasPermission(interaction.member, 'srMod')) {
+				components.push(
+					new MessageActionRow({
+						components: [
+							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Moderator Role', customId: 'configSetModeratorRole' }),
+							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Moderator Role', customId: 'configRemoveModeratorRole' }),
+						],
+					})
+				)
+			}
+
+			if (await this.container.members.hasPermission(interaction.member, 'moderator')) {
+				components.push(
+					new MessageActionRow({
+						components: [
+							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Helper Role', customId: 'configSetHelperRole' }),
+							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Helper Role', customId: 'configRemoveHelperRole' }),
+						],
+					})
+				)
+			}
+
+			if (await this.container.members.hasPermission(interaction.member, 'helper')) {
+				components.push(
+					new MessageActionRow({
+						components: [
+							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Trial Helper Role', customId: 'configSetTrialHelperRole' }),
+							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Trial Helper Role', customId: 'configRemoveTrialHelperRole' }),
+						],
+					})
+				)
+			}
+
 			await interaction.editReply({
 				content:
 					'What would you like to do with the staff roles?\nYou can only set staff roles that are below your current permissions level. For example, sr. mods can only set moderator and below, but admins can only set sr. mod and below.\nIf you want to change the owner role, use `/set-owner-role`.',
-				components: [
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Admin Role', customId: 'configSetAdminRole' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Admin Role', customId: 'configRemoveAdminRole' },
-						],
-					},
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Sr. Mod Role', customId: 'configSetSrModRole' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Sr. Mod Role', customId: 'configRemoveSrModRole' },
-						],
-					},
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Moderator Role', customId: 'configSetModeratorRole' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Moderator Role', customId: 'configRemoveModeratorRole' },
-						],
-					},
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Helper Role', customId: 'configSetHelperRole' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Helper Role', customId: 'configRemoveHelperRole' },
-						],
-					},
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Trial Helper Role', customId: 'configSetTrialHelperRole' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Trial Helper Role', customId: 'configRemoveTrialHelperRole' },
-						],
-					},
-				],
+				components,
 			})
 
 			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
@@ -1164,6 +1202,37 @@ export class ConfigCommand extends RainCommand {
 					if (confirmationButton?.customId === `configRemoveMuteRoleNo`) {
 						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
 					}
+					break
+				}
+			}
+		}
+
+		if (button?.customId === 'configRestrictedChannels') {
+			await button.deferUpdate()
+
+			await interaction.editReply({
+				content: 'What would you like to do with the restricted channel system?',
+				components: [
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Channel Perms', customId: 'configRestrictedChannelsSetPerms' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Channel Perms', customId: 'configRestrictedChannelsRemovePerms' },
+						],
+					},
+				],
+			})
+
+			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+			switch (actionButton?.customId) {
+				case 'configRestrictedChannelsSetPerms': {
+					await interaction.editReply({ content: 'set perms', components: [] })
+					break
+				}
+
+				case 'configRestrictedChannelsRemovePerms': {
+					await interaction.editReply({ content: 'remove perms', components: [] })
 					break
 				}
 			}
