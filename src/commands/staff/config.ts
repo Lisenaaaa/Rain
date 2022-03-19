@@ -3,18 +3,7 @@ import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIInteractionGuildMember } from 'discord-api-types'
-import {
-	ButtonInteraction,
-	CommandInteraction,
-	Guild,
-	GuildMember,
-	InteractionReplyOptions,
-	Message,
-	MessageActionRow,
-	MessageButton,
-	Snowflake,
-	TextChannel,
-} from 'discord.js'
+import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, MessageActionRow, MessageButton, Snowflake, TextChannel } from 'discord.js'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
