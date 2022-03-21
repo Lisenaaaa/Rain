@@ -24,23 +24,10 @@ export class GuildCommandDatabase extends Model<GuildCommandAttributes, GuildCom
 	static initModel() {
 		GuildCommandDatabase.init(
 			{
-				commandId: {
-					type: DataTypes.STRING,
-					allowNull: false,
-				},
-				guildId: {
-					type: DataTypes.STRING,
-					allowNull: false,
-					references: { model: GuildDatabase },
-				},
-				enabled: {
-					type: DataTypes.BOOLEAN,
-					allowNull: false,
-				},
-				requiredPerms: {
-					type: DataTypes.STRING,
-					allowNull: false,
-				},
+				commandId: { type: DataTypes.STRING, allowNull: false },
+				guildId: { type: DataTypes.STRING, allowNull: false, references: { model: GuildDatabase } },
+				enabled: { type: DataTypes.BOOLEAN, allowNull: false },
+				requiredPerms: { type: DataTypes.STRING, allowNull: false },
 			},
 			{ sequelize, modelName: 'GuildCommands' }
 		)

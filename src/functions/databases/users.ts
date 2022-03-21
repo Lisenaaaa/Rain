@@ -11,11 +11,6 @@ export class UserDatabase extends Model<UserAttributes, UserCreationAttributes> 
 	declare id: string
 
 	static initModel() {
-		UserDatabase.init(
-			{
-				id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
-			},
-			{ sequelize, modelName: 'Users' }
-		)
+		UserDatabase.init({ id: { type: DataTypes.STRING, allowNull: false, primaryKey: true } }, { sequelize, modelName: 'Users' })
 	}
 }

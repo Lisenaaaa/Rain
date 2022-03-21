@@ -34,38 +34,13 @@ export class ModlogDatabase extends Model<ModlogAttributes, ModlogCreationAttrib
 	static initModel() {
 		ModlogDatabase.init(
 			{
-				id: {
-					type: DataTypes.STRING,
-					allowNull: false,
-					primaryKey: true,
-				},
-				userId: {
-					type: DataTypes.STRING,
-					allowNull: false,
-				},
-				modId: {
-					type: DataTypes.STRING,
-					allowNull: false,
-				},
-				guildId: {
-					type: DataTypes.STRING,
-					allowNull: false,
-					references: {
-						model: GuildDatabase,
-					},
-				},
-				type: {
-					type: DataTypes.STRING,
-					allowNull: false,
-				},
-				reason: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				expires: {
-					type: DataTypes.DATE,
-					defaultValue: null,
-				},
+				id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+				userId: { type: DataTypes.STRING, allowNull: false },
+				modId: { type: DataTypes.STRING, allowNull: false },
+				guildId: { type: DataTypes.STRING, allowNull: false, references: { model: GuildDatabase } },
+				type: { type: DataTypes.STRING, allowNull: false },
+				reason: { type: DataTypes.STRING, defaultValue: null },
+				expires: { type: DataTypes.DATE, defaultValue: null },
 			},
 			{ sequelize, modelName: 'Modlogs' }
 		)

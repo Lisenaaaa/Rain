@@ -9,6 +9,7 @@ export interface GuildAttributes {
 	welcomeChannel: string | null
 
 	muteRole: string | null
+	afterPunishmentMessage: string | null
 
 	messageLoggingChannel: string | null
 	memberLoggingChannel: string | null
@@ -38,6 +39,7 @@ type GuildCreationAttributes = {
 	welcomeChannel?: string | null
 
 	muteRole?: string | null
+	afterPunishmentMessage?: string | null
 
 	messageLoggingChanne?: string | null
 	memberLoggingChannel?: string | null
@@ -63,6 +65,8 @@ export class GuildDatabase extends Model<GuildAttributes, GuildCreationAttribute
 	declare id: string
 
 	declare muteRole: string | null
+	declare afterPunishmentMessage: string | null
+
 	declare welcomeMessage: string | null
 	declare leaveMessage: string | null
 	declare welcomeChannel: string | null
@@ -89,95 +93,33 @@ export class GuildDatabase extends Model<GuildAttributes, GuildCreationAttribute
 	static initModel() {
 		GuildDatabase.init(
 			{
-				id: {
-					type: DataTypes.STRING,
-					allowNull: false,
-					primaryKey: true,
-				},
+				id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
 
-				muteRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				welcomeMessage: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				leaveMessage: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				welcomeChannel: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
+				muteRole: { type: DataTypes.STRING, defaultValue: null },
+				afterPunishmentMessage: { type: DataTypes.STRING, defaultValue: null },
 
-				messageLoggingChannel: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				memberLoggingChannel: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				moderationLoggingChannel: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				actionLoggingChannel: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
+				welcomeMessage: { type: DataTypes.STRING, defaultValue: null },
+				leaveMessage: { type: DataTypes.STRING, defaultValue: null },
+				welcomeChannel: { type: DataTypes.STRING, defaultValue: null },
 
-				ownerRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				adminRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				srModRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				modRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				helperRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
-				trialHelperRole: {
-					type: DataTypes.STRING,
-					defaultValue: null,
-				},
+				messageLoggingChannel: { type: DataTypes.STRING, defaultValue: null },
+				memberLoggingChannel: { type: DataTypes.STRING, defaultValue: null },
+				moderationLoggingChannel: { type: DataTypes.STRING, defaultValue: null },
+				actionLoggingChannel: { type: DataTypes.STRING, defaultValue: null },
 
-				ownerOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
-				adminOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
-				srModOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
-				modOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
-				helperOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
-				trialHelperOnlyChannels: {
-					type: DataTypes.ARRAY(DataTypes.STRING),
-					defaultValue: [],
-				},
+				ownerRole: { type: DataTypes.STRING, defaultValue: null },
+				adminRole: { type: DataTypes.STRING, defaultValue: null },
+				srModRole: { type: DataTypes.STRING, defaultValue: null },
+				modRole: { type: DataTypes.STRING, defaultValue: null },
+				helperRole: { type: DataTypes.STRING, defaultValue: null },
+				trialHelperRole: { type: DataTypes.STRING, defaultValue: null },
+
+				ownerOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+				adminOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+				srModOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+				modOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+				helperOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
+				trialHelperOnlyChannels: { type: DataTypes.ARRAY(DataTypes.STRING), defaultValue: [] },
 			},
 			{
 				sequelize,

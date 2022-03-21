@@ -13,16 +13,8 @@ export class CommandDatabase extends Model<CommandAttributes, CommandCreationAtt
 	static initModel() {
 		CommandDatabase.init(
 			{
-				id: {
-					type: DataTypes.STRING,
-					allowNull: false,
-					primaryKey: true,
-				},
-				enabled: {
-					type: DataTypes.BOOLEAN,
-					allowNull: false,
-					defaultValue: false,
-				},
+				id: { type: DataTypes.STRING, allowNull: false, primaryKey: true },
+				enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
 			},
 			{ sequelize, modelName: 'Commands' }
 		)
