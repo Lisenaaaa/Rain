@@ -4,6 +4,7 @@ import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIInteractionGuildMember } from 'discord-api-types'
 import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, MessageActionRow, MessageButton, Snowflake, TextChannel } from 'discord.js'
+import { RawMessagePayloadData } from 'discord.js/typings/rawDataTypes'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -74,6 +75,17 @@ export class ConfigCommand extends RainCommand {
 							label: 'restricted channels',
 							style: 'PRIMARY',
 							customId: 'configRestrictedChannels',
+						},
+					],
+				},
+				{
+					type: 'ACTION_ROW',
+					components: [
+						{
+							type: 'BUTTON',
+							label: 'after punishment message',
+							style: 'PRIMARY',
+							customId: 'configAfterPunishMessage',
 						},
 					],
 				},
@@ -1226,6 +1238,69 @@ export class ConfigCommand extends RainCommand {
 				}
 			}
 		}
+
+		if (button?.customId === 'configAfterPunishMessage') {
+			await button.deferUpdate()
+			return await interaction.editReply("this currently isn't done. please yell at me to finish this.")
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			//@ts-ignore suck it, tyman
+			await this.container.client.api.interactions[button.id][button.token].callback.post({
+				data: {
+					type: 9,
+					data: {
+						type: 9,
+						custom_id: 'afterPunishmentModal',
+						title: 'After Punishment Message Modal',
+						components: [
+							{
+								type: 1,
+								components: [
+									{
+										type: 4,
+										custom_id: 'message',
+										label: 'After Punishment Message',
+										style: 2,
+										min_length: 1,
+										max_length: 1500,
+										placeholder: "Type the message you'd like to be sent after a punishment here!",
+										required: true,
+									},
+								],
+							},
+						],
+					},
+				},
+			})
+
+			this.container.client.ws.on('INTERACTION_CREATE', async (i) => {
+				if (i.data.custom_id === 'afterPunishmentModal') {
+					const message = i.data.components[0].components[0].value
+					await interaction.editReply({
+						content: `Would you like to set this guild's after punishment message to the following:\n${message}`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configAfterPunishYes' },
+									{ type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configAfterPunishNo' },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel as TextChannel)
+
+					if (confirmationButton?.customId === `configAfterPunishYes`) {
+						await this.container.database.guilds.update({ afterPunishmentMessage: message }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's after punishment message!.`, components: [] })
+					}
+					if (confirmationButton?.customId === `configAfterPunishNo`) {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+				}
+			})
+		}
 	}
 
 	private getTimeInSeconds(t: number) {
@@ -1254,5 +1329,11 @@ export class ConfigCommand extends RainCommand {
 
 	isMember(member: GuildMember | APIInteractionGuildMember | null): member is GuildMember {
 		return member instanceof GuildMember
+	}
+
+	private async reply(id: string, token: string, content: RawMessagePayloadData) {
+		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+		//@ts-ignore thank you, djs!
+		await this.container.client.api.interactions[id][token].callback.post({ data: { type: 4, data: content } })
 	}
 }

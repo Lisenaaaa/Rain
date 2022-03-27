@@ -12,9 +12,10 @@ import RainCommand from '../../structures/RainCommand'
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: ['880637463838724166', '883512410449772574'],
-		idHints: ['938935765541486612', '938934491995582474'],
+		idHints: ['938935765541486612', '938934491995582474', '955569395231498351'],
 	},
 })
+
 export class GuildCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply()
