@@ -15,7 +15,6 @@ import RainCommand from '../../structures/RainCommand'
 		idHints: ['938935765541486612', '938934491995582474', '955569395231498351'],
 	},
 })
-
 export class GuildCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
 		await interaction.deferReply()
