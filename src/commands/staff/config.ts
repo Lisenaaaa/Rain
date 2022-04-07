@@ -2,9 +2,10 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
-import { APIInteractionGuildMember } from 'discord-api-types'
+import { APIInteractionGuildMember, ButtonStyle, ComponentType } from 'discord-api-types'
 import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, MessageActionRow, MessageButton, Snowflake, TextChannel } from 'discord.js'
 import { RawMessagePayloadData } from 'discord.js/typings/rawDataTypes'
+import got from 'got/dist/source'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -92,7 +93,8 @@ export class ConfigCommand extends RainCommand {
 			],
 		})
 
-		const { id } = await interaction.fetchReply()
+		const reply = await interaction.fetchReply()
+		const { id } = reply
 
 		const button = await this.awaitButton(interaction.user.id, id, interaction.channel)
 
@@ -137,6 +139,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
 
+					console.log('deleting message')
 					await msg.delete()
 
 					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
@@ -208,7 +211,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 					if (!msg) {
-						return await interaction.editReply("I can't get a welcome message from nothing!")
+						return await interaction.editReply({ content: "I can't get a welcome message from nothing!", components: [] })
 					}
 
 					await msg.delete()
@@ -272,7 +275,50 @@ export class ConfigCommand extends RainCommand {
 				}
 
 				case 'configSetLeaveMessage': {
-					await interaction.editReply({ content: `set leave message`, components: [] })
+					const msg = await this.promptMessage(interaction, {
+						content: 'What would you like the leave message to be?',
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [{ type: 'BUTTON', style: 'LINK', url: 'https://skyblock-plus-logs.vercel.app/logs?url=https://hst.sh/raw/idejupicax', label: 'View Args' }],
+							},
+						],
+					})
+					if (!msg) {
+						return await interaction.editReply({ content: "I can't get a goodbye message from nothing!", components: [] })
+					}
+
+					await msg.delete()
+
+					// const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					// if (!channel) {
+					// 	return await interaction.editReply({ content: "I couldn't find that channel." })
+					// }
+
+					await interaction.editReply({
+						content: `Are you sure you want to set the goodbye message to ${msg.content}?`,
+						components: [
+							{
+								type: 'ACTION_ROW',
+								components: [
+									{ type: 'BUTTON', style: 'SUCCESS', label: 'Yes', customId: 'configSetLeaveMessageYes' },
+									{ type: 'BUTTON', style: 'DANGER', label: 'No', customId: 'configSetLeaveMessageNo' },
+								],
+							},
+						],
+					})
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+					if (confirmationButton?.customId === 'configSetLeaveMessageYes') {
+						await this.container.database.guilds.update({ leaveMessage: msg.content }, { where: { id: interaction.guildId as string } })
+
+						return await interaction.editReply({ content: `Succesfully set this guild's welcome message to ${msg.content}.`, components: [] })
+					}
+					if (confirmationButton?.customId === 'configSetLeaveMessageNo') {
+						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
+					}
+
 					break
 				}
 				case 'configRemoveLeaveMessage': {
@@ -1240,15 +1286,15 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (button?.customId === 'configAfterPunishMessage') {
-			await button.deferUpdate()
-			return await interaction.editReply("this currently isn't done. please yell at me to finish this.")
+			// await button.deferUpdate()
+			// return await interaction.editReply("this currently isn't done. please yell at me to finish this.")
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore suck it, tyman
 			await this.container.client.api.interactions[button.id][button.token].callback.post({
 				data: {
 					type: 9,
 					data: {
-						type: 9,
+						// type: 9,
 						custom_id: 'afterPunishmentModal',
 						title: 'After Punishment Message Modal',
 						components: [
@@ -1275,27 +1321,37 @@ export class ConfigCommand extends RainCommand {
 			this.container.client.ws.on('INTERACTION_CREATE', async (i) => {
 				if (i.data.custom_id === 'afterPunishmentModal') {
 					const message = i.data.components[0].components[0].value
-					await interaction.editReply({
-						content: `Would you like to set this guild's after punishment message to the following:\n${message}`,
-						components: [
-							{
-								type: 'ACTION_ROW',
+
+					await got.post(`https://discord.com/api/v10/interactions/${i.id}/${i.token}/callback`, {
+						json: {
+							type: 4,
+							data: {
+								content: `Would you like to set this guild's after punishment message to the following:\n${message}`,
 								components: [
-									{ type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configAfterPunishYes' },
-									{ type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configAfterPunishNo' },
+									{
+										type: ComponentType.ActionRow,
+										components: [
+											{ type: ComponentType.Button, label: 'Yes', style: ButtonStyle.Success, custom_id: 'configAfterPunishYes' },
+											{ type: ComponentType.Button, label: 'No', style: ButtonStyle.Danger, custom_id: 'configAfterPunishNo' },
+										],
+									},
 								],
 							},
-						],
+						},
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel as TextChannel)
+					const reply = await JSON.parse((await got.get(`https://discord.com/api/v10/webhooks/${this.container.client.id}/${i.token}/messages/@original`)).body)
+
+					const confirmationButton = await this.awaitButton(interaction.user.id, reply.id, interaction.channel as TextChannel)
 
 					if (confirmationButton?.customId === `configAfterPunishYes`) {
+						await got.delete(`https://discord.com/api/v10/webhooks/${this.container.client.id}/${i.token}/messages/@original`)
 						await this.container.database.guilds.update({ afterPunishmentMessage: message }, { where: { id: interaction.guildId as string } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's after punishment message!.`, components: [] })
 					}
 					if (confirmationButton?.customId === `configAfterPunishNo`) {
+						await got.delete(`https://discord.com/api/v10/webhooks/${this.container.client.id}/${i.token}/messages/@original`)
 						return await interaction.editReply({ content: "Alright! I haven't made any changes.", components: [] })
 					}
 				}
@@ -1315,15 +1371,15 @@ export class ConfigCommand extends RainCommand {
 			await interaction.reply(options)
 		}
 
-		const message = await (interaction.channel as TextChannel).awaitMessages({ filter, time: this.getTimeInSeconds(60), max: 1, errors: ['time'] })
+		const message = await (interaction.channel as TextChannel).awaitMessages({ filter, time: this.getTimeInSeconds(60), max: 1 })
 		return message.first()
 	}
 
 	private async awaitButton(userId: Snowflake, messageId: Snowflake, channel: GuildTextBasedChannelTypes): Promise<ButtonInteraction | undefined> {
 		return await channel.awaitMessageComponent({
 			componentType: 'BUTTON',
-			filter: (b: ButtonInteraction<'cached'>) => b.user.id === userId && b.message.id === messageId,
-			time: this.getTimeInSeconds(60),
+			filter: (b: ButtonInteraction) => b.user.id === userId && b.message.id === messageId,
+			time: this.getTimeInSeconds(60)
 		})
 	}
 
