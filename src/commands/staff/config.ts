@@ -1386,10 +1386,4 @@ export class ConfigCommand extends RainCommand {
 	isMember(member: GuildMember | APIInteractionGuildMember | null): member is GuildMember {
 		return member instanceof GuildMember
 	}
-
-	private async reply(id: string, token: string, content: RawMessagePayloadData) {
-		// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-		//@ts-ignore thank you, djs!
-		await this.container.client.api.interactions[id][token].callback.post({ data: { type: 4, data: content } })
-	}
 }
