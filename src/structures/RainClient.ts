@@ -58,7 +58,7 @@ declare module '@sapphire/pieces' {
 		utils: Utilities
 		settings: typeof config
 		database: Db
-		constants: typeof constants,
+		constants: typeof constants
 
 		guilds: Guilds
 		users: Users

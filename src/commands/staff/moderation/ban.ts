@@ -95,9 +95,11 @@ export class BanCommand extends RainCommand {
 		} else {
 			await interaction.reply({
 				content: `Something went wrong while banning ${args.member.user.tag}.`,
-				...((await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage != null ? {
-					embeds: [{color: 'RANDOM', description: `${(await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage}` }]
-				} : {}),
+				...((await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage != null
+					? {
+							embeds: [{ color: 'RANDOM', description: `${(await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage}` }],
+					  }
+					: {}),
 			})
 		}
 	}
