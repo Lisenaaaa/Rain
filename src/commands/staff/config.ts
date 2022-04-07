@@ -1379,7 +1379,7 @@ export class ConfigCommand extends RainCommand {
 		return await channel.awaitMessageComponent({
 			componentType: 'BUTTON',
 			filter: (b: ButtonInteraction) => b.user.id === userId && b.message.id === messageId,
-			time: this.getTimeInSeconds(60)
+			time: this.getTimeInSeconds(60),
 		})
 	}
 
