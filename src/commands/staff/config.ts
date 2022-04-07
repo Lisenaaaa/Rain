@@ -4,8 +4,8 @@ import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { APIInteractionGuildMember, ButtonStyle, ComponentType } from 'discord-api-types'
 import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, MessageActionRow, MessageButton, Snowflake, TextChannel } from 'discord.js'
-import { RawMessagePayloadData } from 'discord.js/typings/rawDataTypes'
 import got from 'got/dist/source'
+import { GuildDatabase } from '../../functions/databases/guild'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
@@ -39,6 +39,10 @@ export class ConfigCommand extends RainCommand {
 
 		if (!isGuildBasedChannel(interaction.channel)) {
 			return await interaction.reply({ content: 'This must be ran in a text channel on a server.', ephemeral: true })
+		}
+
+		if ((await this.container.database.guilds.findByPk(interaction.guild.id)) === null) {
+			await this.container.database.guilds.create({ id: interaction.guild.id })
 		}
 
 		await interaction.reply({
@@ -87,6 +91,17 @@ export class ConfigCommand extends RainCommand {
 							label: 'after punishment message',
 							style: 'PRIMARY',
 							customId: 'configAfterPunishMessage',
+						},
+					],
+				},
+				{
+					type: 'ACTION_ROW',
+					components: [
+						{
+							type: 'BUTTON',
+							label: 'View Config',
+							style: 'SUCCESS',
+							customId: 'configView',
 						},
 					],
 				},
@@ -206,7 +221,7 @@ export class ConfigCommand extends RainCommand {
 						components: [
 							{
 								type: 'ACTION_ROW',
-								components: [{ type: 'BUTTON', style: 'LINK', url: 'https://skyblock-plus-logs.vercel.app/logs?url=https://hst.sh/raw/idejupicax', label: 'View Args' }],
+								components: [{ type: 'BUTTON', style: 'LINK', url: this.container.constants.WelcomeLeaveVarsLink, label: 'View Args' }],
 							},
 						],
 					})
@@ -280,7 +295,7 @@ export class ConfigCommand extends RainCommand {
 						components: [
 							{
 								type: 'ACTION_ROW',
-								components: [{ type: 'BUTTON', style: 'LINK', url: 'https://skyblock-plus-logs.vercel.app/logs?url=https://hst.sh/raw/idejupicax', label: 'View Args' }],
+								components: [{ type: 'BUTTON', style: 'LINK', url: this.container.constants.WelcomeLeaveVarsLink, label: 'View Args' }],
 							},
 						],
 					})
@@ -1356,6 +1371,48 @@ export class ConfigCommand extends RainCommand {
 					}
 				}
 			})
+		}
+
+		if (button?.customId === 'configView') {
+			await button.deferUpdate()
+
+			await interaction.editReply({
+				content: 'What would you like to see?',
+				components: [
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{ type: 'BUTTON', label: 'Welcome/Leave', style: 'PRIMARY', customId: 'configViewWelcome' },
+							{ type: 'BUTTON', label: 'Moderation', style: 'PRIMARY', customId: 'configViewModeration' },
+							{ type: 'BUTTON', label: 'Permissions', style: 'PRIMARY', customId: 'configViewPermissions' },
+						],
+					},
+				],
+			})
+
+			const type = await this.awaitButton(interaction.user.id, id, interaction.channel)
+
+			await type?.deferUpdate()
+
+			switch (type?.customId) {
+				case 'configViewWelcome': {
+					const { welcomeChannel, welcomeMessage, leaveMessage } = (await this.container.database.guilds.findByPk(interaction.guild.id)) as GuildDatabase
+
+					await interaction.editReply({
+						embeds: [
+							{
+								title: 'Welcome/Leave Info',
+								fields: [
+									{ name: 'Channel', value: welcomeChannel ? `<#${welcomeChannel}>` : '*not set*' },
+									{ name: 'Join Message', value: welcomeMessage ?? '*not set*' },
+									{ name: 'Leave Message', value: leaveMessage ?? '*not set*' },
+								],
+							},
+						],
+						components: [],
+					})
+				}
+			}
 		}
 	}
 

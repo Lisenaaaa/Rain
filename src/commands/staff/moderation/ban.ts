@@ -93,7 +93,12 @@ export class BanCommand extends RainCommand {
 
 			this.container.client.emit('memberBanned', { member: args.member.user, moderator: moderator, reason: args.reason, time, days: args.days, id, guild: interaction.guild })
 		} else {
-			await interaction.reply({ content: `Something went wrong while banning ${args.member.user.tag}.` })
+			await interaction.reply({
+				content: `Something went wrong while banning ${args.member.user.tag}.`,
+				...((await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage != null ? {
+					embeds: [{color: 'RANDOM', description: `${(await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage}` }]
+				} : {}),
+			})
 		}
 	}
 }

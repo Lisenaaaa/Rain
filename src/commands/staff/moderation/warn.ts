@@ -41,7 +41,14 @@ export class WarnCommand extends RainCommand {
 
 		let sent
 		try {
-			await target.user.send(`You have been warned in **${interaction.guild?.name}** for ${args.reason}`)
+			await target.user.send({
+				content: `You have been warned in **${interaction.guild?.name}** for ${args.reason}`,
+				...((await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage != null
+					? {
+							embeds: [{ color: 'RANDOM', description: `${(await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage}` }],
+					  }
+					: {}),
+			})
 			sent = true
 		} catch (err) {
 			sent = false

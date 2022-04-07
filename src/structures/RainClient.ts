@@ -42,6 +42,7 @@ export class RainClient extends SapphireClient {
 		container.settings = config
 		container.utils = new Utilities()
 		container.database = new Db()
+		container.constants = constants
 
 		container.users = new Users()
 		container.guilds = new Guilds()
@@ -57,6 +58,7 @@ declare module '@sapphire/pieces' {
 		utils: Utilities
 		settings: typeof config
 		database: Db
+		constants: typeof constants,
 
 		guilds: Guilds
 		users: Users
@@ -92,4 +94,8 @@ declare module '@sapphire/framework' {
 	interface StoreRegistryEntries {
 		tasks: RainTaskStore
 	}
+}
+
+const constants = {
+	WelcomeLeaveVarsLink: 'https://skyblock-plus-logs.vercel.app/logs?url=https://hst.sh/raw/idejupicax',
 }

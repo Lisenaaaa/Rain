@@ -61,9 +61,14 @@ export class MuteCommand extends RainCommand {
 			})
 
 			try {
-				await args.member.user.send(
-					`You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:f>` : ''}${args.reason ? ` for ${args.reason}` : '.'}`
-				)
+				await args.member.user.send({
+					content: `You have been muted in **${interaction.guild?.name}**${time ? ` until <t:${Math.floor(time.getTime() / 1000)}:f>` : ''}${args.reason ? ` for ${args.reason}` : '.'}`,
+					...((await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage != null
+						? {
+								embeds: [{ color: 'RANDOM', description: `${(await this.container.database.guilds.findByPk(interaction.guild?.id))?.afterPunishmentMessage}` }],
+						  }
+						: {}),
+				})
 			} catch (err) {
 				/* do nothing */
 			}
