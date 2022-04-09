@@ -34,24 +34,24 @@ export interface GuildAttributes {
 type GuildCreationAttributes = {
 	id: string
 
-	welcomeMessage?: string | null
-	leaveMessage?: string | null
-	welcomeChannel?: string | null
+	welcomeMessage?: string
+	leaveMessage?: string
+	welcomeChannel?: string
 
-	muteRole?: string | null
-	afterPunishmentMessage?: string | null
+	muteRole?: string
+	afterPunishmentMessage?: string
 
-	messageLoggingChanne?: string | null
-	memberLoggingChannel?: string | null
-	moderationLoggingChannel?: string | null
-	actionLoggingChannel?: string | null
+	messageLoggingChanne?: string
+	memberLoggingChannel?: string
+	moderationLoggingChannel?: string
+	actionLoggingChannel?: string
 
-	ownerRole?: string | null
-	adminRole?: string | null
-	srModRole?: string | null
-	modRole?: string | null
-	helperRole?: string | null
-	trialHelperRole?: string | null
+	ownerRole?: string
+	adminRole?: string
+	srModRole?: string
+	modRole?: string
+	helperRole?: string
+	trialHelperRole?: string
 
 	ownerOnlyChannels?: string[]
 	adminOnlyChannels?: string[]

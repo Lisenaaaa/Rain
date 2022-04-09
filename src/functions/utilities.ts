@@ -1,11 +1,11 @@
 import { Command, Listener } from '@sapphire/framework'
 import { container } from '@sapphire/pieces'
-import { CacheType, CommandInteraction, CommandInteractionOption, MessageEmbedOptions, TextChannel, Message, MessageEmbed } from 'discord.js'
+import { CacheType, CommandInteraction, CommandInteractionOption, MessageEmbedOptions, TextChannel, Message, MessageEmbed, ButtonInteraction, InteractionReplyOptions, GuildMember } from 'discord.js'
 import got from 'got/dist/source'
 import { ErrorDetails, Perms } from '../types/misc'
 import moment from 'moment'
-import { APIMessage } from 'discord-api-types'
-import { PaginatedMessage, runsOnInteraction } from '@sapphire/discord.js-utilities'
+import { APIInteractionGuildMember, APIMessage, Snowflake } from 'discord-api-types'
+import { GuildTextBasedChannelTypes, PaginatedMessage, runsOnInteraction } from '@sapphire/discord.js-utilities'
 
 export default class Utilities {
 	/**
@@ -364,5 +364,33 @@ export default class Utilities {
 		newString[0] = newString[0].toLocaleUpperCase()
 		string = newString.join('')
 		return string
+	}
+
+	async awaitButton(userId: Snowflake, messageId: Snowflake, channel: GuildTextBasedChannelTypes): Promise<ButtonInteraction | undefined> {
+		return await channel.awaitMessageComponent({
+			componentType: 'BUTTON',
+			filter: (b: ButtonInteraction) => b.user.id === userId && b.message.id === messageId,
+			time: this.getTimeInSeconds(60),
+		})
+	}
+
+	getTimeInSeconds(t: number) {
+		return t * 1000
+	}
+
+	async promptMessage(interaction: CommandInteraction, options: InteractionReplyOptions): Promise<Message | undefined> {
+		const filter = (m: Message) => m.author.id === interaction.user.id
+		if (interaction.replied) {
+			await interaction.editReply(options)
+		} else {
+			await interaction.reply(options)
+		}
+
+		const message = await (interaction.channel as TextChannel).awaitMessages({ filter, time: this.getTimeInSeconds(60), max: 1 })
+		return message.first()
+	}
+
+	isMember(member: GuildMember | APIInteractionGuildMember | null): member is GuildMember {
+		return member instanceof GuildMember
 	}
 }

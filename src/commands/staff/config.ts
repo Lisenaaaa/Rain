@@ -1,12 +1,12 @@
 import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
-import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
-import { APIInteractionGuildMember, ButtonStyle, ComponentType } from 'discord-api-types'
-import { ButtonInteraction, CommandInteraction, Guild, GuildMember, InteractionReplyOptions, Message, MessageActionRow, MessageButton, Snowflake, TextChannel } from 'discord.js'
+import { ButtonStyle, ComponentType } from 'discord-api-types'
+import { CommandInteraction, Guild, MessageActionRow, MessageButton, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { GuildDatabase } from '../../functions/databases/guild'
 import RainCommand from '../../structures/RainCommand'
+import { PermNames } from '../../types/misc'
 
 @ApplyOptions<CommandOptions>({
 	name: 'config',
@@ -33,7 +33,7 @@ export class ConfigCommand extends RainCommand {
 			return await interaction.reply({ content: 'This must be ran in a text channel on a server.', ephemeral: true })
 		}
 
-		if (!this.isMember(interaction.member)) {
+		if (!this.container.utils.isMember(interaction.member)) {
 			return await interaction.reply({ content: 'ok HOW did you manage to run this on a guild without being a member of that guild?????' })
 		}
 
@@ -111,7 +111,7 @@ export class ConfigCommand extends RainCommand {
 		const reply = await interaction.fetchReply()
 		const { id } = reply
 
-		const button = await this.awaitButton(interaction.user.id, id, interaction.channel)
+		const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 		if (button?.customId === 'configWelcome') {
 			await button.deferUpdate()
@@ -143,13 +143,16 @@ export class ConfigCommand extends RainCommand {
 				],
 			})
 
-			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			await actionButton?.deferUpdate()
 
 			switch (actionButton?.customId) {
 				case 'configSetWelcomeChannel': {
-					const msg = await this.promptMessage(interaction, { content: 'Please mention the channel that you would like to change the new welcome channel to.', components: [] })
+					const msg = await this.container.utils.promptMessage(interaction, {
+						content: 'Please mention the channel that you would like to change the new welcome channel to.',
+						components: [],
+					})
 					if (!msg) {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
@@ -175,7 +178,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetWelcomeChannelYes') {
 						await this.container.database.guilds.update({ welcomeChannel: channel.id }, { where: { id: interaction.guildId as string } })
@@ -202,7 +205,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveWelcomeChannelYes') {
 						await this.container.database.guilds.update({ welcomeChannel: null }, { where: { id: interaction.guildId as string } })
@@ -216,7 +219,7 @@ export class ConfigCommand extends RainCommand {
 				}
 
 				case 'configSetWelcomeMessage': {
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: 'What would you like the welcome message to be?',
 						components: [
 							{
@@ -249,7 +252,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetWelcomeMessageYes') {
 						await this.container.database.guilds.update({ welcomeMessage: msg.content }, { where: { id: interaction.guildId as string } })
@@ -276,7 +279,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveWelcomeMessageYes') {
 						await this.container.database.guilds.update({ welcomeMessage: null }, { where: { id: interaction.guildId as string } })
@@ -290,7 +293,7 @@ export class ConfigCommand extends RainCommand {
 				}
 
 				case 'configSetLeaveMessage': {
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: 'What would you like the leave message to be?',
 						components: [
 							{
@@ -323,7 +326,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetLeaveMessageYes') {
 						await this.container.database.guilds.update({ leaveMessage: msg.content }, { where: { id: interaction.guildId as string } })
@@ -350,7 +353,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveLeaveMessageYes') {
 						await this.container.database.guilds.update({ leaveMessage: null }, { where: { id: interaction.guildId as string } })
@@ -402,7 +405,7 @@ export class ConfigCommand extends RainCommand {
 				],
 			})
 
-			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			await actionButton?.deferUpdate()
 
@@ -410,7 +413,10 @@ export class ConfigCommand extends RainCommand {
 				case 'configSetMessageLogChannel': {
 					const channelType = 'message logging'
 					const buttonChannelType = 'MessageLogging'
-					const msg = await this.promptMessage(interaction, { content: `Please mention the channel that you would like to change the ${channelType} channel to.`, components: [] })
+					const msg = await this.container.utils.promptMessage(interaction, {
+						content: `Please mention the channel that you would like to change the ${channelType} channel to.`,
+						components: [],
+					})
 					if (!msg) {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
@@ -435,7 +441,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
 						await this.container.database.guilds.update({ messageLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
@@ -465,7 +471,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
 						await this.container.database.guilds.update({ messageLoggingChannel: null }, { where: { id: interaction.guildId as string } })
@@ -481,7 +487,10 @@ export class ConfigCommand extends RainCommand {
 				case 'configSetMemberLogChannel': {
 					const channelType = 'member logging'
 					const buttonChannelType = 'MemberLogging'
-					const msg = await this.promptMessage(interaction, { content: `Please mention the channel that you would like to change the ${channelType} channel to.`, components: [] })
+					const msg = await this.container.utils.promptMessage(interaction, {
+						content: `Please mention the channel that you would like to change the ${channelType} channel to.`,
+						components: [],
+					})
 					if (!msg) {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
@@ -506,7 +515,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
 						await this.container.database.guilds.update({ memberLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
@@ -536,7 +545,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
 						await this.container.database.guilds.update({ memberLoggingChannel: null }, { where: { id: interaction.guildId as string } })
@@ -552,7 +561,10 @@ export class ConfigCommand extends RainCommand {
 				case 'configSetActionLogChannel': {
 					const channelType = 'action logging'
 					const buttonChannelType = 'ActionLogging'
-					const msg = await this.promptMessage(interaction, { content: `Please mention the channel that you would like to change the ${channelType} channel to.`, components: [] })
+					const msg = await this.container.utils.promptMessage(interaction, {
+						content: `Please mention the channel that you would like to change the ${channelType} channel to.`,
+						components: [],
+					})
 					if (!msg) {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
@@ -577,7 +589,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
 						await this.container.database.guilds.update({ actionLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
@@ -607,7 +619,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
 						await this.container.database.guilds.update({ actionLoggingChannel: null }, { where: { id: interaction.guildId as string } })
@@ -623,7 +635,10 @@ export class ConfigCommand extends RainCommand {
 				case 'configSetModerationLogChannel': {
 					const channelType = 'moderation logging'
 					const buttonChannelType = 'ModerationLogging'
-					const msg = await this.promptMessage(interaction, { content: `Please mention the channel that you would like to change the ${channelType} channel to.`, components: [] })
+					const msg = await this.container.utils.promptMessage(interaction, {
+						content: `Please mention the channel that you would like to change the ${channelType} channel to.`,
+						components: [],
+					})
 					if (!msg) {
 						return await interaction.editReply("I can't get a channel from nothing!")
 					}
@@ -648,7 +663,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
 						await this.container.database.guilds.update({ moderationLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
@@ -678,7 +693,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
 						await this.container.database.guilds.update({ moderationLoggingChannel: null }, { where: { id: interaction.guildId as string } })
@@ -759,7 +774,7 @@ export class ConfigCommand extends RainCommand {
 				components,
 			})
 
-			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			await actionButton?.deferUpdate()
 
@@ -772,7 +787,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: 'You need owner permissions to manage this role!', components: [] })
 					}
 
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
 						components: [],
 					})
@@ -800,7 +815,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ adminRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -834,7 +849,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ adminRole: null }, { where: { id: interaction.guildId as string } })
@@ -855,7 +870,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: 'You need admin permissions to manage this role!', components: [] })
 					}
 
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
 						components: [],
 					})
@@ -883,7 +898,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ srModRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -917,7 +932,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ srModRole: null }, { where: { id: interaction.guildId as string } })
@@ -938,7 +953,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: 'You need sr. mod permissions to manage this role!', components: [] })
 					}
 
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
 						components: [],
 					})
@@ -966,7 +981,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ modRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -1000,7 +1015,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ modRole: null }, { where: { id: interaction.guildId as string } })
@@ -1021,7 +1036,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: 'You need moderator permissions to manage this role!', components: [] })
 					}
 
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
 						components: [],
 					})
@@ -1049,7 +1064,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ helperRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -1083,7 +1098,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ helperRole: null }, { where: { id: interaction.guildId as string } })
@@ -1104,7 +1119,7 @@ export class ConfigCommand extends RainCommand {
 						return await interaction.editReply({ content: 'You need helper permissions to manage this role!', components: [] })
 					}
 
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the ${roleType} role to.`,
 						components: [],
 					})
@@ -1132,7 +1147,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ trialHelperRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -1162,7 +1177,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
 						await this.container.database.guilds.update({ trialHelperRole: null }, { where: { id: interaction.guildId as string } })
@@ -1193,11 +1208,11 @@ export class ConfigCommand extends RainCommand {
 				],
 			})
 
-			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			switch (actionButton?.customId) {
 				case 'configSetMuteRole': {
-					const msg = await this.promptMessage(interaction, {
+					const msg = await this.container.utils.promptMessage(interaction, {
 						content: `Please mention, or send the ID or name of the role that you would like to change the muted role to.`,
 						components: [],
 					})
@@ -1225,7 +1240,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSetMuteRoleYes`) {
 						await this.container.database.guilds.update({ muteRole: role.id }, { where: { id: interaction.guildId as string } })
@@ -1252,7 +1267,7 @@ export class ConfigCommand extends RainCommand {
 						],
 					})
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					await confirmationButton?.deferUpdate()
 
@@ -1285,7 +1300,7 @@ export class ConfigCommand extends RainCommand {
 				],
 			})
 
-			const actionButton = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			switch (actionButton?.customId) {
 				case 'configRestrictedChannelsSetPerms': {
@@ -1357,7 +1372,7 @@ export class ConfigCommand extends RainCommand {
 
 					const reply = await JSON.parse((await got.get(`https://discord.com/api/v10/webhooks/${this.container.client.id}/${i.token}/messages/@original`)).body)
 
-					const confirmationButton = await this.awaitButton(interaction.user.id, reply.id, interaction.channel as TextChannel)
+					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, reply.id, interaction.channel as TextChannel)
 
 					if (confirmationButton?.customId === `configAfterPunishYes`) {
 						await got.delete(`https://discord.com/api/v10/webhooks/${this.container.client.id}/${i.token}/messages/@original`)
@@ -1390,22 +1405,128 @@ export class ConfigCommand extends RainCommand {
 				],
 			})
 
-			const type = await this.awaitButton(interaction.user.id, id, interaction.channel)
+			const type = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 			await type?.deferUpdate()
 
+			const {
+				welcomeMessage,
+				leaveMessage,
+				welcomeChannel,
+				muteRole,
+				afterPunishmentMessage,
+				messageLoggingChannel,
+				memberLoggingChannel,
+				moderationLoggingChannel,
+				actionLoggingChannel,
+				ownerRole,
+				adminRole,
+				srModRole,
+				modRole,
+				helperRole,
+				trialHelperRole,
+				ownerOnlyChannels,
+				adminOnlyChannels,
+				srModOnlyChannels,
+				modOnlyChannels,
+				helperOnlyChannels,
+				trialHelperOnlyChannels,
+			} = (await this.container.database.guilds.findByPk(interaction.guild.id)) as GuildDatabase
+
+			const rolesFormatted = {
+				muteRole: muteRole && interaction.guild.roles.cache.get(muteRole) ? `${this.format(muteRole, 'role')} (${interaction.guild.roles.cache.get(muteRole)?.name})` : '*not set*',
+				ownerRole: ownerRole && interaction.guild.roles.cache.get(ownerRole) ? `${this.format(ownerRole, 'role')} (${interaction.guild.roles.cache.get(ownerRole)?.name})` : '*not set*',
+				adminRole: adminRole && interaction.guild.roles.cache.get(adminRole) ? `${this.format(adminRole, 'role')} (${interaction.guild.roles.cache.get(adminRole)?.name})` : '*not set*',
+				srModRole: srModRole && interaction.guild.roles.cache.get(srModRole) ? `${this.format(srModRole, 'role')} (${interaction.guild.roles.cache.get(srModRole)?.name})` : '*not set*',
+				modRole: modRole && interaction.guild.roles.cache.get(modRole) ? `${this.format(modRole, 'role')} (${interaction.guild.roles.cache.get(modRole)?.name})` : '*not set*',
+				helperRole: helperRole && interaction.guild.roles.cache.get(helperRole) ? `${this.format(helperRole, 'role')} (${interaction.guild.roles.cache.get(helperRole)?.name})` : '*not set*',
+				trialHelperRole:
+					trialHelperRole && interaction.guild.roles.cache.get(trialHelperRole)
+						? `${this.format(trialHelperRole, 'role')} (${interaction.guild.roles.cache.get(trialHelperRole)?.name})`
+						: '*not set*',
+			}
+			const channels = {
+				ownerOnlyChannels: ownerOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+				adminOnlyChannels: adminOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+				srModOnlyChannels: srModOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+				modOnlyChannels: modOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+				helperOnlyChannels: helperOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+				trialHelperOnlyChannels: trialHelperOnlyChannels.map((c) => this.format(c, 'channel')).join(', '),
+			}
+			const channelsFormatted = {
+				messageLoggingChannel:
+					messageLoggingChannel && interaction.guild.channels.cache.get(messageLoggingChannel)
+						? `${this.format(messageLoggingChannel, 'channel')} (\`${messageLoggingChannel}\`)`
+						: '*not set*',
+				memberLoggingChannel:
+					memberLoggingChannel && interaction.guild.channels.cache.get(memberLoggingChannel) ? `${this.format(memberLoggingChannel, 'channel')} (\`${memberLoggingChannel}\`)` : '*not set*',
+				moderationLoggingChannel:
+					moderationLoggingChannel && interaction.guild.channels.cache.get(moderationLoggingChannel)
+						? `${this.format(moderationLoggingChannel, 'channel')} (\`${moderationLoggingChannel}\`)`
+						: '*not set*',
+				actionLoggingChannel:
+					actionLoggingChannel && interaction.guild.channels.cache.get(actionLoggingChannel) ? `${this.format(actionLoggingChannel, 'channel')} (\`${actionLoggingChannel}\`)` : '*not set*',
+
+				ownerOnlyChannels: channels.ownerOnlyChannels.length === 0 ? '*none set*' : channels.ownerOnlyChannels,
+				adminOnlyChannels: channels.adminOnlyChannels.length === 0 ? '*none set*' : channels.adminOnlyChannels,
+				srModOnlyChannels: channels.srModOnlyChannels.length === 0 ? '*none set*' : channels.srModOnlyChannels,
+				modOnlyChannels: channels.modOnlyChannels.length === 0 ? '*none set*' : channels.modOnlyChannels,
+				helperOnlyChannels: channels.helperOnlyChannels.length === 0 ? '*none set*' : channels.helperOnlyChannels,
+				trialHelperOnlyChannels: channels.trialHelperOnlyChannels.length === 0 ? '*none set*' : channels.trialHelperOnlyChannels,
+			}
+
 			switch (type?.customId) {
 				case 'configViewWelcome': {
-					const { welcomeChannel, welcomeMessage, leaveMessage } = (await this.container.database.guilds.findByPk(interaction.guild.id)) as GuildDatabase
-
 					await interaction.editReply({
 						embeds: [
 							{
 								title: 'Welcome/Leave Info',
 								fields: [
-									{ name: 'Channel', value: welcomeChannel ? `<#${welcomeChannel}>` : '*not set*' },
+									{ name: 'Channel', value: this.format(welcomeChannel, 'channel') ?? '*not set*' },
 									{ name: 'Join Message', value: welcomeMessage ?? '*not set*' },
 									{ name: 'Leave Message', value: leaveMessage ?? '*not set*' },
+								],
+							},
+						],
+						components: [],
+					})
+					break
+				}
+				case 'configViewModeration': {
+					await interaction.editReply({
+						embeds: [
+							{
+								title: 'Moderation Info',
+								fields: [
+									{ name: 'Mute Role', value: rolesFormatted.muteRole },
+									{ name: 'After Punishment Message', value: afterPunishmentMessage ?? '*not set*' },
+
+									{
+										name: 'Logging Channels',
+										value: `Message: ${channelsFormatted.messageLoggingChannel}\nMember: ${channelsFormatted.memberLoggingChannel}\nModeration: ${channelsFormatted.moderationLoggingChannel}\nAction: ${channelsFormatted.actionLoggingChannel}`,
+									},
+								],
+							},
+						],
+						components: [],
+					})
+					break
+				}
+
+				case 'configViewPermissions': {
+					await interaction.editReply({
+						embeds: [
+							{
+								title: 'Permissions Info',
+								fields: [
+									{
+										name: 'Restricted Channels',
+										value: `${PermNames.owner}: ${channelsFormatted.ownerOnlyChannels}\n${PermNames.admin}: ${channelsFormatted.adminOnlyChannels}\n${PermNames.srMod}: ${channelsFormatted.srModOnlyChannels}\n${PermNames.moderator}: ${channelsFormatted.modOnlyChannels}\n${PermNames.helper}: ${channelsFormatted.helperOnlyChannels}\n${PermNames.trialHelper}: ${channelsFormatted.trialHelperOnlyChannels}\n`,
+									},
+									{
+										name: 'Staff Roles',
+										value: `${PermNames.owner}: ${rolesFormatted.ownerRole}\n${PermNames.admin}: ${rolesFormatted.adminRole}\n${PermNames.srMod}: ${rolesFormatted.srModRole}\n${PermNames.moderator}: ${rolesFormatted.modRole}\n${PermNames.helper}: ${rolesFormatted.helperRole}\n${PermNames.trialHelper}: ${rolesFormatted.trialHelperRole}\n`,
+									},
 								],
 							},
 						],
@@ -1416,31 +1537,11 @@ export class ConfigCommand extends RainCommand {
 		}
 	}
 
-	private getTimeInSeconds(t: number) {
-		return t * 1000
-	}
-
-	private async promptMessage(interaction: CommandInteraction, options: InteractionReplyOptions): Promise<Message | undefined> {
-		const filter = (m: Message) => m.author.id === interaction.user.id
-		if (interaction.replied) {
-			await interaction.editReply(options)
-		} else {
-			await interaction.reply(options)
+	format(thing: string | null, type: 'role' | 'channel') {
+		if (!thing) {
+			return thing
 		}
 
-		const message = await (interaction.channel as TextChannel).awaitMessages({ filter, time: this.getTimeInSeconds(60), max: 1 })
-		return message.first()
-	}
-
-	private async awaitButton(userId: Snowflake, messageId: Snowflake, channel: GuildTextBasedChannelTypes): Promise<ButtonInteraction | undefined> {
-		return await channel.awaitMessageComponent({
-			componentType: 'BUTTON',
-			filter: (b: ButtonInteraction) => b.user.id === userId && b.message.id === messageId,
-			time: this.getTimeInSeconds(60),
-		})
-	}
-
-	isMember(member: GuildMember | APIInteractionGuildMember | null): member is GuildMember {
-		return member instanceof GuildMember
+		return type === 'role' ? `<@&${thing}>` : `<#${thing}>`
 	}
 }
