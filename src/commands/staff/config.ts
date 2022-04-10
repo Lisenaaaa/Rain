@@ -19,10 +19,12 @@ import { PermNames } from '../../types/misc'
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['928065482647535687'],
+		options: [{ name: 'action', type: 'STRING', description: 'the config option you want to choose', required: false, choices: [{ name: 'Welcome', value: 'configWelcome' }] }],
 	},
 })
 export class ConfigCommand extends RainCommand {
 	public override async chatInputRun(interaction: CommandInteraction) {
+		let { action }: { action?: string } = this.parseArgs(interaction)
 		if (interaction.channel === null) {
 			return await interaction.reply({
 				content: 'how did you even manage to run this not in a channel, and could you please tell my dev about this? discord.gg/jWUNaGgxnB',
@@ -45,76 +47,85 @@ export class ConfigCommand extends RainCommand {
 			await this.container.database.guilds.create({ id: interaction.guild.id })
 		}
 
-		await interaction.reply({
-			content: 'Select an option from the menu below:',
-			components: [
-				{
-					type: 'ACTION_ROW',
-					components: [
-						{
-							type: 'BUTTON',
-							label: 'welcome',
-							style: 'PRIMARY',
-							customId: 'configWelcome',
-						},
-						{
-							type: 'BUTTON',
-							label: 'logging',
-							style: 'PRIMARY',
-							customId: 'configLogging',
-						},
-						{
-							type: 'BUTTON',
-							label: 'staff roles',
-							style: 'PRIMARY',
-							customId: 'configStaffRoles',
-						},
-						{
-							type: 'BUTTON',
-							label: 'mute role',
-							style: 'PRIMARY',
-							customId: 'configMuteRole',
-						},
-						{
-							type: 'BUTTON',
-							label: 'restricted channels',
-							style: 'PRIMARY',
-							customId: 'configRestrictedChannels',
-						},
-					],
-				},
-				{
-					type: 'ACTION_ROW',
-					components: [
-						{
-							type: 'BUTTON',
-							label: 'after punishment message',
-							style: 'PRIMARY',
-							customId: 'configAfterPunishMessage',
-						},
-					],
-				},
-				{
-					type: 'ACTION_ROW',
-					components: [
-						{
-							type: 'BUTTON',
-							label: 'View Config',
-							style: 'SUCCESS',
-							customId: 'configView',
-						},
-					],
-				},
-			],
-		})
+		await interaction.deferReply()
+		const { id } = await interaction.fetchReply()
 
-		const reply = await interaction.fetchReply()
-		const { id } = reply
+		if (!action) {
+			await interaction.reply({
+				content: 'Select an option from the menu below:',
+				components: [
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{
+								type: 'BUTTON',
+								label: 'welcome',
+								style: 'PRIMARY',
+								customId: 'configWelcome',
+							},
+							{
+								type: 'BUTTON',
+								label: 'logging',
+								style: 'PRIMARY',
+								customId: 'configLogging',
+							},
+							{
+								type: 'BUTTON',
+								label: 'staff roles',
+								style: 'PRIMARY',
+								customId: 'configStaffRoles',
+							},
+							{
+								type: 'BUTTON',
+								label: 'mute role',
+								style: 'PRIMARY',
+								customId: 'configMuteRole',
+							},
+							{
+								type: 'BUTTON',
+								label: 'restricted channels',
+								style: 'PRIMARY',
+								customId: 'configRestrictedChannels',
+							},
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{
+								type: 'BUTTON',
+								label: 'after punishment message',
+								style: 'PRIMARY',
+								customId: 'configAfterPunishMessage',
+							},
+						],
+					},
+					{
+						type: 'ACTION_ROW',
+						components: [
+							{
+								type: 'BUTTON',
+								label: 'View Config',
+								style: 'SUCCESS',
+								customId: 'configView',
+							},
+						],
+					},
+				],
+			})
 
-		const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+			const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
-		if (button?.customId === 'configWelcome') {
+			if (!button) {
+				return await interaction.editReply({ content: "You've ran out of time.", components: [] })
+			}
+
 			await button.deferUpdate()
+
+			action = button.customId
+		}
+
+		if (action === 'configWelcome') {
 
 			await interaction.editReply({
 				content: 'What would you like to do with the welcoming system?',
@@ -368,8 +379,7 @@ export class ConfigCommand extends RainCommand {
 			}
 		}
 
-		if (button?.customId === 'configLogging') {
-			await button.deferUpdate()
+		if (action === 'configLogging') {
 
 			await interaction.editReply({
 				content: 'What would you like to do with the logging system?',
@@ -708,8 +718,7 @@ export class ConfigCommand extends RainCommand {
 			}
 		}
 
-		if (button?.customId === 'configStaffRoles') {
-			await button.deferUpdate()
+		if (action === 'configStaffRoles') {
 
 			const components: MessageActionRow[] = []
 
@@ -1192,8 +1201,7 @@ export class ConfigCommand extends RainCommand {
 			}
 		}
 
-		if (button?.customId === 'configMuteRole') {
-			await button.deferUpdate()
+		if (action === 'configMuteRole') {
 
 			await interaction.editReply({
 				content: 'What would you like to do to the mute role?',
@@ -1284,8 +1292,7 @@ export class ConfigCommand extends RainCommand {
 			}
 		}
 
-		if (button?.customId === 'configRestrictedChannels') {
-			await button.deferUpdate()
+		if (action === 'configRestrictedChannels') {
 
 			await interaction.editReply({
 				content: 'What would you like to do with the restricted channel system?',
@@ -1315,7 +1322,7 @@ export class ConfigCommand extends RainCommand {
 			}
 		}
 
-		if (button?.customId === 'configAfterPunishMessage') {
+		if (action === 'configAfterPunishMessage') {
 			// await button.deferUpdate()
 			// return await interaction.editReply("this currently isn't done. please yell at me to finish this.")
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -1388,8 +1395,7 @@ export class ConfigCommand extends RainCommand {
 			})
 		}
 
-		if (button?.customId === 'configView') {
-			await button.deferUpdate()
+		if (action === 'configView') {
 
 			await interaction.editReply({
 				content: 'What would you like to see?',
@@ -1478,6 +1484,7 @@ export class ConfigCommand extends RainCommand {
 			switch (type?.customId) {
 				case 'configViewWelcome': {
 					await interaction.editReply({
+						content: null,
 						embeds: [
 							{
 								title: 'Welcome/Leave Info',
@@ -1494,6 +1501,7 @@ export class ConfigCommand extends RainCommand {
 				}
 				case 'configViewModeration': {
 					await interaction.editReply({
+						content: null,
 						embeds: [
 							{
 								title: 'Moderation Info',
@@ -1515,6 +1523,7 @@ export class ConfigCommand extends RainCommand {
 
 				case 'configViewPermissions': {
 					await interaction.editReply({
+						content: null,
 						embeds: [
 							{
 								title: 'Permissions Info',

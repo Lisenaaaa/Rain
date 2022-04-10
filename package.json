@@ -14,7 +14,7 @@
 	"repository": "https://github.com/Lisenaaaa/Rain/tree/sapphire",
 	"author": "Alyssa <69115669+Lisenaaaa@users.noreply.github.com>",
 	"license": "UNLICENSED",
-	"packageManager": "yarn@3.1.1",
+	"packageManager": "yarn@3.2.0",
 	"devDependencies": {
 		"@types/ms": "^0.7.31",
 		"@types/pg": "^8.6.4",
