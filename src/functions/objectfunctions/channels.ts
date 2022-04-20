@@ -1,9 +1,9 @@
+import { GuildTextBasedChannelTypes } from '@sapphire/discord.js-utilities'
 import { container } from '@sapphire/pieces'
-import { TextChannel } from 'discord.js'
 import { Perms } from 'src/types/misc'
 
 export default class Channels {
-	async isLocked(channel: TextChannel): Promise<boolean> {
+	async isLocked(channel: GuildTextBasedChannelTypes): Promise<boolean> {
 		const db = await container.database.guilds.findByPk(channel.guildId)
 		if (!db) {
 			throw new Error(`Couldn't find the database for guild ${channel.guildId}`)
@@ -25,7 +25,7 @@ export default class Channels {
 		return false
 	}
 
-	async getRestrictedPerms(channel: TextChannel): Promise<Perms | false> {
+	async getRestrictedPerms(channel: GuildTextBasedChannelTypes): Promise<Perms | false> {
 		const db = await container.database.guilds.findByPk(channel.guildId)
 		if (!db) {
 			throw new Error(`Couldn't find the database for guild ${channel.guildId}`)
@@ -49,5 +49,10 @@ export default class Channels {
 		}
 
 		return perms ?? false
+	}
+
+	async changePerms(channel: GuildTextBasedChannelTypes, perm: Perms): Promise<boolean> {
+		// this is not done, only because it's really fuckin hot in my room rn and i REALLY don't feel like doing a quintillion if statements or switch case blocks
+		return false
 	}
 }

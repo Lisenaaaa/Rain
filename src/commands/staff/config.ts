@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { ButtonStyle, ComponentType } from 'discord-api-types'
-import { CommandInteraction, Guild, MessageActionRow, MessageButton, TextChannel } from 'discord.js'
+import { CommandInteraction, MessageActionRow, MessageButton, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { GuildDatabase } from '../../functions/databases/guild'
 import RainCommand from '../../structures/RainCommand'
@@ -19,7 +19,23 @@ import { PermNames } from '../../types/misc'
 	slashOptions: {
 		guildIDs: ['880637463838724166'],
 		idHints: ['928065482647535687'],
-		options: [{ name: 'action', type: 'STRING', description: 'the config option you want to choose', required: false, choices: [{ name: 'Welcome', value: 'configWelcome' }] }],
+		options: [
+			{
+				name: 'action',
+				type: 'STRING',
+				description: 'the config option you want to choose',
+				required: false,
+				choices: [
+					{ name: 'Welcome', value: 'configWelcome' },
+					{ name: 'Logging', value: 'configLogging' },
+					{ name: 'Staff Roles', value: 'configStaffRoles' },
+					{ name: 'Mute Role', value: 'configMuteRole' },
+					{ name: 'Restricted Channels', value: 'configRestrictedChannels' },
+					{ name: 'After Punishment Message', value: 'configAfterPunishMessage' },
+					{ name: 'View Config', value: 'configView' },
+				],
+			},
+		],
 	},
 })
 export class ConfigCommand extends RainCommand {
@@ -31,7 +47,7 @@ export class ConfigCommand extends RainCommand {
 			})
 		}
 
-		if (interaction.guild === null) {
+		if (interaction.guild === null || interaction.guildId === null) {
 			return await interaction.reply({ content: 'This must be ran in a text channel on a server.', ephemeral: true })
 		}
 
@@ -51,7 +67,7 @@ export class ConfigCommand extends RainCommand {
 		const { id } = await interaction.fetchReply()
 
 		if (!action) {
-			await interaction.reply({
+			await interaction.editReply({
 				content: 'Select an option from the menu below:',
 				components: [
 					{
@@ -126,7 +142,6 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configWelcome') {
-
 			await interaction.editReply({
 				content: 'What would you like to do with the welcoming system?',
 				components: [
@@ -171,7 +186,7 @@ export class ConfigCommand extends RainCommand {
 					console.log('deleting message')
 					await msg.delete()
 
-					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					if (!channel) {
 						return await interaction.editReply({ content: "I couldn't find that channel." })
 					}
@@ -192,7 +207,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetWelcomeChannelYes') {
-						await this.container.database.guilds.update({ welcomeChannel: channel.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ welcomeChannel: channel.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's welcome channel to **${channel.toString()}**.`, components: [] })
 					}
@@ -219,7 +234,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveWelcomeChannelYes') {
-						await this.container.database.guilds.update({ welcomeChannel: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ welcomeChannel: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's welcome channel.`, components: [] })
 					}
@@ -245,7 +260,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					// const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					// const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					// if (!channel) {
 					// 	return await interaction.editReply({ content: "I couldn't find that channel." })
 					// }
@@ -266,7 +281,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetWelcomeMessageYes') {
-						await this.container.database.guilds.update({ welcomeMessage: msg.content }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ welcomeMessage: msg.content }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's welcome message to ${msg.content}.`, components: [] })
 					}
@@ -293,7 +308,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveWelcomeMessageYes') {
-						await this.container.database.guilds.update({ welcomeMessage: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ welcomeMessage: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's welcome message.`, components: [] })
 					}
@@ -319,7 +334,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					// const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					// const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					// if (!channel) {
 					// 	return await interaction.editReply({ content: "I couldn't find that channel." })
 					// }
@@ -340,7 +355,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configSetLeaveMessageYes') {
-						await this.container.database.guilds.update({ leaveMessage: msg.content }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ leaveMessage: msg.content }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's welcome message to ${msg.content}.`, components: [] })
 					}
@@ -367,7 +382,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === 'configRemoveLeaveMessageYes') {
-						await this.container.database.guilds.update({ leaveMessage: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ leaveMessage: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's leave message.`, components: [] })
 					}
@@ -380,7 +395,6 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configLogging') {
-
 			await interaction.editReply({
 				content: 'What would you like to do with the logging system?',
 				components: [
@@ -433,7 +447,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					if (!channel) {
 						return await interaction.editReply({ content: "I couldn't find that channel." })
 					}
@@ -454,7 +468,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
-						await this.container.database.guilds.update({ messageLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ messageLoggingChannel: channel.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${channelType} channel to **${channel.toString()}**.`, components: [] })
 					}
@@ -484,7 +498,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
-						await this.container.database.guilds.update({ messageLoggingChannel: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ messageLoggingChannel: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${channelType} channel.`, components: [] })
 					}
@@ -507,7 +521,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					if (!channel) {
 						return await interaction.editReply({ content: "I couldn't find that channel." })
 					}
@@ -528,7 +542,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
-						await this.container.database.guilds.update({ memberLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ memberLoggingChannel: channel.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${channelType} channel to **${channel.toString()}**.`, components: [] })
 					}
@@ -558,7 +572,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
-						await this.container.database.guilds.update({ memberLoggingChannel: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ memberLoggingChannel: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${channelType} channel.`, components: [] })
 					}
@@ -581,7 +595,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					if (!channel) {
 						return await interaction.editReply({ content: "I couldn't find that channel." })
 					}
@@ -602,7 +616,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
-						await this.container.database.guilds.update({ actionLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ actionLoggingChannel: channel.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${channelType} channel to **${channel.toString()}**.`, components: [] })
 					}
@@ -632,7 +646,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
-						await this.container.database.guilds.update({ actionLoggingChannel: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ actionLoggingChannel: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${channelType} channel.`, components: [] })
 					}
@@ -655,7 +669,7 @@ export class ConfigCommand extends RainCommand {
 
 					await msg.delete()
 
-					const channel = this.container.guilds.findChannel(interaction.guild as Guild, msg.content)
+					const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
 					if (!channel) {
 						return await interaction.editReply({ content: "I couldn't find that channel." })
 					}
@@ -676,7 +690,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonChannelType}ChannelYes`) {
-						await this.container.database.guilds.update({ moderationLoggingChannel: channel.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ moderationLoggingChannel: channel.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${channelType} channel to **${channel.toString()}**.`, components: [] })
 					}
@@ -706,7 +720,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonChannelType}Yes`) {
-						await this.container.database.guilds.update({ moderationLoggingChannel: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ moderationLoggingChannel: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${channelType} channel.`, components: [] })
 					}
@@ -719,15 +733,14 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configStaffRoles') {
-
 			const components: MessageActionRow[] = []
 
 			if (await this.container.members.hasPermission(interaction.member, 'owner')) {
 				components.push(
 					new MessageActionRow({
 						components: [
-							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Admin Role', customId: 'configSetAdminRole' }),
-							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Admin Role', customId: 'configRemoveAdminRole' }),
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Admin Role', customId: 'configSetAdminRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Admin Role', customId: 'configRemoveAdminRole' },
 						],
 					})
 				)
@@ -737,8 +750,8 @@ export class ConfigCommand extends RainCommand {
 				components.push(
 					new MessageActionRow({
 						components: [
-							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Sr. Mod Role', customId: 'configSetSrModRole' }),
-							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Sr. Mod Role', customId: 'configRemoveSrModRole' }),
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Sr. Mod Role', customId: 'configSetSrModRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Sr. Mod Role', customId: 'configRemoveSrModRole' },
 						],
 					})
 				)
@@ -748,8 +761,8 @@ export class ConfigCommand extends RainCommand {
 				components.push(
 					new MessageActionRow({
 						components: [
-							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Moderator Role', customId: 'configSetModeratorRole' }),
-							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Moderator Role', customId: 'configRemoveModeratorRole' }),
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Moderator Role', customId: 'configSetModeratorRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Moderator Role', customId: 'configRemoveModeratorRole' },
 						],
 					})
 				)
@@ -759,8 +772,8 @@ export class ConfigCommand extends RainCommand {
 				components.push(
 					new MessageActionRow({
 						components: [
-							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Helper Role', customId: 'configSetHelperRole' }),
-							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Helper Role', customId: 'configRemoveHelperRole' }),
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Helper Role', customId: 'configSetHelperRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Helper Role', customId: 'configRemoveHelperRole' },
 						],
 					})
 				)
@@ -770,8 +783,8 @@ export class ConfigCommand extends RainCommand {
 				components.push(
 					new MessageActionRow({
 						components: [
-							new MessageButton({ type: 'BUTTON', style: 'SUCCESS', label: 'Set Trial Helper Role', customId: 'configSetTrialHelperRole' }),
-							new MessageButton({ type: 'BUTTON', style: 'DANGER', label: 'Remove Trial Helper Role', customId: 'configRemoveTrialHelperRole' }),
+							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Trial Helper Role', customId: 'configSetTrialHelperRole' },
+							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Trial Helper Role', customId: 'configRemoveTrialHelperRole' },
 						],
 					})
 				)
@@ -827,7 +840,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ adminRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ adminRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
 					}
@@ -861,7 +874,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ adminRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ adminRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
@@ -910,7 +923,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ srModRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ srModRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
 					}
@@ -944,7 +957,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ srModRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ srModRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
@@ -993,7 +1006,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ modRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ modRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
 					}
@@ -1027,7 +1040,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ modRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ modRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
@@ -1076,7 +1089,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ helperRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ helperRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
 					}
@@ -1110,7 +1123,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ helperRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ helperRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
@@ -1159,7 +1172,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSet${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ trialHelperRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ trialHelperRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's ${roleType} role to **${role.toString()}**.`, components: [] })
 					}
@@ -1189,7 +1202,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configRemove${buttonRoleType}RoleYes`) {
-						await this.container.database.guilds.update({ trialHelperRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ trialHelperRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's ${roleType} role.`, components: [] })
 					}
@@ -1202,7 +1215,6 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configMuteRole') {
-
 			await interaction.editReply({
 				content: 'What would you like to do to the mute role?',
 				components: [
@@ -1251,7 +1263,7 @@ export class ConfigCommand extends RainCommand {
 					const confirmationButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
 					if (confirmationButton?.customId === `configSetMuteRoleYes`) {
-						await this.container.database.guilds.update({ muteRole: role.id }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ muteRole: role.id }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully set this guild's muted role to **${role.toString()}**.`, components: [] })
 					}
@@ -1280,7 +1292,7 @@ export class ConfigCommand extends RainCommand {
 					await confirmationButton?.deferUpdate()
 
 					if (confirmationButton?.customId === `configRemoveMuteRoleYes`) {
-						await this.container.database.guilds.update({ muteRole: null }, { where: { id: interaction.guildId as string } })
+						await this.container.database.guilds.update({ muteRole: null }, { where: { id: interaction.guildId } })
 
 						return await interaction.editReply({ content: `Succesfully removed this guild's muted role.`, components: [] })
 					}
@@ -1293,32 +1305,59 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configRestrictedChannels') {
-
-			await interaction.editReply({
-				content: 'What would you like to do with the restricted channel system?',
-				components: [
-					{
-						type: 'ACTION_ROW',
-						components: [
-							{ type: 'BUTTON', style: 'SUCCESS', label: 'Set Channel Perms', customId: 'configRestrictedChannelsSetPerms' },
-							{ type: 'BUTTON', style: 'DANGER', label: 'Remove Channel Perms', customId: 'configRestrictedChannelsRemovePerms' },
-						],
-					},
-				],
+			const msg = await this.container.utils.promptMessage(interaction, {
+				content: `Please mention the channel that you would like to manage.`,
+				components: [],
 			})
+			if (!msg) {
+				return await interaction.editReply("I can't get a channel from nothing!")
+			}
 
-			const actionButton = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+			await msg.delete()
 
-			switch (actionButton?.customId) {
-				case 'configRestrictedChannelsSetPerms': {
-					await interaction.editReply({ content: 'set perms', components: [] })
-					break
-				}
+			const channel = this.container.guilds.findChannel(interaction.guild, msg.content)
+			if (!channel) {
+				return await interaction.editReply({ content: "I couldn't find that channel." })
+			}
+			if (!isGuildBasedChannel(channel)) {
+				return await interaction.editReply({ content: 'Please select a text channel.' })
+			}
 
-				case 'configRestrictedChannelsRemovePerms': {
-					await interaction.editReply({ content: 'remove perms', components: [] })
-					break
-				}
+			const isLocked = await this.container.channels.isLocked(channel)
+
+			const firstRow = new MessageActionRow()
+			const secondRow = new MessageActionRow()
+
+			if (await this.container.members.hasPermission(interaction.member, 'owner')) {
+				firstRow.components.push(new MessageButton({ type: 'BUTTON', label: PermNames.admin, style: 'PRIMARY', customId: 'configSetChannelAdminPerms' }))
+			}
+			if (await this.container.members.hasPermission(interaction.member, 'admin')) {
+				firstRow.components.push(new MessageButton({ type: 'BUTTON', label: PermNames.srMod, style: 'PRIMARY', customId: 'configSetChannelSrModPerms' }))
+			}
+			if (await this.container.members.hasPermission(interaction.member, 'srMod')) {
+				firstRow.components.push(new MessageButton({ type: 'BUTTON', label: PermNames.moderator, style: 'PRIMARY', customId: 'configSetChannelModPerms' }))
+			}
+			if (await this.container.members.hasPermission(interaction.member, 'moderator')) {
+				firstRow.components.push(new MessageButton({ type: 'BUTTON', label: PermNames.helper, style: 'PRIMARY', customId: 'configSetChannelHelperPerms' }))
+			}
+			if (await this.container.members.hasPermission(interaction.member, 'helper')) {
+				firstRow.components.push(new MessageButton({ type: 'BUTTON', label: PermNames.trialHelper, style: 'PRIMARY', customId: 'configSetChannelTrialHelperPerms' }))
+			}
+
+			if (isLocked) {
+				secondRow.components.push(new MessageButton({ type: 'BUTTON', label: 'Clear Perms', style: 'DANGER', customId: 'configRemoveChannelPerms' }))
+			}
+
+			await interaction.editReply({ content: null, embeds: [], components: secondRow.components.length !== 0 ? [firstRow, secondRow] : [firstRow] })
+
+			const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+			if (!button) {
+				return await interaction.editReply({content: "I can't get a perm level if you don't press a button.", components: []})
+			}
+			const buttonId = button.customId as unknown as 'configSetChannelAdminPerms' | 'configSetChannelSrModPerms' | 'configSetChannelModPerms' | 'configSetChannelHelperPerms' | 'configSetChannelTrialHelperPerms' | 'configRemoveChannelPerms'
+
+			if (buttonId === 'configRemoveChannelPerms') {
+				//
 			}
 		}
 
@@ -1396,7 +1435,6 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configView') {
-
 			await interaction.editReply({
 				content: 'What would you like to see?',
 				components: [

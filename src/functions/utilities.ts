@@ -380,11 +380,11 @@ export default class Utilities {
 
 	async promptMessage(interaction: CommandInteraction, options: InteractionReplyOptions): Promise<Message | undefined> {
 		const filter = (m: Message) => m.author.id === interaction.user.id
-		if (interaction.replied) {
+		// if (interaction.replied) {
 			await interaction.editReply(options)
-		} else {
-			await interaction.reply(options)
-		}
+		// } else {
+		// 	await interaction.reply(options)
+		// }
 
 		const message = await (interaction.channel as TextChannel).awaitMessages({ filter, time: this.getTimeInSeconds(60), max: 1 })
 		return message.first()

@@ -106,7 +106,7 @@ export class ModlogsCommand extends RainCommand {
 	async editDescription(interaction: CommandInteraction) {
 		const args: { modlog: string; reason: string } = this.parseArgs(interaction)
 
-		const edited = await this.container.database.modlogs.update({ reason: args.reason }, { where: { id: args.modlog, guildId: interaction.guildId } })
+		const edited = await this.container.database.modlogs.update({ reason: args.reason }, { where: { id: args.modlog, guildId: interaction.guildId as string } })
 
 		if (edited[0] === 0) {
 			return await interaction.reply("I couldn't find that modlog.")
@@ -117,7 +117,7 @@ export class ModlogsCommand extends RainCommand {
 	async view(interaction: CommandInteraction) {
 		const args: { modlog: string } = this.parseArgs(interaction)
 
-		const modlog = await this.container.database.modlogs.findOne({ where: { id: args.modlog, guildId: interaction.guildId } })
+		const modlog = await this.container.database.modlogs.findOne({ where: { id: args.modlog, guildId: interaction.guildId as string } })
 		if (!modlog) {
 			return await interaction.reply("I couldn't find that modlog.")
 		}
