@@ -1352,9 +1352,15 @@ export class ConfigCommand extends RainCommand {
 
 			const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 			if (!button) {
-				return await interaction.editReply({content: "I can't get a perm level if you don't press a button.", components: []})
+				return await interaction.editReply({ content: "I can't get a perm level if you don't press a button.", components: [] })
 			}
-			const buttonId = button.customId as unknown as 'configSetChannelAdminPerms' | 'configSetChannelSrModPerms' | 'configSetChannelModPerms' | 'configSetChannelHelperPerms' | 'configSetChannelTrialHelperPerms' | 'configRemoveChannelPerms'
+			const buttonId = button.customId as unknown as
+				| 'configSetChannelAdminPerms'
+				| 'configSetChannelSrModPerms'
+				| 'configSetChannelModPerms'
+				| 'configSetChannelHelperPerms'
+				| 'configSetChannelTrialHelperPerms'
+				| 'configRemoveChannelPerms'
 
 			if (buttonId === 'configRemoveChannelPerms') {
 				//

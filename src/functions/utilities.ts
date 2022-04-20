@@ -381,7 +381,7 @@ export default class Utilities {
 	async promptMessage(interaction: CommandInteraction, options: InteractionReplyOptions): Promise<Message | undefined> {
 		const filter = (m: Message) => m.author.id === interaction.user.id
 		// if (interaction.replied) {
-			await interaction.editReply(options)
+		await interaction.editReply(options)
 		// } else {
 		// 	await interaction.reply(options)
 		// }
