@@ -14,4 +14,4 @@ export const database = {
 	databaseName: 'databaseName', // The name of the database.
 }
 export const errorChannel = '880655558728896562' // The id of the channel to log errors to
-export const owners = ['881310086411190293'] // The owner IDS of the bot
+export const owners = ['881310086411190293', '545277690303741962'] // The owner IDS of the bot

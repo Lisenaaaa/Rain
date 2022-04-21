@@ -94,7 +94,7 @@ export class EvalCommand extends RainCommand {
 			output = inspect(await eval(code), { depth: 0 })
 			success = true
 		} catch (err) {
-			output = err.message
+			output = err.stack
 			success = false
 		}
 
