@@ -1,5 +1,5 @@
 import { ApplyOptions } from '@sapphire/decorators'
-import { MessageCommandDeniedPayload, Listener, ListenerOptions, PreconditionError, ChatInputCommandDeniedPayload } from '@sapphire/framework'
+import { MessageCommandDeniedPayload, Listener, ListenerOptions, PreconditionError } from '@sapphire/framework'
 
 @ApplyOptions<ListenerOptions>({
 	event: 'messageCommandDenied',
