@@ -9,4 +9,3 @@ export class Message extends Listener {
 		await payload.message.reply(error.message)
 	}
 }
-
