@@ -98,8 +98,8 @@ export class PermissionsPrecondition extends Precondition {
 		if (!runCommandsInChannel.value) {
 			return await this.error({
 				identifier: 'permissions',
-				message: `This channel requires you to have ${runCommandsInChannel.channelRequirements} perms to run commands in it, but you ${
-					runCommandsInChannel.memberPerms === 'none' ? "don't have any priveliged permissions." : `only have ${runCommandsInChannel.memberPerms}.`
+				message: `This channel requires you to have **${PermNames[runCommandsInChannel.channelRequirements]}** perms to run commands in it, but you ${
+					runCommandsInChannel.memberPerms === 'none' ? "don't have any priveliged permissions." : `only have **${runCommandsInChannel.memberPerms}**.`
 				}`,
 			})
 		}

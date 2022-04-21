@@ -6,7 +6,7 @@ import { CommandInteraction, MessageActionRow, MessageButton, TextChannel } from
 import got from 'got/dist/source'
 import { GuildDatabase } from '../../functions/databases/guild'
 import RainCommand from '../../structures/RainCommand'
-import { PermNames } from '../../types/misc'
+import { PermNames, Perms } from '../../types/misc'
 
 @ApplyOptions<CommandOptions>({
 	name: 'config',
@@ -31,7 +31,7 @@ import { PermNames } from '../../types/misc'
 					{ name: 'Staff Roles', value: 'configStaffRoles' },
 					{ name: 'Mute Role', value: 'configMuteRole' },
 					{ name: 'Restricted Channels', value: 'configRestrictedChannels' },
-					{ name: 'After Punishment Message', value: 'configAfterPunishMessage' },
+					// { name: 'After Punishment Message', value: 'configAfterPunishMessage' },
 					{ name: 'View Config', value: 'configView' },
 				],
 			},
@@ -63,11 +63,8 @@ export class ConfigCommand extends RainCommand {
 			await this.container.database.guilds.create({ id: interaction.guild.id })
 		}
 
-		console.log(action)
+		await interaction.deferReply()
 
-		if (action != 'configAfterPunishMessage') {
-			await interaction.deferReply()
-		}
 		const { id } = await interaction.fetchReply()
 
 		let apId = interaction.id
@@ -1366,6 +1363,7 @@ export class ConfigCommand extends RainCommand {
 			if (!button) {
 				return await interaction.editReply({ content: "I can't get a perm level if you don't press a button.", components: [] })
 			}
+			await button.deferUpdate()
 			const buttonId = button.customId as unknown as
 				| 'configSetChannelAdminPerms'
 				| 'configSetChannelSrModPerms'
@@ -1375,12 +1373,95 @@ export class ConfigCommand extends RainCommand {
 				| 'configRemoveChannelPerms'
 
 			if (buttonId === 'configRemoveChannelPerms') {
-				//
+				await interaction.editReply({
+					content: `Are you sure you want to remove the perm restrictions from ${channel.toString()}?`,
+					components: [
+						{
+							type: 'ACTION_ROW',
+							components: [
+								{ type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configRemoveChannelPermsYes' },
+								{ type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configRemoveChannelPermsNo' },
+							],
+						},
+					],
+				})
+
+				const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+				if (!button) {
+					return await interaction.editReply({ content: "I can't tell what you want to do if you don't press a button.", components: [] })
+				}
+
+				switch (button.customId) {
+					case 'configRemoveChannelPermsYes': {
+						const changed = await this.container.channels.changePerms(interaction.channel, 'none')
+
+						if (!changed) {
+							return await interaction.editReply({ content: "I failed to change that channel's perms.", components: [] })
+						}
+
+						return await interaction.editReply({ content: "Alright! I've cleared that channel's perms.", components: [] })
+					}
+
+					case 'configRemoveChannelPermsNo': {
+						return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
+					}
+				}
+			}
+
+			let perms: Perms = 'none'
+
+			if (buttonId === 'configSetChannelAdminPerms') {
+				perms = 'admin'
+			}
+			if (buttonId === 'configSetChannelSrModPerms') {
+				perms = 'srMod'
+			}
+			if (buttonId === 'configSetChannelModPerms') {
+				perms = 'moderator'
+			}
+			if (buttonId === 'configSetChannelHelperPerms') {
+				perms = 'helper'
+			}
+			if (buttonId === 'configSetChannelTrialHelperPerms') {
+				perms = 'trialHelper'
+			}
+
+			if (perms !== 'none') {
+				await interaction.editReply({
+                    content: `Are you sure that you want to set ${channel.toString()}'s perms to ${PermNames[perms]}?`,
+                    components: [
+                        {
+                            type: 'ACTION_ROW',
+                            components: [
+                                { type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configSetChannelPermsYes' },
+                                { type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configSetChannelPermsNo' },
+                            ],
+                        },
+                    ],
+                })
+
+                const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+                if (!button) {
+                    return await interaction.editReply({ content: "I can't tell what you want to do if you don't press a button.", components: [] })
+                }
+
+                switch (button.customId) {
+                    case 'configSetChannelPermsYes': {
+                        const changed = await this.container.channels.changePerms(channel, perms)
+                        if (!changed) {
+                            return await interaction.editReply({ content: `I failed to change ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
+                        }
+
+                        return await interaction.editReply({ content: `I've succesfully set ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
+                    }
+                    case 'configSetChannelPermsNo': {
+                        return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
+                    }
+                }
 			}
 		}
 
 		if (action === 'configAfterPunishMessage') {
-			console.log('in after punish message thing')
 			await got.post(`https://discord.com/api/v10/interactions/${apId}/${apToken}/callback`, {
 				json: {
 					type: 9,

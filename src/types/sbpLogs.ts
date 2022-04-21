@@ -1,3 +1,6 @@
+// i had plans to use this but i never got around to it because it's a buggy mess so if i ever add premium or whatever i'll totally add this to that
+// but just know that the "buggy mess" part isn't really on my end
+
 import { container } from '@sapphire/pieces'
 import { MessageEmbed, EmbedFieldData, GuildChannel, InviteResolvable, Message, UserResolvable } from 'discord.js'
 

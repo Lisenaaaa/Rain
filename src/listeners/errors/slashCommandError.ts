@@ -6,7 +6,8 @@ import { Listener, ListenerOptions, ChatInputCommandErrorPayload } from '@sapphi
 })
 export class SlashCommandErrorListener extends Listener {
 	public async run(error: Error, payload: ChatInputCommandErrorPayload) {
-		if (this.container.users.isOwner(payload.interaction.user))
+		if (this.container.users.isOwner(payload.interaction.user)) {
+			this.container.logger.error(error)
 			try {
 				await payload.interaction.editReply({
 					content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
@@ -18,7 +19,7 @@ export class SlashCommandErrorListener extends Listener {
 					components: [],
 				})
 			}
-		else
+		} else
 			await payload.interaction.reply({
 				embeds: [
 					await this.container.utils.error(error, {
