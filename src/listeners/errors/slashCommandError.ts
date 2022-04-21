@@ -8,11 +8,12 @@ export class SlashCommandErrorListener extends Listener {
 	public async run(error: Error, payload: ChatInputCommandErrorPayload) {
 		if (this.container.users.isOwner(payload.interaction.user))
 			try {
-				await payload.interaction.reply({
+				await payload.interaction.editReply({
 					content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
+					components: []
 				})
 			} catch (err) {
-				await payload.interaction.editReply({
+				await payload.interaction.reply({
 					content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
 					components: [],
 				})

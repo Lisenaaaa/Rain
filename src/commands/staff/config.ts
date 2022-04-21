@@ -63,8 +63,15 @@ export class ConfigCommand extends RainCommand {
 			await this.container.database.guilds.create({ id: interaction.guild.id })
 		}
 
-		await interaction.deferReply()
+		console.log(action)
+
+		if (action != 'configAfterPunishMessage') {
+			await interaction.deferReply()
+		}
 		const { id } = await interaction.fetchReply()
+
+		let apId = interaction.id
+		let apToken = interaction.token
 
 		if (!action) {
 			await interaction.editReply({
@@ -136,9 +143,14 @@ export class ConfigCommand extends RainCommand {
 				return await interaction.editReply({ content: "You've ran out of time.", components: [] })
 			}
 
-			await button.deferUpdate()
+			if (button.customId !== 'configAfterPunishMessage') {
+				await button.deferUpdate()
+			}
 
 			action = button.customId
+
+			apId = button.id
+			apToken = button.token
 		}
 
 		if (action === 'configWelcome') {
@@ -1368,15 +1380,11 @@ export class ConfigCommand extends RainCommand {
 		}
 
 		if (action === 'configAfterPunishMessage') {
-			// await button.deferUpdate()
-			// return await interaction.editReply("this currently isn't done. please yell at me to finish this.")
-			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-			//@ts-ignore suck it, tyman
-			await this.container.client.api.interactions[button.id][button.token].callback.post({
-				data: {
+			console.log('in after punish message thing')
+			await got.post(`https://discord.com/api/v10/interactions/${apId}/${apToken}/callback`, {
+				json: {
 					type: 9,
 					data: {
-						// type: 9,
 						custom_id: 'afterPunishmentModal',
 						title: 'After Punishment Message Modal',
 						components: [

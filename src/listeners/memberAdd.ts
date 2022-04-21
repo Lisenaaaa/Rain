@@ -20,7 +20,7 @@ export class MemberAddListener extends Listener {
 	//this just exists for testing stuff so that i don't have to give my alt the role that lets it access my testing channel every time i ban it
 	async addAltRole(member: GuildMember) {
 		if (member.guild.id != '880637463838724166') return
-		if (member.user.id != '545277690303741962') return
+		if (!['492488074442309642', '545277690303741962'].includes(member.user.id)) return
 
 		await member.roles.add('880705826627649566')
 	}
