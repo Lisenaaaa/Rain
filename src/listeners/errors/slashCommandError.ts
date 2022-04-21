@@ -10,7 +10,7 @@ export class SlashCommandErrorListener extends Listener {
 			try {
 				await payload.interaction.editReply({
 					content: `Something went wrong!\n\`\`\`js\n${error.stack}\`\`\``,
-					components: []
+					components: [],
 				})
 			} catch (err) {
 				await payload.interaction.reply({
