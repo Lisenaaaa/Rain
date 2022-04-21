@@ -1428,36 +1428,36 @@ export class ConfigCommand extends RainCommand {
 
 			if (perms !== 'none') {
 				await interaction.editReply({
-                    content: `Are you sure that you want to set ${channel.toString()}'s perms to ${PermNames[perms]}?`,
-                    components: [
-                        {
-                            type: 'ACTION_ROW',
-                            components: [
-                                { type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configSetChannelPermsYes' },
-                                { type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configSetChannelPermsNo' },
-                            ],
-                        },
-                    ],
-                })
+					content: `Are you sure that you want to set ${channel.toString()}'s perms to ${PermNames[perms]}?`,
+					components: [
+						{
+							type: 'ACTION_ROW',
+							components: [
+								{ type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configSetChannelPermsYes' },
+								{ type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configSetChannelPermsNo' },
+							],
+						},
+					],
+				})
 
-                const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
-                if (!button) {
-                    return await interaction.editReply({ content: "I can't tell what you want to do if you don't press a button.", components: [] })
-                }
+				const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+				if (!button) {
+					return await interaction.editReply({ content: "I can't tell what you want to do if you don't press a button.", components: [] })
+				}
 
-                switch (button.customId) {
-                    case 'configSetChannelPermsYes': {
-                        const changed = await this.container.channels.changePerms(channel, perms)
-                        if (!changed) {
-                            return await interaction.editReply({ content: `I failed to change ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
-                        }
+				switch (button.customId) {
+					case 'configSetChannelPermsYes': {
+						const changed = await this.container.channels.changePerms(channel, perms)
+						if (!changed) {
+							return await interaction.editReply({ content: `I failed to change ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
+						}
 
-                        return await interaction.editReply({ content: `I've succesfully set ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
-                    }
-                    case 'configSetChannelPermsNo': {
-                        return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
-                    }
-                }
+						return await interaction.editReply({ content: `I've succesfully set ${channel.toString()}'s restricted perms to ${PermNames[perms]}.`, components: [] })
+					}
+					case 'configSetChannelPermsNo': {
+						return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
+					}
+				}
 			}
 		}
 
