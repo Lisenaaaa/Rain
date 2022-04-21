@@ -11,8 +11,8 @@ import RainCommand from '../../structures/RainCommand'
 	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['943289928874352670'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['943289928874352670', '966784600879824896'],
 	},
 })
 export class PingCommand extends RainCommand {

@@ -14,8 +14,8 @@ import { ArgsUser } from '../../../types/misc'
 	botPerms: [],
 	userDiscordPerms: ['MANAGE_NICKNAMES'],
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['938214905469870140'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['938214905469870140', '966784343068541018'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to warn', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to warn them for', required: true },

@@ -13,8 +13,8 @@ import RainCommand from '../../structures/RainCommand'
 	userDiscordPerms: ['MANAGE_GUILD'],
 	botPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['962446409976676372'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['962446409976676372', '966784513583771758'],
 		options: [
 			{
 				name: 'role',

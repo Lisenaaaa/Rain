@@ -12,8 +12,8 @@ import { ArgsUser, PermNames } from '../../types/misc'
 	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['938588224283086888'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['938588224283086888', '966784514724626492'],
 		options: [
 			{
 				name: 'user',

@@ -16,8 +16,8 @@ import { ArgsUser } from '../../../types/misc'
 	botPerms: ['MANAGE_ROLES'],
 	userDiscordPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['933872679654674442'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['933872679654674442', '966784426774253579'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to mute', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to mute them for' },

@@ -14,8 +14,8 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	userDiscordPerms: ['MANAGE_MESSAGES'],
 	botPerms: [],
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['933929396945952779'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['933929396945952779', '966784428204490802'],
 		options: [
 			{
 				type: 'SUB_COMMAND',

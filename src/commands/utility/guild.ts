@@ -11,8 +11,8 @@ import RainCommand from '../../structures/RainCommand'
 	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
-		guildIDs: ['880637463838724166', '883512410449772574'],
-		idHints: ['938935765541486612', '938934491995582474', '955569395231498351'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['938935765541486612', '938934491995582474', '955569395231498351', '966784520189800458'],
 	},
 })
 export class GuildCommand extends RainCommand {

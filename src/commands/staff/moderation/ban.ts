@@ -15,8 +15,8 @@ import { ArgsUser } from '../../../types/misc'
 	botPerms: ['BAN_MEMBERS'],
 	userDiscordPerms: ['BAN_MEMBERS'],
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['938210475534061599'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['938210475534061599', '966784431434137660'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to ban', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to ban them for' },

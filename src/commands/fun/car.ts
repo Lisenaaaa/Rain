@@ -14,8 +14,8 @@ import RainCommand from '../../structures/RainCommand'
 	botPerms: ['EMBED_LINKS'],
 	defaultPermissions: 'none',
 	slashOptions: {
-		guildIDs: ['880637463838724166'],
-		idHints: ['939680586669371463'],
+		guildIDs: RainCommand.guildIDs(),
+		idHints: ['939680586669371463', '966784339784380457'],
 	},
 })
 export class CarCommand extends RainCommand {

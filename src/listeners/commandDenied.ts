@@ -10,11 +10,3 @@ export class Message extends Listener {
 	}
 }
 
-@ApplyOptions<ListenerOptions>({
-	event: 'chatInputCommandDenied',
-})
-export class CommandDeniedListener extends Listener {
-	public async run(error: PreconditionError, payload: ChatInputCommandDeniedPayload) {
-		await payload.interaction.reply(error.message)
-	}
-}
