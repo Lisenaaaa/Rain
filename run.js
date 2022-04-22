@@ -15,11 +15,11 @@ const string = `[INFO] 2022-04-22 12:26:35 PM: ApplicationCommandRegistry[pronou
 [INFO] 2022-04-22 12:27:18 PM: ApplicationCommandRegistry[guild] Successfully created chat input command "guild" with id "967144586453602415". You should add the id to the "idHints" property of the register method you used!
 [INFO] 2022-04-22 12:27:38 PM: ApplicationCommandRegistry[ping] Successfully created chat input command "ping" with id "967144669874098216". You should add the id to the "idHints" property of the register method you used!`
 const format = (string) => {
-    return `${string.split('"')[1]}: ${string.split('"')[3]}`
+	return `${string.split('"')[1]}: ${string.split('"')[3]}`
 }
 
 const split = string.split('\n')
 
 for (const s of split) {
-    console.log(format(s))
+	console.log(format(s))
 }

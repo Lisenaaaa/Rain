@@ -32,6 +32,6 @@ export class PronounsCommand extends RainCommand {
 
 		const pronouns = await this.container.users.getPronouns(user)
 
-		await interaction.editReply({ embeds: [{title: `${user.tag}'s pronouns`, description: `${pronouns}`}] })
+		await interaction.editReply({ embeds: [{ title: `${user.tag}'s pronouns`, description: `${pronouns}` }] })
 	}
 }
