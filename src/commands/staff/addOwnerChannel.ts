@@ -15,7 +15,7 @@ import { PermNames } from '../../types/misc'
 	botPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['966780507268456478', '966784340933636166'],
+		idHints: ['966780507268456478', '966784340933636166', '967144410913595492'],
 		options: [
 			{
 				name: 'channel',

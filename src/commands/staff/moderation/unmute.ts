@@ -15,7 +15,7 @@ import { ArgsUser } from '../../../types/misc'
 	userDiscordPerms: ['MANAGE_MESSAGES'],
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['935677351960928266', '966784430507184138'],
+		idHints: ['935677351960928266', '966784430507184138','967144498641657916'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to unmute', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to unmute them for' },

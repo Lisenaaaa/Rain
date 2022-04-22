@@ -13,7 +13,7 @@ import { ArgsUser, PermNames } from '../../types/misc'
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['938588224283086888', '966784514724626492'],
+		idHints: ['938588224283086888', '966784514724626492', '967144583681179668'],
 		options: [
 			{
 				name: 'user',

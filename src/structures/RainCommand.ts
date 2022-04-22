@@ -25,6 +25,7 @@ export default class RainCommand extends Command {
 	parseArgs = this.container.utils.parseInteractionArgs
 
 	static guildIDs() {
-		return ['966782939008499773', '880637463838724166']
+		// return ['966782939008499773', '880637463838724166']
+		return []
 	}
 }
