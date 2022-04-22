@@ -52,14 +52,11 @@ export class BanCommand extends RainCommand {
 			if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
 				return await interaction.reply({ content: `You can't ban someone with higher or equal permissions to you.`, ephemeral: true })
 			}
-		}
 
-		// if (this.container.utils.checkPermHeirarchy(await this.container.members.getPerms(target), await this.container.members.getPerms(moderator))) {
-		// 	await interaction.reply({ content: `You can't ban someone with higher or equal permissions to you.`, ephemeral: true })
-		// }
-		// if (!this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.banRole) throw new Error("I can't ban people without having a role set to ban them with.")
-		// const banRole = await interaction.guild?.roles.fetch(this.container.cache.guilds.get(interaction.guild?.id as string)?.guildSettings.banRole as string)
-		// if (!banRole) throw new Error("I can't ban people without having a role set to ban them with.")
+			if (target.id === this.container.client.user?.id) {
+				return await interaction.reply({ content: "You can't ban me!", ephemeral: true })
+			}
+		}
 
 		try {
 			await args.member.user.send(
