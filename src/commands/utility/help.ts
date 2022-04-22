@@ -13,7 +13,7 @@ import RainCommand from '../../structures/RainCommand'
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['944016647092600873', '966784515546710086','967144584469696582'],
+		idHints: ['944016647092600873', '966784515546710086', '967144584469696582'],
 	},
 })
 export class HelpCommand extends RainCommand {

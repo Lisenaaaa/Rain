@@ -15,7 +15,7 @@ import RainCommand from '../../structures/RainCommand'
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['939680586669371463', '966784339784380457','967144410015997962'],
+		idHints: ['939680586669371463', '966784339784380457', '967144410015997962'],
 	},
 })
 export class CarCommand extends RainCommand {

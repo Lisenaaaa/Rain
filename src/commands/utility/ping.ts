@@ -12,7 +12,7 @@ import RainCommand from '../../structures/RainCommand'
 	defaultPermissions: 'none',
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['943289928874352670', '966784600879824896','967144669874098216'],
+		idHints: ['943289928874352670', '966784600879824896', '967144669874098216'],
 	},
 })
 export class PingCommand extends RainCommand {

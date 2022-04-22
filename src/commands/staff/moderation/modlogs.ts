@@ -15,7 +15,7 @@ import { ArgsUser, ModlogDurationTypes, ModlogTypes } from '../../../types/misc'
 	botPerms: [],
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['933929396945952779', '966784428204490802','967144496980705330'],
+		idHints: ['933929396945952779', '966784428204490802', '967144496980705330'],
 		options: [
 			{
 				type: 'SUB_COMMAND',

@@ -15,7 +15,7 @@ import { ArgsUser } from '../../../types/misc'
 	userDiscordPerms: ['BAN_MEMBERS'],
 	slashOptions: {
 		guildIDs: RainCommand.guildIDs(),
-		idHints: ['936396772606111824', '966784429626388561','967144497752465448'],
+		idHints: ['936396772606111824', '966784429626388561', '967144497752465448'],
 		options: [
 			{ name: 'member', type: 'USER', description: 'the member you want to unban', required: true },
 			{ name: 'reason', type: 'STRING', description: 'the reason to unban them for' },
