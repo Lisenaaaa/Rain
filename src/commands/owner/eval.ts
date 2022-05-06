@@ -9,73 +9,73 @@ import { reply } from '@sapphire/plugin-editable-commands'
 import RainCommand from '../../structures/RainCommand'
 
 @ApplyOptions<CommandOptions>({
-	name: 'eval',
-	aliases: ['ev'],
-	description: 'run code',
-	preconditions: ['ownerOnly'],
-	defaultPermissions: 'none',
-	botPerms: [],
+    name: 'eval',
+    aliases: ['ev'],
+    description: 'run code',
+    preconditions: ['ownerOnly'],
+    defaultPermissions: 'none',
+    botPerms: [],
 })
 export class EvalCommand extends RainCommand {
-	public override async messageRun(message: Message, args: Args) {
-		const codetoeval = await args.rest('string')
+    public override async messageRun(message: Message, args: Args) {
+        const codetoeval = await args.rest('string')
 
-		let codeToEval = `(async () => {${codetoeval}})()`
-		if (!codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = codetoeval
-		if (codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = `(async () => { return ${codetoeval}})()`
+        let codeToEval = `(async () => {${codetoeval}})()`
+        if (!codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = codetoeval
+        if (codetoeval.includes('await') && !codetoeval.includes('return')) codeToEval = `(async () => { return ${codetoeval}})()`
 
-		const { output, success } = await EvalCommand.runCode(codeToEval, message)
+        const { output, success } = await EvalCommand.runCode(codeToEval, message)
 
-		await reply(message, {
-			embeds: [
-				{
-					title: 'Eval Output',
-					color: success ? 0x00ff00 : 0xff0000,
-					fields: [
-						{ name: 'Input', value: `\`\`\`js\n${codetoeval}\`\`\`` },
-						{ name: 'Output', value: await this.formatOutput(output) },
-					],
-				},
-			],
-		})
-	}
+        await reply(message, {
+            embeds: [
+                {
+                    title: 'Eval Output',
+                    color: success ? 0x00ff00 : 0xff0000,
+                    fields: [
+                        { name: 'Input', value: `\`\`\`js\n${codetoeval}\`\`\`` },
+                        { name: 'Output', value: await this.formatOutput(output) },
+                    ],
+                },
+            ],
+        })
+    }
 
-	async formatOutput(output: string): Promise<string> {
-		if (!output) return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
-		if (EvalCommand.cleanOutput(output).length >= 1000) {
-			return await this.container.utils.haste(EvalCommand.cleanOutput(output))
-		} else return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
-	}
+    async formatOutput(output: string): Promise<string> {
+        if (!output) return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
+        if (EvalCommand.cleanOutput(output).length >= 1000) {
+            return await this.container.utils.haste(EvalCommand.cleanOutput(output))
+        } else return `\`\`\`js\n${EvalCommand.cleanOutput(output)}\`\`\``
+    }
 
-	static cleanOutput(output: string) {
-		for (const key of Object.keys(tokens)) {
-			output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)
-		}
+    static cleanOutput(output: string) {
+        for (const key of Object.keys(tokens)) {
+            output = output.replaceAll(tokens[key as keyof typeof tokens], `tokens.${key}`)
+        }
 
-		for (const key of Object.keys(database)) {
-			output = output.replaceAll(database[key as keyof typeof database], `database.${key}`)
-		}
+        for (const key of Object.keys(database)) {
+            output = output.replaceAll(database[key as keyof typeof database], `database.${key}`)
+        }
 
-		return output
-	}
+        return output
+    }
 
-	static async runCode(code: string, message?: Message) {
-		let output
-		let success
-		try {
-			const container = iContainer
+    static async runCode(code: string, message?: Message) {
+        let output
+        let success
+        try {
+            const container = iContainer
 
-			const inspect = util.inspect,
-				utils = container.utils,
-				client = container.client,
-				settings = container.settings,
-				user = message?.author,
-				member = message?.member,
-				guild = message?.guild,
-				channel = message?.channel,
-				sh = promisify(exec),
-				db = container.database.guilds.findByPk(message?.guildId as string),
-				dbInfo = `\`\`\`js
+            const inspect = util.inspect,
+                utils = container.utils,
+                client = container.client,
+                settings = container.settings,
+                user = message?.author,
+                member = message?.member,
+                guild = message?.guild,
+                channel = message?.channel,
+                sh = promisify(exec),
+                db = container.database.guilds.findByPk(message?.guildId as string),
+                dbInfo = `\`\`\`js
 				// add //
 				await GuildDatabase.create({ id: 'id' })
 				// fetch //
@@ -88,19 +88,19 @@ export class EvalCommand extends RainCommand {
 				// delete //
 				await GuildDatabase.destroy({ where: { id: 'id' } })\`\`\`
 				`,
-				inviteRegex = /((https?:\/\/)?(discord\.gg|discord\.com\/invite)\/)(?<code>([a-zA-Z0-9]{2,}))/g,
-				emojiRegex = /(?:<:|<a:)\w{1,64}:(?<id>\d{17,18})>/g
+                inviteRegex = /((https?:\/\/)?(discord\.gg|discord\.com\/invite)\/)(?<code>([a-zA-Z0-9]{2,}))/g,
+                emojiRegex = /(?:<:|<a:)\w{1,64}:(?<id>\d{17,18})>/g
 
-			output = inspect(await eval(code), { depth: 0 })
-			success = true
-		} catch (err) {
-			output = err.stack
-			success = false
-		}
+            output = inspect(await eval(code), { depth: 0 })
+            success = true
+        } catch (err) {
+            output = err.stack
+            success = false
+        }
 
-		return {
-			output,
-			success,
-		}
-	}
+        return {
+            output,
+            success,
+        }
+    }
 }
