@@ -2,7 +2,7 @@ import { ApplyOptions } from '@sapphire/decorators'
 import { isGuildBasedChannel } from '@sapphire/discord.js-utilities'
 import { CommandOptions } from '@sapphire/framework'
 import { ButtonStyle, ComponentType } from 'discord-api-types'
-import { CommandInteraction, MessageActionRow, MessageButton, TextChannel } from 'discord.js'
+import { CommandInteraction, MessageActionRow, MessageActionRowComponentOptions, MessageButton, TextChannel } from 'discord.js'
 import got from 'got/dist/source'
 import { GuildDatabase } from '../../functions/databases/guild'
 import RainCommand from '../../structures/RainCommand'
@@ -31,7 +31,6 @@ import { PermNames, Perms } from '../../types/misc'
           { name: 'Staff Roles', value: 'configStaffRoles' },
           { name: 'Mute Role', value: 'configMuteRole' },
           { name: 'Restricted Channels', value: 'configRestrictedChannels' },
-          // { name: 'After Punishment Message', value: 'configAfterPunishMessage' },
           { name: 'View Config', value: 'configView' },
         ],
       },
@@ -1226,9 +1225,85 @@ export class ConfigCommand extends RainCommand {
     if (action === 'configMuteRole') {
       const muteRole = (await this.container.database.guilds.findByPk(interaction.guildId))?.muteRole
 
-      const actions: MessageActionRow[] = []
+      const actions: MessageActionRowComponentOptions[] = []
 
-      await interaction.editReply({ content: 'not done yet, rewriting it to be way better :D', components: [], embeds: [] })
+      actions.push({ type: 'BUTTON', label: 'Change Mute Role', style: 'SUCCESS', customId: 'configChangeMuteRole' })
+
+      if (muteRole) {
+        actions.push({ type: 'BUTTON', label: 'Remove Mute Role', style: 'DANGER', customId: 'configRemoveMuteRole' })
+      }
+
+      await interaction.editReply({
+        content: 'What would you like to do to the mute role?',
+        embeds: [],
+        components: [{ type: 'ACTION_ROW', components: actions }],
+      })
+
+      const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+
+      switch (button?.customId) {
+        case 'configChangeMuteRole': {
+          const msg = await this.container.utils.promptMessage(interaction, {
+            content: `Please mention or send the ID of the role that you'd like to change the mute role to.`,
+            embeds: [],
+            components: [],
+          })
+
+          if (!msg) {
+            return await interaction.editReply({ content: `I can't get the data I need to get a role without you telling me what role you want me to set.`, components: [] })
+          }
+          if (!msg.content) {
+            return await interaction.editReply({
+              content: "I don't have OCR functionality, so I can't get the role from an image or whatever else you might have put in that message.",
+              components: [],
+            })
+          }
+
+          const role = this.container.guilds.findRole(interaction.guild, msg.content)
+
+          if (!role) {
+            return await interaction.editReply({ content: "I couldn't find that role.", components: [] })
+          }
+
+          await interaction.editReply({
+            content: `Are you sure you want to change the mute role to ${role.toString()}?`,
+            components: [
+              {
+                type: 'ACTION_ROW',
+                components: [
+                  { type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configChangeMuteRoleYes' },
+                  { type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configChangeMuteRoleNo' },
+                ],
+              },
+            ],
+          })
+
+          const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+
+          if (!button || button && button.customId === 'configChangeMuteRoleNo') {
+            return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
+          } else if (button.customId === 'configChangeMuteRoleYes') {
+            await this.container.database.guilds.update({ muteRole: role.id }, { where: { id: interaction.guild.id } })
+
+            await interaction.editReply({ content: `Alright, the mute role is now ${role.toString()}.`, components: [] })
+          }
+
+          break
+        }
+        case 'configRemoveMuteRole': {
+          await interaction.editReply({ content: "Are you sure you want to **remove** this guild's mute role?", components: [{ type: 'ACTION_ROW', components: [{ type: 'BUTTON', label: 'Yes', style: 'SUCCESS', customId: 'configRemoveMuteRoleYes' }, { type: 'BUTTON', label: 'No', style: 'DANGER', customId: 'configRemoveMuteRoleNo' }] }] })
+          const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+
+          if (!button || button && button.customId === 'configRemoveMuteRoleNo') {
+            return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
+          } else if (button && button.customId === 'configRemoveMuteRoleYes') {
+            await this.container.database.guilds.update({ muteRole: null }, { where: { id: interaction.guild.id } })
+            await interaction.editReply({ content: "Alright. I've removed the mute role." })
+          }
+
+          break
+        }
+      }
     }
 
     if (action === 'configRestrictedChannels') {
