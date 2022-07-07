@@ -1241,6 +1241,10 @@ export class ConfigCommand extends RainCommand {
 
             const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
 
+            if (!button) {
+                return await interaction.editReply({ content: 'Please press the button within one minute next time.', components: [] })
+            }
+
             switch (button?.customId) {
                 case 'configChangeMuteRole': {
                     const msg = await this.container.utils.promptMessage(interaction, {
@@ -1252,6 +1256,9 @@ export class ConfigCommand extends RainCommand {
                     if (!msg) {
                         return await interaction.editReply({ content: `I can't get the data I need to get a role without you telling me what role you want me to set.`, components: [] })
                     }
+
+                    await msg.delete()
+
                     if (!msg.content) {
                         return await interaction.editReply({
                             content: "I don't have OCR functionality, so I can't get the role from an image or whatever else you might have put in that message.",
@@ -1304,6 +1311,10 @@ export class ConfigCommand extends RainCommand {
                         ],
                     })
                     const button = await this.container.utils.awaitButton(interaction.user.id, id, interaction.channel)
+
+                    if (button) {
+                        await button.deferUpdate()
+                    }
 
                     if (!button || (button && button.customId === 'configRemoveMuteRoleNo')) {
                         return await interaction.editReply({ content: "Alright. I haven't made any changes.", components: [] })
